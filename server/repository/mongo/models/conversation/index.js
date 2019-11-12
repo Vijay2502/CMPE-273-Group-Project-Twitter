@@ -10,7 +10,10 @@ const conversationSchema = new Schema({
 	data: {
 		type: Schema.Types.Mixed,
 		required: true
-	}
+	},
+	users: [
+		Number
+	]
 }, {
 	timestamps: true
 });
