@@ -1,6 +1,7 @@
 const Sequelize       = require('sequelize');
 const UserModel       = require('./models/users');
 const ListModel       = require('./models/lists');
+const FeedModel       = require('./models/feeds');
 
   const Op = Sequelize.Op;
 	const operatorsAliases = {
@@ -55,10 +56,22 @@ const sequelize = new Sequelize(process.env.MYSQLDB_NAME, process.env.MYSQLDB_US
 
 const User = UserModel(sequelize, Sequelize);
 const List = ListModel(sequelize, Sequelize);
+const Feed = FeedModel(sequelize, Sequelize);
 
 
-Item.belongsTo(User);
+List.belongsTo(User);
 User.hasMany(List);
+Feed.belongsTo(User);
+
+/*
+TODO
+- User as memebers of Lists
+- User as subscribers of Lists
+- Users as follower of User in Feed
+- User as following Users in Feed
+- Bookmarked Tweets in User
+*/
+
 
 
 
