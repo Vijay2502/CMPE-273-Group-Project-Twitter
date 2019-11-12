@@ -7,7 +7,8 @@ const TweetSchema = new Schema({
 	},
 	ownerId: {
 		type: Number,
-		required: true
+		required: true,
+		unique: true
 	},
 	retweet: {
 		isRetweet: Boolean,
