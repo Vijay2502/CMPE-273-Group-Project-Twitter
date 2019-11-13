@@ -6,4 +6,4 @@ app.use(require('./routes'));
 
 
 
-app.listen(port, () => console.log(`Server listening on ${process.env.PORT}!`));
+app.listen(process.env.PORT, () => console.log(`Server listening on ${process.env.PORT}!`));
