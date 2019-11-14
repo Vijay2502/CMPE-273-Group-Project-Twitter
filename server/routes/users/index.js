@@ -1,31 +1,94 @@
 const userService = require('../../service/users');
 
-module.exports.register = function(request, response){
-    if(!(request.body.name && request.body.email && request.body.role && request.body.password)){
+module.exports.register = function (request, response) {
+    if (!(request.body.firstName && request.body.lastName && request.body.email
+        && request.body.username && request.body.password)) {
         return response.status(400).send("INVALID REQUEST");
     }
+    return userService.getByEmailOrUsername(request.body.email, request.body.username, function (err, user) {
+        if (err)
+            return response.status(500).send(err);
+        if (user) {
+            return response.status(400).send("EMAIL OR USERNAME ALREADY EXITS");
+        }
 
+        return userService.create(request.body, function (err, data) {
+            if (err) return response.status(err.code ? err.code : 500).send(err);
+
+            return response.send({
+                status: "ok",
+                data: data
+            });
+        });
+    });
 
 }
 
-module.exports.login = function(request, response){
+module.exports.login = function (request, response) {
 
-    if(!(request.body.email && request.body.password)){
+    if (!(request.body.email && request.body.password)) {
         return response.status(400).send("MISSING FIELDS");
     }
 
- 
+    return userService.getByEmailOrUsername(null, request.body.username, function (err, user) {
+        if (err)
+            return response.status(500).send(err);
+        if (!user) {
+            return response.status(404).send("EMAIL DOES NOT EXIST");
+        }
+
+        return userService.verifyAndAssignToken(request.body.password, user, function (err, token) {
+            if (err) {
+                return response.status(err.code ? err.code : 500).send(err);
+            }
+            user.password = undefined;
+            return response.send({
+                status: "ok",
+                data: {
+                    token: "bearer " + token,
+                    user
+                }
+            });
+        });
+    });
+
 
 }
 
-module.exports.update = function(request, response){
+module.exports.update = function (request, response) {
 
-    if(!(request.body.email && request.body.name && request.body.id)){
+    if (!(request.body.email && request.body.name && request.body.id)) {
         return response.status(400).send("MISSING FIELDS");
     }
 
+
+
 }
 
-module.exports.get = function(req, response){
+module.exports.get = function (request, response) {
+    return userService.getById(request.params.id, function (err, user) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: {
+                user
+            }
+        });
+    });
+}
 
+module.exports.follow = function (request, response) {
+    return userService.followUser(request.params.id, request.body.followeeId, function (err, user) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: {
+                user
+            }
+        });
+    });
 }

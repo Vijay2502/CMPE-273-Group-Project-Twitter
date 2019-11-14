@@ -1,26 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const utils = require('../service/utils');
+const Tweet = require('../routes/tweets');
+const mongoConnection = require("../repository/mongo")
+// const User = require('../user');
 
-const User = require('../user');
+// var passport = require('passport');
+// var auth = {
+//     userAuth: passport.authenticate('jwt', {session: false})
+// };
+// router.use(passport.initialize());
 
-var passport = require('passport');
-var auth = {
-    userAuth: passport.authenticate('jwt', {session: false})
-};
+// require('../auth/passport')(passport);
+// router.post('/img-upload', auth.userAuth, utils.uploadImage);
 
-router.use(passport.initialize());
+router.post('/tweet/create', Tweet.createTweet);
 
+// router.post('/user/login', User.login);
 
-require('../auth/passport')(passport);
-
-router.post('/img-upload', auth.userAuth, utils.uploadImage);
-
-router.post('/user/register', User.register);
-
-router.post('/user/login', User.login);
-
-router.get('/user/get', auth.userAuth, User.get);
-
-
+// router.get('/user/get', auth.userAuth, User.get);
 module.exports = router;
