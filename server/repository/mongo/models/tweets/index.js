@@ -2,7 +2,7 @@ const Schema = require('mongoose').Schema;
 const replySchema = require('../replies');
 
 const TweetSchema = new Schema({
-	id: {
+	tweetId: {
 		type: String,
 		required: true
 	},
