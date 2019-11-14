@@ -30,9 +30,9 @@ module.exports = {
     Feed: feedModel,
     Reply: replyModel,
     Conversation: conversationModel,
-    TweetsByHashtagModel: tweetsByHashtagModel,
-    TweetsByListModel: tweetsByListModel,
-    TweetsBySubscriptionModel: tweetsBySubscriptionModel,
-    BookmarkedTweetsModel: bookmarkedTweetsModel,
+    TweetsByHashtag: tweetsByHashtagModel,
+    TweetsByList: tweetsByListModel,
+    TweetsBySubscription: tweetsBySubscriptionModel,
+    BookmarkedTweets: bookmarkedTweetsModel,
     mongoose: mongoose
 };
