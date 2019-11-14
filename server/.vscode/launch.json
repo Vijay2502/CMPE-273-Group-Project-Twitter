@@ -11,9 +11,10 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/server/server.js",
+            "program": "${workspaceFolder}/server.js",
             "console": "integratedTerminal",
             "env": {
+                "PORT":8080,
                 "MONGO_URL":"mongodb+srv://admin:welcome123@twitter-ul0jl.mongodb.net/test?retryWrites=true&w=majority",
                 "MYSQLDB_HOST":"twitter-db.czohryfydiej.us-west-1.rds.amazonaws.com",
                 "MYSQLDB_PORT":3306,

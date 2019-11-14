@@ -62,25 +62,53 @@ const Feed = FeedModel(sequelize, Sequelize);
 List.belongsTo(User);
 User.hasMany(List);
 Feed.belongsTo(User);
+User.hasOne(Feed);
 
-/*
-TODO
-- User as memebers of Lists
-- User as subscribers of Lists
-- Users as follower of User in Feed
-- User as following Users in Feed
-- Bookmarked Tweets in User
-*/
+User.belongsToMany(List, {
+	through: 'ListMembership',
+	as: 'listsAsMember',
+	foreignKey: 'memberId'
+});
+
+List.belongsToMany(User, {
+	through: 'ListMembership',
+	as: 'members',
+	foreignKey: 'listId'
+});
+
+User.belongsToMany(List, {
+	through: 'ListSubscription',
+	as: 'listsAsSubscriber',
+	foreignKey: 'subscriberId'
+});
+
+List.belongsToMany(User, {
+	through: 'ListSubscription',
+	as: 'subscribers',
+	foreignKey: 'listId'
+});
+
+User.belongsToMany(User, {
+	through: 'UserFollowing',
+	as: 'followers',
+	foreignKey: 'userId'
+});
+
+User.belongsToMany(User, {
+	through: 'UserFollowing',
+	as: 'users',
+	foreignKey: 'followerId'
+});
 
 
-
-
-sequelize.sync({ force: process.env.SEQUELIZE_SYNC})
+sequelize.sync({ force: (process.env.SEQUELIZE_SYNC == 1? true: false)})
   .then(() => {
     console.log(`MySQL Database & tables created!`)
   })
 
 module.exports = {
   User,
-  List
+  List,
+  Feed,
+  sequelize: Sequelize
 }
