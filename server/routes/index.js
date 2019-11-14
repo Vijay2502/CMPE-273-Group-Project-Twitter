@@ -14,6 +14,7 @@ const mongoConnection = require("../repository/mongo")
 // router.post('/img-upload', auth.userAuth, utils.uploadImage);
 
 router.post('/tweet/create', Tweet.createTweet);
+router.get('/tweet/byOwner/:ownerId', Tweet.getTweetsByOwnerId);
 
 // router.post('/user/login', User.login);
 

@@ -16,3 +16,19 @@ module.exports.createTweet = function (request, response) {
         });
     });
 }
+
+module.exports.getTweetsByOwnerId = function (request, response) {
+    if (!(request.params && request.params.ownerId)) {
+        return response.status(400).send("INVALID REQUEST");
+    }
+    tweetService.getByOwner(request.params.ownerId, function (err, data) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: data
+        });
+
+    });
+}
