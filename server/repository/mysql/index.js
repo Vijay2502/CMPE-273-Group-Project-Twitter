@@ -91,12 +91,12 @@ List.belongsToMany(User, {
 User.belongsToMany(User, {
 	through: 'UserFollowing',
 	as: 'followers',
-	foreignKey: 'userId'
+	foreignKey: 'followeeId'
 });
 
 User.belongsToMany(User, {
 	through: 'UserFollowing',
-	as: 'users',
+	as: 'followees',
 	foreignKey: 'followerId'
 });
 

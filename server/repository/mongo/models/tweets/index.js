@@ -1,6 +1,11 @@
 const Schema = require('mongoose').Schema;
 const replySchema = require('../replies');
+
 const TweetSchema = new Schema({
+	tweetId: {
+		type: String,
+		required: true
+	},
 	data: {
 		type: Schema.Types.Mixed,
 		required: true
