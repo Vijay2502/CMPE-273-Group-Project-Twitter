@@ -1,9 +1,15 @@
 import React, { Component } from "react";
-import { Route } from "react-router-dom";
-
+import { Route, Switch } from "react-router-dom";
+import Lists from './list';
 class Main extends Component {
   render() {
-    return <div>test</div>;
+    return (
+      <div>
+        <Switch>
+          <Route exact path="/list" component={Lists} />
+        </Switch>
+      </div>
+    );
   }
 }
 //Export The Main Component
