@@ -5,17 +5,18 @@ import Lists from "./list";
 import Profile from "./Profile/profile";
 import HomeTweetList from '../components/HomeTweetList/list'
 import HomePage from "./HomePage";
-import Login from "./Account/Login";
+import NavPage from "./NavPage/NavPage";
 import Login from "./Account/Login";
 
 class Main extends Component {
   render() {
     return (
       <div>
-            <Route path="/" component={HomePage} />
+          <Route exact path="/" component={NavPage} />
+          <Route exact path="/home" component={HomePage} />
           <Route path="/profile" component={Profile} />
-            <Route exact path="/list" component={Lists} />
-            <Route exact path="/tweetlist" component={HomeTweetList} />
+          <Route exact path="/list" component={Lists} />
+          <Route exact path="/tweetlist" component={HomeTweetList} />
           <Route exact path="/login" component={Login} />
         {/*<Switch>*/}
         {/*  <Route path="/" component={Sidebar} />*/}
