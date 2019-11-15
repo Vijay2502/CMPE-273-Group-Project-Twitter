@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { PullToRefresh, PullDownContent, ReleaseContent, RefreshContent } from "react-js-pull-to-refresh";
 import '../css/list.css'
 import { TweetBody } from './listview.js'
-import Search from './search.js'
+import Sidebar from './Sidebar/sidebar'
+import HomeTweetList from './HomeTweetList/list'
+import MyFirstGrid from './MyFirstGrid'
 
-class List extends Component {
+class HomePage extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -54,42 +56,10 @@ class List extends Component {
 
   render() {
     return (
-      <PullToRefresh
-        pullDownContent={<PullDownContent />}
-        releaseContent={<ReleaseContent />}
-        refreshContent={<RefreshContent />}
-        pullDownThreshold={2}
-        onRefresh={this.handleRefresh}
-        triggerHeight={50}
-        backgroundColor='black'>
-        <div className="main-body">
-        <div className="tweet-body">
-      <span>List</span>
-    </div>
-          {[...this.state.users].map((user, index) => {
-            let name = `${user.name.first} ${user.name.last}`
-            let handle = `@${user.name.first}${user.name.last}`
-            let image = user.image
-            let tweet = user.tweet
-            console.log(image)
-            return (
-         <TweetBody
-                  key={index}
-                  name={name}
-                  handle={handle}
-                  tweet={tweet}
-                  image={image} />
-              
-            )
-          })}
-          <div>
-           <Search/>
-          </div>
-        </div>
-      </PullToRefresh>
+      <MyFirstGrid/>
     );
   }
 }
 
-export default List;
+export default HomePage;
 
