@@ -141,13 +141,13 @@ class Sidebar extends Component {
           <Modal.Body>
             <form>
               <div class="tweet-container row">
-                <div class="col-sm-1">
-                  <img
-                    src={require("../../images/profile.png")}
-                    height="35"
-                    width="35"
-                  />
-                </div>
+                {/*<div class="col-sm-1">*/}
+                {/*  <img*/}
+                {/*    src={require("../../images/profile.png")}*/}
+                {/*    height="35"*/}
+                {/*    width="35"*/}
+                {/*  />*/}
+                {/*</div>*/}
                 <div class="text-area-container col-sm-11">
                   <textarea
                     class="form-control text-area"

@@ -22,3 +22,21 @@ module.exports.create = function (newTweet, cb) {
         return cb(err);
     });
 }
+
+module.exports.getByOwner = function (ownerId, cb) {
+    repository.Tweet.find({ ownerId: ownerId })
+        .then(function (tweets) {
+            return cb(null, tweets.map(tweet => ({
+                id: tweet.tweetId,
+                likes: tweet.likes,
+                views: tweet.views,
+                replies: tweet.replies,
+                data: tweet.data,
+                hashTags: tweet.hashTags
+            })));
+
+        }, function (err) {
+            return cb(err);
+        });
+}
+
