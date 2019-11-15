@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import Sidebar from "./Sidebar/sidebar";
-import Lists from './list';
+import Lists from "./list";
+import Profile from "./Profile/profile";
 import HomeTweetList from '../components/HomeTweetList/list'
 import HomePage from "./HomePage";
 import Login from "./Account/Login";
@@ -12,6 +13,7 @@ class Main extends Component {
     return (
       <div>
             <Route path="/" component={HomePage} />
+          <Route path="/profile" component={Profile} />
             <Route exact path="/list" component={Lists} />
             <Route exact path="/tweetlist" component={HomeTweetList} />
           <Route exact path="/login" component={Login} />
