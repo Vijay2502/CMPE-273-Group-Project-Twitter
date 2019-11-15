@@ -15,6 +15,8 @@ const mongoConnection = require("../repository/mongo")
 
 router.post('/tweet/create', Tweet.createTweet);
 router.get('/tweet/byOwner/:ownerId', Tweet.getTweetsByOwnerId);
+router.get('/tweet/byId/:tweetId', Tweet.getTweetByTweetId);
+router.put('/tweet/:tweetId/like', Tweet.likeTweet);
 
 // router.post('/user/login', User.login);
 
