@@ -1,7 +1,7 @@
 .main-body {
     display: flex;
     flex-direction: column;
-    background-color: #11171d;
+    background-color: #ffffff;
     min-height: 80rem;
 }
 
@@ -21,13 +21,13 @@
     width: 566px;
     height: 170px;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-    background-color: #15202a;
+    background-color: #ffffff;
     margin-left: 0rem;
     margin-bottom: 0.1rem;
 }
 
 .tweet-body:hover {
-    background-color: #11171d;
+    background-color: #ffffff;
     border: #ffffff;
 }
 
@@ -53,7 +53,7 @@
     font-stretch: normal;
     line-height: normal;
     letter-spacing: -0.6px;
-    color: #ffffff;
+    color: #000000;
 }
 
 .handle {
@@ -68,7 +68,7 @@
     font-stretch: normal;
     line-height: normal;
     letter-spacing: -0.6px;
-    color: #75797d;
+    color: #000000;
 }
 
 .tweet {
@@ -83,7 +83,7 @@
     font-stretch: normal;
     line-height: normal;
     letter-spacing: -0.6px;
-    color: #ffffff;
+    color: #000000;
 }
 
 

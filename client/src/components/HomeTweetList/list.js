@@ -55,8 +55,6 @@ class HomeTweetList extends Component {
     console.log("render HomeTweetList")
     return (
         <div style={{width: 566}}>
-          <h1>Home Tweet List</h1>
-
           <PullToRefresh
               pullDownContent={<PullDownContent />}
               releaseContent={<ReleaseContent />}
@@ -64,11 +62,9 @@ class HomeTweetList extends Component {
               pullDownThreshold={2}
               onRefresh={this.handleRefresh}
               triggerHeight={50}
-              backgroundColor='black'>
+              backgroundColor='white'>
             <div className="main-body">
-              <div className="tweet-body">
-                <span>List</span>
-              </div>
+
 
               {[...this.state.users].map((user, index) => {
                 let name = `${user.name.first} ${user.name.last}`
