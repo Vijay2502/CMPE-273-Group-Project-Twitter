@@ -23,7 +23,7 @@ module.exports.create = function (newTweet, cb) {
     });
 }
 
-module.exports.getByOwner = function (ownerId, cb) {
+module.exports.getByOwnerId = function (ownerId, cb) {
     repository.Tweet.find({ ownerId: ownerId })
         .then(function (tweets) {
             return cb(null, tweets.map(tweet => ({
@@ -40,3 +40,22 @@ module.exports.getByOwner = function (ownerId, cb) {
         });
 }
 
+module.exports.getByTweetId = function (tweetId, cb) {
+    repository.Tweet.findOne({ tweetId: tweetId })
+        .then(function (tweet) {
+            return cb(null, tweet);
+        }, function (err) {
+            return cb(err);
+        });
+}
+
+module.exports.likeTweet = function (tweetId, cb) {
+    repository.Tweet.findOneAndUpdate(
+        { tweetId: tweetId },
+        { $inc: { likes: 1 } }
+    ).then(function (tweet) {
+        return cb(null, "like incremented");
+    }, function (err) {
+        return cb(err);
+    });
+}
