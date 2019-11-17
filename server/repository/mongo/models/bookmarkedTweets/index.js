@@ -2,10 +2,8 @@ const Schema = require('mongoose').Schema;
 const tweetSchema = require('../tweets');
 
 const BookMarkedTweetSchema = new Schema({
-    tweets: {
-        userId: Number,
-        tweets: [tweetSchema]
-    }
+    ownerId: Number,
+    bookMarkedTweets: [tweetSchema]
 }, {
     timestamps: true
 });

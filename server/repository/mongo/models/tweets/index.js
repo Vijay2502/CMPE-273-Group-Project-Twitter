@@ -12,14 +12,12 @@ const TweetSchema = new Schema({
 	},
 	ownerId: {
 		type: Number,
-		required: true,
-		unique: true
+		required: true
 	},
 	retweet: {
 		isRetweet: Boolean,
 		tweetId: {
-			type: Schema.Types.ObjectId,
-			ref: 'tweets'
+			type: String
 		}
 	},
 	likes: {

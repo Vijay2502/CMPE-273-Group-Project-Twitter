@@ -6,10 +6,8 @@ module.exports.createTweet = function (request, response) {
         && request.body.hashTags)) {
         return response.status(400).send("INVALID REQUEST");
     }
-
     return tweetService.create(request.body, function (err, data) {
         if (err) return response.status(err.code ? err.code : 500).send(err);
-
         return response.send({
             status: "ok",
             data: data
@@ -18,10 +16,18 @@ module.exports.createTweet = function (request, response) {
 }
 
 module.exports.getTweetsByOwnerId = function (request, response) {
+
     if (!(request.params && request.params.ownerId)) {
         return response.status(400).send("INVALID REQUEST");
     }
-    tweetService.getByOwnerId(request.params.ownerId, function (err, data) {
+    var pagination = {
+        skip: 0,
+        limit: 2
+    };
+    if (request.query.skip) pagination.skip = Number(request.query.skip);
+    if (request.query.limit) pagination.limit = Number(request.query.limit);
+
+    tweetService.getByOwnerId(request.params.ownerId, pagination, function (err, data) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
         }
@@ -54,6 +60,95 @@ module.exports.likeTweet = function (request, response) {
         return response.status(400).send("INVALID REQUEST");
     }
     tweetService.likeTweet(request.params.tweetId, function (err, data) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: data
+        });
+
+    });
+}
+
+module.exports.viewTweet = function (request, response) {
+    if (!(request.params && request.params.tweetId)) {
+        return response.status(400).send("INVALID REQUEST");
+    }
+    tweetService.viewTweet(request.params.tweetId, function (err, data) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: data
+        });
+
+    });
+}
+
+module.exports.retweet = function (request, response) {
+    console.log('helo');
+    if (!(request.query && request.query.tweetId && request.query.userId)) {
+        return response.status(400).send("INVALID REQUEST");
+    }
+    tweetService.retweet(request.query, function (err, data) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: data
+        });
+
+    });
+}
+
+// module.exports.reply = function (request, response) {
+//     console.log('helo');
+//     if (!(request.query && request.query.tweetId && request.query.userId)) {
+//         return response.status(400).send("INVALID REQUEST");
+//     }
+//     tweetService.retweet(request.query, function (err, data) {
+//         if (err) {
+//             return response.status(err.code ? err.code : 500).send(err);
+//         }
+//         return response.send({
+//             status: "ok",
+//             data: data
+//         });
+
+//     });
+// }
+
+module.exports.getTweetsBySubscriber = function (request, response) {
+    // if (!(request.params && request.params.userId)) {
+    //     return response.status(400).send("INVALID REQUEST");
+    // }
+    var pagination = {
+        skip: 0,
+        limit: 2
+    };
+    if (request.query.skip) pagination.skip = Number(request.query.skip);
+    if (request.query.limit) pagination.limit = Number(request.query.limit);
+
+    tweetService.getTweetsBySubscriber(request, pagination, function (err, data) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: data
+        });
+
+    });
+}
+
+module.exports.deleteTweet = function (request, response) {
+    if (!(request.params && request.params.tweetId)) {
+        return response.status(400).send("INVALID REQUEST");
+    }
+    tweetService.deleteTweet(request.params.tweetId, function (err, data) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
         }
