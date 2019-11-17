@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { PullToRefresh, PullDownContent, ReleaseContent, RefreshContent } from "react-js-pull-to-refresh";
+import logo from '../../images/login_twitter_logo.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Form, Button, Col, Pagination} from "react-bootstrap";
 
@@ -10,8 +10,12 @@ class SignUp extends Component {
 
     render() {
         return (
-            <div>
-                <h1>SignUp</h1>
+            <div style={styles.container}>
+                <div >
+                    <img style={styles.logo} src={logo} alt="Quora"/>
+                </div>
+
+                <h3 style={styles.message}>SignUp</h3>
                 <Form>
                     <Form.Group controlId="formGridAddress1">
                         <Form.Label>Name</Form.Label>
@@ -42,11 +46,14 @@ class SignUp extends Component {
 
                         <Form.Group as={Col} controlId="formGridZip">
                             <Form.Label>Year</Form.Label>
-                            <Form.Control />
+                            <Form.Control as="select">
+                                <option>Choose...</option>
+                                <option>...</option>
+                            </Form.Control>
                         </Form.Group>
                     </Form.Row>
 
-                    <Button variant="primary" type="submit">
+                    <Button style={styles.signUpButton} variant="primary" type="submit">
                         Sign up
                     </Button>
                 </Form>
@@ -57,24 +64,24 @@ class SignUp extends Component {
 
 const styles = {
     container: {
-        flex: 1,
         display: "flex",
+        alignItems: "center",
         flexDirection: "column",
     },
-    channelList: {
-        display: "flex",
-        flex: 1,
-        flexDirection: "column",
+    message: {
+        fontWeight: "bold",
+        paddingTop: "2rem"
     },
-    chat: {
-        display: "flex",
-        flex: 1,
-        flexDirection: "column",
+    logo: {
+        paddingTop: "10px",
+        width: "50px",
     },
-    settings: {
-        display: "flex",
-        flex: 1,
-        flexDirection: "column",
+    email: {
+        width: "30rem",
+    },
+    signUpButton: {
+        width: "30rem",
+        backgroundColor: "#2F99EA"
     },
 };
 
