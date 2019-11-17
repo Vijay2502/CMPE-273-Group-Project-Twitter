@@ -72,7 +72,8 @@ const styles = {
         display: "flex",
         flexDirection: "column",
         width: "5",
-        marginLeft: "auto"
+        marginLeft: "auto",
+        backgroundColor: "#2F99EA"
     },
 
 };
