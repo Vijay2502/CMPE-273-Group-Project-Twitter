@@ -60,37 +60,7 @@ module.exports.getById = function (userId, cb) {
     repository.User.findOne({
         where: {
             id: userId
-        },
-        include: [
-            {
-                model: repository.User,
-                as: 'followers',
-                attributes:['firstName','lastName','username','email'],
-                through: {
-                    attributes: []
-                },
-                required: false
-            },
-            {
-                model: repository.User,
-                as: 'followees',
-                attributes:['firstName','lastName','username','email'],
-                through: {
-                    attributes: []
-                },
-                required: false
-            },
-            {
-                model: repository.List,
-                as: 'listsAsMember',
-                required: false
-            },
-            {
-                model: repository.List,
-                as: 'listsAsSubscriber',
-                required: false
-            }
-        ]
+        }
     }).then(function (user) {
 
         if (user) {
@@ -100,10 +70,6 @@ module.exports.getById = function (userId, cb) {
                 lastName: user.lastName,
                 username: user.username,
                 email: user.username,
-                followers: user.followers,
-                followees: user.followees,
-                listsAsMember: user.listsAsMember,
-                listsAsSubscriber: user.listsAsSubscriber,
                 data: user.data ? user.data : null
             });
         }

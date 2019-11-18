@@ -3,6 +3,7 @@ const router = express.Router();
 const Tweet = require('../routes/tweets');
 const BookMarkedTweet = require('../routes/bookmarked-tweets');
 const User = require('./users');
+const User_producer = require('../kafka-producer').User;
 var passport = require('passport');
 var auth = {
     userAuth: passport.authenticate('jwt', {session: false})
@@ -13,7 +14,7 @@ router.use(passport.initialize());
 //USER APIS
 router.post('/user/register', User.register);
 router.post('/user/login', User.login);
-router.get('/user/get/:id', User.get);
+router.get('/user/get/:id', User_producer.get);
 router.put('/user/:id/follow', User.follow);
 router.put('/user/:id/unfollow', User.unfollow);
 router.get('/user/:id/followers', User.getFollowers);
