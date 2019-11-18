@@ -1,6 +1,8 @@
 var connection =  new require('../kafka/connection');
 const routes = require('./routes');
-function handleTopicRequest(topic_name,fname){
+
+
+function handleTopicRequest(topic_name){
     var consumer = connection.getConsumer(topic_name);
     var producer = connection.getProducer();
     console.log('server is running ');
@@ -13,7 +15,7 @@ function handleTopicRequest(topic_name,fname){
             return;
         }
         
-        fname[data.data.task](data.data.payload, function(err,res){
+        routes[topic_name][data.data.task](data.data.payload, function(err,res){
             console.log(res);
             var payloads = [
                 { topic: data.replyTo,
@@ -36,3 +38,5 @@ function handleTopicRequest(topic_name,fname){
         
     });
 }
+
+handleTopicRequest('user');
