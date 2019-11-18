@@ -21,7 +21,11 @@
                 "MYSQLDB_NAME":"twitter",
                 "MYSQLDB_USER":"admin",
                 "MYSQLDB_PASSWORD":"welcome123",
-                "SEQUELIZE_SYNC":1,
+                "SEQUELIZE_SYNC":0,
+                "TOKEN_BEARER":"bearer",
+                "JWT_SECRET":"CMPE273GROUP4AASVVTWITTERSECRET",
+                "JWT_EXPIRYTIME": 3600000,
+                "DEFAULT_PAGE_LIMIT":10
             }
         }
     ]
