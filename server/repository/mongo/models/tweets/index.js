@@ -21,12 +21,12 @@ const TweetSchema = new Schema({
 		}
 	},
 	likes: {
-		type: Schema.Types.Mixed,
-		required: true
+		count: Number,
+		userId: [String]
 	},
 	views: {
-		type: Schema.Types.Mixed,
-		required: true
+		count: Number,
+		userId: [String]
 	},
 	replies: [
 		replySchema

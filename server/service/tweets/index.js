@@ -9,7 +9,7 @@ module.exports.create = function (newTweet, cb) {
         data: newTweet.data,
         ownerId: newTweet.ownerId,
         retweet: newTweet.retweet,
-        likes: 0,
+        likes: { count: 0, userId: [] },
         views: 0,
         replies: [],
         hashTags: newTweet.hashTags
@@ -52,27 +52,51 @@ module.exports.getByTweetId = function (tweetId, cb) {
 }
 
 
-module.exports.likeTweet = function (tweetId, cb) {
-    repository.Tweet.findOneAndUpdate(
-        { tweetId: tweetId },
-        { $inc: { likes: 1 } }
-    ).then(function (tweet) {
-        return cb(null, "like incremented");
-    }, function (err) {
-        return cb(err);
-    });
+module.exports.likeTweet = function (data, cb) {
+    let userId_arr = [];
+    repository.Tweet.findOne({ tweetId: data.tweetId })
+        .then(
+            function (result) {
+                userId_arr = result.likes.userId;
+                if (userId_arr.indexOf(data.userId) == -1) {
+                    repository.Tweet.findOneAndUpdate(
+                        { tweetId: data.tweetId },
+                        { $inc: { "likes.count": 1 }, $push: { "likes.userId": data.userId } }
+                    ).then(function (tweet) {
+                        return cb(null, "like incremented");
+                    });
+                }
+                else {
+                    return cb(null, "user already liked this tweet ");
+                }
+            }, function (err) {
+                return cb(err);
+            }
+        );
 }
 
 
 module.exports.viewTweet = function (tweetId, cb) {
-    repository.Tweet.findOneAndUpdate(
-        { tweetId: tweetId },
-        { $inc: { views: 1 } }
-    ).then(function (tweet) {
-        return cb(null, "views incremented");
-    }, function (err) {
-        return cb(err);
-    });
+    let userId_arr = [];
+    repository.Tweet.findOne({ tweetId: data.tweetId })
+        .then(
+            function (result) {
+                userId_arr = result.views.userId;
+                if (userId_arr.indexOf(data.userId) == -1) {
+                    repository.Tweet.findOneAndUpdate(
+                        { tweetId: data.tweetId },
+                        { $inc: { "views.count": 1 }, $push: { "views.userId": data.userId } }
+                    ).then(function (tweet) {
+                        return cb(null, "views incremented");
+                    });
+                }
+                else {
+                    return cb(null, "user already viewed this tweet ");
+                }
+            }, function (err) {
+                return cb(err);
+            }
+        );
 }
 
 
@@ -162,6 +186,40 @@ module.exports.deleteTweet = function (tweetId, cb) {
     )
         .then(function (tweet) {
             return cb(null, tweet);
+        }, function (err) {
+            return cb(err);
+        });
+}
+
+module.exports.getByList = function (listId, pagination, cb) {
+    repository.TweetsByList.find({ listId: listId }, null, pagination)
+        .then(function (tweets) {
+            return cb(null, tweets.map(tweet => ({
+                id: tweet.tweetId,
+                likes: tweet.likes,
+                views: tweet.views,
+                replies: tweet.replies,
+                data: tweet.data,
+                hashTags: tweet.hashTags
+            })));
+
+        }, function (err) {
+            return cb(err);
+        });
+}
+
+module.exports.getByHashtag = function (hashtag, pagination, cb) {
+    repository.TweetsByHashtag.find({ "hashTags": { $regex: ".*" + searchKey + ".*", $options: 'i' } }, null, pagination)
+        .then(function (tweets) {
+            return cb(null, tweets.map(tweet => ({
+                id: tweet.tweetId,
+                likes: tweet.likes,
+                views: tweet.views,
+                replies: tweet.replies,
+                data: tweet.data,
+                hashTags: tweet.hashTags
+            })));
+
         }, function (err) {
             return cb(err);
         });

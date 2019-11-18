@@ -56,10 +56,10 @@ module.exports.getTweetByTweetId = function (request, response) {
 }
 
 module.exports.likeTweet = function (request, response) {
-    if (!(request.params && request.params.tweetId)) {
+    if (!(request.query && request.query.tweetId && request.query.userId)) {
         return response.status(400).send("INVALID REQUEST");
     }
-    tweetService.likeTweet(request.params.tweetId, function (err, data) {
+    tweetService.likeTweet(request.query, function (err, data) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
         }
@@ -149,6 +149,38 @@ module.exports.deleteTweet = function (request, response) {
         return response.status(400).send("INVALID REQUEST");
     }
     tweetService.deleteTweet(request.params.tweetId, function (err, data) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: data
+        });
+
+    });
+}
+
+module.exports.getTweetsByList = function (request, response) {
+    if (!(request.params && request.params.listId)) {
+        return response.status(400).send("INVALID REQUEST");
+    }
+    tweetService.getTweetsByList(request.params.listId, function (err, data) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: data
+        });
+
+    });
+}
+
+module.exports.getByHashtag = function (request, response) {
+    if (!(request.params && request.params.hashtag)) {
+        return response.status(400).send("INVALID REQUEST");
+    }
+    tweetService.getByHashtag(request.params.hashtag, function (err, data) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
         }
