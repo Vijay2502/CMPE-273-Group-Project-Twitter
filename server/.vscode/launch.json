@@ -21,11 +21,18 @@
                 "MYSQLDB_NAME":"twitter",
                 "MYSQLDB_USER":"admin",
                 "MYSQLDB_PASSWORD":"welcome123",
+                // "MYSQLDB_HOST":"localhost",
+                // "MYSQLDB_PORT":3306,
+                // "MYSQLDB_NAME":"twitter",
+                // "MYSQLDB_USER":"root",
+                // "MYSQLDB_PASSWORD":"welcome123",
                 "SEQUELIZE_SYNC":0,
                 "TOKEN_BEARER":"bearer",
                 "JWT_SECRET":"CMPE273GROUP4AASVVTWITTERSECRET",
                 "JWT_EXPIRYTIME": 3600000,
-                "DEFAULT_PAGE_LIMIT":10
+                "DEFAULT_PAGE_LIMIT":10,
+                "REDIS_URL": "localhost",
+                "REDIS_PORT": 6379,
             }
         }
     ]
