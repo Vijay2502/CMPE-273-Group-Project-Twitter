@@ -1,4 +1,4 @@
-const { request_delegator } = require('../../kafka/client');
+const request_delegator = require('../kafka/client').request_delegator;
 const config = require('./config');
 
 const producer = {};
