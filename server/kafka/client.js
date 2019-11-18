@@ -15,4 +15,27 @@ function make_request(queue_name, msg_payload, callback){
 	});
 }
 
-exports.make_request = make_request;
+function request_delegator(topic, task){
+    return (function(request, response){
+        return make_request(topic,{
+            task,
+            payload:{
+                params:request.params,
+                body:request.body,
+                query:request.query
+            }
+        }, function(err, data){
+            if(err) return response.status(err.code ? err.code : 500).send(err);
+
+            return response.send({
+                status: "ok",
+                data: data
+            });
+        });
+    })
+}
+
+exports = {
+	make_request,
+	request_delegator
+}
