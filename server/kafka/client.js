@@ -6,8 +6,10 @@ function make_request(queue_name, msg_payload, callback){
     console.log(msg_payload);
 	rpc.makeRequest(queue_name, msg_payload, function(err, response){
 
-		if(err)
-			console.error(err);
+		if(err){
+            console.error(err);
+            callback(err);
+         }   
 		else{
 			console.log("response", response);
 			callback(null, response);
@@ -17,6 +19,7 @@ function make_request(queue_name, msg_payload, callback){
 
 function request_delegator(topic, task){
     return (function(request, response){
+		console.log("Making Kafka Request >>>>  Topic: " + topic + "     Task: " + task);
         return make_request(topic,{
             task,
             payload:{
@@ -35,7 +38,7 @@ function request_delegator(topic, task){
     })
 }
 
-exports = {
+module.exports = {
 	make_request,
 	request_delegator
 }

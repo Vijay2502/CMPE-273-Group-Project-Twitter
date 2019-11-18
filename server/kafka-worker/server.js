@@ -7,7 +7,7 @@ function handleTopicRequest(topic_name){
     var producer = connection.getProducer();
     console.log('server is running ');
     consumer.on('message', function (message) {
-        console.log('message received for ' + topic_name +" ", fname);
+        console.log('message received for ' + topic_name );
         console.log(JSON.stringify(message.value));
         try{var data = JSON.parse(message.value);}
         catch(err){
@@ -21,7 +21,8 @@ function handleTopicRequest(topic_name){
                 { topic: data.replyTo,
                     messages:JSON.stringify({
                         correlationId:data.correlationId,
-                        data : res
+                        data : res,
+                        err: err
                     }),
                     partition : 0
                 }
