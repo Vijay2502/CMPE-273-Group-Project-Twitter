@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { PullToRefresh, PullDownContent, ReleaseContent, RefreshContent } from "react-js-pull-to-refresh";
 import '../../css/hometweetlist.css'
 import { TweetBody } from './listview.js'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faShareSquare, faRetweet} from "@fortawesome/free-solid-svg-icons";
+import {faComment, faHeart} from "@fortawesome/free-regular-svg-icons";
 // import Search from './search.js'
 
 class HomeTweetList extends Component {
@@ -73,21 +76,91 @@ class HomeTweetList extends Component {
                 let tweet = user.tweet
                 console.log(image)
                 return (
-                    <TweetBody
-                        key={index}
-                        name={name}
-                        handle={handle}
-                        tweet={tweet}
-                        image={image} />
+                    <div>
+                      <TweetBody
+                          key={index}
+                          name={name}
+                          handle={handle}
+                          tweet={tweet}
+                          image={image} />
+
+                      <div style={styles.container}>
+                        <button
+                            type="button"
+                            className="list-group-item list-group-item-action borderless"
+                            style={styles.reply}
+                        >
+                          <FontAwesomeIcon icon={faComment}/>
+                        </button>
+                        <button
+                            type="button"
+                            className="list-gr oup-item list-group-item-action borderless"
+                            style={styles.retweet}
+                        >
+                          <FontAwesomeIcon icon={faRetweet}/>
+                        </button>
+                        <button
+                            type="button"
+                            className="list-group-item list-group-item-action borderless"
+                            style={styles.like}
+                        >
+                          <FontAwesomeIcon icon={faHeart}/>
+                        </button>
+                        <button
+                            type="button"
+                            className="list-gr oup-item list-group-item-action borderless"
+                            style={styles.share}
+                        >
+                          <FontAwesomeIcon icon={faShareSquare}/>
+                        </button>
+                      </div>
+
+                    </div>
+
                 )
               })}
             </div>
           </PullToRefresh>
         </div>
-
     );
   }
 }
+
+const styles = {
+  container: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  reply: {
+    //alignItems: "left",
+  },
+  retweet: {
+    //alignItems: "center",
+  },
+  like: {
+    //alignItems: "center",
+  },
+  share: {
+    //alignItems: "right",
+  },
+
+  message: {
+    fontWeight: "bold",
+    paddingTop: "2rem"
+  },
+  logo: {
+    paddingTop: "10px",
+    width: "50px",
+  },
+  email: {
+    width: "30rem",
+  },
+  signUpButton: {
+    width: "30rem",
+    backgroundColor: "#2F99EA"
+  },
+};
 
 export default HomeTweetList;
 
