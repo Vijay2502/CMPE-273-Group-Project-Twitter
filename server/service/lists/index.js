@@ -1,19 +1,30 @@
 const repository = require('../../repository/mysql');
 
-module.exports.create = function (userId, newList, cb) {
+module.exports.create = function (newList, cb) {
 
-            return repository.List.create({
-                name: newList.name,
-                description: newList.description,
-                userId: userId,
-                data: newList.data ? newList.data : null
-            }).then(function (list) {
+    return repository.List.create({
+        name: newList.name,
+        description: newList.description,
+        userId: newList.ownerId,
+        data: newList.data ? newList.data : null
+    }).then(function (list) {
 
-                return cb(null, { list });
+        if (list) {
+            return list.addMember(ownerId)
+                .then(function (data) {
+                    return cb(null, { list });
+                }, function (err) {
+                    return cb(err);
+                });
+        }
+        return cb({
+            code: 500,
+            message: "LIST COULD NOT BE CREATED"
+        });
 
-            }, function (err) {
-                return cb(err);
-            });
+    }, function (err) {
+        return cb(err);
+    });
 
 }
 
@@ -26,11 +37,13 @@ module.exports.getById = function (listId, cb) {
 
         if (list) {
             return cb(null, {
-                id: list.id,
-                name: list.name,
-                description: list.description,
-                ownerId: list.userId,
-                data: list.data ? list.data : null
+                list: {
+                    id: list.id,
+                    name: list.name,
+                    description: list.description,
+                    ownerId: list.userId,
+                    data: list.data ? list.data : null
+                }
             });
         }
         return cb({
@@ -43,10 +56,11 @@ module.exports.getById = function (listId, cb) {
     });
 }
 
-module.exports.getByName = function (name, cb) {
+module.exports.getByName = function (name, userId, cb) {
     repository.List.findOne({
         where: {
-            name
+            name,
+            userId
         }
     }).then(function (list) {
         if (list) {
@@ -67,52 +81,52 @@ module.exports.getByName = function (name, cb) {
     });
 }
 
-module.exports.subscribe = function(listId, subscriberId, cb){
+module.exports.subscribe = function (listId, subscriberId, cb) {
     return repository.List.findOne({
-        where:{
+        where: {
             id: listId
         }
-    }).then(function(list){
-        if(list){
+    }).then(function (list) {
+        if (list) {
             return list.addSubscriber(subscriberId)
-            .then(function(data){
-                return cb(null, {
-                    message:"SUCCESS"
+                .then(function (data) {
+                    return cb(null, {
+                        message: "SUCCESS"
+                    });
+                }, function (err) {
+                    return cb(err);
                 });
-            }, function(err){
-                return cb(err);
-            });
         }
         return cb({
             code: 404,
             message: "LIST NOT FOUND"
         });
-    }, function(err){
+    }, function (err) {
         return cb(err);
     })
 }
 
-module.exports.unsubscribe = function(listId, subscriberId, cb){
+module.exports.unsubscribe = function (listId, subscriberId, cb) {
     return repository.List.findOne({
-        where:{
+        where: {
             id: listId
         }
-    }).then(function(list){
-        if(list){
+    }).then(function (list) {
+        if (list) {
             return list.removeSubscriber(subscriberId)
-            .then(function(data){
-                return cb(null, {
-                    message:"SUCCESS"
+                .then(function (data) {
+                    return cb(null, {
+                        message: "SUCCESS"
+                    });
+                }, function (err) {
+                    return cb(err);
                 });
-            }, function(err){
-                return cb(err);
-            });
         }
         return cb({
             code: 404,
             message: "LIST NOT FOUND"
         });
-    }, function(err){
+    }, function (err) {
         return cb(err);
     })
 }
@@ -142,12 +156,12 @@ module.exports.getSubscribers = function (listId, limit, offset, cb) {
                     return cb(null, {
                         id: list.id,
                         count,
-                        subscribers:subscribers.map(s => ({
-                            id:s.id,
-                            firstName:s.firstName,
-                            lastName:s.lastName,
-                            username:s.username,
-                            email:s.email,
+                        subscribers: subscribers.map(s => ({
+                            id: s.id,
+                            firstName: s.firstName,
+                            lastName: s.lastName,
+                            username: s.username,
+                            email: s.email,
                             createdAt: s.ListSubscription.createdAt
                         })),
                         nextOffset: (offset + limit) < count ? (offset + limit) : 0
@@ -168,52 +182,52 @@ module.exports.getSubscribers = function (listId, limit, offset, cb) {
     })
 }
 
-module.exports.addMember = function(listId, memberId, cb){
+module.exports.addMember = function (listId, memberId, cb) {
     return repository.List.findOne({
-        where:{
+        where: {
             id: listId
         }
-    }).then(function(list){
-        if(list){
+    }).then(function (list) {
+        if (list) {
             return list.addMember(memberId)
-            .then(function(data){
-                return cb(null, {
-                    message:"SUCCESS"
+                .then(function (data) {
+                    return cb(null, {
+                        message: "SUCCESS"
+                    });
+                }, function (err) {
+                    return cb(err);
                 });
-            }, function(err){
-                return cb(err);
-            });
         }
         return cb({
             code: 404,
             message: "LIST NOT FOUND"
         });
-    }, function(err){
+    }, function (err) {
         return cb(err);
     })
 }
 
-module.exports.removeMember = function(listId, memberId, cb){
+module.exports.removeMember = function (listId, memberId, cb) {
     return repository.List.findOne({
-        where:{
+        where: {
             id: listId
         }
-    }).then(function(list){
-        if(list){
+    }).then(function (list) {
+        if (list) {
             return list.removeMember(memberId)
-            .then(function(data){
-                return cb(null, {
-                    message:"SUCCESS"
+                .then(function (data) {
+                    return cb(null, {
+                        message: "SUCCESS"
+                    });
+                }, function (err) {
+                    return cb(err);
                 });
-            }, function(err){
-                return cb(err);
-            });
         }
         return cb({
             code: 404,
             message: "LIST NOT FOUND"
         });
-    }, function(err){
+    }, function (err) {
         return cb(err);
     })
 }
@@ -243,12 +257,12 @@ module.exports.getMembers = function (listId, limit, offset, cb) {
                     return cb(null, {
                         id: list.id,
                         count,
-                        members:members.map(m => ({
-                            id:m.id,
-                            firstName:m.firstName,
-                            lastName:m.lastName,
-                            username:m.username,
-                            email:m.email,
+                        members: members.map(m => ({
+                            id: m.id,
+                            firstName: m.firstName,
+                            lastName: m.lastName,
+                            username: m.username,
+                            email: m.email,
                             createdAt: m.ListSubscription.createdAt
                         })),
                         nextOffset: (offset + limit) < count ? (offset + limit) : 0
