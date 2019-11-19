@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const repository = require('../../repository/mysql');
+const cache = require('../../cache');
 
 module.exports.create = function (newUser, cb) {
     return bcrypt.genSalt(10, (err, salt) => {
@@ -57,6 +58,50 @@ module.exports.verifyAndAssignToken = function (credentials, user, cb) {
 
 
 module.exports.getById = function (userId, cb) {
+
+    cache.get('user-getById-'+userId, function(err, user){
+        if(user){
+            return cb(null, JSON.parse(user));
+        } else {
+            repository.User.findOne({
+                where: {
+                    id: userId
+                }
+            }).then(function (user) {
+        
+                if (user) {
+                    var userDTO = {
+                        id: user.id,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        username: user.username,
+                        email: user.username,
+                        data: user.data ? user.data : null
+                    };
+
+                    cache.set('user-getById-'+userId, JSON.stringify(userDTO), function(err){
+                        if(err){
+                            console.log("Write to Cache Failed >>>> err: " + JSON.stringify(err, null, 4));
+                        } else {
+                            cache.expire('user-getById-'+userId, process.env.CACHE_EXPIRY_TIME);
+                        }
+
+                    })
+
+                    return cb(null, userDTO);
+                }
+                return cb({
+                    code: 404,
+                    message: "USER NOT FOUND"
+                });
+        
+            }, function (err) {
+                return cb(err);
+            });
+        }
+    })
+
+
     repository.User.findOne({
         where: {
             id: userId
