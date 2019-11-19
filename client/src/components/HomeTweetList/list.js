@@ -143,23 +143,7 @@ const styles = {
   },
   share: {
     //alignItems: "right",
-  },
-
-  message: {
-    fontWeight: "bold",
-    paddingTop: "2rem"
-  },
-  logo: {
-    paddingTop: "10px",
-    width: "50px",
-  },
-  email: {
-    width: "30rem",
-  },
-  signUpButton: {
-    width: "30rem",
-    backgroundColor: "#2F99EA"
-  },
+  }
 };
 
 export default HomeTweetList;
