@@ -1,4 +1,5 @@
 const repository = require('../../repository/mongo');
+const cache = require('../../cache');
 const uuidv1 = require('uuid/v1');
 
 module.exports.create = function (newTweet, cb) {
@@ -43,12 +44,65 @@ module.exports.getByOwnerId = function (ownerId, pagination, cb) {
 
 
 module.exports.getByTweetId = function (tweetId, cb) {
-    repository.Tweet.findOne({ tweetId: tweetId })
-        .then(function (tweet) {
-            return cb(null, tweet);
-        }, function (err) {
-            return cb(err);
-        });
+
+    cache.get('tweet-getByTweetId-' + tweetId, function (err, tweet) {
+        if (tweet) {
+            return cb(null, JSON.parse(tweet));
+        } else {
+            repository.Tweet.findOne({ tweetId: tweetId })
+                .then(function (tweet) {
+                    if (tweet) {
+                        var tweetDTO = {
+                            id: tweet.tweetId,
+                            likes: tweet.likes,
+                            views: tweet.views,
+                            replies: tweet.replies,
+                            hashTags: tweet.hashTags,
+                            data: tweet.data ? tweet.data : null
+                        };
+
+                        cache.set('tweet-getByTweetId-' + tweetId, JSON.stringify(tweetDTO), function (err) {
+                            if (err) {
+                                console.log("Write to Cache Failed >>>> err: " + JSON.stringify(err, null, 4));
+                            } else {
+                                cache.expire('tweet-getByTweetId-' + tweetId, process.env.CACHE_EXPIRY_TIME);
+                            }
+
+                        })
+
+                        return cb(null, tweetDTO);
+                    }
+                    return cb({
+                        code: 404,
+                        message: "TWEET NOT FOUND"
+                    });
+
+                }, function (err) {
+                    return cb(err);
+                });
+        }
+    })
+    // repository.Tweet.findOne({ tweetId: tweetId })
+    //     .then(function (tweet) {
+    //         if (tweet) {
+    //             return cb(null, {
+    //                 id: tweet.tweetId,
+    //                 likes: tweet.likes,
+    //                 views: tweet.views,
+    //                 replies: tweet.replies,
+    //                 hashTags: tweet.hashTags,
+    //                 data: tweet.data ? tweet.data : null
+    //             });
+    //         }
+    //         return cb({
+    //             code: 404,
+    //             message: "TWEET NOT FOUND"
+    //         });
+
+    //     }, function (err) {
+    //         return cb(err);
+    //     });
+
 }
 
 

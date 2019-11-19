@@ -43,7 +43,7 @@ module.exports.getTweetByTweetId = function (request, response) {
     if (!(request.params && request.params.tweetId)) {
         return response.status(400).send("INVALID REQUEST");
     }
-    return tweetService.getByTweetId(request.params.tweetId, function (err, data) {
+    return tweetService.getByTweetId(request.params.tweetId, function (err, res) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
         }
@@ -59,7 +59,7 @@ module.exports.likeTweet = function (request, response) {
     if (!(request.query && request.query.tweetId && request.query.userId)) {
         return response.status(400).send("INVALID REQUEST");
     }
-    return tweetService.likeTweet(request.query, function (err, data) {
+    return tweetService.likeTweet(request.query, function (err, res) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
         }
