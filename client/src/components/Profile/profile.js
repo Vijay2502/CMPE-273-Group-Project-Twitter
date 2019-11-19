@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { connect } from "react-redux";
+import { fetchLogin } from "../../actions/userActions"
 import "./profile.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,6 +9,17 @@ import {
   faBirthdayCake,
   faCalendarAlt
 } from "@fortawesome/free-solid-svg-icons";
+////////////////////// REDUX CODE //////////////////////
+// function mapStateToProps(store) {
+//   return {
+//     profile_image: store.login.profile_image
+//   };
+// }
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     getResProfile: data => dispatch(getResProfile(data))
+// }
+
 class profile extends Component {
   constructor(props) {
     super(props);
@@ -21,13 +34,13 @@ class profile extends Component {
     this.setState({ editProfile: true });
   };
   componentDidMount() {
-    // User code to go here
+    ///////////// USER CODE TO GO HERE ////////////////////
     // const email = localStorage.getItem("email_id");
     // const data = {
     // email_id: email
     // };
     // console.log("data    " + JSON.stringify(data));
-    // this.props.getProfile(data);
+    // this.props.getProfile(data); 
   }
   cancelEdit = () => {
     this.setState({ editProfile: false });
@@ -223,3 +236,5 @@ class profile extends Component {
 }
 
 export default profile;
+/////////////////////// CALL FOR REDUX ACTION ///////////////////
+// export default connect(mapStateToProps,mapDispatchToProps)(profile);
