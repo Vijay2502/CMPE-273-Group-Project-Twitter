@@ -14,6 +14,7 @@
             "program": "${workspaceFolder}/server.js",
             "console": "integratedTerminal",
             "env": {
+                "TWITTER_API_PATH":"/api/v1",
                 "PORT":8080,
                 "MONGO_URL":"mongodb+srv://admin:welcome123@twitter-ul0jl.mongodb.net/test?retryWrites=true&w=majority",
                 "MYSQLDB_HOST":"twitter-db.czohryfydiej.us-west-1.rds.amazonaws.com",
@@ -30,9 +31,10 @@
                 "TOKEN_BEARER":"bearer",
                 "JWT_SECRET":"CMPE273GROUP4AASVVTWITTERSECRET",
                 "JWT_EXPIRYTIME": 3600000,
-                "DEFAULT_PAGE_LIMIT":10,
+                "DEFAULT_PAGE_LIMIT": 10,
                 "REDIS_URL": "localhost",
                 "REDIS_PORT": 6379,
+                "CACHE_EXPIRY_TIME": 3600
             }
         }
     ]
