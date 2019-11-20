@@ -1,4 +1,5 @@
 const redis = require('./redis');
+const _ = require('lodash');
 
 module.exports.get = function(key, cb){
     if (_.isArray(key)){
