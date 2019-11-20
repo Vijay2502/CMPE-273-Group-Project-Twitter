@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
-import { PullToRefresh, PullDownContent, ReleaseContent, RefreshContent } from "react-js-pull-to-refresh";
-import {Button, Col, Form} from "react-bootstrap";
+import {Button, Form} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faImage} from "@fortawesome/free-solid-svg-icons";
 
 class Tweet extends Component {
-    constructor(props) {
-        super(props)
-    }
 
     image = () => {
         return(
