@@ -1,5 +1,5 @@
 var rpc = new (require('./kafkarpc'))();
-
+const cache = require('../cache');
 //make request to kafka
 function make_request(queue_name, msg_payload, callback){
     console.log('in make request');
@@ -19,22 +19,44 @@ function make_request(queue_name, msg_payload, callback){
 
 function request_delegator(topic, task){
     return (function(request, response){
-		console.log("Making Kafka Request >>>>  Topic: " + topic + "     Task: " + task);
-        return make_request(topic,{
+        
+        const payload = {
             task,
             payload:{
                 params:request.params,
                 body:request.body,
                 query:request.query
             }
-        }, function(err, data){
-            if(err) return response.status(err.code ? err.code : 500).send(err);
+        };
 
-            return response.send({
-                status: "ok",
-                data: data
-            });
-        });
+        cache.get(`${topic}=>${JSON.stringify(payload)}`, function(err, cacheData){
+            console.log("Found data in Cache >>>>  data: " + cacheData);
+            if(cacheData){
+                return response.send({
+                    status: "ok",
+                    data: JSON.parse(cacheData)
+                });
+            } else {
+                console.log("Making Kafka Request >>>>  Topic: " + topic + "     Task: " + task);
+                return make_request(topic, payload, function(err, data){
+                    if(err) return response.status(err.code ? err.code : 500).send(err);
+
+                    cache.set(`${topic}=>${JSON.stringify(payload)}`, JSON.stringify(data), function(err){
+                        if(err){
+                            console.log("Write to Cache Failed >>>> err: " + JSON.stringify(err, null, 4));
+                        } else {
+                            cache.expire(`${topic}=>${JSON.stringify(payload)}`, process.env.CACHE_EXPIRY_TIME);
+                        }
+                    })
+        
+                    return response.send({
+                        status: "ok",
+                        data: data
+                    });
+                });
+            }
+        })
+        
     })
 }
 
