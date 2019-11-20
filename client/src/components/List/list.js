@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { PullToRefresh, PullDownContent, ReleaseContent, RefreshContent } from "react-js-pull-to-refresh";
-import '../css/list.css'
+import '../../css/list.css'
 import { TweetBody } from './listview.js'
-import Search from './search.js'
 
 class List extends Component {
   constructor(props) {
@@ -10,7 +9,10 @@ class List extends Component {
     this.state = {
       users:
         [
-        ]
+        ],
+      isOwner: true,
+      isSubscriber: false,
+      isMember:false
     }
 
     this.handleRefresh = this.handleRefresh.bind(this)
@@ -49,7 +51,37 @@ class List extends Component {
         console.log(error);
       });
   }
+  showOwnerBox() {
+    this.setState({isOwner: true, isSubscriber: false,isMember:false});
+  }
 
+  showSubscriberBox(){
+    this.setState({isOwner: false, isSubscriber: true,isMember:false});
+  }
+
+showMemberBox() {
+  this.setState({isOwner: false, isSubscriber: false,isMember:true});
+}
+
+  showContent(){
+   let content = this.state.users.map((user, index) => {
+      let name = `${user.name.first} ${user.name.last}`
+      let handle = `@${user.name.first}${user.name.last}`
+      let image = user.image
+      let tweet = user.tweet
+      console.log(image)
+      return (
+   <TweetBody
+            key={index}
+            name={name}
+            handle={handle}
+            tweet={tweet}
+            image={image} />
+        
+      )
+    })
+    return content;
+  }
 
 
   render() {
@@ -63,8 +95,36 @@ class List extends Component {
         triggerHeight={50}
         backgroundColor='black'>
         <div className="main-body">
-        <div className="tweet-body">
-      <span>List</span>
+        <div className="list-body">
+      <div className="box-controller">
+       <div
+         className={"controller " + (this.state.isOwner
+         ? "selected-controller"
+         : "")}
+         onClick={this
+         .showOwnerBox
+         .bind(this)}>
+         Owned
+       </div>
+       <div
+         className={"controller " + (this.state.isSubscriber
+         ? "selected-controller"
+         : "")}
+         onClick={this
+         .showSubscriberBox
+         .bind(this)}>
+         Subsribers
+       </div>
+       <div
+         className={"controller " + (this.state.isMember
+         ? "selected-controller"
+         : "")}
+         onClick={this
+         .showMemberBox
+         .bind(this)}>
+         Members
+       </div>
+     </div>
     </div>
           {[...this.state.users].map((user, index) => {
             let name = `${user.name.first} ${user.name.last}`
@@ -79,12 +139,8 @@ class List extends Component {
                   handle={handle}
                   tweet={tweet}
                   image={image} />
-              
             )
           })}
-          <div>
-           <Search/>
-          </div>
         </div>
       </PullToRefresh>
     );
