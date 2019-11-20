@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from '../../images/login_twitter_logo.png';
+import logo from '../../static/images/login_twitter_logo.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Form, Button, Col} from "react-bootstrap";
 

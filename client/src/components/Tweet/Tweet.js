@@ -7,7 +7,7 @@ class Tweet extends Component {
 
     image = () => {
         return(
-            <img src={require("../../images/profile_pic.png")} alt="Logo" className="picture"/>
+            <img src={require("../../static/images/profile_pic.png")} alt="Logo" className="picture"/>
         )
     }
 

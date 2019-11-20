@@ -50,9 +50,17 @@ class Sidebar extends Component {
   newTweet = e => {
     this.setState({ openTweetModal: true });
   };
+
   cancelTweet = e => {
     this.setState({ openTweetModal: false });
   };
+
+  sendData = (screenName) => {
+    console.log("In sendData")
+    console.log("screenName: " + screenName)
+    this.props.parentCallback(screenName);
+  }
+
   render() {
     return (
       <div class="sidebar-container row">
@@ -65,7 +73,7 @@ class Sidebar extends Component {
             <button
               type="button"
               class="list-group-item list-group-item-action borderless sidebar-button"
-            >
+              onClick={() => this.sendData("Home")}>
               {/* <img src={require("../../images/home.png")} height="35" /> */}
               <FontAwesomeIcon icon={faHome} />
               <span>Home</span>
@@ -103,7 +111,7 @@ class Sidebar extends Component {
             <button
               type="button"
               class="list-group-item list-group-item-action borderless"
-            >
+            onClick={() => this.sendData("Profile")}>
               <FontAwesomeIcon icon={faUserCircle} />
               <span>Profile</span>
             </button>

@@ -1,38 +1,46 @@
-var connection =  new require('../kafka/connection');
+var connection = new require('../kafka/connection');
 const routes = require('./routes');
-function handleTopicRequest(topic_name,fname){
+
+
+function handleTopicRequest(topic_name) {
     var consumer = connection.getConsumer(topic_name);
     var producer = connection.getProducer();
     console.log('server is running ');
     consumer.on('message', function (message) {
-        console.log('message received for ' + topic_name +" ", fname);
+        console.log('message received for ' + topic_name);
         console.log(JSON.stringify(message.value));
-        try{var data = JSON.parse(message.value);}
-        catch(err){
+        try { var data = JSON.parse(message.value); }
+        catch (err) {
             console.log(err);
             return;
         }
-        
-        fname[data.data.task](data.data.payload, function(err,res){
+
+        routes[topic_name][data.data.task](data.data.payload, function (err, res) {
             console.log(res);
             var payloads = [
-                { topic: data.replyTo,
-                    messages:JSON.stringify({
-                        correlationId:data.correlationId,
-                        data : res
+                {
+                    topic: data.replyTo,
+                    messages: JSON.stringify({
+                        correlationId: data.correlationId,
+                        data: res,
+                        err: err
                     }),
-                    partition : 0
+                    partition: 0
                 }
             ];
-            try{
-            console.log(data);
-            producer.send(payloads, function(err, data){
+            try {
                 console.log(data);
-            });}catch(err){
+                producer.send(payloads, function (err, data) {
+                    console.log(data);
+                });
+            } catch (err) {
                 console.log(err);
             }
             return;
         });
-        
+
     });
 }
+
+handleTopicRequest('user');
+handleTopicRequest('tweet');

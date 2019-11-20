@@ -15,7 +15,7 @@ const conversationModel = mongoose.model('conversation', ConversationSchema);
 const tweetsByHashtagModel = mongoose.model('tweetsByHashtag', TweetsByHashtagSchema);
 const tweetsByListModel = mongoose.model('tweetsByList', TweetsByListSchema);
 const tweetsBySubscriptionModel = mongoose.model('tweetsBySubscription', TweetsBySubscriptionSchema);
-const bookmarkedTweetsModel = mongoose.model('tweetsByBookmarked', BookmarkedTweetsSchema);
+const bookmarkedTweetsModel = mongoose.model('tweetsByBookmark', BookmarkedTweetsSchema);
 /*
 TODO
 - tweets by HashTag  --- done

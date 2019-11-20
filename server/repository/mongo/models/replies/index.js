@@ -1,7 +1,6 @@
 const Schema = require('mongoose').Schema;
 
 const ReplySchema = new Schema({
-	
 	message: {
 		type: Schema.Types.Mixed,
 		required: false
@@ -14,7 +13,6 @@ const ReplySchema = new Schema({
 		type: Number,
 		required: true
 	}
-	
 }, {
 	timestamps: true
 });

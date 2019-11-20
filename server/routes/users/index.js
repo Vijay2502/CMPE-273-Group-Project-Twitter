@@ -26,7 +26,7 @@ module.exports.register = function (request, response) {
 
 module.exports.login = function (request, response) {
 
-    if (!(request.body.email && request.body.password)) {
+    if (!(request.body.username && request.body.password)) {
         return response.status(400).send("MISSING FIELDS");
     }
 
@@ -45,7 +45,7 @@ module.exports.login = function (request, response) {
             return response.send({
                 status: "ok",
                 data: {
-                    token: "bearer " + token,
+                    token: process.env.TOKEN_BEARER + " " + token,
                     user
                 }
             });
@@ -65,7 +65,8 @@ module.exports.update = function (request, response) {
 
 }
 
-module.exports.get = function (request, response) {
+module.exports.get = function (request, response) {   
+
     return userService.getById(request.params.id, function (err, user) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
@@ -80,15 +81,85 @@ module.exports.get = function (request, response) {
 }
 
 module.exports.follow = function (request, response) {
-    return userService.followUser(request.params.id, request.body.followeeId, function (err, user) {
+    return userService.followUser(request.params.id, request.body.followeeId, function (err, res) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
         }
         return response.send({
             status: "ok",
-            data: {
-                user
-            }
+            data: res
+        });
+    });
+}
+
+module.exports.unfollow = function (request, response) {
+    return userService.unfollowUser(request.params.id, request.body.followeeId, function (err, res) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: res
+        });
+    });
+}
+
+module.exports.getFollowers = function (request, response) {
+    return userService.getFollowers(request.params.id, request.query.limit, request.query.offset, function (err, res) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: res
+        });
+    });
+}
+
+module.exports.getFollowees = function (request, response) {
+    return userService.getFollowees(request.params.id, request.query.limit, request.query.offset, function (err, res) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: res
+        });
+    });
+}
+
+module.exports.getListsAsMember = function (request, response) {
+    return userService.getListsAsMember(request.params.id, request.query.limit, request.query.offset, function (err, res) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: res
+        });
+    });
+}
+
+module.exports.getListsAsSubscriber = function (request, response) {
+    return userService.getListsAsSubscriber(request.params.id, request.query.limit, request.query.offset, function (err, res) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: res
+        });
+    });
+}
+
+module.exports.getListsAsOwner = function (request, response) {
+    return userService.getListsAsOwner(request.params.id, request.query.limit, request.query.offset, function (err, res) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: res
         });
     });
 }

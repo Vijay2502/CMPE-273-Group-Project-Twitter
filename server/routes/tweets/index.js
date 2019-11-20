@@ -6,28 +6,34 @@ module.exports.createTweet = function (request, response) {
         && request.body.hashTags)) {
         return response.status(400).send("INVALID REQUEST");
     }
-
-    return tweetService.create(request.body, function (err, data) {
+    return tweetService.create(request.body, function (err, res) {
         if (err) return response.status(err.code ? err.code : 500).send(err);
-
         return response.send({
             status: "ok",
-            data: data
+            data: res
         });
     });
 }
 
 module.exports.getTweetsByOwnerId = function (request, response) {
+
     if (!(request.params && request.params.ownerId)) {
         return response.status(400).send("INVALID REQUEST");
     }
-    tweetService.getByOwnerId(request.params.ownerId, function (err, data) {
+    var pagination = {
+        skip: 0,
+        limit: 2
+    };
+    if (request.query.skip) pagination.skip = Number(request.query.skip);
+    if (request.query.limit) pagination.limit = Number(request.query.limit);
+
+    return tweetService.getByOwnerId(request.params.ownerId, pagination, function (err, res) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
         }
         return response.send({
             status: "ok",
-            data: data
+            data: res
         });
 
     });
@@ -37,29 +43,150 @@ module.exports.getTweetByTweetId = function (request, response) {
     if (!(request.params && request.params.tweetId)) {
         return response.status(400).send("INVALID REQUEST");
     }
-    tweetService.getByTweetId(request.params.tweetId, function (err, data) {
+    return tweetService.getByTweetId(request.params.tweetId, function (err, res) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
         }
         return response.send({
             status: "ok",
-            data: data
+            data: res
         });
 
     });
 }
 
 module.exports.likeTweet = function (request, response) {
-    if (!(request.params && request.params.tweetId)) {
+    if (!(request.query && request.query.tweetId && request.query.userId)) {
         return response.status(400).send("INVALID REQUEST");
     }
-    tweetService.likeTweet(request.params.tweetId, function (err, data) {
+    return tweetService.likeTweet(request.query, function (err, res) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
         }
         return response.send({
             status: "ok",
-            data: data
+            data: res
+        });
+
+    });
+}
+
+module.exports.viewTweet = function (request, response) {
+    if (!(request.params && request.params.tweetId)) {
+        return response.status(400).send("INVALID REQUEST");
+    }
+    return tweetService.viewTweet(request.params.tweetId, function (err, data) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: res
+        });
+
+    });
+}
+
+module.exports.retweet = function (request, response) {
+    console.log('helo');
+    if (!(request.query && request.query.tweetId && request.query.userId)) {
+        return response.status(400).send("INVALID REQUEST");
+    }
+    return tweetService.retweet(request.query, function (err, data) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: res
+        });
+
+    });
+}
+
+// module.exports.reply = function (request, response) {
+//     console.log('helo');
+//     if (!(request.query && request.query.tweetId && request.query.userId)) {
+//         return response.status(400).send("INVALID REQUEST");
+//     }
+//     tweetService.retweet(request.query, function (err, data) {
+//         if (err) {
+//             return response.status(err.code ? err.code : 500).send(err);
+//         }
+//         return response.send({
+//             status: "ok",
+//             data: res
+//         });
+
+//     });
+// }
+
+module.exports.getTweetsBySubscriber = function (request, response) {
+    if (!(request.params && request.params.userId)) {
+        return response.status(400).send("INVALID REQUEST");
+    }
+    var pagination = {
+        skip: 0,
+        limit: 2
+    };
+    if (request.query.skip) pagination.skip = Number(request.query.skip);
+    if (request.query.limit) pagination.limit = Number(request.query.limit);
+
+    return tweetService.getTweetsBySubscriber(request, pagination, function (err, data) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: res
+        });
+
+    });
+}
+
+module.exports.deleteTweet = function (request, response) {
+    if (!(request.params && request.params.tweetId)) {
+        return response.status(400).send("INVALID REQUEST");
+    }
+    return tweetService.deleteTweet(request.params.tweetId, function (err, data) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: res
+        });
+
+    });
+}
+
+module.exports.getTweetsByList = function (request, response) {
+    if (!(request.params && request.params.listId)) {
+        return response.status(400).send("INVALID REQUEST");
+    }
+    return tweetService.getTweetsByList(request.params.listId, function (err, data) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: res
+        });
+
+    });
+}
+
+module.exports.getByHashtag = function (request, response) {
+    if (!(request.params && request.params.hashtag)) {
+        return response.status(400).send("INVALID REQUEST");
+    }
+    return tweetService.getByHashtag(request.params.hashtag, function (err, data) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: res
         });
 
     });
