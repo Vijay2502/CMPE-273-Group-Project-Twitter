@@ -3,17 +3,18 @@ import { PullToRefresh, PullDownContent, ReleaseContent, RefreshContent } from "
 import '../../css/hometweetlist.css'
 import { TweetBody } from './listview.js'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faShareSquare, faRetweet} from "@fortawesome/free-solid-svg-icons";
+import {faShareSquare, faRetweet, faImage} from "@fortawesome/free-solid-svg-icons";
 import {faComment, faHeart} from "@fortawesome/free-regular-svg-icons";
+import {Modal} from "react-bootstrap";
+import Tweet from "../Tweet/Tweet";
 // import Search from './search.js'
 
 class HomeTweetList extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      users:
-        [
-        ]
+      users: [],
+      openCommentModal: false
     }
 
     this.handleRefresh = this.handleRefresh.bind(this)
@@ -53,6 +54,13 @@ class HomeTweetList extends Component {
       });
   }
 
+  openCommentModal = e => {
+    this.setState({ openCommentModal: true });
+  };
+
+  closeCommentModal = e => {
+    this.setState({ openCommentModal: false });
+  };
 
   render() {
     console.log("render HomeTweetList")
@@ -66,9 +74,8 @@ class HomeTweetList extends Component {
               onRefresh={this.handleRefresh}
               triggerHeight={50}
               backgroundColor='white'>
+
             <div className="main-body">
-
-
               {[...this.state.users].map((user, index) => {
                 let name = `${user.name.first} ${user.name.last}`
                 let handle = `@${user.name.first}${user.name.last}`
@@ -89,6 +96,7 @@ class HomeTweetList extends Component {
                             type="button"
                             className="list-group-item list-group-item-action borderless"
                             style={styles.reply}
+                            onClick={this.openCommentModal}
                         >
                           <FontAwesomeIcon icon={faComment}/>
                         </button>
@@ -113,10 +121,17 @@ class HomeTweetList extends Component {
                         >
                           <FontAwesomeIcon icon={faShareSquare}/>
                         </button>
+
+                        <Modal
+                            show={this.state.openCommentModal}
+                            onHide={this.closeCommentModal}
+                            animation={false}
+                            style={{width: 666}}
+                        >
+                          <Tweet/>
+                        </Modal>
                       </div>
-
                     </div>
-
                 )
               })}
             </div>
