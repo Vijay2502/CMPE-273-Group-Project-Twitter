@@ -1,6 +1,22 @@
 import React, { Component } from 'react';
 import logo from '../../static/images/login_twitter_logo.png';
+import {signIn} from "../../actions/authActions";
+import {connect} from "react-redux";
 import {Button, Col, Form} from "react-bootstrap";
+
+function mapStateToProps(store) {
+  return {
+    signinSuccess: store.auth.signinSuccess,
+    signinMessage: store.auth.signinMessage,
+    userId: store.auth.userId
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    signIn: (payload) => dispatch(signIn(payload))
+  };
+}
 
 class Login extends Component {
   constructor(props) {
@@ -11,43 +27,21 @@ class Login extends Component {
         ]
     }
 
-    this.handleRefresh = this.handleRefresh.bind(this)
-    this.getUser = this.getUser.bind(this)
   }
 
-  handleRefresh() {
-    //dispatch
-    return new Promise((resolve) => {
-      this.getUser()
-    });
-  }
-  componentWillMount() {
-    this.getUser()
-  }
+  signIn = (e) => {
+    e.preventDefault();
+    //const data = new FormData(e.target);
+    const data = {};
+    for (let i = 0; i < e.target.length; i++) {
+      if (e.target[i].name !== "") {
+        data[e.target[i].name] = e.target[i].value;
+      }
+    }
+    data.userType = "buyer";
 
-  getUser() {
-    fetch('https://randomuser.me/api/')
-      .then(response => {
-        if (response.ok) return response.json();
-        throw new Error('Request failed.');
-      })
-      .then(data => {
-        this.setState({
-          users: [
-            {
-              name: data.results[0].name,
-              image: data.results[0].picture.medium,
-              tweet: data.results[0].email,
-            },
-            ...this.state.users,
-          ]
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
-
+    this.props.signIn({"user": data});
+  };
 
 
   render() {
@@ -57,7 +51,7 @@ class Login extends Component {
               <img style={styles.logo} src={logo} alt="Quora"/>
             </div>
             <h3 style={styles.message}>Log in to Twitter</h3>
-            <Form>
+            <Form onSubmit={this.signIn}>
               <div style={styles.email}>
                 <Form.Group controlId="formGridEmail">
                   <Form.Label>Email</Form.Label>
@@ -121,5 +115,5 @@ const styles = {
   },
 };
 
-export default Login;
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
