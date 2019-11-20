@@ -4,6 +4,7 @@ const Tweet = require('../routes/tweets');
 const BookMarkedTweet = require('../routes/bookmarked-tweets');
 const User = require('./users');
 const User_producer = require('../kafka-producer').User;
+const Tweet_producer = require('../kafka-producer').Tweet;
 const List = require('./lists');
 var passport = require('passport');
 var auth = {
@@ -37,7 +38,7 @@ router.get('/list/:id/members', List.getMembers);
 // TWEET APIS
 router.post('/tweet/create', Tweet.createTweet);
 router.get('/tweet/byOwner/:ownerId', Tweet.getTweetsByOwnerId);
-router.get('/tweet/byId/:tweetId', Tweet.getTweetByTweetId);
+router.get('/tweet/byId/:tweetId', Tweet_producer.getTweetByTweetId);
 router.put('/tweet/like', Tweet.likeTweet);
 router.put('/tweet/:tweetId/view', Tweet.viewTweet);
 router.put('/tweet/bookmark', BookMarkedTweet.bookmarkTweet);
