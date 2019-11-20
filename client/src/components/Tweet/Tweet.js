@@ -2,19 +2,44 @@ import React, { Component } from 'react';
 import {Button, Form} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faImage} from "@fortawesome/free-solid-svg-icons";
+import {connect} from "react-redux";
+import {createTweet} from "../../actions/tweetsActions";
+
+function mapStateToProps(store) {
+    return {
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        createTweet: (payload) => dispatch(createTweet(payload))
+    };
+}
 
 class Tweet extends Component {
-
     image = () => {
         return(
             <img src={require("../../static/images/profile_pic.png")} alt="Logo" className="picture"/>
         )
     }
 
+    createTweet = (e) => {
+        e.preventDefault();
+
+        const data = {};
+        for (let i = 0; i < e.target.length; i++) {
+            if (e.target[i].name !== "") {
+                data[e.target[i].name] = e.target[i].value;
+            }
+        }
+
+        this.props.createTweet({"user": data});
+    };
+
     render() {
         return (
             <div style={{width: 566, padding: 10}}>
-                <Form>
+                <Form onSubmit={this.createTweet}>
                     <div>
                         <Form.Row>
                             <div style={styles.profileImage}> {this.image()}</div>
@@ -74,5 +99,5 @@ const styles = {
 
 };
 
-export default Tweet;
+export default connect(mapStateToProps, mapDispatchToProps)(Tweet);
 

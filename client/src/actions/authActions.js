@@ -1,4 +1,4 @@
-import {SIGN_IN, HOSTNAME} from "../constants/actionTypes";
+import {SIGN_IN, SIGN_UP, HOSTNAME} from "../constants/actionTypes";
 import axios from 'axios';
 
 export function signIn(payload) {
@@ -40,5 +40,5 @@ export const signUpDispatch = (returnData) => {
     localStorage.setItem('token', returnData.user.token);
     localStorage.setItem('_id', returnData.user._id);
     localStorage.setItem('userType', returnData.user.userType);
-    return {type: SIGN_IN, payload: returnData}
+    return {type: SIGN_UP, payload: returnData}
 };
