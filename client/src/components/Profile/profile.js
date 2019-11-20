@@ -106,14 +106,14 @@ class profile extends Component {
         </div>
         <div class="profile-cover-pic row">
           <img
-            src={require("../../images/cover_pic1.png")}
+            src={require("../../static/images/cover_pic1.png")}
             width="100%"
             height="200px"
           />
         </div>
         <div class="profile-pic-btn-container row">
           <div class="profile-profile-pic col-sm-6">
-            <img src={require("../../images/profile_pic.png")} height="120" />
+            <img src={require("../../static/images/profile_pic.png")} height="120" />
           </div>
           <div class="col-sm-6 edit-btn">
             <button
@@ -177,7 +177,7 @@ class profile extends Component {
 
                 <label for="proile-pic-upload">
                   <img
-                    src={require("../../images/cover_pic1.png")}
+                    src={require("../../static/images/cover_pic1.png")}
                     width="100%"
                     height="180px"
                   />
@@ -194,7 +194,7 @@ class profile extends Component {
 
                 <label for="proile-pic-upload">
                   <img
-                    src={require("../../images/profile_pic.png")}
+                    src={require("../../static/images/profile_pic.png")}
                     height="80px"
                   />
                 </label>
