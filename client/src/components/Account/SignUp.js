@@ -2,8 +2,40 @@ import React, { Component } from 'react';
 import logo from '../../static/images/login_twitter_logo.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Form, Button, Col} from "react-bootstrap";
+import {signUp} from "../../actions/authActions";
+import {connect} from "react-redux";
+
+function mapStateToProps(store) {
+    return {
+        signupSuccess: store.auth.signupSuccess,
+        signupMessage: store.auth.signupMessage,
+        userId: store.auth.userId
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        signUp: (payload) => dispatch(signUp(payload))
+    };
+}
 
 class SignUp extends Component {
+    signUp = (e) => {
+        e.preventDefault();
+        const data = {};
+        for (let i = 0; i < e.target.length; i++) {
+            if (e.target[i].name !== "") {
+                data[e.target[i].name] = e.target[i].value;
+            }
+        }
+
+        data.userType = "buyer";
+
+        console.log("signUpBuyer data")
+        console.log(data)
+
+        this.props.signUp({"user": data});
+    };
 
     render() {
         return (
@@ -13,7 +45,7 @@ class SignUp extends Component {
                 </div>
 
                 <h3 style={styles.message}>SignUp</h3>
-                <Form>
+                <Form onSubmit={this.signIn}>
                     <Form.Group controlId="formGridAddress1">
                         <Form.Label>Name</Form.Label>
                         <Form.Control placeholder="What's your name?" />
@@ -82,5 +114,6 @@ const styles = {
     },
 };
 
-export default SignUp;
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+
 
