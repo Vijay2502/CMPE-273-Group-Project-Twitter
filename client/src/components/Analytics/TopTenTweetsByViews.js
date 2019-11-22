@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {connect} from "react-redux";
 import CanvasJSReact from '../../lib/canvasjs.react';
 import {PullDownContent, PullToRefresh, RefreshContent, ReleaseContent} from "react-js-pull-to-refresh";
@@ -8,23 +8,21 @@ var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 var CanvasJS = CanvasJSReact.CanvasJS;
 
 function mapStateToProps(store) {
-    return {
-    }
+    return {}
 }
 
 function mapDispatchToProps(dispatch) {
-    return {
-    };
+    return {};
 }
 
 class TopTenTweetsByViews extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             users: [],
-        }
+        };
 
-        this.handleRefresh = this.handleRefresh.bind(this)
+        this.handleRefresh = this.handleRefresh.bind(this);
         this.getUser = this.getUser.bind(this)
     }
 
@@ -62,10 +60,10 @@ class TopTenTweetsByViews extends Component {
         this.getUser()
     }
 
-    addSymbols(e){
+    addSymbols(e) {
         var suffixes = ["", "K", "M", "B"];
         var order = Math.max(Math.floor(Math.log(e.value) / Math.log(1000)), 0);
-        if(order > suffixes.length - 1)
+        if (order > suffixes.length - 1)
             order = suffixes.length - 1;
         var suffix = suffixes[order];
         return CanvasJS.formatNumber(e.value / Math.pow(1000, order)) + suffix;
@@ -102,7 +100,7 @@ class TopTenTweetsByViews extends Component {
                     {y: 50000000, label: "Tweet 10"},
                 ]
             }]
-        }
+        };
 
         return (
             <div>
@@ -122,11 +120,11 @@ class TopTenTweetsByViews extends Component {
 
                         <div className="main-body">
                             {[...this.state.users].map((user, index) => {
-                                let name = `${user.name.first} ${user.name.last}`
-                                let handle = `@${user.name.first}${user.name.last}`
-                                let image = user.image
-                                let tweet = user.tweet
-                                console.log(image)
+                                let name = `${user.name.first} ${user.name.last}`;
+                                let handle = `@${user.name.first}${user.name.last}`;
+                                let image = user.image;
+                                let tweet = user.tweet;
+                                console.log(image);
                                 return (
                                     <div>
                                         <h5>Tweet 1</h5>

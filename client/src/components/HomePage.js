@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import '../css/list.css'
 import Sidebar from './Sidebar/sidebar'
 import HomeTweetList from './HomeTweetList/list'
@@ -8,7 +8,7 @@ import GridLayout from 'react-grid-layout';
 
 class HomePage extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             currentScreen: "Home"
         }
@@ -16,13 +16,13 @@ class HomePage extends Component {
 
     callbackFunction = (screenName) => {
         this.setState({currentScreen: screenName})
-    }
+    };
 
     render() {
         return (
             <GridLayout className="layout" cols={12} rowHeight={30} width={1200}>
                 <div key="a" data-grid={{x: 0, y: 0, w: 5, h: 2, static: true}}>
-                  <Sidebar parentCallback = {this.callbackFunction}/>
+                    <Sidebar parentCallback={this.callbackFunction}/>
                 </div>
 
 
@@ -35,10 +35,9 @@ class HomePage extends Component {
                     </div>}
 
                     {this.state.currentScreen === "Profile" &&
-                        <Profile/>}
+                    <Profile/>}
 
                 </div>
-
 
 
             </GridLayout>

@@ -19,7 +19,9 @@
     font: normal normal 400 normal 15px / normal system-ui, -apple-system, system-ui, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
     outline: rgb(255, 255, 255) none 0px;
     padding: 10px;
-}/*#moomINPUT_1*/
+}
+
+/*#moomINPUT_1*/
 
 #moomINPUT_1:after {
     color: rgb(255, 255, 255);
@@ -32,7 +34,9 @@
     border: 0px none rgb(255, 255, 255);
     font: normal normal 400 normal 15px / normal system-ui, -apple-system, system-ui, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
     outline: rgb(255, 255, 255) none 0px;
-}/*#moomINPUT_1:after*/
+}
+
+/*#moomINPUT_1:after*/
 
 #moomINPUT_1:before {
     color: rgb(255, 255, 255);
@@ -45,5 +49,7 @@
     border: 0px none rgb(255, 255, 255);
     font: normal normal 400 normal 15px / normal system-ui, -apple-system, system-ui, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
     outline: rgb(255, 255, 255) none 0px;
-}/*#moomINPUT_1:before*/
+}
+
+/*#moomINPUT_1:before*/
 

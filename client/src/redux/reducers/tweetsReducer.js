@@ -1,4 +1,4 @@
-import {CREATE_TWEET} from "../constants/actionTypes";
+import {CREATE_TWEET} from "../../constants/actionTypes";
 
 const initialState = {
     createTweetSuccess: null,
@@ -6,8 +6,8 @@ const initialState = {
 };
 
 export default function tweetReducer(state = initialState, action) {
-    console.log("action.payload")
-    console.log(action.payload)
+    console.log("action.payload");
+    console.log(action.payload);
 
     if (action.type === CREATE_TWEET) {
         return Object.assign({}, state, {

@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import logo from '../../static/images/login_twitter_logo.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Form, Button, Col} from "react-bootstrap";
-import {signUp} from "../../actions/authActions";
+import {Button, Col, Form} from "react-bootstrap";
+import {signUp} from "../../redux/actions/authActions";
 import {connect} from "react-redux";
 
 function mapStateToProps(store) {
@@ -31,8 +31,8 @@ class SignUp extends Component {
 
         data.userType = "buyer";
 
-        console.log("signUpBuyer data")
-        console.log(data)
+        console.log("signUpBuyer data");
+        console.log(data);
 
         this.props.signUp({"user": data});
     };
@@ -40,7 +40,7 @@ class SignUp extends Component {
     render() {
         return (
             <div style={styles.container}>
-                <div >
+                <div>
                     <img style={styles.logo} src={logo} alt="Quora"/>
                 </div>
 
@@ -48,12 +48,12 @@ class SignUp extends Component {
                 <Form onSubmit={this.signIn}>
                     <Form.Group controlId="formGridAddress1">
                         <Form.Label>Name</Form.Label>
-                        <Form.Control placeholder="What's your name?" />
+                        <Form.Control placeholder="What's your name?"/>
                     </Form.Group>
 
                     <Form.Group controlId="formGridEmail">
                         <Form.Label>Email</Form.Label>
-                        <Form.Control type="email" placeholder="Enter email" />
+                        <Form.Control type="email" placeholder="Enter email"/>
                     </Form.Group>
 
                     <Form.Row>

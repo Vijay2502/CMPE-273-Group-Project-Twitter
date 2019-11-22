@@ -6,8 +6,8 @@ const initialState = {
 };
 
 export default function getTop10TweetsByView(state = initialState, action) {
-    console.log("action.payload")
-    console.log(action.payload)
+    console.log("action.payload");
+    console.log(action.payload);
 
     if (action.type === CREATE_TWEET) {
         return Object.assign({}, state, {

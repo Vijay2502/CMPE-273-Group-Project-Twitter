@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import logo from '../../static/images/login_twitter_logo.png';
 import {Switch} from 'react-router';
 import {connect} from "react-redux";
-import {Col, Form, Modal, Button, Nav, Navbar} from "react-bootstrap";
+import {Nav, Navbar} from "react-bootstrap";
 import {Link, NavLink, Route} from "react-router-dom";
 import TopTenTweetsByViews from "./TopTenTweetsByViews"
 import TopTenTweetsByLikes from "./TopTenTweetsByLikes"
@@ -10,20 +10,17 @@ import TopFiveTweetsByRetweets from "./TopFiveTweetsByRetweets"
 import NumberOfTweetsGraph from "./NumberOfTweetsGraph"
 
 function mapStateToProps(store) {
-    return {
-    }
+    return {}
 }
 
 function mapDispatchToProps(dispatch) {
-    return {
-    };
+    return {};
 }
 
 class AnalyticsMain extends Component {
     constructor(props) {
-        super(props)
-        this.state = {
-        }
+        super(props);
+        this.state = {}
     }
 
     render() {
@@ -33,15 +30,17 @@ class AnalyticsMain extends Component {
                     <Navbar>
                         <Navbar.Brand as={Link} to='/analytics'>
                             <a href="#" style={{color: "black", fontWeight: "bold"}}>
-                                <img style={{width: "26px", paddingRight: "5px"}} src={logo} />
+                                <img style={{width: "26px", paddingRight: "5px"}} src={logo}/>
                                 Analytics
                             </a>
                         </Navbar.Brand>
 
 
                         <Nav>
-                            <Nav.Link as={NavLink} to='/analytics/TopTenTweetsByLikes'>Top Ten Tweets By Likes</Nav.Link>
-                            <Nav.Link as={NavLink} to='/analytics/TopFiveTweetsByRetweets'>Top Five Tweets By Retweets</Nav.Link>
+                            <Nav.Link as={NavLink} to='/analytics/TopTenTweetsByLikes'>Top Ten Tweets By
+                                Likes</Nav.Link>
+                            <Nav.Link as={NavLink} to='/analytics/TopFiveTweetsByRetweets'>Top Five Tweets By
+                                Retweets</Nav.Link>
                             <Nav.Link as={NavLink} to='/analytics/NumberOfTweetsGraph'>Number Of Tweets Graph</Nav.Link>
                         </Nav>
 
@@ -64,7 +63,7 @@ class AnalyticsMain extends Component {
                 <TopTenTweetsByViews/>
                 }
 
-               </div>
+            </div>
         );
     }
 
