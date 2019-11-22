@@ -96,7 +96,6 @@ const styles = {
         marginLeft: "auto",
         backgroundColor: "#2F99EA"
     },
-
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tweet);
