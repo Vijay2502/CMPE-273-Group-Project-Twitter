@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import CanvasJSReact from '../../lib/canvasjs.react';
 import {PullDownContent, PullToRefresh, RefreshContent, ReleaseContent} from "react-js-pull-to-refresh";
 import {TweetBody} from "../HomeTweetList/listview";
+import {getTopTenTweetsByView} from "../../redux/actions/analyticsActions";
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 var CanvasJS = CanvasJSReact.CanvasJS;
@@ -12,7 +13,9 @@ function mapStateToProps(store) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return {};
+    return {
+        getTopTenTweetsByView: (payload) => dispatch(getTopTenTweetsByView(payload))
+    };
 }
 
 class TopTenTweetsByViews extends Component {
@@ -26,38 +29,8 @@ class TopTenTweetsByViews extends Component {
         this.getUser = this.getUser.bind(this)
     }
 
-    handleRefresh() {
-        //dispatch
-        return new Promise((resolve) => {
-            this.getUser()
-        });
-    }
-
-    getUser() {
-        fetch('https://randomuser.me/api/')
-            .then(response => {
-                if (response.ok) return response.json();
-                throw new Error('Request failed.');
-            })
-            .then(data => {
-                this.setState({
-                    users: [
-                        {
-                            name: data.results[0].name,
-                            image: data.results[0].picture.medium,
-                            tweet: data.results[0].email,
-                        },
-                        ...this.state.users,
-                    ]
-                });
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    }
-
     componentWillMount() {
-        this.getUser()
+        this.getTopTenTweetsByView();
     }
 
     addSymbols(e) {

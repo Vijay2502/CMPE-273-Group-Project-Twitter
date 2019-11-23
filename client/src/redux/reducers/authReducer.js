@@ -1,4 +1,4 @@
-import {SIGN_IN, SIGN_UP} from "../../constants/actionTypes";
+import {SIGN_IN, SIGN_UP} from "../../redux/constants/actionTypes";
 
 const initialState = {
     signupSuccess: null,

@@ -1,4 +1,6 @@
-import {HOSTNAME, SIGN_IN, SIGN_UP} from "../../constants/actionTypes";
+import {SIGN_IN, SIGN_UP} from "../../redux/constants/actionTypes";
+import {HOSTNAME} from "../../constants/appConstants";
+
 import axios from 'axios';
 
 export function signIn(payload) {

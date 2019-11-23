@@ -1,4 +1,4 @@
-import {CREATE_TWEET} from "../../constants/actionTypes";
+import {CREATE_TWEET} from "../../redux/constants/actionTypes";
 
 const initialState = {
     createTweetSuccess: null,

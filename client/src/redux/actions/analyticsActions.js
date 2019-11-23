@@ -1,17 +1,18 @@
-import {CREATE_TWEET, HOSTNAME} from "../constants/actionTypes";
+import {CREATE_TWEET} from "../../redux/constants/actionTypes";
+import {HOSTNAME} from "../../constants/appConstants";
 import axios from 'axios';
 
-export function getTop10TweetsByView(payload) {
+export function getTopTenTweetsByView(payload) {
     console.log("getTop10TweetsByView payload");
     console.log(payload);
 
     return (dispatch) => {
         axios.post(`http://${HOSTNAME}:3001/access/login`, payload)
-            .then((response) => dispatch(getTop10TweetsByViewDispatch(response.data)));
+            .then((response) => dispatch(getTopTenTweetsByViewDispatch(response.data)));
     }
 }
 
-export const getTop10TweetsByViewDispatch = (returnData) => {
+export const getTopTenTweetsByViewDispatch = (returnData) => {
     console.log("Inside getTop10TweetsByViewDispatch dispatch");
     console.log(returnData);
     localStorage.setItem('token', returnData.user.token);

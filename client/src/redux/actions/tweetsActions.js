@@ -1,4 +1,5 @@
-import {CREATE_TWEET, HOSTNAME} from "../../constants/actionTypes";
+import {CREATE_TWEET} from "../../redux/constants/actionTypes";
+import {HOSTNAME} from "../../constants/appConstants";
 import axios from 'axios';
 
 export function createTweet(payload) {

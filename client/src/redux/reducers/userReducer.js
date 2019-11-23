@@ -1,4 +1,4 @@
-import {FETCH_LOGIN} from "../constants/types";
+import {FETCH_LOGIN} from "../constants/actionTypes";
 
 const initialState = {
     errMsg: null

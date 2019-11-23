@@ -1,4 +1,4 @@
-import {FETCH_LOGIN} from "../constants/types";
+import {FETCH_LOGIN} from "../../redux/constants/actionTypes";
 import axios from "axios";
 
 // import connectionUrl from "../config/config";// config file to be created 
