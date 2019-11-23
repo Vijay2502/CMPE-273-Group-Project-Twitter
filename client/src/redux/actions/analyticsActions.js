@@ -2,17 +2,17 @@ import {GET_TOP_TEN_TWEETS_BY_VIEWS, GET_TOP_TEN_TWEETS_BY_LIKES, GET_TOP_TEN_TW
 import {HOSTNAME} from "../../constants/appConstants";
 import axios from 'axios';
 
-export function getTopTenTweetsByView(payload) {
+export function getTopTenTweetsByViews(payload) {
     console.log("getTop10TweetsByView payload");
     console.log(payload);
 
     return (dispatch) => {
         axios.post(`http://${HOSTNAME}:3001/access/login`, payload)
-            .then((response) => dispatch(getTopTenTweetsByViewDispatch(response.data)));
+            .then((response) => dispatch(getTopTenTweetsByViewsDispatch(response.data)));
     }
 }
 
-export const getTopTenTweetsByViewDispatch = (returnData) => {
+export const getTopTenTweetsByViewsDispatch = (returnData) => {
     console.log("Inside getTop10TweetsByViewDispatch dispatch");
     console.log(returnData);
     return {type: GET_TOP_TEN_TWEETS_BY_VIEWS, payload: returnData}

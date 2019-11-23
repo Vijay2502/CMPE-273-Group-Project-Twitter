@@ -3,18 +3,20 @@ import {connect} from "react-redux";
 import CanvasJSReact from '../../lib/canvasjs.react';
 import {PullDownContent, PullToRefresh, RefreshContent, ReleaseContent} from "react-js-pull-to-refresh";
 import {TweetBody} from "../HomeTweetList/listview";
-import {getTopTenTweetsByView} from "../../redux/actions/analyticsActions";
+import {getTopTenTweetsByViews} from "../../redux/actions/analyticsActions";
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 var CanvasJS = CanvasJSReact.CanvasJS;
 
 function mapStateToProps(store) {
-    return {}
+    return {
+        topTenTweetsByViews: store.analytics.getTopTenTweetsByViews,
+    }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        getTopTenTweetsByView: (payload) => dispatch(getTopTenTweetsByView(payload))
+        getTopTenTweetsByViews: (payload) => dispatch(getTopTenTweetsByViews(payload))
     };
 }
 
@@ -24,13 +26,10 @@ class TopTenTweetsByViews extends Component {
         this.state = {
             users: [],
         };
-
-        this.handleRefresh = this.handleRefresh.bind(this);
-        this.getUser = this.getUser.bind(this)
     }
 
     componentWillMount() {
-        this.getTopTenTweetsByView();
+        this.props.getTopTenTweetsByViews();
     }
 
     addSymbols(e) {

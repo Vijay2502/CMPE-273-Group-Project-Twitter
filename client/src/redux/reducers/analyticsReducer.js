@@ -1,15 +1,17 @@
-import {CREATE_TWEET} from "../constants/actionTypes";
+import {GET_TOP_TEN_TWEETS_BY_VIEWS} from "../constants/actionTypes";
 
 const initialState = {
-    createTweetSuccess: null,
-    createTweetMessage: null,
+    topTenTweetsByViews: [],
+    topTenTweetsByLikes: [],
+    topTenTweetsByRetweets: [],
+    numgerOfTweetsGraphs: [],
 };
 
-export default function getTop10TweetsByView(state = initialState, action) {
+export default function getTopTenTweetsByViews(state = initialState, action) {
     console.log("action.payload");
     console.log(action.payload);
 
-    if (action.type === CREATE_TWEET) {
+    if (action.type === GET_TOP_TEN_TWEETS_BY_VIEWS) {
         return Object.assign({}, state, {
             createTweetSuccess: action.payload.signinSuccess,
             createTweetMessage: action.payload.signinMessage,
