@@ -1,4 +1,4 @@
-import {GET_TOP_TEN_TWEETS_BY_VIEWS} from "../constants/actionTypes";
+import {GET_TOP_TEN_TWEETS_BY_VIEWS, GET_TOP_TEN_TWEETS_BY_LIKES, GET_TOP_TEN_TWEETS_BY_RETWEETS} from "../constants/actionTypes";
 
 const initialState = {
     topTenTweetsByViews: [],
@@ -13,8 +13,15 @@ export default function getTopTenTweetsByViews(state = initialState, action) {
 
     if (action.type === GET_TOP_TEN_TWEETS_BY_VIEWS) {
         return Object.assign({}, state, {
-            createTweetSuccess: action.payload.signinSuccess,
-            createTweetMessage: action.payload.signinMessage,
+            topTenTweetsByViews: action.payload.tweets,
+        });
+    } else if (action.type === GET_TOP_TEN_TWEETS_BY_LIKES) {
+        return Object.assign({}, state, {
+            topTenTweetsByLikes: action.payload.tweets,
+        });
+    } else if (action.type === GET_TOP_TEN_TWEETS_BY_RETWEETS) {
+        return Object.assign({}, state, {
+            topTenTweetsByRetweets: action.payload.tweets,
         });
     }
 

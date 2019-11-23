@@ -9,7 +9,9 @@ var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 var CanvasJS = CanvasJSReact.CanvasJS;
 
 function mapStateToProps(store) {
-    return {}
+    return {
+        topTenTweetsByRetweets: store.analytics.getTopTenTweetsByRetweets,
+    }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -60,7 +62,8 @@ class TopFiveTweetsByRetweets extends Component {
     }
 
     componentWillMount() {
-        this.getUser()
+        this.getUser();
+        this.props.getTopTenTweetsByRetweets();
     }
 
     addSymbols(e) {

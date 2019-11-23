@@ -29,6 +29,7 @@ class TopTenTweetsByViews extends Component {
     }
 
     componentWillMount() {
+        this.getUser();
         this.props.getTopTenTweetsByViews();
     }
 
@@ -39,6 +40,36 @@ class TopTenTweetsByViews extends Component {
             order = suffixes.length - 1;
         var suffix = suffixes[order];
         return CanvasJS.formatNumber(e.value / Math.pow(1000, order)) + suffix;
+    }
+
+    handleRefresh() {
+        //dispatch
+        return new Promise((resolve) => {
+            this.getUser()
+        });
+    }
+
+    getUser() {
+        fetch('https://randomuser.me/api/')
+            .then(response => {
+                if (response.ok) return response.json();
+                throw new Error('Request failed.');
+            })
+            .then(data => {
+                this.setState({
+                    users: [
+                        {
+                            name: data.results[0].name,
+                            image: data.results[0].picture.medium,
+                            tweet: data.results[0].email,
+                        },
+                        ...this.state.users,
+                    ]
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
 

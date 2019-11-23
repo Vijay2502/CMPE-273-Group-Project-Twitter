@@ -40,7 +40,7 @@ export function getTopTenTweetsByRetweets(payload) {
 
     return (dispatch) => {
         axios.post(`http://${HOSTNAME}:3001/access/login`, payload)
-            .then((response) => dispatch(getTopTenTweetsByLikesDispatch(response.data)));
+            .then((response) => dispatch(getTopTenTweetsByRetweetsDispatch(response.data)));
     }
 }
 
