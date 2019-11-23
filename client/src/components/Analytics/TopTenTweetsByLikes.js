@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import CanvasJSReact from '../../lib/canvasjs.react';
 import {PullDownContent, PullToRefresh, RefreshContent, ReleaseContent} from "react-js-pull-to-refresh";
 import {TweetBody} from "../HomeTweetList/listview";
+import {getTopTenTweetsByLikes} from "../../redux/actions/analyticsActions";
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 var CanvasJS = CanvasJSReact.CanvasJS;
@@ -12,7 +13,9 @@ function mapStateToProps(store) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return {};
+    return {
+        getTopTenTweetsByLikes: (payload) => dispatch(getTopTenTweetsByLikes(payload))
+    };
 }
 
 class TopTenTweetsByLikes extends Component {

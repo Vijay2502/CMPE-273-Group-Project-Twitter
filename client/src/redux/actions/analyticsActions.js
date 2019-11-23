@@ -1,4 +1,4 @@
-import {CREATE_TWEET} from "../../redux/constants/actionTypes";
+import {GET_TOP_TEN_TWEETS_BY_VIEWS, GET_TOP_TEN_TWEETS_BY_LIKES, GET_TOP_TEN_TWEETS_BY_RETWEETS} from "../../redux/constants/actionTypes";
 import {HOSTNAME} from "../../constants/appConstants";
 import axios from 'axios';
 
@@ -15,8 +15,38 @@ export function getTopTenTweetsByView(payload) {
 export const getTopTenTweetsByViewDispatch = (returnData) => {
     console.log("Inside getTop10TweetsByViewDispatch dispatch");
     console.log(returnData);
-    localStorage.setItem('token', returnData.user.token);
-    localStorage.setItem('_id', returnData.user._id);
-    localStorage.setItem('userType', returnData.user.userType);
-    return {type: CREATE_TWEET, payload: returnData}
+    return {type: GET_TOP_TEN_TWEETS_BY_VIEWS, payload: returnData}
 };
+
+export function getTopTenTweetsByLikes(payload) {
+    console.log("getTop10TweetsByView payload");
+    console.log(payload);
+
+    return (dispatch) => {
+        axios.post(`http://${HOSTNAME}:3001/access/login`, payload)
+            .then((response) => dispatch(getTopTenTweetsByLikesDispatch(response.data)));
+    }
+}
+
+export const getTopTenTweetsByLikesDispatch = (returnData) => {
+    console.log("Inside getTop10TweetsByViewDispatch dispatch");
+    console.log(returnData);
+    return {type: GET_TOP_TEN_TWEETS_BY_LIKES, payload: returnData}
+};
+
+export function getTopTenTweetsByRetweets(payload) {
+    console.log("getTop10TweetsByView payload");
+    console.log(payload);
+
+    return (dispatch) => {
+        axios.post(`http://${HOSTNAME}:3001/access/login`, payload)
+            .then((response) => dispatch(getTopTenTweetsByLikesDispatch(response.data)));
+    }
+}
+
+export const getTopTenTweetsByRetweetsDispatch = (returnData) => {
+    console.log("Inside getTop10TweetsByViewDispatch dispatch");
+    console.log(returnData);
+    return {type: GET_TOP_TEN_TWEETS_BY_RETWEETS, payload: returnData}
+};
+
