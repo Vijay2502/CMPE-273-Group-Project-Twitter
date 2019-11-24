@@ -22,11 +22,13 @@ export default function authReducer(state = initialState, action) {
             userId: action.payload._id
         });
     } else if (action.type === SIGN_UP) {
+        // localStorage.setItem('token', returnData.user.token);
+        // localStorage.setItem('_id', returnData.user._id);
+        // localStorage.setItem('userType', returnData.user.userType);
+
         return Object.assign({}, state, {
-            signupSuccess: action.payload.signupSuccess,
-            signupMessage: action.payload.signupMessage,
-            token: action.payload.token,
-            userId: action.payload._id
+            signupSuccess: action.payload.status === "ok" ? true : false,
+            signupMessage: action.payload.data.message,
         });
     }
 

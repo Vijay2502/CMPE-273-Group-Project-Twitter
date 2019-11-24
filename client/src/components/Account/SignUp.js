@@ -1,15 +1,16 @@
 import React, {Component} from 'react';
+import {Redirect} from 'react-router';
 import logo from '../../static/images/login_twitter_logo.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Button, Col, Form} from "react-bootstrap";
+import {Button, Col, Form, Toast} from "react-bootstrap";
 import {signUp} from "../../redux/actions/authActions";
+import Expire from "./Expire";
 import {connect} from "react-redux";
 
 function mapStateToProps(store) {
     return {
         signupSuccess: store.auth.signupSuccess,
         signupMessage: store.auth.signupMessage,
-        userId: store.auth.userId
     }
 }
 
@@ -20,67 +21,83 @@ function mapDispatchToProps(dispatch) {
 }
 
 class SignUp extends Component {
+    constructor(props) {
+        super(props);
+        this.signUp = this.signUp.bind(this);
+        this.state = {
+            redirectVar: false,
+            test: false
+        }
+    }
+
     signUp = (e) => {
         e.preventDefault();
+
         const data = {};
         for (let i = 0; i < e.target.length; i++) {
-            if (e.target[i].name !== "") {
-                data[e.target[i].name] = e.target[i].value;
+            if (e.target[i].id !== "") {
+                data[e.target[i].id] = e.target[i].value;
             }
         }
 
-        data.userType = "buyer";
+        this.props.signUp(data);
+        this.setState({test: true});
+    };
 
-        console.log("signUpBuyer data");
-        console.log(data);
 
-        this.props.signUp({"user": data});
+    callbackFunction = (val) => {
+        this.setState({redirectVar: val})
     };
 
     render() {
         return (
             <div style={styles.container}>
+                {this.state.redirectVar === true && <Redirect to={{
+                    pathname: "/login"
+                }}/>}
+
+                {this.props.signupSuccess === true && <Expire delay={5000} parentCallback={this.callbackFunction}  >
+                    <Toast>
+                        <Toast.Header>
+                            <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
+                            <strong className="mr-auto">Notification</strong>
+                        </Toast.Header>
+                        <Toast.Body>You have successfully signed-up! You are being redirected to the login page in 5 seconds.</Toast.Body>
+                    </Toast>
+                </Expire>}
+
+
                 <div>
                     <img style={styles.logo} src={logo} alt="Quora"/>
                 </div>
 
                 <h3 style={styles.message}>SignUp</h3>
-                <Form onSubmit={this.signIn}>
-                    <Form.Group controlId="formGridAddress1">
-                        <Form.Label>Name</Form.Label>
-                        <Form.Control placeholder="What's your name?"/>
-                    </Form.Group>
-
-                    <Form.Group controlId="formGridEmail">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control type="email" placeholder="Enter email"/>
-                    </Form.Group>
-
+                <Form onSubmit={this.signUp}>
                     <Form.Row>
-                        <Form.Group as={Col} controlId="formGridCity">
-                            <Form.Label>Month</Form.Label>
-                            <Form.Control as="select">
-                                <option>Choose...</option>
-                                <option>...</option>
-                            </Form.Control>
+                        <Form.Group as={Col} controlId="firstName">
+                            <Form.Label>First name</Form.Label>
+                            <Form.Control placeholder="What's your first name?"/>
                         </Form.Group>
-
-                        <Form.Group as={Col} controlId="formGridState">
-                            <Form.Label>Day</Form.Label>
-                            <Form.Control as="select">
-                                <option>Choose...</option>
-                                <option>...</option>
-                            </Form.Control>
-                        </Form.Group>
-
-                        <Form.Group as={Col} controlId="formGridZip">
-                            <Form.Label>Year</Form.Label>
-                            <Form.Control as="select">
-                                <option>Choose...</option>
-                                <option>...</option>
-                            </Form.Control>
+                        <Form.Group as={Col} controlId="lastName">
+                            <Form.Label>Last name</Form.Label>
+                            <Form.Control placeholder="What's your last name?"/>
                         </Form.Group>
                     </Form.Row>
+
+                    <Form.Group controlId="username">
+                        <Form.Label>Username</Form.Label>
+                        <Form.Control placeholder="Enter a cool username"/>
+                    </Form.Group>
+
+                    <Form.Group controlId="email">
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control  placeholder="What's your email?"/>
+                    </Form.Group>
+
+                    <Form.Group controlId="password">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control type="password" placeholder="Enter a strong password"/>
+                    </Form.Group>
 
                     <Button style={styles.signUpButton} variant="primary" type="submit">
                         Sign up
