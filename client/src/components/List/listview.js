@@ -39,6 +39,7 @@ const Tweet = (props) => {
     <div className="tweet">
     <Title title={props.title}/> 
     {props.tweet} 
+    <Description desc={props.description}/>
     <div style={{display:'inline-block'}}>
     <Members members={props.members}/>
     <Subscribers subscribers={props.subscribers}/>
@@ -64,19 +65,28 @@ const Title = (props) => {
   <p>{props.title}</p>
   )}
 }
+const Description = (props) => {
+  if(props!==undefined && props.description!==undefined){
+  return(
+  <p>{props.description}</p>
+  )}
+}
 
 const Members = (props) => {
+  if(props!==undefined){
   if(props.members!==undefined){
   return(
-   <p style={{display:'inline-block'}}>{props.members} members</p>
+   <p style={{display:'inline-block'}}>{props.members} members .</p>
   )}else{
     return(
-    <p style={{display:'inline-block'}}>0 members</p>
+    <p style={{display:'inline-block'}}>0 members .</p>
     )
   }
 }
+}
 
 const Subscribers = (props) => {
+  if(props!==undefined){
   if(props.subscribers!==undefined){
   return(
    <p style={{display:'inline-block'}}>  {props.subscribers} susbribers</p>
@@ -85,6 +95,7 @@ const Subscribers = (props) => {
     <p style={{display:'inline-block'}}>  0 subscribers</p>
     )
   }
+}
 }
 
 const TweetBody = (props) => {
