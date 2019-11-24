@@ -120,6 +120,7 @@ class Sidebar extends Component {
                         <button
                             type="button"
                             class="list-group-item list-group-item-action borderless"
+                            onClick={() => this.sendData("List")}
                         >
                             <FontAwesomeIcon icon={faListAlt}/>
                             <span>List</span>
