@@ -16,7 +16,7 @@ router.use(passport.initialize());
 //USER APIS
 router.post('/user/register', User.register);
 router.post('/user/login', User.login);
-router.get('/user/:id', User_producer.get);
+router.get('/user/:id', User.get);
 router.put('/user/:id/follow', User.follow);
 router.put('/user/:id/unfollow', User.unfollow);
 router.get('/user/:id/followers', User.getFollowers);
@@ -38,7 +38,7 @@ router.get('/list/:id/members', List.getMembers);
 // TWEET APIS
 router.post('/tweet/create', Tweet.createTweet);
 router.get('/tweet/byOwner/:ownerId', Tweet.getTweetsByOwnerId);
-router.get('/tweet/byId/:tweetId', Tweet_producer.getTweetByTweetId);
+router.get('/tweet/byId/:tweetId', Tweet.getTweetByTweetId);
 router.put('/tweet/like', Tweet.likeTweet);
 router.put('/tweet/:tweetId/view', Tweet.viewTweet);
 router.put('/tweet/bookmark', BookMarkedTweet.bookmarkTweet);

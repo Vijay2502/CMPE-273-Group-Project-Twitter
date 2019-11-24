@@ -6,7 +6,7 @@ module.exports.register = function (request, response) {
         return response.status(400).send("INVALID REQUEST");
     }
     return userService.getByEmailOrUsername(request.body.email, request.body.username, function (err, user) {
-        if (err)
+        if (err && err.message != "USER NOT FOUND")
             return response.status(500).send(err);
         if (user) {
             return response.status(400).send("EMAIL OR USERNAME ALREADY EXITS");
