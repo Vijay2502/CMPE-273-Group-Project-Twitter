@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Redirect} from "react-router";
 
 class Expire extends Component {
     constructor(props) {
@@ -50,16 +49,6 @@ class Expire extends Component {
             this.state.visible
             ? <div>{this.props.children}</div>
             : <span />
-
-            // this.state.visible
-            // ? <div>{this.props.children}</div>
-            // : <Redirect to={{
-            //         pathname: "/login"
-            //     }}/>
-
-            // this.state.visible
-            //     ? <div>{this.props.children}</div>
-            //     : <span />
         );
     }
 }

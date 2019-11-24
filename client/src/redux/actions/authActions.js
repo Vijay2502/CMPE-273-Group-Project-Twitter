@@ -4,23 +4,19 @@ import {HOSTNAME} from "../../constants/appConstants";
 import axios from 'axios';
 
 export function signIn(payload) {
-    console.log("signInMongo payload");
+    console.log("signIn payload");
     console.log(payload);
 
     return (dispatch) => {
-        console.log("Inside signInMongo");
-
-        axios.post(`http://${HOSTNAME}:3001/access/login`, payload)
+        axios.post(`http://${HOSTNAME}:8080/api/v1/user/login`, payload)
             .then((response) => dispatch(signInDispatch(response.data)));
     }
 }
 
 export const signInDispatch = (returnData) => {
-    console.log("Inside signIn dispatch");
+    console.log("Inside signInDispatch");
     console.log(returnData);
-    localStorage.setItem('token', returnData.user.token);
-    localStorage.setItem('_id', returnData.user._id);
-    localStorage.setItem('userType', returnData.user.userType);
+
     return {type: SIGN_IN, payload: returnData}
 };
 
