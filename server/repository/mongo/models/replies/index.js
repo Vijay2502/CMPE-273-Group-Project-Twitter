@@ -12,6 +12,12 @@ const ReplySchema = new Schema({
 	userId: {
 		type: Number,
 		required: true
+	},
+	user:{
+		firstName: String,
+		lastName: String,
+		username: String,
+		image: String
 	}
 }, {
 	timestamps: true
