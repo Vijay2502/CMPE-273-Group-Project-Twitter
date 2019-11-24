@@ -6,7 +6,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faRetweet, faShareSquare} from "@fortawesome/free-solid-svg-icons";
 import {faComment, faHeart} from "@fortawesome/free-regular-svg-icons";
 import {Modal} from "react-bootstrap";
-import Tweet from "../Tweet/Tweet";
+import Tweet from "../Tweet/CreateTweet";
+import ViewTweets from "../Tweet/ViewTweets";
 
 // import Search from './search.js'
 
@@ -56,88 +57,11 @@ class HomeTweetList extends Component {
             });
     }
 
-    openCommentModal = e => {
-        this.setState({openCommentModal: true});
-    };
-
-    closeCommentModal = e => {
-        this.setState({openCommentModal: false});
-    };
-
     render() {
         console.log("render HomeTweetList");
         return (
             <div style={{width: 566}}>
-                <PullToRefresh
-                    pullDownContent={<PullDownContent/>}
-                    releaseContent={<ReleaseContent/>}
-                    refreshContent={<RefreshContent/>}
-                    pullDownThreshold={2}
-                    onRefresh={this.handleRefresh}
-                    triggerHeight={50}
-                    backgroundColor='white'>
-
-                    <div className="main-body">
-                        {[...this.state.users].map((user, index) => {
-                            let name = `${user.name.first} ${user.name.last}`;
-                            let handle = `@${user.name.first}${user.name.last}`;
-                            let image = user.image;
-                            let tweet = user.tweet;
-                            console.log(image);
-                            return (
-                                <div>
-                                    <TweetBody
-                                        key={index}
-                                        name={name}
-                                        handle={handle}
-                                        tweet={tweet}
-                                        image={image}/>
-
-                                    <div style={styles.container}>
-                                        <button
-                                            type="button"
-                                            className="list-group-item list-group-item-action borderless"
-                                            style={styles.reply}
-                                            onClick={this.openCommentModal}
-                                        >
-                                            <FontAwesomeIcon icon={faComment}/>
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="list-gr oup-item list-group-item-action borderless"
-                                            style={styles.retweet}
-                                        >
-                                            <FontAwesomeIcon icon={faRetweet}/>
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="list-group-item list-group-item-action borderless"
-                                            style={styles.like}
-                                        >
-                                            <FontAwesomeIcon icon={faHeart}/>
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="list-gr oup-item list-group-item-action borderless"
-                                            style={styles.share}
-                                        >
-                                            <FontAwesomeIcon icon={faShareSquare}/>
-                                        </button>
-
-                                        <Modal
-                                            show={this.state.openCommentModal}
-                                            onHide={this.closeCommentModal}
-                                            animation={false}
-                                            style={{width: 666}}
-                                        >
-                                            <Tweet/>
-                                        </Modal>
-                                    </div>
-                                </div>
-                            )
-                        })}
-                    </div>
-                </PullToRefresh>
+                <ViewTweets dataFromParent = {this.state.users} />
             </div>
         );
     }

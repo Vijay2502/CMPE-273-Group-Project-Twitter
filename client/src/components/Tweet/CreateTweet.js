@@ -15,7 +15,7 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-class Tweet extends Component {
+class CreateTweet extends Component {
     image = () => {
         return (
             <img src={require("../../static/images/profile_pic.png")} alt="Logo" className="picture"/>
@@ -98,5 +98,5 @@ const styles = {
     },
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Tweet);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateTweet);
 

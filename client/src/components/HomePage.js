@@ -4,7 +4,7 @@ import Sidebar from './Sidebar/sidebar'
 import HomeTweetList from './HomeTweetList/list'
 import Profile from './Profile/profile'
 import List from './List/list'
-import Tweet from "./Tweet/Tweet";
+import Tweet from "./Tweet/CreateTweet";
 import GridLayout from 'react-grid-layout';
 
 class HomePage extends Component {
