@@ -2,14 +2,10 @@ import React, {Component} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faImage, faRetweet, faShareSquare} from "@fortawesome/free-solid-svg-icons";
-import {connect} from "react-redux";
-import {createTweet} from "../../redux/actions/tweetsActions";
 import {PullDownContent, PullToRefresh, RefreshContent, ReleaseContent} from "react-js-pull-to-refresh";
 import {TweetBody} from "../HomeTweetList/listview";
 import {faComment, faHeart} from "@fortawesome/free-regular-svg-icons";
-import Tweet from "./CreateTweet";
-
-
+import CreateTweet from "./CreateTweet";
 
 class ViewTweets extends Component {
     constructor(props) {
@@ -18,44 +14,7 @@ class ViewTweets extends Component {
             users: [],
             isOpenCommentModal: false
         };
-
-        this.handleRefresh = this.handleRefresh.bind(this);
-        //this.getUser = this.getUser.bind(this)
     }
-
-    handleRefresh() {
-        //dispatch
-        // return new Promise((resolve) => {
-        //     this.getUser()
-        // });
-    }
-
-    componentWillMount() {
-        //this.getUser()
-    }
-
-    // getUser() {
-    //     fetch('https://randomuser.me/api/')
-    //         .then(response => {
-    //             if (response.ok) return response.json();
-    //             throw new Error('Request failed.');
-    //         })
-    //         .then(data => {
-    //             this.setState({
-    //                 users: [
-    //                     {
-    //                         name: data.results[0].name,
-    //                         image: data.results[0].picture.medium,
-    //                         tweet: data.results[0].email,
-    //                     },
-    //                     ...this.state.users,
-    //                 ]
-    //             });
-    //         })
-    //         .catch(error => {
-    //             console.log(error);
-    //         });
-    // }
 
     openCommentModal = e => {
         this.setState({isOpenCommentModal: true});
@@ -73,7 +32,6 @@ class ViewTweets extends Component {
                     releaseContent={<ReleaseContent/>}
                     refreshContent={<RefreshContent/>}
                     pullDownThreshold={2}
-                    onRefresh={this.handleRefresh}
                     triggerHeight={50}
                     backgroundColor='white'>
 
@@ -130,7 +88,7 @@ class ViewTweets extends Component {
                                             animation={false}
                                             style={{width: 666}}
                                         >
-                                            <Tweet/>
+                                            <CreateTweet/>
                                         </Modal>
                                     </div>
                                 </div>

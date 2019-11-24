@@ -8,7 +8,11 @@ var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 var CanvasJS = CanvasJSReact.CanvasJS;
 
 function mapStateToProps(store) {
-    return {}
+    return {
+        numberOfTweetsHourly: store.analytics.numberOfTweetsHourly,
+        numberOfTweetsDaily: store.analytics.numberOfTweetsDaily,
+        numberOfTweetsMonthly: store.analytics.numberOfTweetsMonthly,
+    }
 }
 
 function mapDispatchToProps(dispatch) {
