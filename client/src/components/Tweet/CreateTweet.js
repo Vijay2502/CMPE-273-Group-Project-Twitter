@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {Button, Form} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faImage} from "@fortawesome/free-solid-svg-icons";
 import {connect} from "react-redux";
-import {createTweet} from "../../actions/tweetsActions";
+import {createTweet} from "../../redux/actions/tweetsActions";
 
 function mapStateToProps(store) {
-    return {
-    }
+    return {}
 }
 
 function mapDispatchToProps(dispatch) {
@@ -16,12 +15,12 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-class Tweet extends Component {
+class CreateTweet extends Component {
     image = () => {
-        return(
+        return (
             <img src={require("../../static/images/profile_pic.png")} alt="Logo" className="picture"/>
         )
-    }
+    };
 
     createTweet = (e) => {
         e.preventDefault();
@@ -46,7 +45,7 @@ class Tweet extends Component {
 
                             <div style={styles.tweetTextBox}>
                                 <Form.Group controlId="formGridAddress1">
-                                    <Form.Control type="textarea" placeholder="What's happening?" />
+                                    <Form.Control type="textarea" placeholder="What's happening?"/>
                                 </Form.Group>
                             </div>
                         </Form.Row>
@@ -54,7 +53,8 @@ class Tweet extends Component {
 
                     <div style={{marginTop: 40}}>
                         <Form.Row>
-                            <button type="button" className="list-group-item list-group-item-action borderless" style={styles.image}>
+                            <button type="button" className="list-group-item list-group-item-action borderless"
+                                    style={styles.image}>
                                 <FontAwesomeIcon icon={faImage}/>
                             </button>
 
@@ -96,8 +96,7 @@ const styles = {
         marginLeft: "auto",
         backgroundColor: "#2F99EA"
     },
-
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Tweet);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateTweet);
 

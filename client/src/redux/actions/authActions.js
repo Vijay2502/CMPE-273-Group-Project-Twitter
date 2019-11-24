@@ -1,9 +1,11 @@
-import {SIGN_IN, SIGN_UP, HOSTNAME} from "../constants/actionTypes";
+import {SIGN_IN, SIGN_UP} from "../../redux/constants/actionTypes";
+import {HOSTNAME} from "../../constants/appConstants";
+
 import axios from 'axios';
 
 export function signIn(payload) {
-    console.log("signInMongo payload")
-    console.log(payload)
+    console.log("signInMongo payload");
+    console.log(payload);
 
     return (dispatch) => {
         console.log("Inside signInMongo");
@@ -14,8 +16,8 @@ export function signIn(payload) {
 }
 
 export const signInDispatch = (returnData) => {
-    console.log("Inside signIn dispatch")
-    console.log(returnData)
+    console.log("Inside signIn dispatch");
+    console.log(returnData);
     localStorage.setItem('token', returnData.user.token);
     localStorage.setItem('_id', returnData.user._id);
     localStorage.setItem('userType', returnData.user.userType);
@@ -23,8 +25,8 @@ export const signInDispatch = (returnData) => {
 };
 
 export function signUp(payload) {
-    console.log("signInMongo payload")
-    console.log(payload)
+    console.log("signInMongo payload");
+    console.log(payload);
 
     return (dispatch) => {
         console.log("Inside signInMongo");
@@ -35,8 +37,8 @@ export function signUp(payload) {
 }
 
 export const signUpDispatch = (returnData) => {
-    console.log("Inside signIn dispatch")
-    console.log(returnData)
+    console.log("Inside signIn dispatch");
+    console.log(returnData);
     localStorage.setItem('token', returnData.user.token);
     localStorage.setItem('_id', returnData.user._id);
     localStorage.setItem('userType', returnData.user.userType);

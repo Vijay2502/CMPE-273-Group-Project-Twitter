@@ -1,4 +1,4 @@
-import {SIGN_IN, SIGN_UP} from "../constants/actionTypes";
+import {SIGN_IN, SIGN_UP} from "../../redux/constants/actionTypes";
 
 const initialState = {
     signupSuccess: null,
@@ -11,8 +11,8 @@ const initialState = {
 };
 
 export default function authReducer(state = initialState, action) {
-    console.log("action.payload")
-    console.log(action.payload)
+    console.log("action.payload");
+    console.log(action.payload);
 
     if (action.type === SIGN_IN) {
         return Object.assign({}, state, {

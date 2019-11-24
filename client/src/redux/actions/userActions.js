@@ -1,4 +1,4 @@
-import { FETCH_LOGIN } from "./types";
+import {FETCH_LOGIN} from "../../redux/constants/actionTypes";
 import axios from "axios";
 
 // import connectionUrl from "../config/config";// config file to be created 
@@ -23,6 +23,7 @@ export function fetchLogin(data) {
         // .then(responseData => {dispatch({type: FETCH_LOGIN,payload: response});})
     };
 }
+
 function signinUpd(returndata) {
     if (returndata.data.result.response.success == true) {
         let jwtToken = returndata.data.result.response.token.split(" ")[1]; // to use JWT token 
@@ -31,8 +32,9 @@ function signinUpd(returndata) {
         sessionStorage.setItem("token", jwtToken);
         sessionStorage.setItem("email_id", returndata.data.result.response.email_id);
     }
-    return { type: FETCH_LOGIN, payload: returndata };
+    return {type: FETCH_LOGIN, payload: returndata};
 }
+
 /////// DIRECT DISPATCH ///////
 export function fetchLogin1(data) {
     return function (dispatch) {
@@ -48,7 +50,10 @@ export function fetchLogin1(data) {
                 headers: headers
             })
             // .then(response => response.json())// uncomment it if you want to parse the body text as JSON. It returns a promise
-            .then(response => { dispatch({ type: FETCH_LOGIN, payload: response }); })
+            .then(response => {
+                dispatch({type: FETCH_LOGIN, payload: response});
+            })
     };
 }
+
 //////////////////////////////// END ///////////////////////////////
