@@ -39,6 +39,7 @@ class List extends Component {
                 this.setState({
                     users: [
                         {
+                            
                             name: data.results[0].name,
                             image: data.results[0].picture.medium,
                             tweet: data.results[0].email,
