@@ -9,7 +9,11 @@ module.exports.register = function (request, response) {
         if (err && err.message != "USER NOT FOUND")
             return response.status(500).send(err);
         if (user) {
-            return response.status(400).send("EMAIL OR USERNAME ALREADY EXITS");
+            //return response.status(400).send("EMAIL OR USERNAME ALREADY EXITS");
+            return response.send({
+                status: "ok",
+                data: { "message": "EMAIL OR USERNAME ALREADY EXITS" }
+            });
         }
 
         return userService.create(request.body, function (err, data) {
@@ -65,7 +69,7 @@ module.exports.update = function (request, response) {
 
 }
 
-module.exports.get = function (request, response) {   
+module.exports.get = function (request, response) {
 
     return userService.getById(request.params.id, function (err, user) {
         if (err) {
@@ -81,6 +85,9 @@ module.exports.get = function (request, response) {
 }
 
 module.exports.follow = function (request, response) {
+    if (!(request.body.followeeId && request.params.id)) {
+        return response.status(400).send("MISSING FIELDS");
+    }
     return userService.followUser(request.params.id, request.body.followeeId, function (err, res) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
