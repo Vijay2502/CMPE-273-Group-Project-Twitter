@@ -100,6 +100,9 @@ module.exports.follow = function (request, response) {
 }
 
 module.exports.unfollow = function (request, response) {
+    if (!(request.body.followeeId && request.params.id)) {
+        return response.status(400).send("MISSING FIELDS");
+    }
     return userService.unfollowUser(request.params.id, request.body.followeeId, function (err, res) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
@@ -112,6 +115,9 @@ module.exports.unfollow = function (request, response) {
 }
 
 module.exports.getFollowers = function (request, response) {
+    if (!(request.params.id)) {
+        return response.status(400).send("MISSING FIELDS");
+    }
     return userService.getFollowers(request.params.id, request.query.limit, request.query.offset, function (err, res) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
@@ -124,6 +130,9 @@ module.exports.getFollowers = function (request, response) {
 }
 
 module.exports.getFollowees = function (request, response) {
+    if (!(request.params.id)) {
+        return response.status(400).send("MISSING FIELDS");
+    }
     return userService.getFollowees(request.params.id, request.query.limit, request.query.offset, function (err, res) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
