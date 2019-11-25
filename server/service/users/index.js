@@ -19,7 +19,6 @@ module.exports.create = function (newUser, cb) {
                 password: newUser.password,
                 data: newUser.data ? newUser.data : null
             }).then(function (user) {
-
                 return cb(null, { message: "USER SUCCESSFULLY REGISTERED" });
 
             }, function (err) {
@@ -51,7 +50,7 @@ module.exports.verifyAndAssignToken = function (credentials, user, cb) {
             }, (err, token) => {
                 return cb(err, token);
             });
-        },err => {
+        }, err => {
             return cb(err);
         });
 }
@@ -59,8 +58,8 @@ module.exports.verifyAndAssignToken = function (credentials, user, cb) {
 
 module.exports.getById = function (userId, cb) {
 
-    cache.get('user-getById-'+userId, function(err, user){
-        if(user){
+    cache.get('user-getById-' + userId, function (err, user) {
+        if (user) {
             return cb(null, JSON.parse(user));
         } else {
             repository.User.findOne({
@@ -68,22 +67,22 @@ module.exports.getById = function (userId, cb) {
                     id: userId
                 }
             }).then(function (user) {
-        
+
                 if (user) {
                     var userDTO = {
                         id: user.id,
                         firstName: user.firstName,
                         lastName: user.lastName,
                         username: user.username,
-                        email: user.username,
+                        email: user.email,
                         data: user.data ? user.data : null
                     };
 
-                    cache.set('user-getById-'+userId, JSON.stringify(userDTO), function(err){
-                        if(err){
+                    cache.set('user-getById-' + userId, JSON.stringify(userDTO), function (err) {
+                        if (err) {
                             console.log("Write to Cache Failed >>>> err: " + JSON.stringify(err, null, 4));
                         } else {
-                            cache.expire('user-getById-'+userId, process.env.CACHE_EXPIRY_TIME);
+                            cache.expire('user-getById-' + userId, process.env.CACHE_EXPIRY_TIME);
                         }
 
                     })
@@ -94,7 +93,7 @@ module.exports.getById = function (userId, cb) {
                     code: 404,
                     message: "USER NOT FOUND"
                 });
-        
+
             }, function (err) {
                 return cb(err);
             });
@@ -102,30 +101,30 @@ module.exports.getById = function (userId, cb) {
     })
 
 
-    repository.User.findOne({
-        where: {
-            id: userId
-        }
-    }).then(function (user) {
+    // repository.User.findOne({
+    //     where: {
+    //         id: userId
+    //     }
+    // }).then(function (user) {
 
-        if (user) {
-            return cb(null, {
-                id: user.id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                username: user.username,
-                email: user.username,
-                data: user.data ? user.data : null
-            });
-        }
-        return cb({
-            code: 404,
-            message: "USER NOT FOUND"
-        });
+    //     if (user) {
+    //         return cb(null, {
+    //             id: user.id,
+    //             firstName: user.firstName,
+    //             lastName: user.lastName,
+    //             username: user.username,
+    //             email: user.email,
+    //             data: user.data ? user.data : null
+    //         });
+    //     }
+    //     return cb({
+    //         code: 404,
+    //         message: "USER NOT FOUND"
+    //     });
 
-    }, function (err) {
-        return cb(err);
-    });
+    // }, function (err) {
+    //     return cb(err);
+    // });
 }
 
 module.exports.getByEmailOrUsername = function (email, username, cb) {
@@ -143,12 +142,12 @@ module.exports.getByEmailOrUsername = function (email, username, cb) {
     }).then(function (user) {
         if (user) {
             return cb(null, {
-                id:user.id,
+                id: user.id,
                 firstName: user.firstName,
                 lastName: user.lastName,
                 username: user.username,
-                email: user.username,
-                password:user.password,
+                email: user.email,
+                password: user.password,
                 data: user.data ? user.data : null
             });
         }
@@ -161,52 +160,52 @@ module.exports.getByEmailOrUsername = function (email, username, cb) {
     });
 }
 
-module.exports.followUser = function(userId, followeeId, cb){
+module.exports.followUser = function (userId, followeeId, cb) {
     return repository.User.findOne({
-        where:{
+        where: {
             id: userId
         }
-    }).then(function(user){
-        if(user){
+    }).then(function (user) {
+        if (user) {
             return user.addFollowee(followeeId)
-            .then(function(data){
-                return cb(null, {
-                    message:"SUCCESS"
+                .then(function (data) {
+                    return cb(null, {
+                        message: "SUCCESS"
+                    });
+                }, function (err) {
+                    return cb(err);
                 });
-            }, function(err){
-                return cb(err);
-            });
         }
         return cb({
             code: 404,
             message: "USER NOT FOUND"
         });
-    }, function(err){
+    }, function (err) {
         return cb(err);
     })
 }
 
-module.exports.unfollowUser = function(userId, followeeId, cb){
+module.exports.unfollowUser = function (userId, followeeId, cb) {
     return repository.User.findOne({
-        where:{
+        where: {
             id: userId
         }
-    }).then(function(user){
-        if(user){
+    }).then(function (user) {
+        if (user) {
             return user.removeFollowee(followeeId)
-            .then(function(data){
-                return cb(null, {
-                    message:"SUCCESS"
+                .then(function (data) {
+                    return cb(null, {
+                        message: "SUCCESS"
+                    });
+                }, function (err) {
+                    return cb(err);
                 });
-            }, function(err){
-                return cb(err);
-            });
         }
         return cb({
             code: 404,
             message: "USER NOT FOUND"
         });
-    }, function(err){
+    }, function (err) {
         return cb(err);
     })
 }
@@ -236,12 +235,12 @@ module.exports.getFollowers = function (userId, limit, offset, cb) {
                     return cb(null, {
                         id: user.id,
                         count,
-                        followers:followers.map(f => ({
-                            id:f.id,
-                            firstName:f.firstName,
-                            lastName:f.lastName,
-                            username:f.username,
-                            email:f.email,
+                        followers: followers.map(f => ({
+                            id: f.id,
+                            firstName: f.firstName,
+                            lastName: f.lastName,
+                            username: f.username,
+                            email: f.email,
                             createdAt: f.UserFollowing.createdAt
                         })),
                         nextOffset: (offset + limit) < count ? (offset + limit) : 0
@@ -287,12 +286,12 @@ module.exports.getFollowees = function (userId, limit, offset, cb) {
                     return cb(null, {
                         id: user.id,
                         count,
-                        followees:followees.map(f => ({
-                            id:f.id,
-                            firstName:f.firstName,
-                            lastName:f.lastName,
-                            username:f.username,
-                            email:f.email,
+                        followees: followees.map(f => ({
+                            id: f.id,
+                            firstName: f.firstName,
+                            lastName: f.lastName,
+                            username: f.username,
+                            email: f.email,
                             createdAt: f.UserFollowing.createdAt
                         })),
                         nextOffset: (offset + limit) < count ? (offset + limit) : 0
@@ -338,11 +337,11 @@ module.exports.getListsAsMember = function (userId, limit, offset, cb) {
                     return cb(null, {
                         id: user.id,
                         count,
-                        listsAsMember:listsAsMember.map(l => ({
-                            id:l.id,
-                            name:l.name,
-                            description:l.description,
-                            data:l.data,
+                        listsAsMember: listsAsMember.map(l => ({
+                            id: l.id,
+                            name: l.name,
+                            description: l.description,
+                            data: l.data,
                             createdAt: f.UserFollowing.createdAt
                         })),
                         nextOffset: (offset + limit) < count ? (offset + limit) : 0
@@ -388,11 +387,11 @@ module.exports.getListsAsSubscriber = function (userId, limit, offset, cb) {
                     return cb(null, {
                         id: user.id,
                         count,
-                        listsAsSubscriber:listsAsSubscriber.map(l => ({
-                            id:l.id,
-                            name:l.name,
-                            description:l.description,
-                            data:l.data,
+                        listsAsSubscriber: listsAsSubscriber.map(l => ({
+                            id: l.id,
+                            name: l.name,
+                            description: l.description,
+                            data: l.data,
                             createdAt: f.UserFollowing.createdAt
                         })),
                         nextOffset: (offset + limit) < count ? (offset + limit) : 0
@@ -438,11 +437,11 @@ module.exports.getListsAsOwner = function (userId, limit, offset, cb) {
                     return cb(null, {
                         id: user.id,
                         count,
-                        listsAsOwner:listsAsOwner.map(l => ({
-                            id:l.id,
-                            name:l.name,
-                            description:l.description,
-                            data:l.data,
+                        listsAsOwner: listsAsOwner.map(l => ({
+                            id: l.id,
+                            name: l.name,
+                            description: l.description,
+                            data: l.data,
                             createdAt: f.UserFollowing.createdAt
                         })),
                         nextOffset: (offset + limit) < count ? (offset + limit) : 0

@@ -15,18 +15,18 @@ export default function authReducer(state = initialState, action) {
     console.log(action.payload);
 
     if (action.type === SIGN_IN) {
+        localStorage.setItem('token', action.payload.data.token);
+        localStorage.setItem('username', action.payload.data.user.username);
+
         return Object.assign({}, state, {
-            signinSuccess: action.payload.signinSuccess,
-            signinMessage: action.payload.signinMessage,
-            userType: action.payload.user.userType,
-            userId: action.payload._id
+            signinSuccess: action.payload.status === "ok" ? true : false,
+            signinMessage: "",
         });
     } else if (action.type === SIGN_UP) {
+
         return Object.assign({}, state, {
-            signupSuccess: action.payload.signupSuccess,
-            signupMessage: action.payload.signupMessage,
-            token: action.payload.token,
-            userId: action.payload._id
+            signupSuccess: action.payload.status === "ok" ? true : false,
+            signupMessage: action.payload.data.message,
         });
     }
 

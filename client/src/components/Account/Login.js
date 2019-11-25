@@ -3,12 +3,12 @@ import logo from '../../static/images/login_twitter_logo.png';
 import {signIn} from "../../redux/actions/authActions";
 import {connect} from "react-redux";
 import {Button, Form} from "react-bootstrap";
+import {Redirect} from "react-router";
 
 function mapStateToProps(store) {
     return {
         signinSuccess: store.auth.signinSuccess,
         signinMessage: store.auth.signinMessage,
-        userId: store.auth.userId
     }
 }
 
@@ -25,43 +25,44 @@ class Login extends Component {
             users:
                 []
         }
-
     }
 
     signIn = (e) => {
         e.preventDefault();
-        //const data = new FormData(e.target);
         const data = {};
         for (let i = 0; i < e.target.length; i++) {
-            if (e.target[i].name !== "") {
-                data[e.target[i].name] = e.target[i].value;
+            if (e.target[i].id !== "") {
+                data[e.target[i].id] = e.target[i].value;
             }
         }
-        data.userType = "buyer";
 
-        this.props.signIn({"user": data});
+        this.props.signIn(data);
     };
 
 
     render() {
         return (
             <div style={styles.container}>
+                {this.props.signinSuccess === true && <Redirect to={{
+                    pathname: "/home"
+                }}/>}
+
                 <div>
                     <img style={styles.logo} src={logo} alt="Quora"/>
                 </div>
                 <h3 style={styles.message}>Log in to Twitter</h3>
                 <Form onSubmit={this.signIn}>
                     <div style={styles.email}>
-                        <Form.Group controlId="formGridEmail">
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control type="email" placeholder="Enter email"/>
+                        <Form.Group controlId="username">
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control placeholder="Enter your username"/>
                         </Form.Group>
                     </div>
 
                     <div style={styles.email}>
-                        <Form.Group controlId="formGridAddress1">
+                        <Form.Group controlId="password">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" placeholder="Enter password"/>
+                            <Form.Control type="password" placeholder="Enter your password"/>
                         </Form.Group>
                     </div>
                     <div>

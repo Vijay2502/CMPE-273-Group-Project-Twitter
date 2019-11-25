@@ -10,9 +10,19 @@ const TweetSchema = new Schema({
 		type: Schema.Types.Mixed,
 		required: true
 	},
+	active: {
+		type: Boolean,
+		default: true
+	},
 	ownerId: {
 		type: Number,
 		required: true
+	},
+	owner: {
+		firstName: String,
+		lastName: String,
+		username: String,
+		image: String
 	},
 	retweet: {
 		isRetweet: Boolean,
@@ -20,13 +30,14 @@ const TweetSchema = new Schema({
 			type: String
 		}
 	},
+	retweetCount: Number,
 	likes: {
 		count: Number,
-		userId: [String]
+		userId: [Number]
 	},
 	views: {
 		count: Number,
-		userId: [String]
+		userId: [Number]
 	},
 	replies: [
 		replySchema
