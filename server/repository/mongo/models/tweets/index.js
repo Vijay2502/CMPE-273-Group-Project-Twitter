@@ -18,7 +18,7 @@ const TweetSchema = new Schema({
 		type: Number,
 		required: true
 	},
-	owner:{
+	owner: {
 		firstName: String,
 		lastName: String,
 		username: String,
@@ -33,11 +33,11 @@ const TweetSchema = new Schema({
 	retweetCount: Number,
 	likes: {
 		count: Number,
-		userId: [String]
+		userId: [Number]
 	},
 	views: {
 		count: Number,
-		userId: [String]
+		userId: [Number]
 	},
 	replies: [
 		replySchema
