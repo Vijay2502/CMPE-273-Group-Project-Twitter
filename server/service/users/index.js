@@ -74,7 +74,7 @@ module.exports.getById = function (userId, cb) {
                         firstName: user.firstName,
                         lastName: user.lastName,
                         username: user.username,
-                        email: user.username,
+                        email: user.email,
                         data: user.data ? user.data : null
                     };
 
@@ -101,30 +101,30 @@ module.exports.getById = function (userId, cb) {
     })
 
 
-    repository.User.findOne({
-        where: {
-            id: userId
-        }
-    }).then(function (user) {
+    // repository.User.findOne({
+    //     where: {
+    //         id: userId
+    //     }
+    // }).then(function (user) {
 
-        if (user) {
-            return cb(null, {
-                id: user.id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                username: user.username,
-                email: user.username,
-                data: user.data ? user.data : null
-            });
-        }
-        return cb({
-            code: 404,
-            message: "USER NOT FOUND"
-        });
+    //     if (user) {
+    //         return cb(null, {
+    //             id: user.id,
+    //             firstName: user.firstName,
+    //             lastName: user.lastName,
+    //             username: user.username,
+    //             email: user.email,
+    //             data: user.data ? user.data : null
+    //         });
+    //     }
+    //     return cb({
+    //         code: 404,
+    //         message: "USER NOT FOUND"
+    //     });
 
-    }, function (err) {
-        return cb(err);
-    });
+    // }, function (err) {
+    //     return cb(err);
+    // });
 }
 
 module.exports.getByEmailOrUsername = function (email, username, cb) {
@@ -146,7 +146,7 @@ module.exports.getByEmailOrUsername = function (email, username, cb) {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 username: user.username,
-                email: user.username,
+                email: user.email,
                 password: user.password,
                 data: user.data ? user.data : null
             });
