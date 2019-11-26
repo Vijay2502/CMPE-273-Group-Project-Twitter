@@ -56,10 +56,10 @@ module.exports.getTweetByTweetId = function (request, response) {
 }
 
 module.exports.likeTweet = function (request, response) {
-    if (!(request.query && request.query.tweetId && request.query.userId)) {
+    if (!(request.params && request.body.tweetId && request.params.userId)) {
         return response.status(400).send("INVALID REQUEST");
     }
-    return tweetService.likeTweet(request.query, function (err, res) {
+    return tweetService.likeTweet(request.params.userId, request.body.tweetId, function (err, res) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
         }
@@ -72,10 +72,10 @@ module.exports.likeTweet = function (request, response) {
 }
 
 module.exports.viewTweet = function (request, response) {
-    if (!(request.params && request.params.tweetId)) {
+    if (!(request.params && request.body.tweetId && request.params.userId)) {
         return response.status(400).send("INVALID REQUEST");
     }
-    return tweetService.viewTweet(request.params.tweetId, function (err, data) {
+    return tweetService.viewTweet(request.params.userId, request.body.tweetId, function (err, res) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
         }
@@ -88,11 +88,12 @@ module.exports.viewTweet = function (request, response) {
 }
 
 module.exports.retweet = function (request, response) {
-    console.log('helo');
-    if (!(request.query && request.query.tweetId && request.query.userId)) {
+    if (!(request.body && request.params.tweetId && request.body.data && request.body.userId && request.body.retweet
+        && request.body.hashTags)) {
         return response.status(400).send("INVALID REQUEST");
     }
-    return tweetService.retweet(request.query, function (err, data) {
+
+    return tweetService.retweet(request.params.tweetId, request.body, function (err, res) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
         }

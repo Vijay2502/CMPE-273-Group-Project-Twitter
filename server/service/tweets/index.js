@@ -5,13 +5,14 @@ const uuidv1 = require('uuid/v1');
 module.exports.create = function (newTweet, cb) {
     //console.log('in service', newTweet);
     repository.Tweet.create({
-        //hardcoding tweetId for testing/////
-        tweetId: "1238",
+        tweetId: uuidv1(),
         data: newTweet.data,
         ownerId: newTweet.ownerId,
+        owner: newTweet.owner,
         retweet: newTweet.retweet,
         likes: { count: 0, userId: [] },
-        views: 0,
+        views: { count: 0, userId: [] },
+        retweetCount: 0,
         replies: [],
         hashTags: newTweet.hashTags
     }).then(function (tweet) {
@@ -30,10 +31,12 @@ module.exports.getByOwnerId = function (ownerId, pagination, cb) {
         .then(function (tweets) {
             return cb(null, tweets.map(tweet => ({
                 id: tweet.tweetId,
-                likes: tweet.likes,
-                views: tweet.views,
+                likes: tweet.likes.count,
+                views: tweet.views.count,
                 replies: tweet.replies,
-                data: tweet.data,
+                retweetCount: tweet.retweetCount,
+                data: tweet.data ? tweet.data : null,
+                retweet: tweet.retweet,
                 hashTags: tweet.hashTags
             })));
 
@@ -54,11 +57,13 @@ module.exports.getByTweetId = function (tweetId, cb) {
                     if (tweet) {
                         var tweetDTO = {
                             id: tweet.tweetId,
-                            likes: tweet.likes,
-                            views: tweet.views,
+                            likes: tweet.likes.count,
+                            views: tweet.views.count,
                             replies: tweet.replies,
-                            hashTags: tweet.hashTags,
-                            data: tweet.data ? tweet.data : null
+                            retweetCount: tweet.retweetCount,
+                            data: tweet.data ? tweet.data : null,
+                            retweet: tweet.retweet,
+                            hashTags: tweet.hashTags
                         };
 
                         cache.set('tweet-getByTweetId-' + tweetId, JSON.stringify(tweetDTO), function (err) {
@@ -87,11 +92,13 @@ module.exports.getByTweetId = function (tweetId, cb) {
     //         if (tweet) {
     //             return cb(null, {
     //                 id: tweet.tweetId,
-    //                 likes: tweet.likes,
-    //                 views: tweet.views,
+    //                 likes: tweet.likes.count,
+    //                 views: tweet.views.count,
     //                 replies: tweet.replies,
-    //                 hashTags: tweet.hashTags,
-    //                 data: tweet.data ? tweet.data : null
+    //                 retweetCount: tweet.retweetCount,
+    //                 data: tweet.data ? tweet.data : null,
+    //                 retweet: tweet.retweet,
+    //                 hashTags: tweet.hashTags
     //             });
     //         }
     //         return cb({
@@ -106,16 +113,16 @@ module.exports.getByTweetId = function (tweetId, cb) {
 }
 
 
-module.exports.likeTweet = function (data, cb) {
+module.exports.likeTweet = function (userId, tweetId, cb) {
     let userId_arr = [];
-    repository.Tweet.findOne({ tweetId: data.tweetId })
+    repository.Tweet.findOne({ tweetId: tweetId })
         .then(
             function (result) {
-                userId_arr = result.likes.userId;
-                if (userId_arr.indexOf(data.userId) == -1) {
+                userId_arr = result.likes.userId ? result.likes.userId : [];
+                if (userId_arr.indexOf(userId) == -1) {
                     repository.Tweet.findOneAndUpdate(
-                        { tweetId: data.tweetId },
-                        { $inc: { "likes.count": 1 }, $push: { "likes.userId": data.userId } }
+                        { tweetId: tweetId },
+                        { $inc: { "likes.count": 1 }, $push: { "likes.userId": userId } }
                     ).then(function (tweet) {
                         return cb(null, "like incremented");
                     });
@@ -130,16 +137,16 @@ module.exports.likeTweet = function (data, cb) {
 }
 
 
-module.exports.viewTweet = function (tweetId, cb) {
+module.exports.viewTweet = function (userId, tweetId, cb) {
     let userId_arr = [];
-    repository.Tweet.findOne({ tweetId: data.tweetId })
+    repository.Tweet.findOne({ tweetId: tweetId })
         .then(
             function (result) {
                 userId_arr = result.views.userId;
-                if (userId_arr.indexOf(data.userId) == -1) {
+                if (userId_arr.indexOf(userId) == -1) {
                     repository.Tweet.findOneAndUpdate(
-                        { tweetId: data.tweetId },
-                        { $inc: { "views.count": 1 }, $push: { "views.userId": data.userId } }
+                        { tweetId: tweetId },
+                        { $inc: { "views.count": 1 }, $push: { "views.userId": userId } }
                     ).then(function (tweet) {
                         return cb(null, "views incremented");
                     });
@@ -154,11 +161,12 @@ module.exports.viewTweet = function (tweetId, cb) {
 }
 
 
-module.exports.bookmarkTweet = function (query, cb) {
-    repository.Tweet.findOne({ tweetId: query.tweetId })
+module.exports.bookmarkTweet = function (userId, tweetId, cb) {
+    let bookmarkedTweets_arr = [];
+    repository.Tweet.findOne({ tweetId: tweetId })
         .then(function (tweet) {
             repository.BookmarkedTweets.update(
-                { "ownerId": query.userId },
+                { "ownerId": userId },
                 {
                     "$push": { "bookMarkedTweets": tweet }
                 }
@@ -173,19 +181,20 @@ module.exports.bookmarkTweet = function (query, cb) {
 
 
 //insert into tweet collection with isRetweet true
-module.exports.retweet = function (query, cb) {
-    repository.Tweet.findOne({ tweetId: query.tweetId })
+module.exports.retweet = function (tweetId, reTweet, cb) {
+    repository.Tweet.findOne({ tweetId: tweetId })
         .then(function (tweet) {
             let obj = {
-                //hardcoding tweetId for testing/////
-                tweetId: "1231",
-                data: tweet.data,
-                ownerId: query.userId,
-                retweet: { isRetweet: true, tweetId: query.tweetId },
-                likes: 0,
-                views: 0,
+                tweetId: uuidv1(),
+                data: reTweet.data,
+                ownerId: reTweet.userId,
+                owner: reTweet.owner,
+                retweet: { isRetweet: true, tweetId: tweetId },
+                likes: { count: 0, userId: [] },
+                views: { count: 0, userId: [] },
+                retweetCount: 0,
                 replies: [],
-                hashTags: tweet.hashTags
+                hashTags: reTweet.hashTags
             }
             repository.Tweet.create(obj)
                 .then(function (result) {
@@ -250,10 +259,12 @@ module.exports.getByList = function (listId, pagination, cb) {
         .then(function (tweets) {
             return cb(null, tweets.map(tweet => ({
                 id: tweet.tweetId,
-                likes: tweet.likes,
-                views: tweet.views,
+                likes: tweet.likes.count,
+                views: tweet.views.count,
                 replies: tweet.replies,
-                data: tweet.data,
+                retweetCount: tweet.retweetCount,
+                data: tweet.data ? tweet.data : null,
+                retweet: tweet.retweet,
                 hashTags: tweet.hashTags
             })));
 
@@ -267,10 +278,12 @@ module.exports.getByHashtag = function (hashtag, pagination, cb) {
         .then(function (tweets) {
             return cb(null, tweets.map(tweet => ({
                 id: tweet.tweetId,
-                likes: tweet.likes,
-                views: tweet.views,
+                likes: tweet.likes.count,
+                views: tweet.views.count,
                 replies: tweet.replies,
-                data: tweet.data,
+                retweetCount: tweet.retweetCount,
+                data: tweet.data ? tweet.data : null,
+                retweet: tweet.retweet,
                 hashTags: tweet.hashTags
             })));
 
