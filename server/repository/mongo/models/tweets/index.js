@@ -39,8 +39,9 @@ const TweetSchema = new Schema({
 		count: Number,
 		userId: [Number]
 	},
+	replyTo: String,
 	replies: [
-		replySchema
+		String
 	],
 	hashTags: [
 		String
