@@ -26,8 +26,11 @@ class tweetlist extends Component {
       userName: "@SiliconHBO",
       name: "SiliconValley",
       users: [],
-      isSubscribed:false
+      isSubscribed:true,
+      buttonText: "Subscribed",
+      class:"btn btn-primary"
     };
+    this.handleClick = this.handleClick.bind(this);
   }
   componentWillMount = () => {
     this.getUser()
@@ -55,9 +58,6 @@ class tweetlist extends Component {
         console.log(error);
       });
   }
-  editProfile = () => {
-    this.setState({ editProfile: true });
-  };
 
   componentDidMount() {
     ///////////// USER CODE TO GO HERE ////////////////////
@@ -69,25 +69,12 @@ class tweetlist extends Component {
     // this.props.getProfile(data);
   }
 
-  cancelEdit = () => {
-    this.setState({ editProfile: false });
-  };
-  saveProfile = () => {
-    // save profile code
-    this.setState({ editProfile: false });
-  };
-
   handleClick(flag){
-     this.state.isSubscribed=flag;
-  }
-  getSubscribeButton = () =>{
-    if (this.state.isSubscribed) {
-     return  <button onClick={this.handleClick(true)}
-         className="button signup-style search-follow-button">Unsubscribe</button>;
-    } else {
-     return <button onClick={this.handleClick(false)}
-        className="button signup-style search-follow-button">Subscribe</button>;
-    }
+    this.state.isSubscribed=flag;
+    console.log(this.state.buttonText);
+     this.setState({
+       buttonText: (this.state.buttonText == "Subscribed")? "Unsubscribed" : "Subscribed",
+       class: (this.state.class == "btn btn-primary")? "btn btn-outline-primary" : "btn btn-primary"})
   }
 
   render() {
@@ -112,19 +99,19 @@ class tweetlist extends Component {
           />
         </div>
         <div class="profile-details row">
-          <div class="col-sm-12">
+          <div class="col-sm-9">
             <div class="profile-name-header ">{this.state.listName}</div>
             <div class="followers-following row">
               <div class="profile-detail-font">{this.state.name}</div>
               <div class="profile-detail-font">{this.state.userName}</div>
             </div>
-            <div>{this.getSubscribeButton}</div>
             <div class="followers-following row">
               <div class="col-sm-2 profile-detail-font">{"2"} Following</div>
               <div class="col-sm-2 profile-detail-font">{"2"} Following</div>
             </div>
           </div>
         </div>
+        <button type="button" class={this.state.class} onClick={()=>this.handleClick(true)}>{this.state.buttonText}</button>
         <div class="heading row"><div class="tweets-heading col-sm-2">Tweets</div></div>
         <div class="tweets-list" row>
           <ViewTweets dataFromParent={this.state.users} />
