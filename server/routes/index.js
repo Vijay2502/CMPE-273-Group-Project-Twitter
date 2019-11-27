@@ -14,11 +14,11 @@ var auth = {
 router.use(passport.initialize());
 
 //USER APIS
-router.post('/user/register', User.register);   ///tested
-router.post('/user/login', User.login);         ///tested
-router.get('/user/:id', User.get);              ///tested
-router.put('/user/:id/follow', User.follow);    ///tested
-router.put('/user/:id/unfollow', User.unfollow); ///tested
+router.post('/user/register', User.register);          ///tested
+router.post('/user/login', User.login);                ///tested
+router.get('/user/:id', User.get);                     ///tested
+router.put('/user/:id/follow', User.follow);           ///tested
+router.put('/user/:id/unfollow', User.unfollow);       ///tested
 router.get('/user/:id/followers', User.getFollowers);  ///tested
 router.get('/user/:id/followees', User.getFollowees);  ///tested
 router.get('/user/:id/subscriber/lists', User.getListsAsSubscriber);
@@ -36,18 +36,18 @@ router.put('/list/:id/remove-member', List.removeMember);
 router.get('/list/:id/members', List.getMembers);
 
 // TWEET APIS
-router.post('/tweet/create', Tweet.createTweet);      ///tested
+router.post('/tweet/create', Tweet.createTweet);                 ///tested
 router.get('/tweet/byOwner/:ownerId', Tweet.getTweetsByOwnerId); ///tested
-router.get('/tweet/byId/:tweetId', Tweet.getTweetByTweetId); ///tested
-router.put('/tweet/:userId/like', Tweet.likeTweet);///tested
-router.put('/tweet/:userId/view', Tweet.viewTweet);///tested
-router.put('/tweet/:userId/bookmark', BookMarkedTweet.bookmarkTweet);///doubt
-router.post('/tweet/:tweetId/retweet', Tweet.retweet);///tested
+router.get('/tweet/byId/:tweetId', Tweet.getTweetByTweetId);      ///tested
+router.put('/tweet/:userId/like', Tweet.likeTweet);               ///tested
+router.put('/tweet/:userId/view', Tweet.viewTweet);                ///tested
+router.put('/tweet/:userId/bookmark', BookMarkedTweet.bookmarkTweet);   ///doubt
+router.post('/tweet/:tweetId/retweet', Tweet.retweet);             ///tested
 //router.post('/tweet/reply', Tweet.reply);
-router.get('/tweet/bySubscriber', Tweet.getTweetsBySubscriber);
-router.delete('/tweet/:tweetId/delete', Tweet.deleteTweet);///tested
-router.get('/tweet/byList/:listId', Tweet.getTweetsByList);///
-router.get('/tweet/getByHashtag/:hashtag', Tweet.getByHashtag);///
+router.get('/tweet/:userId/bySubscriber', Tweet.getTweetsBySubscriber);
+router.delete('/tweet/:tweetId/delete', Tweet.deleteTweet);          ///tested
+router.get('/tweet/byList/:listId', Tweet.getTweetsByList);         ///
+router.get('/tweet/getByHashtag/:hashtag', Tweet.getByHashtag);     ///
 
 
 module.exports = router;
