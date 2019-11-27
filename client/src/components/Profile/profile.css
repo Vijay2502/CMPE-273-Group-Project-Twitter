@@ -80,3 +80,12 @@
 .cover-pic-btn {
     display: none;
 }
+.tweets-heading{
+    border-bottom: solid;
+    border-color: rgb(149, 149, 211);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: lighter;
+    font-family: sans-serif;
+    color: rgb(101, 119, 134);
+}
