@@ -1,10 +1,11 @@
 const repository = require('../../repository/mongo');
+//const User = require('../../repository/mysql').User;
 const cache = require('../../cache');
 const uuidv1 = require('uuid/v1');
 const _ = require('lodash');
 
-function extractHashTags(data){
-    if(data.text && _isString(data.text)){
+function extractHashTags(data) {
+    if (data.text && _isString(data.text)) {
         return data.text.match(/\B(#[A-Za-z0-9\-\.\_\?]+\b)/g);
     }
 }
@@ -16,11 +17,11 @@ module.exports.create = function (newTweet, cb) {
         data: newTweet.data,
         ownerId: newTweet.ownerId,
         owner: newTweet.owner,
-        retweet: { isRetweet: false, tweetId: null},
+        retweet: { isRetweet: false, tweetId: null },
         likes: { count: 0, userId: [] },
         views: { count: 0, userId: [] },
         retweetCount: 0,
-        replyTo: newTweet.replyTo?newTweet.replyTo:null,
+        replyTo: newTweet.replyTo ? newTweet.replyTo : null,
         hashTags: hashTags
     }).then(function (tweet) {
         return cb(null, {
@@ -187,27 +188,29 @@ module.exports.bookmarkTweet = function (userId, tweetId, cb) {
 
 //insert into tweet collection with isRetweet true
 module.exports.retweet = function (tweetId, reTweet, cb) {
-    repository.Tweet.findOne({ tweetId: tweetId })
-        .then(function (tweet) {
-            let obj = {
-                tweetId: uuidv1(),
-                data: reTweet.data,
-                ownerId: reTweet.userId,
-                owner: reTweet.owner,
-                retweet: { isRetweet: true, tweetId: tweetId },
-                likes: { count: 0, userId: [] },
-                views: { count: 0, userId: [] },
-                retweetCount: 0,
-                hashTags: reTweet.hashTags
+    repository.Tweet.findOneAndUpdate({ tweetId: tweetId },
+        { $inc: { "retweetCount": 1 } }
+    ).then(function (tweet) {
+        let obj = {
+            tweetId: uuidv1(),
+            data: reTweet.data,
+            ownerId: reTweet.userId,
+            owner: reTweet.owner,
+            retweet: { isRetweet: true, tweetId: tweetId },
+            likes: { count: 0, userId: [] },
+            views: { count: 0, userId: [] },
+            retweetCount: 0,
+            replies: [],
+            hashTags: reTweet.hashTags
+        }
+        repository.Tweet.create(obj)
+            .then(function (result) {
+                return cb(null, result);
             }
-            repository.Tweet.create(obj)
-                .then(function (result) {
-                    return cb(null, result);
-                }
-                )
-        }, function (err) {
-            return cb(err);
-        });
+            )
+    }, function (err) {
+        return cb(err);
+    });
 }
 
 module.exports.reply = function (hostTweetId, replyTweet, cb) {
@@ -217,27 +220,27 @@ module.exports.reply = function (hostTweetId, replyTweet, cb) {
     }, cb);
 }
 
-module.exports.getReplies = function(tweetId, limit, offset, cb) {
+module.exports.getReplies = function (tweetId, limit, offset, cb) {
     repository.Tweet.find({
         replyTo: tweetId
     },
-    null,
-    {
-        skip: offset? offset: 0,
-        limit: limit? limit: Number(process.env.DEFAULT_PAGE_LIMIT)
-    }).then(function(tweets){
-        return cb(null, tweets);
-    }, function (err) {
+        null,
+        {
+            skip: offset ? offset : 0,
+            limit: limit ? limit : Number(process.env.DEFAULT_PAGE_LIMIT)
+        }).then(function (tweets) {
+            return cb(null, tweets);
+        }, function (err) {
             return cb(err);
-    });
+        });
 }
 
-module.exports.getTweetsBySubscriber = function (request, pagination, cb) {
-    ///array of userId's of Subscriber
+module.exports.getTweetsBySubscriber = function (userId, pagination, cb) {
+    ///get user's subscriber in array -- only id's
     let arr = [1, 2]
+
     repository.Tweet.find(
-        { "ownerId": { "$in": arr } }, null, pagination
-    )
+        { "ownerId": { "$in": arr } }, null, pagination)
         .then(function (tweets) {
             return cb(null, tweets);
         }, function (err) {

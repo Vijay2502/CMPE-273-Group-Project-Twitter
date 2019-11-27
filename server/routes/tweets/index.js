@@ -133,7 +133,7 @@ module.exports.getTweetsBySubscriber = function (request, response) {
     if (request.query.skip) pagination.skip = Number(request.query.skip);
     if (request.query.limit) pagination.limit = Number(request.query.limit);
 
-    return tweetService.getTweetsBySubscriber(request, pagination, function (err, data) {
+    return tweetService.getTweetsBySubscriber(request.params.userId, pagination, function (err, res) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
         }
