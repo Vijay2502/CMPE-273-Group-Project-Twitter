@@ -1,6 +1,9 @@
-import React, {Component} from "react";
-import {Modal} from "react-bootstrap";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import React, { Component } from "react";
+import { Modal } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import {
     faBell,
     faBookmark,
@@ -12,17 +15,18 @@ import {
     faListAlt,
     faUserCircle
 } from "@fortawesome/free-solid-svg-icons";
-import {faTwitter} from "@fortawesome/free-brands-svg-icons";
+import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import "./sidebar.css";
 
 // import "../../images/home.png";
 class Sidebar extends Component {
     constructor(props) {
         super(props);
-        this.state = {openTweetModal: false};
+        this.state = { openTweetModal: false, anchorEl: null, setAnchorEl: null };
         this.newTweet = this.newTweet.bind(this);
         this.cancelTweet = this.cancelTweet.bind(this);
         this.onFileChange = this.onFileChange.bind(this);
+        // const [anchorEl, setAnchorEl] = React.useState(null);
     }
 
     onFileChange(files) {
@@ -50,17 +54,25 @@ class Sidebar extends Component {
     }
 
     newTweet = e => {
-        this.setState({openTweetModal: true});
+        this.setState({ openTweetModal: true });
     };
 
     cancelTweet = e => {
-        this.setState({openTweetModal: false});
+        this.setState({ openTweetModal: false });
     };
 
     sendData = (screenName) => {
         console.log("In sendData");
         console.log("screenName: " + screenName);
         this.props.parentCallback(screenName);
+    };
+    handleClick = event => {
+        console.log("value: ", event.currentTarget);
+        this.setState({ anchorEl: event.currentTarget })
+    };
+
+    handleClose = () => {
+        this.setState({ anchorEl: null });
     };
 
     render() {
@@ -69,7 +81,7 @@ class Sidebar extends Component {
                 <div class="col-sm-3 sidebar">
                     <div class="list-group sidebar-list col-sm-5">
                         <div className="twitter-icon">
-                            <FontAwesomeIcon icon={faTwitter}/>
+                            <FontAwesomeIcon icon={faTwitter} />
                         </div>
 
                         <button
@@ -77,7 +89,7 @@ class Sidebar extends Component {
                             class="list-group-item list-group-item-action borderless sidebar-button"
                             onClick={() => this.sendData("Home")}>
                             {/* <img src={require("../../images/home.png")} height="35" /> */}
-                            <FontAwesomeIcon icon={faHome}/>
+                            <FontAwesomeIcon icon={faHome} />
                             <span>Home</span>
                         </button>
                         <button
@@ -85,14 +97,14 @@ class Sidebar extends Component {
                             class="list-group-item list-group-item-action borderless"
                         >
                             {/* <img src={require("../../images/explore.png")} height="35" /> */}
-                            <FontAwesomeIcon icon={faHashtag}/>
+                            <FontAwesomeIcon icon={faHashtag} />
                             <span>Explore</span>
                         </button>
                         <button
                             type="button"
                             class="list-group-item list-group-item-action borderless"
                         >
-                            <FontAwesomeIcon icon={faBell}/>
+                            <FontAwesomeIcon icon={faBell} />
                             <span>Notification</span>
                         </button>
                         <button
@@ -100,21 +112,21 @@ class Sidebar extends Component {
                             class="list-group-item list-group-item-action borderless"
                         >
                             {/* <img src={require("../../images/message.png")} height="35" /> */}
-                            <FontAwesomeIcon icon={faEnvelope}/>
+                            <FontAwesomeIcon icon={faEnvelope} />
                             <span>Messages</span>
                         </button>
                         <button
                             type="button"
                             class="list-group-item list-group-item-action borderless"
                         >
-                            <FontAwesomeIcon icon={faBookmark}/>
+                            <FontAwesomeIcon icon={faBookmark} />
                             <span>Bookmarks</span>
                         </button>
                         <button
                             type="button"
                             class="list-group-item list-group-item-action borderless"
                             onClick={() => this.sendData("Profile")}>
-                            <FontAwesomeIcon icon={faUserCircle}/>
+                            <FontAwesomeIcon icon={faUserCircle} />
                             <span>Profile</span>
                         </button>
                         <button
@@ -122,16 +134,31 @@ class Sidebar extends Component {
                             class="list-group-item list-group-item-action borderless"
                             onClick={() => this.sendData("List")}
                         >
-                            <FontAwesomeIcon icon={faListAlt}/>
+                            <FontAwesomeIcon icon={faListAlt} />
                             <span>List</span>
                         </button>
-                        <button
+                        <Button class="list-group-item list-group-item-action borderless" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}  >
+                            <FontAwesomeIcon icon={faEllipsisH} />
+                            <span>More</span>
+                        </Button>
+                        <Menu
+                            id="simple-menu"
+                            anchorEl={this.state.anchorEl}
+                            keepMounted
+                            open={Boolean(this.state.anchorEl)}
+                            onClose={this.handleClose}
+                        >
+                            <MenuItem onClick={this.handleClose}>Analytics</MenuItem>
+                            <MenuItem onClick={this.handleClose}>Settings and privicy</MenuItem>
+                            <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+                        </Menu>
+                        {/* <button
                             type="button"
                             class="list-group-item list-group-item-action borderless"
                         >
-                            <FontAwesomeIcon icon={faEllipsisH}/>
+                            <FontAwesomeIcon icon={faEllipsisH} />
                             <span>More</span>
-                        </button>
+                        </button> */}
                         <button
                             type="button"
                             onClick={this.newTweet}
@@ -152,18 +179,19 @@ class Sidebar extends Component {
                     <Modal.Body>
                         <form>
                             <div class="tweet-container row">
-                                {/*<div class="col-sm-1">*/}
-                                {/*  <img*/}
-                                {/*    src={require("../../images/profile.png")}*/}
-                                {/*    height="35"*/}
-                                {/*    width="35"*/}
-                                {/*  />*/}
-                                {/*</div>*/}
+                                <div class="col-sm-1">
+                                    <img
+                                        src={require("../../images/profile.png")}
+                                        height="35"
+                                        width="35"
+                                    />
+                                </div>
                                 <div class="text-area-container col-sm-11">
-                  <textarea
-                      class="form-control text-area"
-                      id="message-text"
-                  ></textarea>
+                                    <textarea
+                                        class="form-control text-area"
+                                        id="message-text"
+                                        value="What's happening"
+                                    ></textarea>
                                 </div>
                             </div>
                         </form>
@@ -179,7 +207,7 @@ class Sidebar extends Component {
                             ></input>
 
                             <label for="img-upload">
-                                <FontAwesomeIcon icon={faImage}/>
+                                <FontAwesomeIcon icon={faImage} />
                             </label>
                         </div>
                         <div class="btn-tweet">

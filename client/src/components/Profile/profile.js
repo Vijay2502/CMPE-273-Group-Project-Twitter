@@ -1,8 +1,9 @@
-import React, {Component} from "react";
-import {Form, Modal} from "react-bootstrap";
+import React, { Component } from "react";
+import { Form, Modal } from "react-bootstrap";
 import "./profile.css";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBirthdayCake, faCalendarAlt} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBirthdayCake, faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
+import ViewTweets from "../Tweet/ViewTweets";
 ////////////////////// REDUX CODE //////////////////////
 // function mapStateToProps(store) {
 //   return {
@@ -19,14 +20,40 @@ class profile extends Component {
         super(props);
         this.state = {
             editProfile: false, //for modal
-            testName: "Akshit Ahuja"
+            testName: "Akshit Ahuja",
+            users: []
         };
         this.onCoverPicUpload = this.onCoverPicUpload.bind(this);
         this.onProfilePicUpload = this.onProfilePicUpload.bind(this);
     }
+    componentWillMount = () => {
+        this.getUser()
+    }
 
+    getUser = () => {
+        fetch('https://randomuser.me/api/')
+            .then(response => {
+                if (response.ok) return response.json();
+                throw new Error('Request failed.');
+            })
+            .then(data => {
+                this.setState({
+                    users: [
+                        {
+                            name: data.results[0].name,
+                            image: data.results[0].picture.medium,
+                            tweet: data.results[0].email,
+                        },
+                        ...this.state.users,
+                    ]
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
     editProfile = () => {
-        this.setState({editProfile: true});
+        this.setState({ editProfile: true });
     };
 
     componentDidMount() {
@@ -40,11 +67,11 @@ class profile extends Component {
     }
 
     cancelEdit = () => {
-        this.setState({editProfile: false});
+        this.setState({ editProfile: false });
     };
     saveProfile = () => {
         // save profile code
-        this.setState({editProfile: false});
+        this.setState({ editProfile: false });
     };
 
     onCoverPicUpload(files) {
@@ -97,7 +124,7 @@ class profile extends Component {
 
     render() {
         return (
-            <div class="profile-container col-sm-6">
+            <div class="profile-container col-sm-10">
                 <div class="top-details row">
                     <div class="offset-sm-1">
                         <div class="profile-name-header">Akshit</div>
@@ -113,7 +140,7 @@ class profile extends Component {
                 </div>
                 <div class="profile-pic-btn-container row">
                     <div class="profile-profile-pic col-sm-6">
-                        <img src={require("../../static/images/profile_pic.png")} height="120"/>
+                        <img src={require("../../static/images/profile_pic.png")} height="120" />
                     </div>
                     <div class="col-sm-6 edit-btn">
                         <button
@@ -125,18 +152,17 @@ class profile extends Component {
                         </button>
                     </div>
                 </div>
-
                 <div class="profile-details row">
                     <div class="col-sm-12">
                         <div class="profile-name-header ">Akshit Ahuja</div>
                         <div class="profile-detail-font">@{"AkshitAhuja19"}</div>
                         <div class="profile-dates row">
                             <div class="col-sm-3 profile-detail-font">
-                                <FontAwesomeIcon icon={faBirthdayCake}/>
+                                <FontAwesomeIcon icon={faBirthdayCake} />
                                 <span> born Jan 10, 1992</span>
                             </div>
                             <div class="col-sm-3 profile-detail-font">
-                                <FontAwesomeIcon icon={faCalendarAlt}/>
+                                <FontAwesomeIcon icon={faCalendarAlt} />
                                 <span> Joined Oct 2019</span>
                             </div>
                         </div>
@@ -146,6 +172,11 @@ class profile extends Component {
                         </div>
                     </div>
                 </div>
+                <div class="heading row"><div class="tweets-heading col-sm-2">Tweets</div></div>
+                <div class="tweets-list" row>
+                    <ViewTweets dataFromParent={this.state.users} />
+                </div>
+
                 <Modal
                     show={this.state.editProfile}
                     onHide={this.cancelEdit}
@@ -220,11 +251,11 @@ class profile extends Component {
                                 </Form.Group>
                                 <Form.Group controlId="formGridLocation">
                                     <Form.Label>Location</Form.Label>
-                                    <Form.Control placeholder="Add Your Location" value=""/>
+                                    <Form.Control placeholder="Add Your Location" value="" />
                                 </Form.Group>
                                 <Form.Group controlId="formGridWebsite">
                                     <Form.Label>Website</Form.Label>
-                                    <Form.Control placeholder="Add your Website" value=""/>
+                                    <Form.Control placeholder="Add your Website" value="" />
                                 </Form.Group>
                             </Form>
                         </div>

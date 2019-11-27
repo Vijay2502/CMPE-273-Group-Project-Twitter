@@ -8,25 +8,25 @@ const Tweet_producer = require('../kafka-producer').Tweet;
 const List = require('./lists');
 var passport = require('passport');
 var auth = {
-    userAuth: passport.authenticate('jwt', {session: false})
+    userAuth: passport.authenticate('jwt', { session: false })
 };
 
 router.use(passport.initialize());
 
 //USER APIS
-router.post('/user/register', User.register);
-router.post('/user/login', User.login);
-router.get('/user/:id', User.get);
-router.put('/user/:id/follow', User.follow);
-router.put('/user/:id/unfollow', User.unfollow);
-router.get('/user/:id/followers', User.getFollowers);
-router.get('/user/:id/followees', User.getFollowees);
+router.post('/user/register', User.register);   ///tested
+router.post('/user/login', User.login);         ///tested
+router.get('/user/:id', User.get);              ///tested
+router.put('/user/:id/follow', User.follow);    ///tested
+router.put('/user/:id/unfollow', User.unfollow); ///tested
+router.get('/user/:id/followers', User.getFollowers);  ///tested
+router.get('/user/:id/followees', User.getFollowees);  ///tested
 router.get('/user/:id/subscriber/lists', User.getListsAsSubscriber);
 router.get('/user/:id/memeber/lists', User.getListsAsMember);
 router.get('/user/:id/owner/lists', User.getListsAsOwner);
 
 //LIST APIS
-router.post('/list/create', List.create);
+router.post('/list/create', List.create); /// bug
 router.get('/list/get/:id', List.get);
 router.put('/list/:id/subscribe', List.subscribe);
 router.put('/list/:id/unsubscribe', List.unsubscribe);
@@ -36,18 +36,18 @@ router.put('/list/:id/remove-member', List.removeMember);
 router.get('/list/:id/members', List.getMembers);
 
 // TWEET APIS
-router.post('/tweet/create', Tweet.createTweet);
-router.get('/tweet/byOwner/:ownerId', Tweet.getTweetsByOwnerId);
-router.get('/tweet/byId/:tweetId', Tweet.getTweetByTweetId);
-router.put('/tweet/like', Tweet.likeTweet);
-router.put('/tweet/:tweetId/view', Tweet.viewTweet);
-router.put('/tweet/bookmark', BookMarkedTweet.bookmarkTweet);
-router.post('/tweet/retweet', Tweet.retweet);
+router.post('/tweet/create', Tweet.createTweet);      ///tested
+router.get('/tweet/byOwner/:ownerId', Tweet.getTweetsByOwnerId); ///tested
+router.get('/tweet/byId/:tweetId', Tweet.getTweetByTweetId); ///tested
+router.put('/tweet/:userId/like', Tweet.likeTweet);///tested
+router.put('/tweet/:userId/view', Tweet.viewTweet);///tested
+router.put('/tweet/:userId/bookmark', BookMarkedTweet.bookmarkTweet);///doubt
+router.post('/tweet/:tweetId/retweet', Tweet.retweet);///tested
 //router.post('/tweet/reply', Tweet.reply);
 router.get('/tweet/bySubscriber', Tweet.getTweetsBySubscriber);
-router.delete('/tweet/:tweetId/delete', Tweet.deleteTweet);
-router.get('/tweet/byList/:listId', Tweet.getTweetsByList);
-router.get('/tweet/getByHashtag/:hashtag', Tweet.getByHashtag);
+router.delete('/tweet/:tweetId/delete', Tweet.deleteTweet);///tested
+router.get('/tweet/byList/:listId', Tweet.getTweetsByList);///
+router.get('/tweet/getByHashtag/:hashtag', Tweet.getByHashtag);///
 
 
 module.exports = router;
