@@ -1,24 +1,23 @@
 const listService = require('../../service/lists');
 
 module.exports.create = function (request, response) {
-    if (!(request.body.ownerId && request.body.name && request.body.description)) {
+    if (!(request.body.userId && request.body.name && request.body.description)) {
         return response.status(400).send("INVALID REQUEST");
     }
-    return listService.getByName(request.body.name, request.body.ownerId, function (err, list) {
-        if (err)
-            return response.status(500).send(err);
-        if (user) {
+    return listService.getByName(request.body.name, request.body.userId, function (err, list) {
+        if (err) {
+            return listService.create(request.body, function (err, data) {
+                if (err) return response.status(err.code ? err.code : 500).send(err);
+
+                return response.send({
+                    status: "ok",
+                    data: data
+                });
+            });
+        }
+        if (list) {
             return response.status(400).send("LIST NAME ALREADY EXITS FOR USER");
         }
-
-        return listService.create(request.body, function (err, data) {
-            if (err) return response.status(err.code ? err.code : 500).send(err);
-
-            return response.send({
-                status: "ok",
-                data: data
-            });
-        });
     });
 
 }
@@ -34,7 +33,7 @@ module.exports.update = function (request, response) {
 
 }
 
-module.exports.get = function (request, response) {   
+module.exports.get = function (request, response) {
 
     return listService.getById(request.params.id, function (err, data) {
         if (err) {
