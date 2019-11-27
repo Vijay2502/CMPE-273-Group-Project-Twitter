@@ -93,29 +93,6 @@ module.exports.getByTweetId = function (tweetId, cb) {
                 });
         }
     })
-    // repository.Tweet.findOne({ tweetId: tweetId })
-    //     .then(function (tweet) {
-    //         if (tweet) {
-    //             return cb(null, {
-    //                 id: tweet.tweetId,
-    //                 likes: tweet.likes.count,
-    //                 views: tweet.views.count,
-    //                 replies: tweet.replies,
-    //                 retweetCount: tweet.retweetCount,
-    //                 data: tweet.data ? tweet.data : null,
-    //                 retweet: tweet.retweet,
-    //                 hashTags: tweet.hashTags
-    //             });
-    //         }
-    //         return cb({
-    //             code: 404,
-    //             message: "TWEET NOT FOUND"
-    //         });
-
-    //     }, function (err) {
-    //         return cb(err);
-    //     });
-
 }
 
 
@@ -143,22 +120,26 @@ module.exports.likeTweet = function (userId, tweetId, cb) {
 }
 
 
+
+//get tweetbyId and view count increment in one api/////
 module.exports.viewTweet = function (userId, tweetId, cb) {
     let userId_arr = [];
     repository.Tweet.findOne({ tweetId: tweetId })
         .then(
             function (result) {
                 userId_arr = result.views.userId;
-                if (userId_arr.indexOf(userId) == -1) {
+                // if user is viewing the tweet 1st time
+                if (userId_arr.indexOf(userId) == -1 && result.ownerId != userId) {
                     repository.Tweet.findOneAndUpdate(
                         { tweetId: tweetId },
                         { $inc: { "views.count": 1 }, $push: { "views.userId": userId } }
                     ).then(function (tweet) {
-                        return cb(null, "views incremented");
+                        return cb(null, tweet);
                     });
                 }
+                // if user is viewing the tweet more than 1 time
                 else {
-                    return cb(null, "user already viewed this tweet ");
+                    return cb(null, result);
                 }
             }, function (err) {
                 return cb(err);
