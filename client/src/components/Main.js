@@ -8,6 +8,7 @@ import NavPage from "./NavPage/NavPage";
 import Login from "./Account/Login";
 import SignUp from "./Account/SignUp";
 import AnalyticsMain from "./Analytics/AnalyticsMain";
+import tweetlist from "./List/tweetlist";
 
 class Main extends Component {
     render() {
@@ -16,7 +17,8 @@ class Main extends Component {
                 <Route exact path="/" component={NavPage}/>
                 <Route exact path="/home" component={HomePage}/>
                 <Route path="/profile" component={Profile}/>
-                <Route exact path="/list" component={ListPage}/>
+                <Route path="/listtweet" component={tweetlist}/>
+                {/* <Route exact path="/list" component={ListPage}/> */}
                 <Route exact path="/tweetlist" component={HomeTweetList}/>
                 <Route exact path="/login" component={Login}/>
                 <Route exact path="/signup" component={SignUp}/>

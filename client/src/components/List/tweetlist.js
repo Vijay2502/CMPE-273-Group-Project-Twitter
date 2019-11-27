@@ -1,35 +1,39 @@
-import React, { Component } from 'react';
-import { PullToRefresh, PullDownContent, ReleaseContent, RefreshContent } from "react-js-pull-to-refresh";
-import '../../css/list.css'
-import HomeTweetList from '../HomeTweetList/listview';
+import React, { Component } from "react";
+import "../Profile/profile.css";
+import ViewTweets from "../Tweet/ViewTweets";
+import GridLayout from 'react-grid-layout';
+import Search from '../List/search';
+import Sidebar from '../Sidebar/sidebar';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBirthdayCake, faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
+////////////////////// REDUX CODE //////////////////////
+// function mapStateToProps(store) {
+//   return {
+//     profile_image: store.login.profile_image
+//   };
+// }
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     getResProfile: data => dispatch(getResProfile(data))
+// }
 
-class TweetList extends Component {
+class tweetlist extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      users:
-        [
-        ],
-      isOwner: true,
-      isSubscriber: false,
-      isMember:false
-    }
-
-    this.handleRefresh = this.handleRefresh.bind(this)
-    this.getUser = this.getUser.bind(this)
+      editProfile: false, //for modal
+      listName: "Cast and Crew",
+      userName: "@SiliconHBO",
+      name: "SiliconValley",
+      users: [],
+      isSubscribed:false
+    };
   }
-
-  handleRefresh() {
-    //dispatch
-    return new Promise((resolve) => {
-      this.getUser()
-    });
-  }
-  componentWillMount() {
+  componentWillMount = () => {
     this.getUser()
   }
 
-  getUser() {
+  getUser = () => {
     fetch('https://randomuser.me/api/')
       .then(response => {
         if (response.ok) return response.json();
@@ -51,164 +55,88 @@ class TweetList extends Component {
         console.log(error);
       });
   }
-  showOwnerBox() {
-    this.setState({isOwner: true, isSubscriber: false,isMember:false});
+  editProfile = () => {
+    this.setState({ editProfile: true });
+  };
+
+  componentDidMount() {
+    ///////////// USER CODE TO GO HERE ////////////////////
+    // const email = localStorage.getItem("email_id");
+    // const data = {
+    // email_id: email
+    // };
+    // console.log("data    " + JSON.stringify(data));
+    // this.props.getProfile(data);
   }
 
-  showSubscriberBox(){
-    this.setState({isOwner: false, isSubscriber: true,isMember:false});
+  cancelEdit = () => {
+    this.setState({ editProfile: false });
+  };
+  saveProfile = () => {
+    // save profile code
+    this.setState({ editProfile: false });
+  };
+
+  handleClick(flag){
+     this.state.isSubscribed=flag;
   }
-
-showMemberBox() {
-  this.setState({isOwner: false, isSubscriber: false,isMember:true});
-}
-
-  showContent(){
-   let content = this.state.users.map((user, index) => {
-      let name = `${user.name.first} ${user.name.last}`
-      let handle = `@${user.name.first}${user.name.last}`
-      let image = user.image
-      let tweet = user.tweet
-      console.log(image)
-      return (
-   <TweetBody
-            key={index}
-            name={name}
-            handle={handle}
-            tweet={tweet}
-            image={image} />
-        
-      )
-    })
-    return content;
+  getSubscribeButton = () =>{
+    if (this.state.isSubscribed) {
+     return  <button onClick={this.handleClick(true)}
+         className="button signup-style search-follow-button">Unsubscribe</button>;
+    } else {
+     return <button onClick={this.handleClick(false)}
+        className="button signup-style search-follow-button">Subscribe</button>;
+    }
   }
-
 
   render() {
     return (
-      <PullToRefresh
-        pullDownContent={<PullDownContent />}
-        releaseContent={<ReleaseContent />}
-        refreshContent={<RefreshContent />}
-        pullDownThreshold={2}
-        onRefresh={this.handleRefresh}
-        triggerHeight={50}
-        backgroundColor='black'>
-        <div className="main-body">
-        <div className="list-body">
-      <div className="box-controller">
-       <div
-         className={"controller " + (this.state.isOwner
-         ? "selected-controller"
-         : "")}
-         onClick={this
-         .showOwnerBox
-         .bind(this)}>
-         Tweets
-       </div>
-       <div
-         className={"controller " + (this.state.isSubscriber
-         ? "selected-controller"
-         : "")}
-         onClick={this
-         .showSubscriberBox
-         .bind(this)}>
-         Members
-       </div>
-       <div
-         className={"controller " + (this.state.isMember
-         ? "selected-controller"
-         : "")}
-         onClick={this
-         .showMemberBox
-         .bind(this)}>
-         Subsribers
-       </div>
-     </div>
-    </div>
-          {[...this.state.users].map((user, index) => {
-            let name = `${user.name.first} ${user.name.last}`
-            let handle = `@${user.name.first}${user.name.last}`
-            let image = user.image
-            let tweet = user.tweet
-            console.log(image)
-            return (
-              <div>
-              <TweetBody
-                  key={index}
-                  name={name}
-                  handle={handle}
-                  tweet={tweet}
-                  image={image} />
-
-              <div style={styles.container}>
-                <button
-                    type="button"
-                    className="list-group-item list-group-item-action borderless"
-                    style={styles.reply}
-                    onClick={this.openCommentModal}
-                >
-                  <FontAwesomeIcon icon={faComment}/>
-                </button>
-                <button
-                    type="button"
-                    className="list-gr oup-item list-group-item-action borderless"
-                    style={styles.retweet}
-                >
-                  <FontAwesomeIcon icon={faRetweet}/>
-                </button>
-                <button
-                    type="button"
-                    className="list-group-item list-group-item-action borderless"
-                    style={styles.like}
-                >
-                  <FontAwesomeIcon icon={faHeart}/>
-                </button>
-                <button
-                    type="button"
-                    className="list-gr oup-item list-group-item-action borderless"
-                    style={styles.share}
-                >
-                  <FontAwesomeIcon icon={faShareSquare}/>
-                </button>
-
-                <Modal
-                    show={this.state.openCommentModal}
-                    onHide={this.closeCommentModal}
-                    animation={false}
-                    style={{width: 666}}
-                >
-                  <Tweet/>
-                </Modal>
-              </div>
+      <GridLayout className="layout" cols={12} rowHeight={30} width={1200}>
+                <div key="a" data-grid={{x: 0, y: 0, w: 5, h: 2, static: true}}>
+                    <Sidebar parentCallback={this.callbackFunction}/>
+                </div>
+                <div key="b" data-grid={{x: 10, y: 0, w: 8, h: 2, static: true}}>
+      <div class="profile-container col-sm-10">
+        <div class="top-details row">
+          <div class="offset-sm-1">
+            <div class="profile-name-header">{this.state.listName}</div>
+            <div class="profile-tweets-header">{this.state.userName}</div>
+          </div>
+        </div>
+        <div class="profile-cover-pic row">
+          <img
+            src={require("../../static/images/cover_pic1.png")}
+            width="100%"
+            height="200px"
+          />
+        </div>
+        <div class="profile-details row">
+          <div class="col-sm-12">
+            <div class="profile-name-header ">{this.state.listName}</div>
+            <div class="followers-following row">
+              <div class="profile-detail-font">{this.state.name}</div>
+              <div class="profile-detail-font">{this.state.userName}</div>
             </div>
-        )
-      })}
-    </div>
-      </PullToRefresh>
+            <div>{this.getSubscribeButton}</div>
+            <div class="followers-following row">
+              <div class="col-sm-2 profile-detail-font">{"2"} Following</div>
+              <div class="col-sm-2 profile-detail-font">{"2"} Following</div>
+            </div>
+          </div>
+        </div>
+        <div class="heading row"><div class="tweets-heading col-sm-2">Tweets</div></div>
+        <div class="tweets-list" row>
+          <ViewTweets dataFromParent={this.state.users} />
+        </div>
+      </div>
+     </div>
+      <div key="c" data-grid={{x: 5, y: 0, w: 6, h: 2, static: true}}><Search/></div>
+</GridLayout>
     );
   }
 }
 
-const styles = {
-  container: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
-  reply: {
-    //alignItems: "left",
-  },
-  retweet: {
-    //alignItems: "center",
-  },
-  like: {
-    //alignItems: "center",
-  },
-  share: {
-    //alignItems: "right",
-  }
-};
-
-export default TweetList;
-
+export default tweetlist;
+/////////////////////// CALL FOR REDUX ACTION ///////////////////
+// export default connect(mapStateToProps,mapDispatchToProps)(profile);

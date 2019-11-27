@@ -2,13 +2,27 @@ import React, {Component} from 'react';
 import {PullDownContent, PullToRefresh, RefreshContent, ReleaseContent} from "react-js-pull-to-refresh";
 import '../../css/list.css'
 import {TweetBody} from './listview.js'
+import {connect} from "react-redux";
+import {signUp} from "../../redux/actions/authActions";
+
+function mapStateToProps(store) {
+    return {
+        signupSuccess: store.auth.signupSuccess,
+        signupMessage: store.auth.signupMessage,
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        signUp: (payload) => dispatch(signUp(payload))
+    };
+}
 
 class List extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            users:
-                [],
+            users:[],
             isOwner: true,
             isSubscriber: false,
             isMember: false
@@ -149,5 +163,5 @@ class List extends Component {
     }
 }
 
-export default List;
+export default connect(mapStateToProps, mapDispatchToProps)(List);
 
