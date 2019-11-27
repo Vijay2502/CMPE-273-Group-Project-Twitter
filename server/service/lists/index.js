@@ -5,12 +5,11 @@ module.exports.create = function (newList, cb) {
     return repository.List.create({
         name: newList.name,
         description: newList.description,
-        userId: newList.ownerId,
+        userId: newList.userId,
         data: newList.data ? newList.data : null
     }).then(function (list) {
-
         if (list) {
-            return list.addMember(ownerId)
+            return list.addMember(newList.userId)
                 .then(function (data) {
                     return cb(null, { list });
                 }, function (err) {
