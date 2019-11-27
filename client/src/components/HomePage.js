@@ -9,7 +9,7 @@ import Tweet from "./Tweet/CreateTweet";
 import GridLayout from 'react-grid-layout';
 import Search from '../components/List/search.js'
 import CreateList from '../components/List/createlist.js';
-
+import BookMarks from './Tweet/BookMarkedTweets';
 class HomePage extends Component {
     constructor(props) {
         super(props);
@@ -43,6 +43,9 @@ class HomePage extends Component {
 
                     {this.state.currentScreen === "Messages" &&
                         <Messages />}
+
+                     {this.state.currentScreen === "Bookmarks" &&
+                        <BookMarks />}
 
                     {this.state.currentScreen === "List" &&
                     <div>

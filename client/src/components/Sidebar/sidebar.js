@@ -119,6 +119,7 @@ class Sidebar extends Component {
                         <button
                             type="button"
                             class="list-group-item list-group-item-action borderless"
+                            onClick={() => this.sendData("Bookmarks")}
                         >
                             <FontAwesomeIcon icon={faBookmark} />
                             <span>Bookmarks</span>
