@@ -6,6 +6,8 @@ import Profile from './Profile/profile'
 import List from './List/list'
 import Tweet from "./Tweet/CreateTweet";
 import GridLayout from 'react-grid-layout';
+import Search from '../components/List/search.js'
+import CreateList from '../components/List/createlist.js';
 
 class HomePage extends Component {
     constructor(props) {
@@ -39,10 +41,14 @@ class HomePage extends Component {
                     <Profile/>}
 
                     {this.state.currentScreen === "List" &&
-                    <List/>}
+                    <div>
+                     <h2>List</h2>
+                     <CreateList/>
+                     <List/>
+                 </div>}
 
                 </div>
-
+                <div key="c" data-grid={{x: 5, y: 0, w: 6, h: 2, static: true}}><Search/></div>
 
             </GridLayout>
         );

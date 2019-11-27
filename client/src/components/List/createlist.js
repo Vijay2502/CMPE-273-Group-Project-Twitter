@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal} from "react-bootstrap";
+import {Form,Modal} from "react-bootstrap";
 import '../../css/createlist.css'
 import AssignmentSharpIcon from '@material-ui/icons/AssignmentSharp';
 import IconButton from '@material-ui/core/IconButton';
@@ -7,17 +7,35 @@ import IconButton from '@material-ui/core/IconButton';
 class CreateList extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {openTweetModal: false};
-        this.newList = this.newList.bind(this);
-        this.cancelList = this.cancelList.bind(this);
+        this.state = {
+            openListModal: false,
+            addMemberModal:false,
+            name:"",
+            description:""
+        }
+        // this.newList = this.newList.bind(this);
+        // this.createList = this.createList.bind(this);
     }
 
-    newList = e => {
-        this.setState({openTweetModal: true});
+    newList = () => {
+        this.setState({openListModal: true});
     };
-    cancelList = e => {
-        this.setState({openTweetModal: false});
+    cancelList = () => {
+        this.setState({openListModal: false});
     };
+    nextModal = () => {
+        this.setState({addMemberModal: true});
+    };
+    cancelMember = () => {
+        this.setState({addMemberModal: false});
+    };
+    nextList =()=>{
+        this.nextModal();
+        this.setState({openListModal: false});
+    }
+    createList=()=>{
+        
+    }
 
     render() {
         return (
@@ -26,25 +44,75 @@ class CreateList extends React.Component {
                     <AssignmentSharpIcon/>
                 </IconButton>
                 <Modal
-                    show={this.state.openTweetModal}
+                    show={this.state.openListModal}
                     onHide={this.cancelList}
                     animation={false}
                 >
-                    <Modal.Header closeButton></Modal.Header>
-                    <Modal.Body>
-                        <form>
-                            <input maxlength="25" name="name" type="text" id="moomINPUT_1"/>
-                            <input type="text" id="login" class="fadeIn second" name="login" placeholder="login"/>
-                            <input type="text" id="password" class="fadeIn third" name="login" placeholder="password"/>
-                        </form>
-                    </Modal.Body>
-                    <Modal.Footer>
+                      <Modal.Header closeButton>
                         <div class="btn-tweet">
-                            <button class="btn btn-primary submit-btn" type="button">
-                                Create
+                            <button
+                                class="btn btn-primary save-btn"
+                                type="button"
+                                onClick={this.nextList}
+                            >
+                                Next
                             </button>
                         </div>
-                    </Modal.Footer>
+                        <Modal.Title>Create List</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                    <div class="edit-list-form">
+                            <Form>
+                            {/* <input maxlength="25" name="name" type="text" id="moomINPUT_1"/> */}
+                                <Form.Group controlId="formGridName" >
+                                    <Form.Label>Name</Form.Label>
+                                    <Form.Control
+                                        placeholder="Name"
+                                        value={this.state.listName}
+                                    />
+                                </Form.Group>
+                                <Form.Group controlId="formGridBio">
+                                    <Form.Label>Description</Form.Label>
+                                    <Form.Control
+                                        as="textarea"
+                                        rows="3"
+                                        placeholder="description"
+                                        value={this.state.Description}
+                                    />
+                                </Form.Group>
+                            </Form>
+                        </div>
+                        {/* <form>
+                            <input maxlength="25" name="name" type="text" id="moomINPUT_1"/>
+                            <input type="text" id="name" class="fadeIn second" name="name" placeholder="name"/>
+                            <input type="text" id="description" class="fadeIn third" name="description" placeholder="description"/>
+                        </form> */}
+                    </Modal.Body>
+                </Modal>
+
+
+             {/* *************************************NEXT MODAL************************* */}
+             <Modal
+                    show={this.state.addMemberModal}
+                    onHide={this.cancelMember}
+                    animation={false}
+                >
+                      <Modal.Header closeButton>
+                        <div class="btn-tweet">
+                            <button
+                                class="btn btn-primary save-btn"
+                                type="button"
+                                onClick={this.Create}
+                            >
+                                Done
+                            </button>
+                        </div>
+                        <Modal.Title>Add Members</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                    <div class="add-members-form">
+                        </div>
+                    </Modal.Body>
                 </Modal>
             </div>
         )
