@@ -1,20 +1,28 @@
 const repository = require('../../repository/mongo');
+//const User = require('../../repository/mysql').User;
 const cache = require('../../cache');
 const uuidv1 = require('uuid/v1');
+const _ = require('lodash');
+
+function extractHashTags(data) {
+    if (data.text && _isString(data.text)) {
+        return data.text.match(/\B(#[A-Za-z0-9\-\.\_\?]+\b)/g);
+    }
+}
 
 module.exports.create = function (newTweet, cb) {
-    //console.log('in service', newTweet);
+    var hashTags = extractHashTags(newTweet.data);
     repository.Tweet.create({
         tweetId: uuidv1(),
         data: newTweet.data,
         ownerId: newTweet.ownerId,
         owner: newTweet.owner,
-        retweet: newTweet.retweet,
+        retweet: { isRetweet: false, tweetId: null },
         likes: { count: 0, userId: [] },
         views: { count: 0, userId: [] },
         retweetCount: 0,
-        replies: [],
-        hashTags: newTweet.hashTags
+        replyTo: newTweet.replyTo ? newTweet.replyTo : null,
+        hashTags: hashTags
     }).then(function (tweet) {
         return cb(null, {
             id: tweet.tweetId
@@ -33,7 +41,6 @@ module.exports.getByOwnerId = function (ownerId, pagination, cb) {
                 id: tweet.tweetId,
                 likes: tweet.likes.count,
                 views: tweet.views.count,
-                replies: tweet.replies,
                 retweetCount: tweet.retweetCount,
                 data: tweet.data ? tweet.data : null,
                 retweet: tweet.retweet,
@@ -59,7 +66,6 @@ module.exports.getByTweetId = function (tweetId, cb) {
                             id: tweet.tweetId,
                             likes: tweet.likes.count,
                             views: tweet.views.count,
-                            replies: tweet.replies,
                             retweetCount: tweet.retweetCount,
                             data: tweet.data ? tweet.data : null,
                             retweet: tweet.retweet,
@@ -182,60 +188,59 @@ module.exports.bookmarkTweet = function (userId, tweetId, cb) {
 
 //insert into tweet collection with isRetweet true
 module.exports.retweet = function (tweetId, reTweet, cb) {
-    repository.Tweet.findOne({ tweetId: tweetId })
-        .then(function (tweet) {
-            let obj = {
-                tweetId: uuidv1(),
-                data: reTweet.data,
-                ownerId: reTweet.userId,
-                owner: reTweet.owner,
-                retweet: { isRetweet: true, tweetId: tweetId },
-                likes: { count: 0, userId: [] },
-                views: { count: 0, userId: [] },
-                retweetCount: 0,
-                replies: [],
-                hashTags: reTweet.hashTags
+    repository.Tweet.findOneAndUpdate({ tweetId: tweetId },
+        { $inc: { "retweetCount": 1 } }
+    ).then(function (tweet) {
+        let obj = {
+            tweetId: uuidv1(),
+            data: reTweet.data,
+            ownerId: reTweet.userId,
+            owner: reTweet.owner,
+            retweet: { isRetweet: true, tweetId: tweetId },
+            likes: { count: 0, userId: [] },
+            views: { count: 0, userId: [] },
+            retweetCount: 0,
+            replies: [],
+            hashTags: reTweet.hashTags
+        }
+        repository.Tweet.create(obj)
+            .then(function (result) {
+                return cb(null, result);
             }
-            repository.Tweet.create(obj)
-                .then(function (result) {
-                    return cb(null, result);
-                }
-                )
+            )
+    }, function (err) {
+        return cb(err);
+    });
+}
+
+module.exports.reply = function (hostTweetId, replyTweet, cb) {
+    module.exports.create({
+        ...replyTweet,
+        replyTo: hostTweetId
+    }, cb);
+}
+
+module.exports.getReplies = function (tweetId, limit, offset, cb) {
+    repository.Tweet.find({
+        replyTo: tweetId
+    },
+        null,
+        {
+            skip: offset ? offset : 0,
+            limit: limit ? limit : Number(process.env.DEFAULT_PAGE_LIMIT)
+        }).then(function (tweets) {
+            return cb(null, tweets);
         }, function (err) {
             return cb(err);
         });
 }
 
-// module.exports.reply = function (query, cb) {
-//     repository.Tweet.findOne({ tweetId: query.tweetId })
-//         .then(function (tweet) {
-//             let obj = {
-//                 //hardcoding tweetId for testing/////
-//                 tweetId: "1231",
-//                 data: tweet.data,
-//                 ownerId: query.userId,
-//                 retweet: { isRetweet: true, tweetId: query.tweetId },
-//                 likes: 0,
-//                 views: 0,
-//                 replies: [],
-//                 hashTags: tweet.hashTags
-//             }
-//             repository.Tweet.create(obj)
-//                 .then(function (result) {
-//                     return cb(null, result);
-//                 }
-//                 )
-//         }, function (err) {
-//             return cb(err);
-//         });
-// }
-
-module.exports.getTweetsBySubscriber = function (request, pagination, cb) {
-    ///array of userId's of Subscriber
+module.exports.getTweetsBySubscriber = function (userId, pagination, cb) {
+    ///get user's subscriber in array -- only id's
     let arr = [1, 2]
+
     repository.Tweet.find(
-        { "ownerId": { "$in": arr } }, null, pagination
-    )
+        { "ownerId": { "$in": arr } }, null, pagination)
         .then(function (tweets) {
             return cb(null, tweets);
         }, function (err) {
