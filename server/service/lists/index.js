@@ -247,7 +247,7 @@ module.exports.getMembers = function (listId, limit, offset, cb) {
                         message: 'NO CONTENT'
                     });
                 }
-                return user.getMembers({
+                return list.getMembers({
                     attributes: ['id', 'firstName', 'lastName', 'username', 'email'],
                     limit,
                     offset,
@@ -262,7 +262,7 @@ module.exports.getMembers = function (listId, limit, offset, cb) {
                             lastName: m.lastName,
                             username: m.username,
                             email: m.email,
-                            createdAt: m.ListSubscription.createdAt
+                            createdAt: m.ListMembership.createdAt
                         })),
                         nextOffset: (offset + limit) < count ? (offset + limit) : 0
                     });

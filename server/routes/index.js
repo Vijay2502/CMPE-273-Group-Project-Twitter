@@ -3,6 +3,8 @@ const router = express.Router();
 const Tweet = require('../routes/tweets');
 const BookMarkedTweet = require('../routes/bookmarked-tweets');
 const User = require('./users');
+const Analytics = require('./analytics');
+const Search = require('./search');
 const User_producer = require('../kafka-producer').User;
 const Tweet_producer = require('../kafka-producer').Tweet;
 const List = require('./lists');
@@ -48,6 +50,21 @@ router.get('/tweet/:userId/bySubscriber', Tweet.getTweetsBySubscriber);
 router.delete('/tweet/:tweetId/delete', Tweet.deleteTweet);          ///tested
 router.get('/tweet/byList/:listId', Tweet.getTweetsByList);         ///
 router.get('/tweet/getByHashtag/:hashtag', Tweet.getByHashtag);     ///
+
+// SEARCH APIS
+router.get('/search/users', Search.userSearch);
+router.get('/search/lists', Search.listSearch);
+router.get('/search/topics', Search.topicSearch);
+
+
+
+// ANALYTICS APIS
+router.get('/analytics/user/:id/tweets/by-views', Analytics.topTweetsByViews);
+router.get('/analytics/user/:id/tweets/by-likes', Analytics.topTweetsByLikes);
+router.get('/analytics/user/:id/tweets/by-retweets', Analytics.topTweetsByRetweets);
+router.get('/analytics/user/:id/tweets/count/hourly', Analytics.hourlyTweetCountPerDay);
+router.get('/analytics/user/:id/tweets/count/daily', Analytics.dailyTweetCountPerWeek);
+router.get('/analytics/user/:id/tweets/count/monthy', Analytics.monthlyTweetCountPerYear);
 
 
 module.exports = router;
