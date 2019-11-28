@@ -222,8 +222,9 @@ module.exports.getFollowers = function (userId, limit, offset, cb) {
             return user.countFollowers().then(count => {
                 if (offset >= count) {
                     return cb({
-                        code: 204,
-                        message: 'NO CONTENT'
+                        code: 202,
+                        status: 'ok',
+                        data: { count: 0 }
                     });
                 }
                 return user.getFollowers({
@@ -273,8 +274,9 @@ module.exports.getFollowees = function (userId, limit, offset, cb) {
             return user.countFollowees().then(count => {
                 if (offset >= count) {
                     return cb({
-                        code: 204,
-                        message: 'NO CONTENT'
+                        code: 202,
+                        status: 'ok',
+                        data: { count: 0 }
                     });
                 }
                 return user.getFollowees({

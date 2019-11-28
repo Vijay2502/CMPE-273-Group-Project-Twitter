@@ -1,59 +1,56 @@
-import {FETCH_LOGIN} from "../../redux/constants/actionTypes";
+import { GET_PROFILE, GET_FOLLOWEES, GET_FOLLOWERS } from "../../redux/constants/actionTypes";
+import { HOSTNAME } from "../../constants/appConstants";
 import axios from "axios";
 
-// import connectionUrl from "../config/config";// config file to be created 
-let connectionUrl = "localhost:";
-
-//////////////////////////////// SAMPLE ACTION ///////////////////////////////
-export function fetchLogin(data) {
+export function getProfile(data) {
     return function (dispatch) {
-        var headers = {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + sessionStorage.getItem("token")
-        };
-        var test = "http://" + connectionUrl + "3000/users/loginbuyer";
-        // console.log("testing successful. Redux working" + test);
+        // var headers = {
+        //     "Content-Type": "application/json",
+        //     Authorization: "Bearer " + sessionStorage.getItem("token")
+        // };
         axios.defaults.withCredentials = true;
         axios
-            .post("http://" + connectionUrl + "/users/loginbuyer", data, {
-                headers: headers
-            })
-            // .then(response => response.json())// uncomment it if you want to parse the body text as JSON. It returns a promise
-            .then(response => dispatch(signinUpd(response))); // in case you want to do something before calling the reducer. 
-        // .then(responseData => {dispatch({type: FETCH_LOGIN,payload: response});})
+            .get(`http://${HOSTNAME}:8080/api/v1/user/` + data.user_id)
+            .then(response => dispatch(getUserDetails(response))).catch(err => { console.log(err); });
     };
 }
 
-function signinUpd(returndata) {
-    if (returndata.data.result.response.success == true) {
-        let jwtToken = returndata.data.result.response.token.split(" ")[1]; // to use JWT token 
-        sessionStorage.setItem("first_name", returndata.data.result.response.first_name);
-        sessionStorage.setItem("last_name", returndata.data.result.response.last_name);
-        sessionStorage.setItem("token", jwtToken);
-        sessionStorage.setItem("email_id", returndata.data.result.response.email_id);
-    }
-    return {type: FETCH_LOGIN, payload: returndata};
+function getUserDetails(returndata) {
+    // console.log("Inside getUserDetails - returndata: ", JSON.stringify(returndata));
+    return { type: GET_PROFILE, payload: returndata };
 }
-
-/////// DIRECT DISPATCH ///////
-export function fetchLogin1(data) {
+// getfollowers API
+export function getfollowers(data) {
     return function (dispatch) {
-        var headers = {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + sessionStorage.getItem("token")
-        };
-        var test = "http://" + connectionUrl + "3000/users/loginbuyer";
-        // console.log("testing successful. Redux working" + test);
+        // var headers = {
+        //     "Content-Type": "application/json",
+        //     Authorization: "Bearer " + sessionStorage.getItem("token")
+        // };
         axios.defaults.withCredentials = true;
         axios
-            .post("http://" + connectionUrl + "/users/loginbuyer", data, {
-                headers: headers
-            })
-            // .then(response => response.json())// uncomment it if you want to parse the body text as JSON. It returns a promise
-            .then(response => {
-                dispatch({type: FETCH_LOGIN, payload: response});
-            })
+            .get(`http://${HOSTNAME}:8080/api/v1/user/` + data.user_id + `followers`)
+            .then(response => dispatch(getUserfollowers(response))).catch(err => { console.log(err); });
+    };
+}
+function getUserfollowers(returndata) {
+    // console.log("Inside getUserDetails - returndata: ", JSON.stringify(returndata));
+    return { type: GET_FOLLOWERS, payload: returndata };
+}
+// getfollowees API
+export function getfollowees(data) {
+    return function (dispatch) {
+        // var headers = {
+        //     "Content-Type": "application/json",
+        //     Authorization: "Bearer " + sessionStorage.getItem("token")
+        // };
+        axios.defaults.withCredentials = true;
+        axios
+            .get(`http://${HOSTNAME}:8080/api/v1/user/` + data.user_id + `followees`)
+            .then(response => dispatch(getUserfollowees(response))).catch(err => { console.log(err); });
     };
 }
 
-//////////////////////////////// END ///////////////////////////////
+function getUserfollowees(returndata) {
+    // console.log("Inside getUserDetails - returndata: ", JSON.stringify(returndata));
+    return { type: GET_FOLLOWEES, payload: returndata };
+}

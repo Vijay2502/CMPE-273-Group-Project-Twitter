@@ -1,8 +1,9 @@
-import {CREATE_TWEET} from "../../redux/constants/actionTypes";
+import { CREATE_TWEET, GET_USER_TWEETS } from "../../redux/constants/actionTypes";
 
 const initialState = {
     createTweetSuccess: null,
     createTweetMessage: null,
+    userTweets: null
 };
 
 export default function tweetReducer(state = initialState, action) {
@@ -15,6 +16,9 @@ export default function tweetReducer(state = initialState, action) {
             createTweetMessage: action.payload.signinMessage,
         });
     }
-
+    if (action.type === GET_USER_TWEETS)
+        return Object.assign({}, state, {
+            userTweets: action.payload.data.data
+        });
     return state;
 }

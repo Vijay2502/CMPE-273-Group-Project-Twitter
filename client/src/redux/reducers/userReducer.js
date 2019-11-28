@@ -1,19 +1,28 @@
-import {FETCH_LOGIN} from "../constants/actionTypes";
+import { GET_PROFILE, GET_FOLLOWEES, GET_FOLLOWERS } from "../constants/actionTypes";
 
 const initialState = {
-    errMsg: null
+    userDetails: null,
+    followerCount: null,
+    followeeCount: null
 };
 
 export default function loginReducer(state = initialState, action) {
     switch (action.type) {
-        //////////////////////////////// SAMPLE ACTION /////////////////////////////// 
-        case FETCH_LOGIN:
-            console.log("Fetch Login Action" + JSON.stringify(action.payload.data));
+        case GET_PROFILE:
+            console.log("GET_PROFILE reducer data: " + JSON.stringify(action.payload.data));
             return Object.assign({}, state, {
-                errMsg: action.payload.data.result.response.errMsg,
-                authFlag: action.payload.data.result.response.authFlag
+                userDetails: action.payload.data.data.user
             });
-        //////////////////////////////// END ///////////////////////////////
+        case GET_FOLLOWEES:
+            console.log("GET_FOLLOWEES reducer data: " + JSON.stringify(action.payload.data));
+            return Object.assign({}, state, {
+                followeeCount: action.payload.data.data.user
+            });
+        case GET_FOLLOWERS:
+            console.log("GET_FOLLOWERS reducer data: " + JSON.stringify(action.payload.data));
+            return Object.assign({}, state, {
+                followerCount: action.payload.data.data.user
+            });
         default:
             return state;
     }

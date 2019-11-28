@@ -1,19 +1,29 @@
 import React, { Component } from "react";
 import { Form, Modal } from "react-bootstrap";
 import "./profile.css";
+import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBirthdayCake, faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 import ViewTweets from "../Tweet/ViewTweets";
-////////////////////// REDUX CODE //////////////////////
-// function mapStateToProps(store) {
-//   return {
-//     profile_image: store.login.profile_image
-//   };
-// }
-// function mapDispatchToProps(dispatch) {
-//   return {
-//     getResProfile: data => dispatch(getResProfile(data))
-// }
+import { getProfile, getfollowees, getfollowers } from "../../redux/actions/userActions";
+import { getTweetsById } from "../../redux/actions/tweetsActions";
+
+
+function mapStateToProps(store) {
+    return {
+        userDetails: store.users.userDetails,
+        userTweets: store.tweets.userTweets
+    };
+}
+function mapDispatchToProps(dispatch) {
+    return {
+        getProfileDetails: data => dispatch(getProfile(data)),
+        getUserTweets: data => dispatch(getTweetsById(data)),
+        getUserfollowers: data => dispatch(getfollowers(data)),
+        getUserfollowees: data => dispatch(getfollowees(data))
+
+    }
+}
 
 class profile extends Component {
     constructor(props) {
@@ -27,7 +37,14 @@ class profile extends Component {
         this.onProfilePicUpload = this.onProfilePicUpload.bind(this);
     }
     componentWillMount = () => {
-        this.getUser()
+        const data = {
+            user_id: 1
+        };
+        this.props.getProfileDetails(data);
+        this.props.getUserTweets(data);
+        // this.props.getUserfollowees(data);// ISSUE WITH API SO COMMENTING
+        // this.props.getUserfollowers(data);// ISSUE WITH API SO COMMENTING
+        this.getUser();
     }
 
     getUser = () => {
@@ -57,13 +74,11 @@ class profile extends Component {
     };
 
     componentDidMount() {
-        ///////////// USER CODE TO GO HERE ////////////////////
         // const email = localStorage.getItem("email_id");
         // const data = {
-        // email_id: email
+        //     user_id: 100
         // };
-        // console.log("data    " + JSON.stringify(data));
-        // this.props.getProfile(data);
+        // this.props.getProfileDetails(data);
     }
 
     cancelEdit = () => {
@@ -123,6 +138,7 @@ class profile extends Component {
     }
 
     render() {
+        console.log("checking props", JSON.stringify(this.props));
         return (
             <div class="profile-container col-sm-10">
                 <div class="top-details row">
@@ -155,15 +171,15 @@ class profile extends Component {
                 <div class="profile-details row">
                     <div class="col-sm-12">
                         <div class="profile-name-header ">Akshit Ahuja</div>
-                        <div class="profile-detail-font">@{"AkshitAhuja19"}</div>
+                        <div class="profile-detail-font">@test1234</div>
                         <div class="profile-dates row">
                             <div class="col-sm-3 profile-detail-font">
                                 <FontAwesomeIcon icon={faBirthdayCake} />
-                                <span> born Jan 10, 1992</span>
+                                <span> born {}</span>
                             </div>
                             <div class="col-sm-3 profile-detail-font">
                                 <FontAwesomeIcon icon={faCalendarAlt} />
-                                <span> Joined Oct 2019</span>
+                                <span> Joined {}</span>
                             </div>
                         </div>
                         <div class="followers-following row">
@@ -236,8 +252,8 @@ class profile extends Component {
                                 <Form.Group controlId="formGridName">
                                     <Form.Label>Name</Form.Label>
                                     <Form.Control
-                                        placeholder="Add your Name"
-                                        value={this.state.testName}
+                                        placeholder={this.props.firstName + " " + this.props.lastName}
+                                    // value={this.props.firstName + " " + this.props.lastName}
                                     />
                                 </Form.Group>
                                 <Form.Group controlId="formGridBio">
@@ -265,7 +281,6 @@ class profile extends Component {
         );
     }
 }
-
-export default profile;
-/////////////////////// CALL FOR REDUX ACTION ///////////////////
-// export default connect(mapStateToProps,mapDispatchToProps)(profile);
+export default connect(mapStateToProps, mapDispatchToProps)(profile);
+    // export default profile;
+    /////////////////////// CALL FOR REDUX ACTION ///////////////////
