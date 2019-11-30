@@ -9,7 +9,7 @@ const rootReducer = combineReducers({
     auth: authReducer,
     tweets: tweetsReducer,
     analytics: analyticsReducer,
-    // list: listReducer,
+    list: listReducer,
     // feeds: feedsReducer
 });
 export default rootReducer;

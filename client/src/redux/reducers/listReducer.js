@@ -5,7 +5,12 @@ const initialState = {
     data: "",
     ownedlists:[],
     subscribedList:[],
-    membersList:[]
+    membersList:[],
+    successMessage:"",
+    errorMessage:"",
+    currentList:"",
+    subscribers:[],
+    members:[]
 };
 
 export default function listReducer(state = initialState, action) {
