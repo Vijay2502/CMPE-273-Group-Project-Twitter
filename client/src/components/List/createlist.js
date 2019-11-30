@@ -1,10 +1,14 @@
 import React from 'react';
 import {Form,Modal} from "react-bootstrap";
-import '../../css/createlist.css'
+import "../Messages/messagelist.css";
 import AssignmentSharpIcon from '@material-ui/icons/AssignmentSharp';
 import IconButton from '@material-ui/core/IconButton';
 import {createList} from "../../redux/actions/listActions";
 import {connect} from "react-redux";
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import Chip from '@material-ui/core/Chip';
+import Paper from '@material-ui/core/Paper';
+import TagFacesIcon from '@material-ui/icons/TagFaces';
 
 function mapStateToProps(store) {
     return {
@@ -19,6 +23,21 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
+const PaperStyle = withStyles(theme => ({
+    root: {
+      display: 'flex',
+      justifyContent: 'center',
+      flexWrap: 'wrap',
+      padding: theme.spacing(0.5),
+    }
+  }))(Paper);
+  
+const ChipStyle = withStyles(theme => ({
+    chip: {
+    margin: theme.spacing(0.5)
+    }
+  }))(Chip);
+
 class CreateList extends React.Component {
     constructor(props) {
         super(props);
@@ -26,7 +45,10 @@ class CreateList extends React.Component {
             openListModal: false,
             addMemberModal:false,
             name:"",
-            description:""
+            description:"",
+            search:"",
+            chipData:[ { key: 0, label: 'sakshi' },  { key: 0, label: 'priya' }],
+            buttonVal:false
         }
         // this.newList = this.newList.bind(this);
         // this.createList = this.createList.bind(this);
@@ -48,11 +70,73 @@ class CreateList extends React.Component {
         this.nextModal();
         this.setState({openListModal: false});
     }
-    createList=()=>{
-        
+    createList=()=>{ 
     }
+    handleSearch = (e) => {
+        e.preventDefault();
+        this.getUser();
+        console.log("testing search");
+    }
+   handleDelete = chipToDelete => () => {
+       let chips= this.state.chipData
+        this.setState({
+            chipData : chips.filter(chip => chip.key !== chipToDelete.key)
+        })
+      };
+   handleAdd = chipToAdd => (e) => {
+    let chips= this.state.chipData
+        let newMember = { key : this.state.chipData.length(),label:'Shim'}
+        this.setState({
+            chipData : chips.filter(chip => chips.push(newMember))
+        })
+      };
+    getUser = () => {
+        fetch('https://randomuser.me/api/')
+            .then(response => {
+                if (response.ok) return response.json();
+                throw new Error('Request failed.');
+            })
+            .then(data => {
+                console.log("kjjsjk", JSON.stringify(data));
+                for (let i = 0; i < 5; i++) {
+                    this.setState({
+                        search: [
+                            {
+                                name: data.results[0].name,
+                                image: data.results[0].picture.medium,
+                                email: data.results[0].email
+                            },
+                            ...this.state.search,
+                        ]
+                    });
+                }
 
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
     render() {
+        let searchList = null;
+        if (this.state.search.length > 0) {
+            console.log("here");
+            searchList = this.state.search.map(user => {
+                console.log(JSON.stringify(user));
+                return (
+                    <div class="list-group">
+                        <div class="list-group-item list-group-item-action user-list row">
+                            <div class="image-container col-sm-2"><img src={user.image} class="profile-image" alt="avatar"></img></div>
+                            <div class="col-sm-10">
+                                <div class="profile-name">{user.name.first + " " + user.name.last}</div>
+                                <div class="profile-email">{user.email}</div>
+                                <div>chat - link</div>
+
+                            </div>
+                        </div>
+                    </div>
+                );
+            });
+        }
         return (
             <div>
                 <IconButton edge="end" aria-label="list" onClick={this.newList}>
@@ -69,6 +153,7 @@ class CreateList extends React.Component {
                                 class="btn btn-primary save-btn"
                                 type="button"
                                 onClick={this.nextList}
+                                disabled={this.state.buttonVal}
                             >
                                 Next
                             </button>
@@ -111,6 +196,7 @@ class CreateList extends React.Component {
                     show={this.state.addMemberModal}
                     onHide={this.cancelMember}
                     animation={false}
+                    scrollable={true}
                 >
                       <Modal.Header closeButton>
                         <div class="btn-tweet">
@@ -123,10 +209,33 @@ class CreateList extends React.Component {
                             </button>
                         </div>
                         <Modal.Title>Add Members</Modal.Title>
+                       <div >
+                        <PaperStyle>
+                       {this.state.chipData.map(data => {
+                            let icon;
+        return (
+          <ChipStyle
+            key={data.key}
+            icon={icon}
+            label={data.label}
+            onDelete={this.handleDelete(data)}
+          />
+        );
+      })}
+      
+    </PaperStyle>
+    </div>
                     </Modal.Header>
                     <Modal.Body>
-                    <div class="add-members-form">
-                        </div>
+                        <Form class="search-body" onSubmit={this.handleSearch}>
+                            <Form.Group controlId="formBasicEmail">
+                                {/* <FontAwesomeIcon icon={faSearch} /> */}
+                                <Form.Control type="text" placeholder="Search people">
+                                    {/* <FontAwesomeIcon icon={faSearch} /> */}
+                                </Form.Control>
+                                <div class="search-result">{searchList}</div>
+                            </Form.Group>
+                        </Form>
                     </Modal.Body>
                 </Modal>
             </div>

@@ -3,7 +3,7 @@ import userReducer from "./userReducer";
 import tweetsReducer from "./tweetsReducer";
 import authReducer from "./authReducer";
 import analyticsReducer from "./analyticsReducer";
-
+import listReducer from './listReducer';
 const rootReducer = combineReducers({
     users: userReducer,
     auth: authReducer,
