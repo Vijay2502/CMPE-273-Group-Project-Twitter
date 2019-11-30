@@ -193,7 +193,7 @@ class Sidebar extends Component {
                                     <textarea
                                         class="form-control text-area"
                                         id="message-text"
-                                        value="What's happening"
+                                        placeholder="What's happening"
                                         rows="4"
                                     ></textarea>
                                     {/* <Form.Group controlId="formGridcreateTweet">
