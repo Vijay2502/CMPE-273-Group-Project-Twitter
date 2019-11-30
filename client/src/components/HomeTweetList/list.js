@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import {PullDownContent, PullToRefresh, RefreshContent, ReleaseContent} from "react-js-pull-to-refresh";
+import React, { Component } from 'react';
+import { PullDownContent, PullToRefresh, RefreshContent, ReleaseContent } from "react-js-pull-to-refresh";
 import '../../css/hometweetlist.css'
-import {TweetBody} from './listview.js'
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faRetweet, faShareSquare} from "@fortawesome/free-solid-svg-icons";
-import {faComment, faHeart} from "@fortawesome/free-regular-svg-icons";
-import {Modal} from "react-bootstrap";
+import { TweetBody } from './listview.js'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRetweet, faShareSquare } from "@fortawesome/free-solid-svg-icons";
+import { faComment, faHeart } from "@fortawesome/free-regular-svg-icons";
+import { Modal } from "react-bootstrap";
 import Tweet from "../Tweet/CreateTweet";
 import ViewTweets from "../Tweet/ViewTweets";
 
@@ -60,8 +60,8 @@ class HomeTweetList extends Component {
     render() {
         console.log("render HomeTweetList");
         return (
-            <div style={{width: 566}}>
-                <ViewTweets dataFromParent = {this.state.users} />
+            <div>
+                <ViewTweets dataFromParent={this.state.users} />
             </div>
         );
     }

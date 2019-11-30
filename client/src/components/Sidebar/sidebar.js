@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Modal } from "react-bootstrap";
+import { Modal, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
@@ -179,11 +179,12 @@ class Sidebar extends Component {
                     <Modal.Header closeButton></Modal.Header>
 
                     <Modal.Body>
-                        <form>
+                        <Form>
                             <div class="tweet-container row">
                                 <div class="col-sm-1">
                                     <img
-                                        src={require("../../images/profile.png")}
+                                        //../../static/images/profile_pic.png
+                                        src={require("../../static/images/profile_pic.png")}
                                         height="35"
                                         width="35"
                                     />
@@ -193,12 +194,36 @@ class Sidebar extends Component {
                                         class="form-control text-area"
                                         id="message-text"
                                         value="What's happening"
+                                        rows="4"
                                     ></textarea>
+                                    {/* <Form.Group controlId="formGridcreateTweet">
+                                        <Form.Control as="textarea" rows="3" placeholder="What's happening?" />
+                                    </Form.Group> */}
                                 </div>
                             </div>
-                        </form>
+                            <div class="tweet-footer" >
+                                <div className="image-icon">
+                                    <input
+                                        class="image-btn"
+                                        type="file"
+                                        accept="image/*"
+                                        id="img-upload"
+                                        onClick={e => this.onFileChange(e.target.files)}
+                                    ></input>
+
+                                    <label for="img-upload">
+                                        <FontAwesomeIcon icon={faImage} />
+                                    </label>
+                                </div>
+                                <div class="btn-tweet">
+                                    <button class="btn btn-primary submit-btn" type="button">
+                                        Tweet
+                                        </button>
+                                </div>
+                            </div>
+                        </Form>
                     </Modal.Body>
-                    <Modal.Footer>
+                    {/* <Modal.Footer>
                         <div className="image-icon">
                             <input
                                 class="image-btn"
@@ -217,7 +242,7 @@ class Sidebar extends Component {
                                 Tweet
                             </button>
                         </div>
-                    </Modal.Footer>
+                    </Modal.Footer> */}
                 </Modal>
             </div>
         );

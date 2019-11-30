@@ -1,9 +1,10 @@
-import React, {Component} from 'react';
-import {Button, Form} from "react-bootstrap";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faImage} from "@fortawesome/free-solid-svg-icons";
-import {connect} from "react-redux";
-import {createTweet} from "../../redux/actions/tweetsActions";
+import React, { Component } from 'react';
+import { Button, Form } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faImage } from "@fortawesome/free-solid-svg-icons";
+import { connect } from "react-redux";
+import { createTweet } from "../../redux/actions/tweetsActions";
+import "./tweets.css"
 
 function mapStateToProps(store) {
     return {}
@@ -18,7 +19,7 @@ function mapDispatchToProps(dispatch) {
 class CreateTweet extends Component {
     image = () => {
         return (
-            <img src={require("../../static/images/profile_pic.png")} alt="Logo" className="picture"/>
+            <img src={require("../../static/images/profile_pic.png")} alt="Logo" className="profile-pic" />
         )
     };
 
@@ -32,34 +33,40 @@ class CreateTweet extends Component {
             }
         }
 
-        this.props.createTweet({"user": data});
+        this.props.createTweet({ "user": data });
     };
 
     render() {
         return (
-            <div style={{width: 566, padding: 10}}>
+            <div style={{ padding: 10 }}>
                 <Form onSubmit={this.createTweet}>
                     <div>
                         <Form.Row>
                             <div style={styles.profileImage}> {this.image()}</div>
 
                             <div style={styles.tweetTextBox}>
-                                <Form.Group controlId="formGridAddress1">
-                                    <Form.Control type="textarea" placeholder="What's happening?"/>
-                                </Form.Group>
+                                <textarea
+                                    class="form-control text-area"
+                                    id="message-text"
+                                    value="Tweet your reply"
+                                    rows="3"
+                                ></textarea>
+                                {/* <Form.Group controlId="formGridAddress1">
+                                    <Form.Control as="textarea" row="3" placeholder="Tweet your reply" />
+                                </Form.Group> */}
                             </div>
                         </Form.Row>
                     </div>
 
-                    <div style={{marginTop: 40}}>
+                    <div style={{ marginTop: 40 }}>
                         <Form.Row>
                             <button type="button" className="list-group-item list-group-item-action borderless"
-                                    style={styles.image}>
-                                <FontAwesomeIcon icon={faImage}/>
+                                style={styles.image}>
+                                <FontAwesomeIcon icon={faImage} />
                             </button>
 
-                            <div style={styles.tweetButton}>
-                                <Button variant="primary" type="submit">
+                            <div class="reply-tweet-submit-container" style={styles.tweetButton}>
+                                <Button class="btn-container" type="submit">
                                     Tweet
                                 </Button>
                             </div>
@@ -73,16 +80,17 @@ class CreateTweet extends Component {
 
 const styles = {
     profileImage: {
-        flex: 1,
+        // flex: 1,
         display: "flex",
         flexDirection: "column",
-        paddingRight: 10
+        paddingRight: 15
     },
     tweetTextBox: {
         flex: 5,
         display: "flex",
         marginTop: 20,
         flexDirection: "column",
+        "padding-right": 15
     },
     image: {
         display: "flex",
@@ -93,8 +101,8 @@ const styles = {
         display: "flex",
         flexDirection: "column",
         width: "5",
-        marginLeft: "auto",
-        backgroundColor: "#2F99EA"
+        "margin-right": 15,
+        marginLeft: "auto"
     },
 };
 

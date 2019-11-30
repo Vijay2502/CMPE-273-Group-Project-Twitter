@@ -1,5 +1,5 @@
 import React from 'react';
-
+import '../../css/hometweetlist.css';
 const TweetBox = (props) => {
     return (
         <div className="tweet-body">
@@ -41,20 +41,21 @@ const Tweet = (props) => {
 
 const TweetBody = (props) => {
     return (
-        <TweetBox>
-            <div className="inner-body">
-                <Image image={props.image}/>
-                <div className="body">
-                    <div className="inner-body">
-                        <Name name={props.name}/>
-                        <Handle handle={props.handle}/>
+        <div class="list-group">
+            <TweetBox>
+                <button type="button" className="inner-body list-group-item list-group-item-action">
+                    <Image image={props.image} />
+                    <div className="body">
+                        <div className="inner-body-inner">
+                            <Name name={props.name} />
+                            <Handle handle={props.handle} />
+                        </div>
+                        <Tweet tweet={props.tweet} />
                     </div>
-                    <Tweet tweet={props.tweet}/>
-                </div>
-            </div>
-        </TweetBox>
-
+                </button>
+            </TweetBox>
+        </div>
     )
 };
 
-export {TweetBody}
+export { TweetBody }

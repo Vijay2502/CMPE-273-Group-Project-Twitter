@@ -32,10 +32,12 @@ class HomePage extends Component {
 
                 <div key="b" data-grid={{ x: 10, y: 0, w: 8, h: 2, static: true }}>
                     {this.state.currentScreen === "Home" &&
-                        <div>
-                            <h2>Home</h2>
-                            <Tweet />
-                            <HomeTweetList />
+                        <div class="parent-container col-sm-10">
+                            <div class="top-label">Home</div>
+                            <div class="top-label-border"></div>
+                            <div><Tweet /></div>
+                            <div class="tweet-container-border"></div>
+                            <div class="home-tweet-container"><HomeTweetList /></div>
                         </div>}
 
                     {this.state.currentScreen === "Profile" &&
@@ -44,18 +46,20 @@ class HomePage extends Component {
                     {this.state.currentScreen === "Messages" &&
                         <Messages />}
 
-                     {this.state.currentScreen === "Bookmarks" &&
+                    {this.state.currentScreen === "Bookmarks" &&
                         <BookMarks />}
 
                     {this.state.currentScreen === "List" &&
-                    <div>
-                     <h2>List</h2>
-                     <CreateList/>
-                     <List/>
-                 </div>}
+                        <div class="parent-container-list col-sm-10">
+                            <div class="top-label-list-header">
+                                <div class="top-label-list">List</div>
+                                <div><CreateList /></div>
+                            </div>
+                            <List />
+                        </div>}
 
                 </div>
-                <div key="c" data-grid={{x: 5, y: 0, w: 6, h: 2, static: true}}><Search/></div>
+                <div key="c" data-grid={{ x: 5, y: 0, w: 6, h: 2, static: true }}><Search /></div>
 
             </GridLayout>
         );

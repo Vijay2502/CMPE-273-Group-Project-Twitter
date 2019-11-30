@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import {PullDownContent, PullToRefresh, RefreshContent, ReleaseContent} from "react-js-pull-to-refresh";
+import React, { Component } from 'react';
+import { PullDownContent, PullToRefresh, RefreshContent, ReleaseContent } from "react-js-pull-to-refresh";
 import '../../css/hometweetlist.css'
-import {TweetBody} from '../HomeTweetList/listview';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faRetweet, faShareSquare} from "@fortawesome/free-solid-svg-icons";
-import {faComment, faHeart} from "@fortawesome/free-regular-svg-icons";
-import {Modal} from "react-bootstrap";
+import { TweetBody } from '../HomeTweetList/listview';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRetweet, faShareSquare } from "@fortawesome/free-solid-svg-icons";
+import { faComment, faHeart } from "@fortawesome/free-regular-svg-icons";
+import { Modal } from "react-bootstrap";
 import Tweet from "../Tweet/CreateTweet";
 import ViewTweets from "../Tweet/ViewTweets";
 
@@ -16,7 +16,7 @@ class HomeTweetList extends Component {
         super(props);
         this.state = {
             users: [],
-            userName:"@sakshimahendru",
+            userName: "@sakshimahendru",
             openCommentModal: false
         };
 
@@ -62,11 +62,12 @@ class HomeTweetList extends Component {
         console.log("render HomeTweetList");
         return (
             <div>
-                <h4><b>BookMarks</b></h4>   
+                <h4><b>BookMarks</b></h4>
                 <h6>{this.state.userName}</h6>
-            <div style={{width: 566}}>
-                <ViewTweets dataFromParent = {this.state.users} />
-            </div>
+                {/* <div style={{width: 566}}> */}
+                <div>
+                    <ViewTweets dataFromParent={this.state.users} />
+                </div>
             </div>
         );
     }

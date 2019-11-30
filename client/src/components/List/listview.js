@@ -12,14 +12,14 @@ const TweetBox = (props) => {
 
 const Image = (props) => {
     return (
-        <img src={props.image} alt="Logo" className="picture">
+        <img src={props.image} alt="Logo" className="picture-list">
         </img>
     )
 };
 
 const Handle = (props) => {
     return (
-        <div className="handle">
+        <div className="handle-list">
             {props.handle}
         </div>
     )
@@ -27,7 +27,7 @@ const Handle = (props) => {
 
 const Name = (props) => {
     return (
-        <div className="name">
+        <div class="name-list">
             {props.name}
         </div>
     )
@@ -36,23 +36,23 @@ const Name = (props) => {
 const Tweet = (props) => {
     if (props.title !== undefined) {
         return (
-            <div className="tweet">
-                <Title title={props.title}/>
+            <div class="tweet-list">
+                <Title title={props.title} />
                 {props.tweet}
-                <div style={{display: 'inline-block'}}>
-                    <Members members={props.members}/>
-                    <Subscribers subscribers={props.subscribers}/>
+                <div style={{ display: 'inline-block' }}>
+                    <Members members={props.members} />
+                    <Subscribers subscribers={props.subscribers} />
                 </div>
             </div>
         )
     } else {
         return (
-            <div className="tweet">
+            <div className="tweet-list">
                 {props.tweet}
-                <br/>
-                <div style={{display: 'inline-block'}}>
-                    <Members members={props.members}/>{' '}{' '}
-                    <Subscribers subscribers={props.subscribers}/>
+                <br />
+                <div style={{ display: 'inline-block' }}>
+                    <Members members={props.members} />{' '}{' '}
+                    <Subscribers subscribers={props.subscribers} />
                 </div>
             </div>
         )
@@ -70,11 +70,11 @@ const Title = (props) => {
 const Members = (props) => {
     if (props.members !== undefined) {
         return (
-            <p style={{display: 'inline-block'}}>{props.members} members</p>
+            <p style={{ display: 'inline-block' }}>{props.members} members</p>
         )
     } else {
         return (
-            <p style={{display: 'inline-block'}}>0 members</p>
+            <p style={{ display: 'inline-block' }}>0 members</p>
         )
     }
 };
@@ -82,31 +82,32 @@ const Members = (props) => {
 const Subscribers = (props) => {
     if (props.subscribers !== undefined) {
         return (
-            <p style={{display: 'inline-block'}}>  {props.subscribers} susbribers</p>
+            <p style={{ display: 'inline-block' }}>  {props.subscribers} susbribers</p>
         )
     } else {
         return (
-            <p style={{display: 'inline-block'}}> 0 subscribers</p>
+            <p style={{ display: 'inline-block' }}> 0 subscribers</p>
         )
     }
 };
 
 const TweetBody = (props) => {
     return (
-        <TweetBox>
-            <div className="inner-body">
-                <Image image={props.image}/>
-                <div className="body">
-                    <div className="inner-body">
-                        <Name name={props.name}/>
-                        <Handle handle={props.handle}/>
+        <div class="list-group">
+            <TweetBox>
+                <button type="button" className="inner-body-list list-group-item list-group-item-action">
+                    <Image image={props.image} />
+                    <div className="body">
+                        <div className="inner-body-inner-list">
+                            <Name name={props.name} />
+                            <Handle handle={props.handle} />
+                        </div>
+                        <Tweet tweet={props.tweet} />
                     </div>
-                    <Tweet tweet={props.tweet}/>
-                </div>
-            </div>
-        </TweetBox>
-
+                </button >
+            </TweetBox>
+        </div>
     )
 };
 
-export {TweetBody}
+export { TweetBody }

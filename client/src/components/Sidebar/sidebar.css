@@ -41,6 +41,7 @@ button.borderless {
 
 .btn-tweet .submit-btn {
     margin-top: 10px;
+    margin-left: 15px;
     width: 80px;
     border-radius: 20px;
     background-color: rgb(26, 145, 218);
@@ -63,13 +64,17 @@ button.borderless {
     background-color: rgba(29, 161, 242, 0.1);
 }
 
-.image-icon {
-    padding: 5px;
+.tweet-footer .image-icon {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 42px;
-    text-align: center;
+    /* text-align: center; */
     border-radius: 20px;
     font-size: 20px;
     color: rgb(26, 145, 218);
+    margin-top: 8px;
 }
 
 .image-icon label {
@@ -78,6 +83,7 @@ button.borderless {
 
 .image-icon:hover {
     background-color: rgba(29, 161, 242, 0.1);
+    /* margin-left: 10px; */
 }
 
 .image-btn {
@@ -86,15 +92,20 @@ button.borderless {
 
 .tweet-container {
     height: auto;
-    max-height: 500px;
+    max-height: 5500px;
 }
 
 .text-area-container {
-    height: 100px;
+    height: 140px;
 }
 
 .text-area-container .text-area {
     border: none;
+}
+.tweet-footer{
+    justify-content: space-between;
+    margin-top: 10px;
+    display: flex;
 }
 
 /* .btn {

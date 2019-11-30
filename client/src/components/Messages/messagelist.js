@@ -120,7 +120,7 @@ class messagelist extends Component {
         }
 
         return (
-            <div class="message-list-container col-sm-9">
+            <div class="message-list-container col-sm-10">
 
                 <div class="message-header row">
                     <div class="col-sm-11">Messages</div>

@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {PullDownContent, PullToRefresh, RefreshContent, ReleaseContent} from "react-js-pull-to-refresh";
+import React, { Component } from 'react';
+import { PullDownContent, PullToRefresh, RefreshContent, ReleaseContent } from "react-js-pull-to-refresh";
 import '../../css/list.css'
-import {TweetBody} from './listview.js'
-import {connect} from "react-redux";
-import {signUp} from "../../redux/actions/authActions";
+import { TweetBody } from './listview.js'
+import { connect } from "react-redux";
+import { signUp } from "../../redux/actions/authActions";
 
 function mapStateToProps(store) {
     return {
@@ -22,7 +22,7 @@ class List extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            users:[],
+            users: [],
             isOwner: true,
             isSubscriber: false,
             isMember: false
@@ -53,7 +53,7 @@ class List extends Component {
                 this.setState({
                     users: [
                         {
-                            
+
                             name: data.results[0].name,
                             image: data.results[0].picture.medium,
                             tweet: data.results[0].email,
@@ -68,15 +68,15 @@ class List extends Component {
     }
 
     showOwnerBox() {
-        this.setState({isOwner: true, isSubscriber: false, isMember: false});
+        this.setState({ isOwner: true, isSubscriber: false, isMember: false });
     }
 
     showSubscriberBox() {
-        this.setState({isOwner: false, isSubscriber: true, isMember: false});
+        this.setState({ isOwner: false, isSubscriber: true, isMember: false });
     }
 
     showMemberBox() {
-        this.setState({isOwner: false, isSubscriber: false, isMember: true});
+        this.setState({ isOwner: false, isSubscriber: false, isMember: true });
     }
 
     showContent() {
@@ -92,7 +92,7 @@ class List extends Component {
                     name={name}
                     handle={handle}
                     tweet={tweet}
-                    image={image}/>
+                    image={image} />
 
             )
         });
@@ -103,13 +103,13 @@ class List extends Component {
     render() {
         return (
             <PullToRefresh
-                pullDownContent={<PullDownContent/>}
-                releaseContent={<ReleaseContent/>}
-                refreshContent={<RefreshContent/>}
+                class="list-mail-container"
+                pullDownContent={<PullDownContent />}
+                releaseContent={<ReleaseContent />}
+                refreshContent={<RefreshContent />}
                 pullDownThreshold={2}
                 onRefresh={this.handleRefresh}
-                triggerHeight={50}
-                backgroundColor='black'>
+                triggerHeight={50}>
                 <div className="main-body">
                     <div className="list-body">
                         <div className="box-controller">
@@ -154,7 +154,7 @@ class List extends Component {
                                 name={name}
                                 handle={handle}
                                 tweet={tweet}
-                                image={image}/>
+                                image={image} />
                         )
                     })}
                 </div>
