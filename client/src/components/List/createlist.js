@@ -3,6 +3,21 @@ import {Form,Modal} from "react-bootstrap";
 import '../../css/createlist.css'
 import AssignmentSharpIcon from '@material-ui/icons/AssignmentSharp';
 import IconButton from '@material-ui/core/IconButton';
+import {createList} from "../../redux/actions/listActions";
+import {connect} from "react-redux";
+
+function mapStateToProps(store) {
+    return {
+        successMessage: store.list.successMessage,
+        errorMessage: store.list.errorMessage,
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        createList: (payload) => dispatch(createList(payload))
+    };
+}
 
 class CreateList extends React.Component {
     constructor(props) {
@@ -119,4 +134,4 @@ class CreateList extends React.Component {
     }
 }
 
-export default CreateList;
+export default connect(mapStateToProps, mapDispatchToProps)(CreateList);
