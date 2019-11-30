@@ -61,11 +61,10 @@ class HomeTweetList extends Component {
     render() {
         console.log("render HomeTweetList");
         return (
-            <div>
-                <h4><b>BookMarks</b></h4>
-                <h6>{this.state.userName}</h6>
-                {/* <div style={{width: 566}}> */}
-                <div>
+            <div class="top-label-bookmark-header">
+                <div class="top-label-bookmark">BookMarks</div>
+                <div class="top-label-bookmark-username">{this.state.userName}</div>
+                <div class="bookmark-tweets-container">
                     <ViewTweets dataFromParent={this.state.users} />
                 </div>
             </div>

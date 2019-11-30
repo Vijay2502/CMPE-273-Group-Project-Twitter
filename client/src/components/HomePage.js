@@ -47,7 +47,8 @@ class HomePage extends Component {
                         <Messages />}
 
                     {this.state.currentScreen === "Bookmarks" &&
-                        <BookMarks />}
+                        <div class="parent-container-bookmark col-sm-10" ><BookMarks /></div>
+                    }
 
                     {this.state.currentScreen === "List" &&
                         <div class="parent-container-list col-sm-10">

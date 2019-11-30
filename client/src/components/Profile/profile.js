@@ -175,18 +175,18 @@ class profile extends Component {
                         <div class="profile-name-header ">Akshit Ahuja</div>
                         <div class="profile-detail-font">@test1234</div>
                         <div class="profile-dates row">
-                            <div class="col-sm-3 profile-detail-font">
+                            <div class="col-sm-4 profile-detail-font">
                                 <FontAwesomeIcon icon={faBirthdayCake} />
                                 <span> born {}</span>
                             </div>
-                            <div class="col-sm-3 profile-detail-font">
+                            <div class="col-sm-4 profile-detail-font">
                                 <FontAwesomeIcon icon={faCalendarAlt} />
                                 <span> Joined {}</span>
                             </div>
                         </div>
                         <div class="followers-following row">
-                            <div class="col-sm-2 profile-detail-font">{"2"} Following</div>
-                            <div class="col-sm-2 profile-detail-font">{"2"} Following</div>
+                            <div class="col-sm-3 profile-detail-font">{"2"} Following</div>
+                            <div class="offset-sm-1 col-sm-3 profile-detail-font">{"2"} Following</div>
                         </div>
                     </div>
                 </div>

@@ -189,3 +189,26 @@ $blue_theme: #70a1ff;
     font-weight: 800;
     padding: 5px;
 }
+.top-label-bookmark-header{
+    margin-top: 10px;
+    padding: 0 10px;
+    /* padding-bottom: 10px; */
+}
+.top-label-bookmark{
+    font-size: larger;
+    font-weight: 800;
+    padding: 5px;
+}
+.top-label-bookmark-username{
+    font-weight: lighter;
+    font-family: sans-serif;
+    color: rgb(101, 119, 134);
+    margin-bottom: 20px;
+}
+.parent-container-bookmark{
+    border : 1px solid rgb(220,220,220);
+    padding :0!Important;
+}
+.bookmark-tweets-container{
+    margin: -10px;
+}
