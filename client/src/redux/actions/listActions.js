@@ -7,7 +7,6 @@ import axios from 'axios';
 export function createList(payload) {
     console.log("createList payload");
     console.log(payload);
-
     return (dispatch) => {
         axios.post(`http://${HOSTNAME}:8080/api/v1/list/create`, payload)
             .then((response) => dispatch(createDispatch(response.data)));
@@ -104,12 +103,11 @@ export const getSubscriberInAListDispatch = (returnData) => {
 };
 
 //  ***********  GET OWNER LISTS  ***********
-export function getOwnedLists(payload) {
-    console.log("getOwnedList payload");
-    console.log(payload);
-
+export function getOwnedLists(id) {
+    console.log("getOwnedList user id");
+    console.log(id);
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/user/:id/owner/lists`)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/user/${id}/owner/lists`)
             .then((response) => dispatch(getOwnedListDispatch(response.data)));
     }
 }

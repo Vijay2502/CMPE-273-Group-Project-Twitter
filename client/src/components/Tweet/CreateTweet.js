@@ -28,13 +28,33 @@ class CreateTweet extends Component {
 
         const data = {};
         for (let i = 0; i < e.target.length; i++) {
-            if (e.target[i].name !== "") {
-                data[e.target[i].name] = e.target[i].value;
+            if (e.target[i].id !== "") {
+                data[e.target[i].id] = e.target[i].value;
             }
         }
 
-        this.props.createTweet({ "user": data });
+        const owner = {};
+        owner["firstName"] = localStorage.getItem("firstName");
+        owner["lastName"] = localStorage.getItem("lastName");
+        owner["username"] = localStorage.getItem("username");
+        owner["image"] = "";
+
+        const tweet = {}
+        tweet["data"] = data;
+        tweet["ownerId"] = localStorage.getItem("id");
+        //tweet["owner"] = owner;
+        tweet["retweet"] = [];
+        tweet["hashTags"] = [];
+
+        console.log("createTweet payload");
+        console.log(tweet);
+
+        this.props.createTweet(tweet);
     };
+
+    onFileChange(files) {
+        console.log("onFileChange event triggered");
+    }
 
     render() {
         return (
@@ -60,10 +80,20 @@ class CreateTweet extends Component {
 
                     <div style={{ marginTop: 40 }}>
                         <Form.Row>
-                            <button type="button" className="list-group-item list-group-item-action borderless"
-                                style={styles.image}>
-                                <FontAwesomeIcon icon={faImage} />
-                            </button>
+                            <div className="image-icon">
+                                <input
+                                    className="image-btn"
+                                    type="file"
+                                    accept="image/*"
+                                    id="img-upload"
+                                    onClick={e => this.onFileChange(e.target.files)}
+                                ></input>
+
+                                <label htmlFor="img-upload">
+                                    <FontAwesomeIcon icon={faImage}/>
+                                </label>
+                            </div>
+
 
                             <div class="reply-tweet-submit-container" style={styles.tweetButton}>
                                 <Button class="btn-container" type="submit">

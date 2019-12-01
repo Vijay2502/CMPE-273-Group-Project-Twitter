@@ -4,6 +4,8 @@ import '../../css/list.css'
 import { TweetBody } from './listview.js'
 import { connect } from "react-redux";
 import { signUp } from "../../redux/actions/authActions";
+import {getOwnedLists} from "../../redux/actions/listActions";
+import {connect} from "react-redux";
 
 function mapStateToProps(store) {
     return {
@@ -14,7 +16,7 @@ function mapStateToProps(store) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        signUp: (payload) => dispatch(signUp(payload))
+        getOwnedLists: (id) => dispatch(getOwnedLists(id))
     };
 }
 
@@ -44,27 +46,29 @@ class List extends Component {
     }
 
     getUser() {
-        fetch('https://randomuser.me/api/')
-            .then(response => {
-                if (response.ok) return response.json();
-                throw new Error('Request failed.');
-            })
-            .then(data => {
-                this.setState({
-                    users: [
-                        {
+        //fetch list
+         this.props.getOwnedLists(6);
+        // fetch('https://randomuser.me/api/')
+        //     .then(response => {
+        //         if (response.ok) return response.json();
+        //         throw new Error('Request failed.');
+        //     })
+        //     .then(data => {
+        //         this.setState({
+        //             users: [
+        //                 {
 
-                            name: data.results[0].name,
-                            image: data.results[0].picture.medium,
-                            tweet: data.results[0].email,
-                        },
-                        ...this.state.users,
-                    ]
-                });
-            })
-            .catch(error => {
-                console.log(error);
-            });
+        //                     name: data.results[0].name,
+        //                     image: data.results[0].picture.medium,
+        //                     tweet: data.results[0].email,
+        //                 },
+        //                 ...this.state.users,
+        //             ]
+        //         });
+        //     })
+        //     .catch(error => {
+        //         console.log(error);
+        //     });
     }
 
     showOwnerBox() {
@@ -87,7 +91,7 @@ class List extends Component {
             let tweet = user.tweet;
             console.log(image);
             return (
-                <TweetBody
+                <ListBody
                     key={index}
                     name={name}
                     handle={handle}

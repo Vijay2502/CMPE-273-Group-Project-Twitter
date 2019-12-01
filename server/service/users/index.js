@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const repository = require('../../repository/mysql');
+const {Tweet} = require('../../repository/mongo');
 const cache = require('../../cache');
 const async = require('async');
 
@@ -396,7 +397,7 @@ module.exports.getListsAsMember = function (userId, limit, offset, cb) {
                     });
                 }
                 return user.getListsAsMember({
-                    attributes: ['id', 'firstName', 'lastName', 'username', 'email'],
+                    attributes: ['id', 'name', 'description', 'data'],
                     limit,
                     offset,
                     required: false
@@ -446,7 +447,7 @@ module.exports.getListsAsSubscriber = function (userId, limit, offset, cb) {
                     });
                 }
                 return user.getListsAsSubscriber({
-                    attributes: ['id', 'firstName', 'lastName', 'username', 'email'],
+                    attributes: ['id', 'name', 'description', 'data'],
                     limit,
                     offset,
                     required: false
@@ -496,7 +497,7 @@ module.exports.getListsAsOwner = function (userId, limit, offset, cb) {
                     });
                 }
                 return user.getLists({
-                    attributes: ['id', 'firstName', 'lastName', 'username', 'email'],
+                    attributes: ['id', 'name', 'description', 'data'],
                     limit,
                     offset,
                     required: false
@@ -525,6 +526,60 @@ module.exports.getListsAsOwner = function (userId, limit, offset, cb) {
             message: "USER NOT FOUND"
         });
     }, function (err) {
+        return cb(err);
+    })
+}
+
+module.exports.deactivate = function(userId, cb){
+    repository.User.update({
+        active: false
+    },{
+        where:{
+            id:userId
+        }
+    }).then(function(user){
+
+        Tweet.update({
+            ownerId:userId
+        },{
+            active: false
+        }).then(function(tweets){
+            console.log("Tweets deactivated")
+        }, function(err){
+            console.log(err);
+        })
+
+        return cb(null, { message: "DEACTIVATION SUCCESFULL" });
+
+
+    }, function(err){
+        return cb(err);
+    })
+}
+
+module.exports.reactivate = function(userId, cb){
+    return repository.User.update({
+        active: true
+    },{
+        where:{
+            id:userId
+        }
+    }).then(function(user){
+
+        Tweet.update({
+            ownerId:userId
+        },{
+            active: true
+        }).then(function(tweets){
+            console.log("Tweets reactivated")
+        }, function(err){
+            console.log(err);
+        })
+
+        return cb(null, { message: "REACTIVATION SUCCESFULL" });
+
+
+    }, function(err){
         return cb(err);
     })
 }

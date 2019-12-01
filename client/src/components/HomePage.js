@@ -27,13 +27,12 @@ class HomePage extends Component {
 
     render() {
         return (
-            <GridLayout className="layout" cols={12} rowHeight={30} width={1200}>
-                <div key="a" data-grid={{ x: 0, y: 0, w: 5, h: 2, static: true }}>
+            <GridLayout className="layout" cols={12} rowHeight={10} width={1000}>
+                <div key="a" data-grid={{ x: 0, y: 0, w: 3, h: 0, static: true }}>
                     <Sidebar parentCallback={this.callbackFunction} />
                 </div>
 
-
-                <div key="b" data-grid={{ x: 10, y: 0, w: 8, h: 2, static: true }}>
+                <div key="b" data-grid={{ x: 4, y: 0, w: 8, h: 0, static: true }}>
                     {this.state.currentScreen === "Home" &&
                         <div class="parent-container col-sm-10">
                             <div class="top-label">Home</div>
@@ -68,7 +67,7 @@ class HomePage extends Component {
                     }
 
                 </div>
-                <div key="c" data-grid={{ x: 5, y: 0, w: 6, h: 2, static: true }}><Search /></div>
+                <div key="c" data-grid={{ x: 4, y: 0, w: 6, h: 0, static: true }}><Search /></div>
 
             </GridLayout>
         );

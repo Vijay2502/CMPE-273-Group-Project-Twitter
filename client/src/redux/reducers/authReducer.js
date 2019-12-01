@@ -17,6 +17,12 @@ export default function authReducer(state = initialState, action) {
     if (action.type === SIGN_IN) {
         localStorage.setItem('token', action.payload.data.token);
         localStorage.setItem('username', action.payload.data.user.username);
+        localStorage.setItem('firstName', action.payload.data.user.firstName);
+        localStorage.setItem('lastName', action.payload.data.user.lastName);
+        localStorage.setItem('id', action.payload.data.user.id);
+
+        //To do
+        localStorage.setItem('image', action.payload.data.user.username);
 
         return Object.assign({}, state, {
             signinSuccess: action.payload.status === "ok" ? true : false,
