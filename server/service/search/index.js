@@ -1,7 +1,7 @@
 const async = require('async');
 const _ = require('lodash');
-const { User, List } = require('../../repository/mysql');
-const { TweetsByHashtag } = require('../../repository/mongo');
+const { User, List, sequelize } = require('../../repository/mysql');
+const { Tweet } = require('../../repository/mongo');
 
 module.exports.listSearch = function( text, limit, offset, cb ){
     var terms = [text].concat( text.trim().replace(/(\s)+/).split(' '));
@@ -10,21 +10,35 @@ module.exports.listSearch = function( text, limit, offset, cb ){
     
     if(!_.isArray(terms))
         terms = [terms];
-    
-    terms = terms.map(item => ({ $iLike: `%${item}%`}));
+    limit = limit ? Number(limit) : Number(process.env.DEFAULT_PAGE_LIMIT);
+    offset = offset ? Number(offset) : 0;
+    terms = terms.map(item => ({ $like: `%${item.toLowerCase()}%`}));
     List.findAll({
         where: {
-            active: true,
-            $or:[
-                { name:{ $or: terms } },
-                { description:{ $or: terms } }
+            $and:[
+                {
+                    $or:[
+                        sequelize.where(
+                            sequelize.fn('lower', sequelize.col('name')),
+                            {
+                                $or:terms
+                            }
+                        ),
+                        sequelize.where(
+                            sequelize.fn('lower', sequelize.col('description')),
+                            {
+                                $or:terms
+                            }
+                        )                 
+                    ]
+                }
             ]
         },
         order: [['createdAt', 'DESC']],
-        offset: offset ? Number(offset) : 0,
-        limit: limit ? Number(limit) : Number(process.env.DEFAULT_PAGE_LIMIT)
+        offset,
+        limit
     }).then(function(lists){
-        if(lists && _.isArray(lists) && lists.length > 0){
+        if(lists && _.isArray(lists)){
             return cb(null, {
                 lists: lists.map(f => ({
                     id: f.id,
@@ -32,40 +46,66 @@ module.exports.listSearch = function( text, limit, offset, cb ){
                     description: f.description,
                     data: f.data
                 })),
-                nextOffset: (limit ? Number(limit) : Number(process.env.DEFAULT_PAGE_LIMIT)) 
-                + (offset ? Number(offset) : 0)
+                nextOffset: (lists.length <= limit)? 0 : (limit) + (offset)
             });
         }
-        return cb(null, []);
+        return cb(null, null);
     }, function(err){
         return cb(err);
     });
 }
 
 module.exports.userSearch = function( text , limit, offset, cb ){
-    var terms = [text].concat( text.trim().replace(/(\s)+/).split(' '));
+    var terms = Array.from(new Set([text].concat( text.trim().replace(/(\s)+/).split(' '))));
     if(!terms)
         return cb(null, []);
     
     if(!_.isArray(terms))
         terms = [terms];
-    
-    terms = terms.map(item => ({ $iLike: `%${item}%`}));
+    limit = limit ? Number(limit) : Number(process.env.DEFAULT_PAGE_LIMIT);
+    offset = offset ? Number(offset) : 0;
+    terms = terms.map(item => ({ $like: `%${item.toLowerCase()}%`}));
     User.findAll({
         where: {
-            active: true,
-            $or:[
-                { username:{ $or: terms } },
-                { firstName:{ $or: terms } },
-                { lastName:{ $or: terms } },
-                { email:{ $or: terms } }
+            $and:[
+                {
+                    active: true
+                },
+                {
+                    $or:[
+                        sequelize.where(
+                            sequelize.fn('lower', sequelize.col('firstName')),
+                            {
+                                $or:terms
+                            }
+                        ),
+                        sequelize.where(
+                            sequelize.fn('lower', sequelize.col('lastName')),
+                            {
+                                $or:terms
+                            }
+                        ),
+                        sequelize.where(
+                            sequelize.fn('lower', sequelize.col('username')),
+                            {
+                                $or:terms
+                            }
+                        ),
+                        sequelize.where(
+                            sequelize.fn('lower', sequelize.col('email')),
+                            {
+                                $or:terms
+                            }
+                        )                       
+                    ]
+                }
             ]
         },
         order: [['createdAt', 'DESC']],
-        offset: offset ? Number(offset) : 0,
-        limit: limit ? Number(limit) : Number(process.env.DEFAULT_PAGE_LIMIT)
+        offset,
+        limit
     }).then(function(users){
-        if(users && _.isArray(users) && users.length > 0){
+        if(users && _.isArray(users)){
             return cb(null, {
                 users: users.map(f => ({
                     id: f.id,
@@ -74,39 +114,42 @@ module.exports.userSearch = function( text , limit, offset, cb ){
                     username: f.username,
                     data: f.data
                 })),
-                nextOffset: (limit ? Number(limit) : Number(process.env.DEFAULT_PAGE_LIMIT)) 
-                + (offset ? Number(offset) : 0)
+                nextOffset: (users.length <= limit)? 0 : (limit) + (offset)
             });
         }
-        return cb(null, []);
+        return cb(null, null);
     }, function(err){
         return cb(err);
     });
 }
 
 module.exports.topicSearch = function( text , limit, offset, cb ){
-    var terms = [text].concat( text.trim().replace(/(\s)+/).split(' '));
+    var terms = Array.from(new Set([text].concat( text.trim().replace(/(\s)+/).split(' '))));
     if(!terms)
         return cb(null, []);
     
     if(!_.isArray(terms))
         terms = [terms];
+    limit = limit ? Number(limit) : Number(process.env.DEFAULT_PAGE_LIMIT);
+    offset = offset ? Number(offset) : 0;
     
-    terms = terms.map(item => ({ $regex: `(.*)${item.replace("#","")}%(.*)`, $options: "si"}));
-    TweetsByHashtag.find({
+    terms = terms.map(item => (`((.*)${item.replace("#","")}(.*))`));
+    var searchterm = terms.join('|');
+
+    Tweet.find({
         hashTags: {
             $elemMatch:{
-                $or: terms
+                $regex: searchterm
             }
         },
         'tweets.active':true
     },
     null,
     {
-        skip: offset ? Number(offset) : 0,
-        limit: limit ? Number(limit) : Number(process.env.DEFAULT_PAGE_LIMIT)
+        skip: offset,
+        limit: limit
     }).then(function(tweets){
-        if(tweets && _.isArray(tweets) && tweets.length > 0){
+        if(tweets && _.isArray(tweets)){
             return cb(null, {
                 tweets:tweets.map(tweet => ({
                     id: tweet.tweetId,
@@ -117,11 +160,10 @@ module.exports.topicSearch = function( text , limit, offset, cb ){
                     retweet: tweet.retweet,
                     hashTags: tweet.hashTags
                 })),
-                nextOffset: (limit ? Number(limit) : Number(process.env.DEFAULT_PAGE_LIMIT)) 
-                + (offset ? Number(offset) : 0)
+                nextOffset: (tweets.length <= limit)? 0 : (limit) + (offset)
             });
         }
-        return cb(null, []);
+        return cb(null, null);
     }, function(err){
         return cb(err);
     });
