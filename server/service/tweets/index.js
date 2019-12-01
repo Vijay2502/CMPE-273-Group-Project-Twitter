@@ -1,4 +1,5 @@
 const repository = require('../../repository/mongo');
+const userService = require('../users');
 //const User = require('../../repository/mysql').User;
 const cache = require('../../cache');
 const uuidv1 = require('uuid/v1');
@@ -202,15 +203,29 @@ module.exports.reply = function (hostTweetId, replyTweet, cb) {
 }
 
 module.exports.getReplies = function (tweetId, limit, offset, cb) {
+    limit = limit ? Number(limit) : Number(process.env.DEFAULT_PAGE_LIMIT);
+    offset = offset ? Number(offset) : 0;
+    
     repository.Tweet.find({
         replyTo: tweetId
     },
         null,
         {
-            skip: offset ? offset : 0,
-            limit: limit ? limit : Number(process.env.DEFAULT_PAGE_LIMIT)
+            skip: offset,
+        limit: limit
         }).then(function (tweets) {
-            return cb(null, tweets);
+            return cb(null, {
+                tweets:tweets.map(tweet => ({
+                    id: tweet.tweetId,
+                    likes: tweet.likes.count,
+                    views: tweet.views.count,
+                    retweetCount: tweet.retweetCount,
+                    data: tweet.data ? tweet.data : null,
+                    retweet: tweet.retweet,
+                    hashTags: tweet.hashTags
+                })),
+                nextOffset: (tweets.length <= limit)? 0 : (limit) + (offset)
+            });
         }, function (err) {
             return cb(err);
         });

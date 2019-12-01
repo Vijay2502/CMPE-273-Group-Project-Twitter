@@ -48,7 +48,8 @@ router.put('/tweet/:userId/like', Tweet.likeTweet);               ///tested
 router.put('/tweet/:userId/view', Tweet.viewTweet);                ///tested
 router.put('/tweet/:userId/bookmark', BookMarkedTweet.bookmarkTweet);   ///doubt
 router.post('/tweet/:tweetId/retweet', Tweet.retweet);             ///tested
-//router.post('/tweet/reply', Tweet.reply);
+router.post('/tweet/:id/reply', Tweet.reply);
+router.get('/tweet/:id/replies', Tweet.getReplies);
 router.get('/tweet/:userId/bySubscriber', Tweet.getTweetsBySubscriber);
 router.delete('/tweet/:tweetId/delete', Tweet.deleteTweet);          ///tested
 router.get('/tweet/byList/:listId', Tweet.getTweetsByList);         ///

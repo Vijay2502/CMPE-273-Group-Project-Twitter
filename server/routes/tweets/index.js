@@ -15,6 +15,37 @@ module.exports.createTweet = function (request, response) {
     });
 }
 
+module.exports.reply = function (request, response) {
+    if (!(request.body && request.body.data && request.body.ownerId )) {
+        return response.status(400).send("INVALID REQUEST");
+    }
+    return tweetService.reply(request.params.id, request.body, function (err, res) {
+        if (err) return response.status(err.code ? err.code : 500).send(err);
+        return response.send({
+            status: "ok",
+            data: res
+        });
+    });
+}
+
+module.exports.getReplies = function (request, response) {
+
+    if (!(request.params && request.params.id)) {
+        return response.status(400).send("INVALID REQUEST");
+    }
+
+    return tweetService.getReplies(request.params.id, request.query.limit, request.query.offset, function (err, res) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: res
+        });
+
+    });
+}
+
 module.exports.getTweetsByOwnerId = function (request, response) {
 
     if (!(request.params && request.params.ownerId)) {
