@@ -70,7 +70,10 @@ module.exports.getByTweetId = function (tweetId, cb) {
                             retweetCount: tweet.retweetCount,
                             data: tweet.data ? tweet.data : null,
                             retweet: tweet.retweet,
-                            hashTags: tweet.hashTags
+                            hashTags: tweet.hashTags,
+                            owner: tweet.owner,
+                            createdAt: tweet.createdAt,
+                            updatedAt: tweet.updatedAt
                         };
 
                         cache.set('tweet-getByTweetId-' + tweetId, JSON.stringify(tweetDTO), function (err) {
@@ -205,26 +208,29 @@ module.exports.reply = function (hostTweetId, replyTweet, cb) {
 module.exports.getReplies = function (tweetId, limit, offset, cb) {
     limit = limit ? Number(limit) : Number(process.env.DEFAULT_PAGE_LIMIT);
     offset = offset ? Number(offset) : 0;
-    
+
     repository.Tweet.find({
         replyTo: tweetId
     },
         null,
         {
             skip: offset,
-        limit: limit
+            limit: limit
         }).then(function (tweets) {
             return cb(null, {
-                tweets:tweets.map(tweet => ({
+                tweets: tweets.map(tweet => ({
                     id: tweet.tweetId,
                     likes: tweet.likes.count,
                     views: tweet.views.count,
                     retweetCount: tweet.retweetCount,
                     data: tweet.data ? tweet.data : null,
                     retweet: tweet.retweet,
-                    hashTags: tweet.hashTags
+                    hashTags: tweet.hashTags,
+                    owner: tweet.owner,
+                    createdAt: tweet.createdAt,
+                    updatedAt: tweet.updatedAt
                 })),
-                nextOffset: (tweets.length <= limit)? 0 : (limit) + (offset)
+                nextOffset: (tweets.length <= limit) ? 0 : (limit) + (offset)
             });
         }, function (err) {
             return cb(err);

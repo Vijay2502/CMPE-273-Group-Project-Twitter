@@ -14,6 +14,7 @@ class messagelist extends Component {
             startNewChat: false,
             users: [],
             chatList: [],
+            username: ""
         }
     }
     newChat = () => {
@@ -26,19 +27,20 @@ class messagelist extends Component {
         this.setState({ startNewChat: false });
 
     }
-    handleSearch = (e) => {
+    handleChange = (e) => {
 
         e.preventDefault();
         //search user api in below function
-        this.searchUsers();
+        this.setState({ username: e.target.value });
     }
     componentDidMount = () => {
         //////////////////get the list of previous chat list of the users/////////////////
         axios.defaults.withCredential = true;
         //let userId = localStorage.getItem('first_name');
         let userId = 1;
-        axios.get(`http://localhost:8080/api/v1/getByUser/${userId}`)
+        axios.get(`http://localhost:8080/api/v1/conversation/getByUser/${userId}`)
             .then(response => {
+                console.log(response.data);
                 this.setState(
                     {
                         chatList: []
@@ -48,22 +50,6 @@ class messagelist extends Component {
             .catch(err => {
                 console.error(err);
             });
-    }
-    getMatchingUsers = () => {
-        ///  ////////////////////////api call to get the user searched by the logged in user////////////////////////////
-        console.log('hello wolrd');
-    }
-
-    debounce = (fun, interval) => {
-        let timer;
-        return () => {
-            let context = this;
-            clearTimeout(timer);
-            timer = setTimeout(() => {
-                fun.apply(context);
-            }, interval);
-        }
-
     }
 
     searchUsers = () => {
@@ -157,10 +143,10 @@ class messagelist extends Component {
                         <Modal.Title>New Message</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Form class="search-body" onSubmit={this.handleSearch}>
+                        <Form class="search-body" onSubmit={() => this.searchUsers()}>
                             <Form.Group controlId="formBasicEmail">
                                 {/* <FontAwesomeIcon icon={faSearch} /> */}
-                                <Form.Control type="text" placeholder="Search people" onKeyUp={this.debounce(this.getMatchingUsers, 300)}>
+                                <Form.Control type="text" placeholder="Search people" value={this.state.username} onChange={() => this.handleChange()}>
                                     {/* <FontAwesomeIcon icon={faSearch} /> */}
                                 </Form.Control>
                                 <div class="search-result">{userList}</div>
