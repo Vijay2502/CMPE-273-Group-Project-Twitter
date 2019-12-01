@@ -49,9 +49,7 @@ class CreateList extends React.Component {
             chipData:[ { key: 0, label: 'sakshi' },  { key: 1, label: 'priya' }],
             buttonVal:false
         }
-        this.handleChange = this.handleAdd.bind(this);
-        // this.newList = this.newList.bind(this);
-        // this.createList = this.createList.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     newList = () => {
@@ -83,13 +81,10 @@ class CreateList extends React.Component {
     };
     createList=()=>{ 
     }
-    // (event, {name, value})
-    handleChange=(event)=> {
-        event.preventDefault();
-        console.log("handlechnage",event);
-        this.setState({
-            ...this.state,
-             [event.target.name]: event.target.value });
+    handleChange(e) {
+        this.setState({ 
+            [e.target.name]: e.target.value 
+        });
       }
     handleSearch = (e) => {
         e.preventDefault();
@@ -148,8 +143,8 @@ class CreateList extends React.Component {
                         <div class="list-group-item list-group-item-action user-list row">
                             <div class="image-container col-sm-2"><img src={user.image} class="profile-image" alt="avatar"></img></div>
                             <div class="col-sm-10">
-                                <div class="profile-name">{user.name.first + " " + user.name.last}</div>
-                                <div class="profile-email">{user.email}</div>
+                                {/* <div class="profile-name">{user.name.first + " " + user.name.last}</div>
+                                <div class="profile-email">{user.email}</div> */}
                                 <div>chat - link</div>
 
                             </div>
@@ -182,37 +177,9 @@ class CreateList extends React.Component {
                         <Modal.Title>Create List</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                    <div class="edit-list-form">
-                            <Form>
-                            {/* <input maxlength="25" name="name" type="text" id="moomINPUT_1"/> */}
-                                <Form.Group controlId="formGridName" >
-                                    <Form.Label>Name</Form.Label>
-                                    <Form.Control
-                                        name="name"
-                                        placeholder="name"
-                                        value={this.state.name}
-                                        onChange={this.handleChange}
-                                    />
-                                </Form.Group>
-                                <Form.Group controlId="formGridBio">
-                                    <Form.Label>Description</Form.Label>
-                                    <Form.Control
-                                        name="description"
-                                        as="textarea"
-                                        rows="3"
-                                        placeholder="description"
-                                        value={this.state.description}
-                                        onChange={this.handleChange}
-                                    />
-                                </Form.Group>
-                            </Form>
-                        </div>
-                        {/* <form>
-                            <input maxlength="25" name="name" type="text" id="moomINPUT_1"/>
-                            <input type="text" id="name" class="fadeIn second" name="name" placeholder="name"/>
-                            <input type="text" id="description" class="fadeIn third" name="description" placeholder="description"/>
-                        </form> */}
-                    </Modal.Body>
+                <input name='name' label='Name' placeholder='Name' onChange={this.handleChange}  value={this.state.name} />
+               <input name='description' label='Description' placeholder='Description' onChange={this.handleChange}  value={this.state.description} />
+           </Modal.Body> 
                 </Modal>
 
 
@@ -253,13 +220,11 @@ class CreateList extends React.Component {
                     </Modal.Header>
                     <Modal.Body>
                         <Form class="search-body" onSubmit={this.handleSearch}>
-                            <Form.Group controlId="formBasicEmail">
                                 {/* <FontAwesomeIcon icon={faSearch} /> */}
                                 <Form.Control type="text" placeholder="Search people">
                                     {/* <FontAwesomeIcon icon={faSearch} /> */}
                                 </Form.Control>
                                 <div class="search-result">{searchList}</div>
-                            </Form.Group>
                         </Form>
                     </Modal.Body>
                 </Modal>

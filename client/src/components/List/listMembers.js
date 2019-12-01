@@ -5,15 +5,14 @@ import { removeMem, getMemberInAList } from "../../redux/actions/listActions";
 import { connect } from "react-redux";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
-
+import InboxIcon from '@material-ui/icons/Inbox';
+import DraftsIcon from '@material-ui/icons/Drafts';
 function mapStateToProps(store) {
     return {
-        members: store.list.memebers
+        members: ["heelo","yellow","bellow","tello"]
     }
 }
 
@@ -32,37 +31,47 @@ const handleToggle = (event,index) => {
     console.log("toggle")
   };
 
+  function ListItemLink(props) {
+    return <ListItem button component="a" {...props} />;
+  }
+
+  
 class listMembers extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            membersModal: false,
+            membersModal: true,
         }
     }
 
     getList = () => {
-      this.props.members.map((user, index) => {
-        const labelId = `checkbox-list-secondary-label-${index}`;
         return(
         <div>
-            <ListItem
-                key={index}
-                dense button
-                onClick={event => this.handleListItemClick(event, index)}
-            >
-          <ListItemText id={labelId} primary={user} />
-          <ListItemSecondaryAction>
-              <Button
-              key={index}
-                edge="end"
-                onClick={event=> this.handleToggle()}
-              >Remove</Button>
-            </ListItemSecondaryAction>
-            </ListItem>
-                <Divider />
+          <List component="nav" aria-label="main mailbox folders">
+        <ListItem button>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary="Inbox" />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon>
+            <DraftsIcon />
+          </ListItemIcon>
+          <ListItemText primary="Drafts" />
+        </ListItem>
+      </List>
+      <Divider />
+      <List component="nav" aria-label="secondary mailbox folders">
+        <ListItem button>
+          <ListItemText primary="Trash" />
+        </ListItem>
+        <ListItemLink href="#simple-list">
+          <ListItemText primary="Spam" />
+        </ListItemLink>
+      </List>
                 </div>
             );
-        })
     }
 
     render() {
