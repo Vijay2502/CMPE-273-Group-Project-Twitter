@@ -3,7 +3,7 @@ import {Form,Modal} from "react-bootstrap";
 import "../Messages/messagelist.css";
 import AssignmentSharpIcon from '@material-ui/icons/AssignmentSharp';
 import IconButton from '@material-ui/core/IconButton';
-import {createList} from "../../redux/actions/listActions";
+import {createList,addMem} from "../../redux/actions/listActions";
 import {connect} from "react-redux";
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
@@ -19,7 +19,8 @@ function mapStateToProps(store) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        createList: (payload) => dispatch(createList(payload))
+        createList: (payload) => dispatch(createList(payload)),
+        addMem : (payload) => dispatch(addMem(payload))
     };
 }
 

@@ -10,7 +10,7 @@ import SignUp from "./Account/SignUp";
 import AnalyticsMain from "./Analytics/AnalyticsMain";
 import tweetlist from "./List/tweetlist";
 import Chat from "./Chat/chat";
-
+import listMembers from "./List/listMembers"
 class Main extends Component {
     render() {
         return (
@@ -26,6 +26,7 @@ class Main extends Component {
                 {/*<Route exact path="/analytics" component={AnalyticsMain} />*/}
                 <Route path="/analytics" component={AnalyticsMain} />
                 <Route exact path="/chat" component={Chat} />
+                <Route exact path="/listm" component={listMembers} />
                 {/*<Switch>*/}
                 {/*  <Route path="/" component={Sidebar} />*/}
                 {/*  <Route exact path="/list" component={Lists} />*/}
