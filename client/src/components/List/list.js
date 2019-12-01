@@ -4,19 +4,26 @@ import '../../css/list.css'
 import { TweetBody } from './listview.js'
 import { connect } from "react-redux";
 import { signUp } from "../../redux/actions/authActions";
-import {getOwnedLists} from "../../redux/actions/listActions";
+import {getOwnedLists,getMemberLists,getSubscribedLists} from "../../redux/actions/listActions";
 import {connect} from "react-redux";
 
 function mapStateToProps(store) {
     return {
         signupSuccess: store.auth.signupSuccess,
         signupMessage: store.auth.signupMessage,
+        ownedlists: store.auth.ownedlists,
+        subscribedList:store.auth.subscribedList,
+          membersList:store.auth.membersList,
+          currentList:store.auth.currentList
+
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        getOwnedLists: (id) => dispatch(getOwnedLists(id))
+        getOwnedLists: (id) => dispatch(getOwnedLists(id)),
+        getSubscribedLists:(id) => dispatch(getSubscribedLists(id)),
+        getMemberLists:(id) => dispatch(getMemberLists(id))
     };
 }
 
@@ -24,7 +31,7 @@ class List extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: [],
+            users: this.props.,
             isOwner: true,
             isSubscriber: false,
             isMember: false
@@ -73,18 +80,21 @@ class List extends Component {
 
     showOwnerBox() {
         this.setState({ isOwner: true, isSubscriber: false, isMember: false });
+        this.props.getOwnedLists();
     }
 
     showSubscriberBox() {
         this.setState({ isOwner: false, isSubscriber: true, isMember: false });
+        this.props.getSubscribedLists();
     }
 
     showMemberBox() {
         this.setState({ isOwner: false, isSubscriber: false, isMember: true });
+        this.props.getMemberLists();
     }
 
     showContent() {
-        let content = this.state.users.map((user, index) => {
+        let content = this.props.currentList.map((user, index) => {
             let name = `${user.name.first} ${user.name.last}`;
             let handle = `@${user.name.first}${user.name.last}`;
             let image = user.image;
@@ -146,7 +156,7 @@ class List extends Component {
                             </div>
                         </div>
                     </div>
-                    {[...this.state.users].map((user, index) => {
+                    {/* {[...this.state.users].map((user, index) => {
                         let name = `${user.name.first} ${user.name.last}`;
                         let handle = `@${user.name.first}${user.name.last}`;
                         let image = user.image;
@@ -160,7 +170,8 @@ class List extends Component {
                                 tweet={tweet}
                                 image={image} />
                         )
-                    })}
+                    })} */}
+                    {this.showContent()}
                 </div>
             </PullToRefresh>
         );
