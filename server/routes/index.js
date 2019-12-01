@@ -27,6 +27,8 @@ router.get('/user/:id/followees', User.getFollowees);  ///tested
 router.get('/user/:id/subscriber/lists', User.getListsAsSubscriber);
 router.get('/user/:id/memeber/lists', User.getListsAsMember);
 router.get('/user/:id/owner/lists', User.getListsAsOwner);
+router.put('/user/:id/deactivate', User.deactivate);
+router.put('/user/:id/reactivate', User.reactivate);
 
 //LIST APIS
 router.post('/list/create', List.create); /// bug

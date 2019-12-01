@@ -247,7 +247,6 @@ module.exports.getByList = function (listId, pagination, cb) {
                 id: tweet.tweetId,
                 likes: tweet.likes.count,
                 views: tweet.views.count,
-                replies: tweet.replies,
                 retweetCount: tweet.retweetCount,
                 data: tweet.data ? tweet.data : null,
                 retweet: tweet.retweet,

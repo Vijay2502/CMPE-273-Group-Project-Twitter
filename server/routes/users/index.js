@@ -191,3 +191,27 @@ module.exports.getListsAsOwner = function (request, response) {
         });
     });
 }
+
+module.exports.deactivate = function(request, response){
+    return userService.deactivate(request.params.id, function (err, res) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: res
+        });
+    });
+}
+
+module.exports.reactivate = function(request, response){
+    return userService.reactivate(request.params.id, function (err, res) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: res
+        });
+    });
+}
