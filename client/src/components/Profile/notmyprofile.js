@@ -124,7 +124,7 @@ class profile extends Component {
 
     render() {
         return (
-            <div class="profile-container col-sm-10">
+            <div class="profile-container col-sm-12">
                 <div class="top-details row">
                     <div class="offset-sm-1">
                         <div class="profile-name-header">Akshit</div>

@@ -27,49 +27,57 @@ class HomePage extends Component {
 
     render() {
         return (
-            <GridLayout className="layout" cols={12} rowHeight={10} width={1000}>
-                <div key="a" data-grid={{ x: 0, y: 0, w: 3, h: 0, static: true }}>
-                    <Sidebar parentCallback={this.callbackFunction} />
-                </div>
+            <div className="container twitter-container">
+                <div className="row" >
+                    {/* <div key="a" data-grid={{ x: 0, y: 0, w: 4, h: 11, static: true }}> */}
+                    <div className="col-lg-3">
+                        <Sidebar parentCallback={this.callbackFunction} />
+                    </div>
 
-                <div key="b" data-grid={{ x: 4, y: 0, w: 8, h: 0, static: true }}>
-                    {this.state.currentScreen === "Home" &&
-                        <div class="parent-container col-sm-10">
-                            <div class="top-label">Home</div>
-                            <div class="top-label-border"></div>
-                            <div><Tweet /></div>
-                            <div class="tweet-container-border"></div>
-                            <div class="home-tweet-container"><HomeTweetList /></div>
-                        </div>}
+                    {/* <div key="b" data-grid={{ x: 4, y: 0, w: 4, h: 11, static: true }}> */}
+                    <div className="col-lg-7">
+                        {this.state.currentScreen === "Home" &&
+                            <div class="parent-container col-sm-12">
+                                <div class="top-label">Home</div>
+                                <div class="top-label-border"></div>
+                                <div><Tweet /></div>
+                                <div class="tweet-container-border"></div>
+                                <div class="home-tweet-container"><HomeTweetList /></div>
+                            </div>}
 
-                    {this.state.currentScreen === "Profile" &&
-                        <Profile />}
+                        {this.state.currentScreen === "Profile" &&
+                            <Profile />}
 
-                    {this.state.currentScreen === "Messages" &&
-                        <Messages />}
+                        {this.state.currentScreen === "Messages" &&
+                            <Messages />}
 
-                    {this.state.currentScreen === "Bookmarks" &&
-                        <div class="parent-container-bookmark col-sm-10" ><BookMarks /></div>
-                    }
+                        {this.state.currentScreen === "Bookmarks" &&
+                            <div class="parent-container-bookmark col-sm-12" ><BookMarks /></div>
+                        }
 
-                    {this.state.currentScreen === "List" &&
-                        <div class="parent-container-list col-sm-10">
-                            <div class="top-label-list-header">
-                                <div class="top-label-list">List</div>
-                                <div><CreateList /></div>
+                        {this.state.currentScreen === "List" &&
+                            <div class="parent-container-list col-sm-12">
+                                <div class="top-label-list-header">
+                                    <div class="top-label-list">List</div>
+                                    <div><CreateList /></div>
+                                </div>
+                                <List />
                             </div>
-                            <List />
-                        </div>
-                    }
+                        }
 
-                    {this.state.currentScreen === "ViewDetailedTweet" &&
-                        <div class="parent-container-bookmark col-sm-10" ><ViewDetailedTweet /></div>
-                    }
+                        {this.state.currentScreen === "ViewDetailedTweet" &&
+                            <div class="parent-container-bookmark col-sm-12" ><ViewDetailedTweet /></div>
+                        }
+
+                    </div>
+
+                    {/* <div key="c" data-grid={{ x: 8, y: 0, w: 4, h: 11, static: true }}> */}
+                    <div className="col-lg-2">
+                        <Search />
+                    </div>
 
                 </div>
-                <div key="c" data-grid={{ x: 4, y: 0, w: 6, h: 0, static: true }}><Search /></div>
-
-            </GridLayout>
+            </div>
         );
     }
 }

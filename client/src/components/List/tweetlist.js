@@ -26,9 +26,9 @@ class tweetlist extends Component {
       userName: "@SiliconHBO",
       name: "SiliconValley",
       users: [],
-      isSubscribed:true,
+      isSubscribed: true,
       buttonText: "Subscribed",
-      class:"btn btn-primary"
+      class: "btn btn-primary"
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -69,57 +69,58 @@ class tweetlist extends Component {
     // this.props.getProfile(data);
   }
 
-  handleClick(flag){
-    this.state.isSubscribed=flag;
+  handleClick(flag) {
+    this.state.isSubscribed = flag;
     console.log(this.state.buttonText);
-     this.setState({
-       buttonText: (this.state.buttonText == "Subscribed")? "Unsubscribed" : "Subscribed",
-       class: (this.state.class == "btn btn-primary")? "btn btn-outline-primary" : "btn btn-primary"})
+    this.setState({
+      buttonText: (this.state.buttonText == "Subscribed") ? "Unsubscribed" : "Subscribed",
+      class: (this.state.class == "btn btn-primary") ? "btn btn-outline-primary" : "btn btn-primary"
+    })
   }
 
   render() {
     return (
       <GridLayout className="layout" cols={12} rowHeight={30} width={1200}>
-                <div key="a" data-grid={{x: 0, y: 0, w: 5, h: 2, static: true}}>
-                    <Sidebar parentCallback={this.callbackFunction}/>
+        <div key="a" data-grid={{ x: 0, y: 0, w: 5, h: 2, static: true }}>
+          <Sidebar parentCallback={this.callbackFunction} />
+        </div>
+        <div key="b" data-grid={{ x: 10, y: 0, w: 8, h: 2, static: true }}>
+          <div class="profile-container col-sm-12">
+            <div class="top-details row">
+              <div class="offset-sm-1">
+                <div class="profile-name-header">{this.state.listName}</div>
+                <div class="profile-tweets-header">{this.state.userName}</div>
+              </div>
+            </div>
+            <div class="profile-cover-pic row">
+              <img
+                src={require("../../static/images/cover_pic1.png")}
+                width="100%"
+                height="200px"
+              />
+            </div>
+            <div class="profile-details row">
+              <div class="col-sm-9">
+                <div class="profile-name-header ">{this.state.listName}</div>
+                <div class="followers-following row">
+                  <div class="profile-detail-font">{this.state.name}</div>
+                  <div class="profile-detail-font">{this.state.userName}</div>
                 </div>
-                <div key="b" data-grid={{x: 10, y: 0, w: 8, h: 2, static: true}}>
-      <div class="profile-container col-sm-10">
-        <div class="top-details row">
-          <div class="offset-sm-1">
-            <div class="profile-name-header">{this.state.listName}</div>
-            <div class="profile-tweets-header">{this.state.userName}</div>
-          </div>
-        </div>
-        <div class="profile-cover-pic row">
-          <img
-            src={require("../../static/images/cover_pic1.png")}
-            width="100%"
-            height="200px"
-          />
-        </div>
-        <div class="profile-details row">
-          <div class="col-sm-9">
-            <div class="profile-name-header ">{this.state.listName}</div>
-            <div class="followers-following row">
-              <div class="profile-detail-font">{this.state.name}</div>
-              <div class="profile-detail-font">{this.state.userName}</div>
+                <div class="followers-following row">
+                  <div class="col-sm-2 profile-detail-font">{"2"} Following</div>
+                  <div class="col-sm-2 profile-detail-font">{"2"} Following</div>
+                </div>
+              </div>
             </div>
-            <div class="followers-following row">
-              <div class="col-sm-2 profile-detail-font">{"2"} Following</div>
-              <div class="col-sm-2 profile-detail-font">{"2"} Following</div>
+            <button type="button" class={this.state.class} onClick={() => this.handleClick(true)}>{this.state.buttonText}</button>
+            <div class="heading row"><div class="tweets-heading col-sm-2">Tweets</div></div>
+            <div class="tweets-list" row>
+              <ViewTweets dataFromParent={this.state.users} />
             </div>
           </div>
         </div>
-        <button type="button" class={this.state.class} onClick={()=>this.handleClick(true)}>{this.state.buttonText}</button>
-        <div class="heading row"><div class="tweets-heading col-sm-2">Tweets</div></div>
-        <div class="tweets-list" row>
-          <ViewTweets dataFromParent={this.state.users} />
-        </div>
-      </div>
-     </div>
-      <div key="c" data-grid={{x: 5, y: 0, w: 6, h: 2, static: true}}><Search/></div>
-</GridLayout>
+        <div key="c" data-grid={{ x: 5, y: 0, w: 6, h: 2, static: true }}><Search /></div>
+      </GridLayout>
     );
   }
 }

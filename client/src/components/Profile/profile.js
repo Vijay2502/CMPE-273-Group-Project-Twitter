@@ -142,7 +142,7 @@ class profile extends Component {
     render() {
         console.log("checking props", JSON.stringify(this.props));
         return (
-            <div class="profile-container col-sm-10">
+            <div class="profile-container col-sm-12">
                 <div class="top-details row">
                     <div class="offset-sm-1">
                         <div class="profile-name-header">Akshit</div>
