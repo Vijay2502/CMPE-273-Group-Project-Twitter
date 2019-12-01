@@ -174,7 +174,7 @@ module.exports.viewTweet = function (userId, tweetId, cb) {
 
 
 module.exports.bookmarkTweet = function (userId, tweetId, cb) {
-    let bookmarkedTweets_arr = [];
+
     repository.Tweet.findOne({ tweetId: tweetId })
         .then(function (tweet) {
             repository.BookmarkedTweets.update(
@@ -189,6 +189,18 @@ module.exports.bookmarkTweet = function (userId, tweetId, cb) {
         }, function (err) {
             return cb(err);
         });
+}
+
+module.exports.getBookmarks = function (userId, cb) {
+
+            return repository.BookmarkedTweets.find(
+                { "ownerId": userId },
+            ).then(function (bookmark) {
+                return cb(null, {
+                    tweets: tweetMapper(bookmark.bookMarkedTweets)
+                });
+            })
+        
 }
 
 

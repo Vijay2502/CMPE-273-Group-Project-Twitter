@@ -46,8 +46,7 @@ router.post('/tweet/create', Tweet.createTweet);                 ///tested
 router.get('/tweet/byOwner/:ownerId', Tweet.getTweetsByOwnerId); ///tested
 router.get('/tweet/byId/:tweetId', Tweet.getTweetByTweetId);      ///tested
 router.put('/tweet/:userId/like', Tweet.likeTweet);               ///tested
-router.put('/tweet/:userId/view', Tweet.viewTweet);                ///tested
-router.put('/tweet/:userId/bookmark', BookMarkedTweet.bookmarkTweet);   ///doubt
+router.put('/tweet/:userId/view', Tweet.viewTweet);                ///tested 
 router.post('/tweet/:tweetId/retweet', Tweet.retweet);             ///tested
 router.post('/tweet/:id/reply', Tweet.reply);
 router.get('/tweet/:id/replies', Tweet.getReplies);
@@ -55,6 +54,8 @@ router.delete('/tweet/:tweetId/delete', Tweet.deleteTweet);          ///tested  
 router.get('/tweet/getByHashtag/:hashtag', Tweet.getByHashtag);     ///
 
 
+router.put('/user/:userId/bookmark-tweet/:tweetId', BookMarkedTweet.bookmarkTweet); 
+router.get('/user/:userId/bookmarks', BookMarkedTweet.getBookmarks); 
 router.get('/feed/user/:userId', Tweet.getTweetsBySubscriber);
 router.get('/feed/list/:listId', Tweet.getTweetsByList);
 
