@@ -48,7 +48,8 @@ class ViewTweetDetails extends Component {
 
         this.state = {
             redirectToTweet: false,
-            replies: []
+            replies: [],
+            isOpenCommentModal: false
         }
 
     }
@@ -199,6 +200,45 @@ class ViewTweetDetails extends Component {
                                                     <Tweet tweet={tweet.data.text} />
                                                 </div>
                                             </button>
+                                            <div style={styles.container}>
+                                                <button
+                                                    type="button"
+                                                    className="list-group-item list-group-item-action borderless"
+                                                    style={styles.reply}
+                                                    onClick={this.openCommentModal}
+                                                >
+                                                    <FontAwesomeIcon icon={faComment} />
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className="list-group-item list-group-item-action borderless"
+                                                    style={styles.retweet}
+                                                >
+                                                    <FontAwesomeIcon icon={faRetweet} />
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className="list-group-item list-group-item-action borderless"
+                                                    style={styles.like}
+                                                >
+                                                    <FontAwesomeIcon icon={faHeart} />
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className="list-group-item list-group-item-action borderless"
+                                                    style={styles.share}
+                                                >
+                                                    <FontAwesomeIcon icon={faShareSquare} />
+                                                </button>
+
+                                                <Modal
+                                                    show={this.state.isOpenCommentModal}
+                                                    onHide={this.closeCommentModal}
+                                                    animation={false}
+                                                >
+                                                    <CreateTweet />
+                                                </Modal>
+                                            </div>
                                         </div>
                                     )
                                 })

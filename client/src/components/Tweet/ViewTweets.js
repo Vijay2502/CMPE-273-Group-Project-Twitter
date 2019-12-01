@@ -3,7 +3,7 @@ import { Button, Form, Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faRetweet, faShareSquare } from "@fortawesome/free-solid-svg-icons";
 import { PullDownContent, PullToRefresh, RefreshContent, ReleaseContent } from "react-js-pull-to-refresh";
-import { TweetBody } from "../HomeTweetList/listview";
+import TweetBody from "../HomeTweetList/listview";
 import { faComment, faHeart } from "@fortawesome/free-regular-svg-icons";
 import CreateTweet from "./CreateTweet";
 

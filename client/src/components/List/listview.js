@@ -110,4 +110,4 @@ const ListBody = (props) => {
     )
 };
 
-export { TweetBody }
+export { ListBody }

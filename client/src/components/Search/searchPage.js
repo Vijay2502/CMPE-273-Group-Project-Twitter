@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import {Modal, Col } from 'react-bootstrap';
+import { Modal, Col } from 'react-bootstrap';
 import InfiniteScroll from 'react-infinite-scroller';
-import {UserRow} from './userRow';
-import { TweetBody } from "../HomeTweetList/listview";
+import { UserRow } from './userRow';
+import TweetBody from "../HomeTweetList/listview";
 import '../../css/list.css';
 import axios from 'axios';
 import { HOSTNAME } from "../../constants/appConstants";
@@ -115,20 +115,20 @@ class SearchView extends Component {
   peopleBox() {
     var userRows = this.state.users.records.map(user => {
       return (<UserRow
-        key = {user.id} 
-        user = {user}
+        key={user.id}
+        user={user}
       />)
     });
     return (<Col>
-    <InfiniteScroll
+      <InfiniteScroll
         pageStart={0}
         loadMore={this.getUsers}
         hasMore={this.state.users.nextOffset != 0}
         loader={<div className="loader" key={0}>Loading ...</div>}
         useWindow={false}
-    >
-    {userRows}
-    </InfiniteScroll>
+      >
+        {userRows}
+      </InfiniteScroll>
     </Col>)
 
   }
@@ -143,15 +143,15 @@ class SearchView extends Component {
         image={tweet.data.image} />)
     });
     return (<Col>
-    <InfiniteScroll
+      <InfiniteScroll
         pageStart={0}
         loadMore={this.getUser}
         hasMore={this.state.users.nextOffset != 0}
         loader={<div className="loader" key={0}>Loading ...</div>}
         useWindow={false}
-    >
-    {tweetBodies}
-    </InfiniteScroll>
+      >
+        {tweetBodies}
+      </InfiniteScroll>
     </Col>)
 
   }
@@ -166,24 +166,24 @@ class SearchView extends Component {
         image={""} />)
     });
     return (<Col>
-    <InfiniteScroll
+      <InfiniteScroll
         pageStart={0}
         loadMore={this.getUser}
         hasMore={this.state.users.nextOffset != 0}
         loader={<div className="loader" key={0}>Loading ...</div>}
         useWindow={false}
-    >
-    {listBodies}
-    </InfiniteScroll>
+      >
+        {listBodies}
+      </InfiniteScroll>
     </Col>)
   }
 
-  switch(){
-    if(this.state.isLatest){
+  switch() {
+    if (this.state.isLatest) {
       return this.latestBox();
-    }else if(this.state.isPeople){
+    } else if (this.state.isPeople) {
       return this.peopleBox();
-    }else{
+    } else {
       return this.listsBox();
     }
   }
@@ -192,47 +192,47 @@ class SearchView extends Component {
 
   render() {
     return (
-        <div className="main-body">
-          <div className="list-body">
-            <div className="box-controller">
-              <div
-                className={"controller " + (this.state.isLatest
-                  ? "selected-controller"
-                  : "")}
-                onClick={this
-                  .showLatestBox
-                  .bind(this)}>
-                Latest
+      <div className="main-body">
+        <div className="list-body">
+          <div className="box-controller">
+            <div
+              className={"controller " + (this.state.isLatest
+                ? "selected-controller"
+                : "")}
+              onClick={this
+                .showLatestBox
+                .bind(this)}>
+              Latest
        </div>
-              <div
-                className={"controller " + (this.state.isPeople
-                  ? "selected-controller"
-                  : "")}
-                onClick={this
-                  .showPeopleBox
-                  .bind(this)}>
-                People
+            <div
+              className={"controller " + (this.state.isPeople
+                ? "selected-controller"
+                : "")}
+              onClick={this
+                .showPeopleBox
+                .bind(this)}>
+              People
        </div>
-              <div
-                className={"controller " + (this.state.isLists
-                  ? "selected-controller"
-                  : "")}
-                onClick={this
-                  .showListsBox
-                  .bind(this)}>
-                Lists
+            <div
+              className={"controller " + (this.state.isLists
+                ? "selected-controller"
+                : "")}
+              onClick={this
+                .showListsBox
+                .bind(this)}>
+              Lists
        </div>
 
-            </div>
           </div>
-
-
-
-                    {this.switch()}
-
-
-
         </div>
+
+
+
+        {this.switch()}
+
+
+
+      </div>
     );
   }
 }

@@ -103,6 +103,7 @@ class TweetBody extends Component {
 
         try {
             document.querySelector("#root > div > div > div > div:nth-child(1) > div > div.col-sm-3.sidebar > div > button:nth-child(7)").click();
+
         }
         catch (e) {
             console.log(e);
@@ -147,4 +148,4 @@ class TweetBody extends Component {
 
 
 
-export { TweetBody }
+export default TweetBody;

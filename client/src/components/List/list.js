@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { PullDownContent, PullToRefresh, RefreshContent, ReleaseContent } from "react-js-pull-to-refresh";
 import '../../css/list.css'
-import { TweetBody } from './listview.js'
+import { ListBody } from './listview.js'
 import { connect } from "react-redux";
 import { signUp } from "../../redux/actions/authActions";
-import {getOwnedLists} from "../../redux/actions/listActions";
-import {connect} from "react-redux";
+import { getOwnedLists } from "../../redux/actions/listActions";
+
 
 function mapStateToProps(store) {
     return {
@@ -47,7 +47,7 @@ class List extends Component {
 
     getUser() {
         //fetch list
-         this.props.getOwnedLists(6);
+        this.props.getOwnedLists(6);
         // fetch('https://randomuser.me/api/')
         //     .then(response => {
         //         if (response.ok) return response.json();
@@ -154,7 +154,7 @@ class List extends Component {
                         let tweet = user.tweet;
                         console.log(image);
                         return (
-                            <TweetBody
+                            <ListBody
                                 key={index}
                                 name={name}
                                 handle={handle}
