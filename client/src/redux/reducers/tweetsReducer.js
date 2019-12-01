@@ -15,7 +15,7 @@ function generateTweets(tweets) {
     for (const tweet of tweets.tweets) {
         const tweetCustom = {};
         tweetCustom.name = localStorage.getItem("firstName") + " " + localStorage.getItem("lastName");
-        tweetCustom.tweet = tweet.data["message-text"];
+        tweetCustom.tweet = tweet.data.text;
 
         userTweetsArray.push(tweetCustom);
     }
@@ -45,7 +45,7 @@ export default function tweetReducer(state = initialState, action) {
             userTweets: action.payload.data.data.tweets.map((tweet, index) => {
                 const tweetCustom = {};
                 tweetCustom.name = localStorage.getItem("firstName") + " " + localStorage.getItem("lastName");
-                tweetCustom.tweet = tweet.data["message-text"];
+                tweetCustom.tweet = tweet.data.text;
                 return tweetCustom;
             })
         });
