@@ -67,11 +67,26 @@ class CreateList extends React.Component {
         this.setState({addMemberModal: false});
     };
     nextList =()=>{
+        //call create api
+        console.log("list name", this.state.name);
+        console.log("list description", this.state.description);
+        if(this.state.name!=undefined && this.state.description!=undefined){
+        const payload ={
+            "userId":6,
+            "name": this.state.name,
+            "descripton" : this.state.description
+        }
+        this.props.createList(payload);
+    }
         this.nextModal();
         this.setState({openListModal: false});
     }
     createList=()=>{ 
     }
+
+    handleChange(event, {name, value}) {
+        this.setState({ [name]: value });
+      }
     handleSearch = (e) => {
         e.preventDefault();
         this.getUser();
@@ -167,17 +182,21 @@ class CreateList extends React.Component {
                                 <Form.Group controlId="formGridName" >
                                     <Form.Label>Name</Form.Label>
                                     <Form.Control
-                                        placeholder="Name"
+                                        name="name"
+                                        placeholder="name"
                                         value={this.state.listName}
+                                        onChange={this.handleChange}
                                     />
                                 </Form.Group>
                                 <Form.Group controlId="formGridBio">
                                     <Form.Label>Description</Form.Label>
                                     <Form.Control
+                                        name="description"
                                         as="textarea"
                                         rows="3"
                                         placeholder="description"
                                         value={this.state.Description}
+                                        onChange={this.handleChange}
                                     />
                                 </Form.Group>
                             </Form>

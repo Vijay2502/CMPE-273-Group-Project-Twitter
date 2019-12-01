@@ -91,7 +91,7 @@ const Subscribers = (props) => {
     }
 };
 
-const TweetBody = (props) => {
+const ListBody = (props) => {
     return (
         <div class="list-group">
             <TweetBox>
