@@ -4,7 +4,7 @@ const { User, List, sequelize } = require('../../repository/mysql');
 const { Tweet } = require('../../repository/mongo');
 
 module.exports.listSearch = function( text, limit, offset, cb ){
-    var terms = [text].concat( text.trim().replace(/(\s)+/).split(' '));
+    var terms = Array.from(new Set([text].concat( text.trim().replace(/(\s)+/).split(' '))));
     if(!terms)
         return cb(null, []);
     
