@@ -1,8 +1,13 @@
 const express = require('express');
 const app = express();
+const io = require('socket.io')();
 const bodyParser = require('body-parser');
+const cors = require("cors");
+const Chat = require("./service/conversation");
 
-app.use(function(req, res, next) {
+app.use(cors({ origin: "*", credentials: true }));
+
+app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
@@ -11,7 +16,22 @@ app.use(function(req, res, next) {
     next();
 });
 
+const chatPort = 3002;
+io.listen(chatPort);
 app.use(express.json());
-app.use(`${process.env.TWITTER_API_PATH}`,require('./routes'));
+app.use(`${process.env.TWITTER_API_PATH}`, require('./routes'));
 
+io.on('connection', function (socket) {
+    console.log('a user connected');
+    // channel id -> abc|abcd
+    // abc|abcd -> 2 user
+    socket.on('channel id', (channel) => {
+        socket.on(channel, (message) => {
+            console.log('coming msg == ', message);
+            Chat.saveMessage(channel, JSON.parse(message));
+            io.emit(channel, message);
+        })
+    })
+
+});
 app.listen(process.env.PORT, () => console.log(`Server listening on ${process.env.PORT}!`));

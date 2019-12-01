@@ -1,7 +1,9 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const repository = require('../../repository/mysql');
+const {Tweet} = require('../../repository/mongo');
 const cache = require('../../cache');
+const async = require('async');
 
 module.exports.create = function (newUser, cb) {
     return bcrypt.genSalt(10, (err, salt) => {
@@ -55,6 +57,95 @@ module.exports.verifyAndAssignToken = function (credentials, user, cb) {
         });
 }
 
+module.exports.update = function (newUser, cb) {
+
+    return repository.User.findOne({
+        where: {
+            id: newUser.id
+        }
+    }).then(function (user) {
+
+        if (user) {
+
+            return async.series([
+                function (icb) {
+
+                    if (newUser.password && newUser.currentPassword) {
+
+                        return module.exports.verifyAndAssignToken(newUser.currentPassword, user, function (err, token) {
+                            if(err){
+                                return icb(err);
+                            }
+
+                        return bcrypt.genSalt(10, (err, salt) => {
+                            if (err) return cb(err);
+
+                            return bcrypt.hash(newUser.password, salt, (err, hash) => {
+                                if (err) return cb(err);
+
+                                newUser.password = hash;
+                                return icb();
+                            });
+                        });
+
+                    });
+                    } else {
+                        newUser.password = user.password;
+                        return icb();
+                    }
+                }
+            ], function (err) {
+
+                if(err){
+                    return cb(err);
+                }
+
+                var userDTO = {
+                    firstName: newUser.firstName ? newUser.firstName : user.firstName,
+                    lastName: newUser.lastName ? newUser.lastName : user.lastName,
+                    username: newUser.username ? newUser.username : user.username,
+                    email: newUser.email ? newUser.email : user.email,
+                    password: newUser.password,
+                    data: newUser.data ? newUser.data : user.data
+                };
+
+                return repository.User.update(userDTO,
+                    {
+                        where: {
+                            id: newUser.id
+                        }
+                    }).then(function (user) {
+
+                        userDTO.id = newUser.id;
+                        userDTO.password = undefined;
+                        cache.set('user-getById-' + newUser.id, JSON.stringify(userDTO), function (err) {
+                            if (err) {
+                                console.log("Write to Cache Failed >>>> err: " + JSON.stringify(err, null, 4));
+                            } else {
+                                cache.expire('user-getById-' + newUser.id, process.env.CACHE_EXPIRY_TIME);
+                            }
+
+                        })
+
+                        return module.exports.getById(newUser.id, cb);
+
+                    }, function (err) {
+                        return cb(err);
+                    });
+            })
+        }
+        return cb({
+            code: 404,
+            message: "USER NOT FOUND"
+        });
+
+
+    }, function (err) {
+        return cb(err);
+    });
+
+}
+
 
 module.exports.getById = function (userId, cb) {
 
@@ -97,34 +188,9 @@ module.exports.getById = function (userId, cb) {
             }, function (err) {
                 return cb(err);
             });
-        }
+       }
     })
 
-
-    // repository.User.findOne({
-    //     where: {
-    //         id: userId
-    //     }
-    // }).then(function (user) {
-
-    //     if (user) {
-    //         return cb(null, {
-    //             id: user.id,
-    //             firstName: user.firstName,
-    //             lastName: user.lastName,
-    //             username: user.username,
-    //             email: user.email,
-    //             data: user.data ? user.data : null
-    //         });
-    //     }
-    //     return cb({
-    //         code: 404,
-    //         message: "USER NOT FOUND"
-    //     });
-
-    // }, function (err) {
-    //     return cb(err);
-    // });
 }
 
 module.exports.getByEmailOrUsername = function (email, username, cb) {
@@ -331,7 +397,7 @@ module.exports.getListsAsMember = function (userId, limit, offset, cb) {
                     });
                 }
                 return user.getListsAsMember({
-                    attributes: ['id', 'firstName', 'lastName', 'username', 'email'],
+                    attributes: ['id', 'name', 'description', 'data',  'createdAt'],
                     limit,
                     offset,
                     required: false
@@ -344,7 +410,7 @@ module.exports.getListsAsMember = function (userId, limit, offset, cb) {
                             name: l.name,
                             description: l.description,
                             data: l.data,
-                            createdAt: f.UserFollowing.createdAt
+                            createdAt: l.createdAt
                         })),
                         nextOffset: (offset + limit) < count ? (offset + limit) : 0
                     });
@@ -381,7 +447,7 @@ module.exports.getListsAsSubscriber = function (userId, limit, offset, cb) {
                     });
                 }
                 return user.getListsAsSubscriber({
-                    attributes: ['id', 'firstName', 'lastName', 'username', 'email'],
+                    attributes: ['id', 'name', 'description', 'data', 'createdAt'],
                     limit,
                     offset,
                     required: false
@@ -394,7 +460,7 @@ module.exports.getListsAsSubscriber = function (userId, limit, offset, cb) {
                             name: l.name,
                             description: l.description,
                             data: l.data,
-                            createdAt: f.UserFollowing.createdAt
+                            createdAt: l.createdAt
                         })),
                         nextOffset: (offset + limit) < count ? (offset + limit) : 0
                     });
@@ -431,7 +497,7 @@ module.exports.getListsAsOwner = function (userId, limit, offset, cb) {
                     });
                 }
                 return user.getLists({
-                    attributes: ['id', 'firstName', 'lastName', 'username', 'email'],
+                    attributes: ['id', 'name', 'description', 'data', 'createdAt'],
                     limit,
                     offset,
                     required: false
@@ -444,7 +510,7 @@ module.exports.getListsAsOwner = function (userId, limit, offset, cb) {
                             name: l.name,
                             description: l.description,
                             data: l.data,
-                            createdAt: f.UserFollowing.createdAt
+                            createdAt: l.createdAt
                         })),
                         nextOffset: (offset + limit) < count ? (offset + limit) : 0
                     });
@@ -460,6 +526,60 @@ module.exports.getListsAsOwner = function (userId, limit, offset, cb) {
             message: "USER NOT FOUND"
         });
     }, function (err) {
+        return cb(err);
+    })
+}
+
+module.exports.deactivate = function(userId, cb){
+    repository.User.update({
+        active: false
+    },{
+        where:{
+            id:userId
+        }
+    }).then(function(user){
+
+        Tweet.update({
+            ownerId:userId
+        },{
+            active: false
+        }).then(function(tweets){
+            console.log("Tweets deactivated")
+        }, function(err){
+            console.log(err);
+        })
+
+        return cb(null, { message: "DEACTIVATION SUCCESFULL" });
+
+
+    }, function(err){
+        return cb(err);
+    })
+}
+
+module.exports.reactivate = function(userId, cb){
+    return repository.User.update({
+        active: true
+    },{
+        where:{
+            id:userId
+        }
+    }).then(function(user){
+
+        Tweet.update({
+            ownerId:userId
+        },{
+            active: true
+        }).then(function(tweets){
+            console.log("Tweets reactivated")
+        }, function(err){
+            console.log(err);
+        })
+
+        return cb(null, { message: "REACTIVATION SUCCESFULL" });
+
+
+    }, function(err){
         return cb(err);
     })
 }

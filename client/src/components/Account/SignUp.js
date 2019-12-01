@@ -1,11 +1,12 @@
-import React, {Component} from 'react';
-import {Redirect} from 'react-router';
+import React, { Component } from 'react';
+import { Redirect } from 'react-router';
+
 import logo from '../../static/images/login_twitter_logo.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Button, Col, Form, Toast} from "react-bootstrap";
-import {signUp} from "../../redux/actions/authActions";
+import { Button, Col, Form, Toast } from "react-bootstrap";
+import { signUp } from "../../redux/actions/authActions";
 import Expire from "./Expire";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
 function mapStateToProps(store) {
     return {
@@ -41,12 +42,12 @@ class SignUp extends Component {
         }
 
         this.props.signUp(data);
-        this.setState({test: true});
+        this.setState({ test: true });
     };
 
 
     callbackFunction = (val) => {
-        this.setState({redirectVar: val})
+        this.setState({ redirectVar: val })
     };
 
     render() {
@@ -54,7 +55,7 @@ class SignUp extends Component {
             <div style={styles.container}>
                 {this.state.redirectVar === true && <Redirect to={{
                     pathname: "/login"
-                }}/>}
+                }} />}
 
                 {this.props.signupSuccess === true && <Expire delay={5000} parentCallback={this.callbackFunction}  >
                     <Toast>
@@ -68,7 +69,7 @@ class SignUp extends Component {
 
 
                 <div>
-                    <img style={styles.logo} src={logo} alt="Quora"/>
+                    <img style={styles.logo} src={logo} alt="Quora" />
                 </div>
 
                 <h3 style={styles.message}>SignUp</h3>
@@ -76,27 +77,27 @@ class SignUp extends Component {
                     <Form.Row>
                         <Form.Group as={Col} controlId="firstName">
                             <Form.Label>First name</Form.Label>
-                            <Form.Control placeholder="What's your first name?"/>
+                            <Form.Control placeholder="What's your first name?" />
                         </Form.Group>
                         <Form.Group as={Col} controlId="lastName">
                             <Form.Label>Last name</Form.Label>
-                            <Form.Control placeholder="What's your last name?"/>
+                            <Form.Control placeholder="What's your last name?" />
                         </Form.Group>
                     </Form.Row>
 
                     <Form.Group controlId="username">
                         <Form.Label>Username</Form.Label>
-                        <Form.Control placeholder="Enter a cool username"/>
+                        <Form.Control placeholder="Enter a cool username" />
                     </Form.Group>
 
                     <Form.Group controlId="email">
                         <Form.Label>Email</Form.Label>
-                        <Form.Control  placeholder="What's your email?"/>
+                        <Form.Control placeholder="What's your email?" />
                     </Form.Group>
 
                     <Form.Group controlId="password">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Enter a strong password"/>
+                        <Form.Control type="password" placeholder="Enter a strong password" />
                     </Form.Group>
 
                     <Button style={styles.signUpButton} variant="primary" type="submit">

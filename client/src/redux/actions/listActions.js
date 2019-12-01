@@ -7,7 +7,6 @@ import axios from 'axios';
 export function createList(payload) {
     console.log("createList payload");
     console.log(payload);
-
     return (dispatch) => {
         axios.post(`http://${HOSTNAME}:8080/api/v1/list/create`, payload)
             .then((response) => dispatch(createDispatch(response.data)));
@@ -104,46 +103,47 @@ export const getSubscriberInAListDispatch = (returnData) => {
 };
 
 //  ***********  GET OWNER LISTS  ***********
-export function getOwnedLists(payload) {
-    console.log("getOwnedList payload");
-    console.log(payload);
-
+export function getOwnedLists(id) {
+    console.log("getOwnedList user id");
+    console.log(id);
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/user/:id/owner/lists`)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/user/${id}/owner/lists`)
             .then((response) => dispatch(getOwnedListDispatch(response.data)));
     }
 }
 export const getOwnedListDispatch = (returnData) => {
     console.log("Inside getOwnedListDispatch");
     console.log(returnData);
-
+    if(returnData!=null){
     return {type: GET_OWNEDLISTS, payload: returnData}
+    }
 };
 
 //  ***********  GET SUBSCRIBED LISTS***********
-export function getSubscribedLists(payload) {
+export function getSubscribedLists(id) {
     console.log("getSubscribedList  payload");
-    console.log(payload);
+    console.log(id);
 
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/user/:id/subscriber/lists`)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/user/${id}/subscriber/lists`)
             .then((response) => dispatch(getSubscribedListDispatch(response.data)));
     }
 }
 export const getSubscribedListDispatch = (returnData) => {
     console.log("Inside getSubscribedListDispatch");
     console.log(returnData);
-
+    if(returnData!=null){
     return {type: GET_SUBSCRIBEDLIST, payload: returnData}
+    }
 };
 
 //  ***********  GET MEMBER LISTS***********
-export function getMemberLists(payload) {
+export function getMemberLists(id) {
     console.log("getMemberLists payload");
-    console.log(payload);
+    console.log(id);
 
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/user/:id/memeber/lists`)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/user/${id}/member/lists`)
             .then((response) => dispatch(getMemberListsDispatch(response.data)));
     }
 }
@@ -151,8 +151,9 @@ export function getMemberLists(payload) {
 export const getMemberListsDispatch = (returnData) => {
     console.log("Inside getMemberListsDispatch");
     console.log(returnData);
-
+    if(returnData!=null){
     return {type: GET_MEMBERLISTS, payload: returnData}
+    }
 };
 
 

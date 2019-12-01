@@ -21,60 +21,65 @@ export default function listReducer(state = initialState, action) {
         return Object.assign({}, state, {
             ...initialState,
             status: action.payload.status === "ok" ? true : false,
-            data: action.payload.data
+            data: action.payload.data,
         });
     } else if (action.type === ADD_MEMBER) {
         return Object.assign({}, state, {
-            signupSuccess: action.payload.status === "ok" ? true : false,
-            signupMessage: action.payload.data.message,
+           status: action.payload.status === "ok" ? true : false,
+            data: action.payload.data,
         });
     }
     else if (action.type === REMOVE_MEMBER) {
         return Object.assign({}, state, {
-            signupSuccess: action.payload.status === "ok" ? true : false,
-            signupMessage: action.payload.data.message,
+           status: action.payload.status === "ok" ? true : false,
+            data: action.payload.data,
         });
     }
     else if (action.type === GET_LIST_ID) {
         return Object.assign({}, state, {
-            signupSuccess: action.payload.status === "ok" ? true : false,
-            signupMessage: action.payload.data.message,
+           status: action.payload.status === "ok" ? true : false,
+            data: action.payload.data,
         });
     }
     else if (action.type === GET_MEMBERS_IN_LIST) {
         return Object.assign({}, state, {
-            signupSuccess: action.payload.status === "ok" ? true : false,
-            signupMessage: action.payload.data.message,
+           status: action.payload.status === "ok" ? true : false,
+            data: action.payload.data,
+            
         });
     }
     else if (action.type === GET_SUBSCRIBERS_IN_LIST) {
         return Object.assign({}, state, {
-            signupSuccess: action.payload.status === "ok" ? true : false,
-            signupMessage: action.payload.data.message,
+           status: action.payload.status === "ok" ? true : false,
+            data: action.payload.data,
+            
         });
     }
     else if (action.type === GET_OWNEDLISTS) {
         return Object.assign({}, state, {
-            signupSuccess: action.payload.status === "ok" ? true : false,
-            signupMessage: action.payload.data.message,
+           status: action.payload.status === "ok" ? true : false,
+            data: action.payload.data,
+            ownedlists: action.payload.data.listsAsOwner
         });
     }
     else if (action.type === GET_SUBSCRIBEDLIST) {
         return Object.assign({}, state, {
-            signupSuccess: action.payload.status === "ok" ? true : false,
-            signupMessage: action.payload.data.message,
+           status: action.payload.status === "ok" ? true : false,
+            data: action.payload.data,
+            subscribedList:action.payload.data.subscribedList
         });
     }
     else if (action.type === GET_MEMBERLISTS) {
         return Object.assign({}, state, {
-            signupSuccess: action.payload.status === "ok" ? true : false,
-            signupMessage: action.payload.data.message,
+           status: action.payload.status === "ok" ? true : false,
+            data: action.payload.data,
+            membersList:action.payload.data.listsAsMember
         });
     }
     else if (action.type === GET_TWEETS_LIST) {
         return Object.assign({}, state, {
-            signupSuccess: action.payload.status === "ok" ? true : false,
-            signupMessage: action.payload.data.message,
+           status: action.payload.status === "ok" ? true : false,
+            data: action.payload.data,
         });
     }
     return state;

@@ -13,7 +13,8 @@ import {
     faHome,
     faImage,
     faListAlt,
-    faUserCircle
+    faUserCircle,
+    faLongArrowAltLeft
 } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import "./sidebar.css";
@@ -79,7 +80,7 @@ class Sidebar extends Component {
         return (
             <div class="sidebar-container row">
                 <div class="col-sm-3 sidebar">
-                    <div class="list-group sidebar-list col-sm-5">
+                    <div class="list-group sidebar-list col-sm-12">
                         <div className="twitter-icon">
                             <FontAwesomeIcon icon={faTwitter} />
                         </div>
@@ -127,6 +128,14 @@ class Sidebar extends Component {
                         <button
                             type="button"
                             class="list-group-item list-group-item-action borderless"
+                            onClick={() => this.sendData("ViewDetailedTweet")}
+                        >
+                            <FontAwesomeIcon icon={faBookmark} />
+                            <span>View Detailed Tweet</span>
+                        </button>
+                        <button
+                            type="button"
+                            class="list-group-item list-group-item-action borderless"
                             onClick={() => this.sendData("Profile")}>
                             <FontAwesomeIcon icon={faUserCircle} />
                             <span>Profile</span>
@@ -170,7 +179,7 @@ class Sidebar extends Component {
                         </button>
                     </div>
                 </div>
-                <div class="col-sm-9"></div>
+                {/* <div class="col-sm-9"></div> */}
                 <Modal
                     show={this.state.openTweetModal}
                     onHide={this.cancelTweet}

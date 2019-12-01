@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { Form, Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faComment } from "@fortawesome/free-solid-svg-icons";
+import io from 'socket.io-client';
+import { Launcher } from 'react-chat-window';
 import "./messagelist.css";
+import axios from 'axios';
 
 class messagelist extends Component {
     constructor(props) {
@@ -10,62 +13,63 @@ class messagelist extends Component {
         this.state = {
             startNewChat: false,
             users: [],
-            chatList: []
+            chatList: [],
+            username: ""
         }
     }
     newChat = () => {
+        //////opening modal for search people//////////
         this.setState({ startNewChat: true });
     }
     closeNewChat = () => {
+
+        //////closing modal for search people//////////
         this.setState({ startNewChat: false });
+
     }
-    handleSearch = (e) => {
+    handleChange = (e) => {
+
         e.preventDefault();
-        this.getUser();
-        console.log("testing search");
+        //search user api in below function
+        this.setState({ username: e.target.value });
     }
     componentDidMount = () => {
-        console.log("kjkj");
-        // this.getUser()
-    }
-    getUser = () => {
-        fetch('https://randomuser.me/api/')
+        //////////////////get the list of previous chat list of the users/////////////////
+        axios.defaults.withCredential = true;
+        //let userId = localStorage.getItem('first_name');
+        let userId = 1;
+        axios.get(`http://localhost:8080/api/v1/conversation/getByUser/${userId}`)
             .then(response => {
-                if (response.ok) return response.json();
-                throw new Error('Request failed.');
+                console.log(response.data);
+                this.setState(
+                    {
+                        chatList: []
+                    }, () => console.log('message response', this.state.chatList)
+                );
             })
-            .then(data => {
-                console.log("kjjsjk", JSON.stringify(data));
-                for (let i = 0; i < 5; i++) {
-                    this.setState({
-                        users: [
-                            {
-                                name: data.results[0].name,
-                                image: data.results[0].picture.medium,
-                                email: data.results[0].email
-                            },
-                            ...this.state.users,
-                        ]
-                        ,
-                        chatList: [
-                            {
-                                name: data.results[0].name,
-                                image: data.results[0].picture.medium,
-                                email: data.results[0].email,
-                                date: data.results[0].registered.date
-                                // date:  data.result[0].registered.date
-                            },
-                            ...this.state.users,
-                        ]
-                    });
-                }
-
-            })
-            .catch(error => {
-                console.log(error);
+            .catch(err => {
+                console.error(err);
             });
-
     }
+
+    searchUsers = () => {
+        axios.defaults.withCredential = true;
+        //let userId = localStorage.getItem('first_name');
+        let userId = 1;
+        // axios.get(`http://localhost:8080/api/v1/search/users`)
+        //     .then(response => {
+        //         this.setState(
+        //             {
+        //                 chatList: []
+        //             }, () => console.log('message response', this.state.chatList)
+        //         );
+        //     })
+        //     .catch(err => {
+        //         console.error(err);
+        //     });
+    }
+
+
     render() {
         let userList = null, noMsgContainer = null, messageList = null;
         if (this.state.users.length > 0) {
@@ -136,22 +140,13 @@ class messagelist extends Component {
                     scrollable={true}
                 >
                     <Modal.Header closeButton>
-                        {/* <div class="btn-tweet">
-                            <button
-                                class="btn btn-primary save-btn"
-                                type="button"
-                                onClick={this.handleSearch}
-                            >
-                                Search
-                            </button>
-                        </div> */}
                         <Modal.Title>New Message</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Form class="search-body" onSubmit={this.handleSearch}>
+                        <Form class="search-body" onSubmit={() => this.searchUsers()}>
                             <Form.Group controlId="formBasicEmail">
                                 {/* <FontAwesomeIcon icon={faSearch} /> */}
-                                <Form.Control type="text" placeholder="Search people">
+                                <Form.Control type="text" placeholder="Search people" value={this.state.username} onChange={() => this.handleChange()}>
                                     {/* <FontAwesomeIcon icon={faSearch} /> */}
                                 </Form.Control>
                                 <div class="search-result">{userList}</div>

@@ -3,7 +3,7 @@ import { Button, Form, Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faRetweet, faShareSquare } from "@fortawesome/free-solid-svg-icons";
 import { PullDownContent, PullToRefresh, RefreshContent, ReleaseContent } from "react-js-pull-to-refresh";
-import { TweetBody } from "../HomeTweetList/listview";
+import TweetBody from "../HomeTweetList/listview";
 import { faComment, faHeart } from "@fortawesome/free-regular-svg-icons";
 import CreateTweet from "./CreateTweet";
 
@@ -24,6 +24,8 @@ class ViewTweets extends Component {
         this.setState({ isOpenCommentModal: false });
     };
 
+
+
     render() {
         console.log("render HomeTweetList");
         return (
@@ -42,12 +44,15 @@ class ViewTweets extends Component {
                         console.log(image);
                         return (
                             <div>
+
                                 <TweetBody
                                     key={index}
                                     name={name}
                                     handle={handle}
                                     tweet={tweet}
-                                    image={image} />
+                                    image={image}
+
+                                />
 
                                 <div style={styles.container}>
                                     <button
