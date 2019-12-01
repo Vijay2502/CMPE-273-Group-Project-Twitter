@@ -80,7 +80,7 @@ class Sidebar extends Component {
         return (
             <div class="sidebar-container row">
                 <div class="col-sm-3 sidebar">
-                    <div class="list-group sidebar-list col-sm-5">
+                    <div class="list-group sidebar-list col-sm-12">
                         <div className="twitter-icon">
                             <FontAwesomeIcon icon={faTwitter} />
                         </div>
@@ -179,7 +179,7 @@ class Sidebar extends Component {
                         </button>
                     </div>
                 </div>
-                <div class="col-sm-9"></div>
+                {/* <div class="col-sm-9"></div> */}
                 <Modal
                     show={this.state.openTweetModal}
                     onHide={this.cancelTweet}

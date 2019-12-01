@@ -102,7 +102,7 @@ class TweetBody extends Component {
     displayTweet() {
 
         try {
-            document.querySelector("#root > div > div > div > div:nth-child(1) > div > div.col-sm-3.sidebar > div > button:nth-child(7)").click();
+            document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(7)").click();
 
         }
         catch (e) {
@@ -118,17 +118,6 @@ class TweetBody extends Component {
         return (
             <div class="list-group">
                 <button type="button" className="inner-body list-group-item list-group-item-action" onClick={(e) => this.displayTweet()}>
-                    <Image image={this.props.image} />
-                    <div className="body">
-                        <div className="inner-body-inner">
-                            <Name name={this.props.name} />
-                            <Handle handle={this.props.handle} />
-                        </div>
-                        <Tweet tweet={this.props.tweet} />
-                    </div>
-                </button>
-
-                <button type="button" className="inner-body list-group-item list-group-item-action">
                     <Image image={this.props.image} />
                     <div className="body">
                         <div className="inner-body-inner">

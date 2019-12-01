@@ -53,9 +53,9 @@ module.exports.getTweetsByOwnerId = function (request, response) {
     }
     var pagination = {
         skip: 0,
-        limit: 2
+        limit: Number(process.env.DEFAULT_PAGE_LIMIT)
     };
-    if (request.query.skip) pagination.skip = Number(request.query.skip);
+    if (request.query.offset) pagination.skip = Number(request.query.offset);
     if (request.query.limit) pagination.limit = Number(request.query.limit);
 
     return tweetService.getByOwnerId(request.params.ownerId, pagination, function (err, res) {
@@ -136,32 +136,15 @@ module.exports.retweet = function (request, response) {
     });
 }
 
-// module.exports.reply = function (request, response) {
-//     console.log('helo');
-//     if (!(request.query && request.query.tweetId && request.query.userId)) {
-//         return response.status(400).send("INVALID REQUEST");
-//     }
-//     tweetService.retweet(request.query, function (err, data) {
-//         if (err) {
-//             return response.status(err.code ? err.code : 500).send(err);
-//         }
-//         return response.send({
-//             status: "ok",
-//             data: res
-//         });
-
-//     });
-// }
-
 module.exports.getTweetsBySubscriber = function (request, response) {
     if (!(request.params && request.params.userId)) {
         return response.status(400).send("INVALID REQUEST");
     }
     var pagination = {
         skip: 0,
-        limit: 2
+        limit: Number(process.env.DEFAULT_PAGE_LIMIT)
     };
-    if (request.query.skip) pagination.skip = Number(request.query.skip);
+    if (request.query.offset) pagination.skip = Number(request.query.offset);
     if (request.query.limit) pagination.limit = Number(request.query.limit);
 
     return tweetService.getTweetsBySubscriber(request.params.userId, pagination, function (err, res) {
@@ -196,7 +179,14 @@ module.exports.getTweetsByList = function (request, response) {
     if (!(request.params && request.params.listId)) {
         return response.status(400).send("INVALID REQUEST");
     }
-    return tweetService.getTweetsByList(request.params.listId, function (err, data) {
+    var pagination = {
+        skip: 0,
+        limit: Number(process.env.DEFAULT_PAGE_LIMIT)
+    };
+    if (request.query.offset) pagination.skip = Number(request.query.offset);
+    if (request.query.limit) pagination.limit = Number(request.query.limit);
+
+    return tweetService.getByList(request.params.listId, pagination, function (err, res) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
         }

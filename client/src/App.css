@@ -22,6 +22,7 @@
 }
 
 
-#root > div > div > div > div:nth-child(1) > div > div.col-sm-3.sidebar > div > button:nth-child(7){
+#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(7)
+{
     display: none;
 }

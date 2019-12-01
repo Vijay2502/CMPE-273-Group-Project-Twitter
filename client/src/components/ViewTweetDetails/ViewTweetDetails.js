@@ -95,7 +95,7 @@ class ViewTweetDetails extends Component {
     goBackToFeeds() {
         console.log("back");
         try {
-            document.querySelector("#root > div > div > div > div:nth-child(1) > div > div.col-sm-3.sidebar > div > button:nth-child(2)").click();
+            document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button.list-group-item.list-group-item-action.borderless.sidebar-button").click();
         }
         catch (e) {
             console.log(e);
@@ -121,7 +121,7 @@ class ViewTweetDetails extends Component {
                         <FontAwesomeIcon icon={faLongArrowAltLeft} /> Tweet
                     </div>
 
-                    <Image image={tweetData.owner.image} />
+                    <Image image={tweetData.owner.image ? tweetData.owner.image : null} />
                     <div className="body">
                         <div className="inner-body-inner">
                             <Name name={tweetData.owner.firstName} />
@@ -191,7 +191,7 @@ class ViewTweetDetails extends Component {
                                     return (
                                         <div className="reply">
                                             <button type="button" className="inner-body list-group-item list-group-item-action" onClick={(e) => this.displayTweet()}>
-                                                <Image image={tweet.owner.image} />
+                                                <Image image={tweetData.owner.image ? tweetData.owner.image : null} />
                                                 <div className="body">
                                                     <div className="inner-body-inner">
                                                         <Name name={tweet.owner.firstName} />
