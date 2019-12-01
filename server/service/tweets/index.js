@@ -5,7 +5,7 @@ const uuidv1 = require('uuid/v1');
 const _ = require('lodash');
 
 function extractHashTags(data) {
-    if (data.text && _isString(data.text)) {
+    if (data.text && _.isString(data.text)) {
         return data.text.match(/\B(#[A-Za-z0-9\-\.\_\?]+\b)/g);
     }
 }
@@ -155,7 +155,7 @@ module.exports.bookmarkTweet = function (userId, tweetId, cb) {
             repository.BookmarkedTweets.update(
                 { "ownerId": userId },
                 {
-                    "$push": { "bookMarkedTweets": tweet }
+                    "$addToSet": { "bookMarkedTweets": tweet }
                 }
             ).then(function (result) {
                 return cb(null, "success");
@@ -217,8 +217,8 @@ module.exports.getReplies = function (tweetId, limit, offset, cb) {
 }
 
 module.exports.getTweetsBySubscriber = function (userId, pagination, cb) {
-    ///get user's subscriber in array -- only id's
-    let arr = [1, 2]
+
+
 
     repository.Tweet.find(
         { "ownerId": { "$in": arr } }, null, pagination)
