@@ -8,6 +8,7 @@
     width: 220px;
     height: 40px;
     border-radius: 20px;
+    align-content: center;
     background-color: rgb(26, 145, 218);
 }
 .btn-tweet .save-btn {

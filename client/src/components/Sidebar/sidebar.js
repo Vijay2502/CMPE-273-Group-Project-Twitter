@@ -13,7 +13,8 @@ import {
     faHome,
     faImage,
     faListAlt,
-    faUserCircle
+    faUserCircle,
+    faLongArrowAltLeft
 } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import "./sidebar.css";
@@ -123,6 +124,14 @@ class Sidebar extends Component {
                         >
                             <FontAwesomeIcon icon={faBookmark} />
                             <span>Bookmarks</span>
+                        </button>
+                        <button
+                            type="button"
+                            class="list-group-item list-group-item-action borderless"
+                            onClick={() => this.sendData("ViewDetailedTweet")}
+                        >
+                            <FontAwesomeIcon icon={faBookmark} />
+                            <span>View Detailed Tweet</span>
                         </button>
                         <button
                             type="button"

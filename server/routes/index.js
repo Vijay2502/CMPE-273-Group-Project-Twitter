@@ -3,6 +3,7 @@ const router = express.Router();
 const Tweet = require('../routes/tweets');
 const BookMarkedTweet = require('../routes/bookmarked-tweets');
 const User = require('./users');
+const Chat = require('./conversation');
 const Analytics = require('./analytics');
 const Search = require('./search');
 //const User_producer = require('../kafka-producer').User;
@@ -29,7 +30,7 @@ router.get('/user/:id/memeber/lists', User.getListsAsMember);
 router.get('/user/:id/owner/lists', User.getListsAsOwner);
 
 //LIST APIS
-router.post('/list/create', List.create); /// bug
+router.post('/list/create', List.create); /// tested
 router.get('/list/get/:id', List.get);
 router.put('/list/:id/subscribe', List.subscribe);
 router.put('/list/:id/unsubscribe', List.unsubscribe);
@@ -66,6 +67,10 @@ router.get('/analytics/user/:id/tweets/by-retweets', Analytics.topTweetsByRetwee
 router.get('/analytics/user/:id/tweets/count/hourly', Analytics.hourlyTweetCountPerDay);
 router.get('/analytics/user/:id/tweets/count/daily', Analytics.dailyTweetCountPerWeek);
 router.get('/analytics/user/:id/tweets/count/monthy', Analytics.monthlyTweetCountPerYear);
+
+//CONVERSATION APIS
+router.get('/getByUser/:userId', Chat.getByUser);
+router.get('/getMessages/:channel', Chat.getByChannel);
 
 
 module.exports = router;

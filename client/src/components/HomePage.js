@@ -10,6 +10,9 @@ import GridLayout from 'react-grid-layout';
 import Search from '../components/List/search.js'
 import CreateList from '../components/List/createlist.js';
 import BookMarks from './Tweet/BookMarkedTweets';
+import ViewDetailedTweet from './ViewTweetDetails/ViewTweetDetails';
+
+
 class HomePage extends Component {
     constructor(props) {
         super(props);
@@ -57,7 +60,12 @@ class HomePage extends Component {
                                 <div><CreateList /></div>
                             </div>
                             <List />
-                        </div>}
+                        </div>
+                    }
+
+                    {this.state.currentScreen === "ViewDetailedTweet" &&
+                        <div class="parent-container-bookmark col-sm-10" ><ViewDetailedTweet /></div>
+                    }
 
                 </div>
                 <div key="c" data-grid={{ x: 5, y: 0, w: 6, h: 2, static: true }}><Search /></div>

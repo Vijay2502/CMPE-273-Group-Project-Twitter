@@ -20,3 +20,8 @@
 .App-link {
     color: #09d3ac;
 }
+
+
+#root > div > div > div > div:nth-child(1) > div > div.col-sm-3.sidebar > div > button:nth-child(7){
+    display: none;
+}

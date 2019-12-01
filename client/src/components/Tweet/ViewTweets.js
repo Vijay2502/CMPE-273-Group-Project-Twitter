@@ -24,6 +24,8 @@ class ViewTweets extends Component {
         this.setState({ isOpenCommentModal: false });
     };
 
+
+
     render() {
         console.log("render HomeTweetList");
         return (
@@ -42,12 +44,15 @@ class ViewTweets extends Component {
                         console.log(image);
                         return (
                             <div>
+
                                 <TweetBody
                                     key={index}
                                     name={name}
                                     handle={handle}
                                     tweet={tweet}
-                                    image={image} />
+                                    image={image}
+
+                                />
 
                                 <div style={styles.container}>
                                     <button

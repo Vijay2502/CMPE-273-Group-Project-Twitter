@@ -1,11 +1,25 @@
-import React from 'react';
+import React, { Component } from "react";
 import '../../css/hometweetlist.css';
-const TweetBox = (props) => {
-    return (
-        <div className="tweet-body">
-            {props.children}
-        </div>
-    )
+import { Route, Redirect } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
+
+
+class TweetBox extends Component {
+    constructor(props) {
+        super(props);
+        console.log(props);
+    }
+
+
+
+    render() {
+        return (
+            <div className="tweet-body" >
+                {this.props.children}
+            </div>
+        )
+    }
+
 };
 
 const Image = (props) => {
@@ -39,23 +53,98 @@ const Tweet = (props) => {
     )
 };
 
-const TweetBody = (props) => {
-    return (
-        <div class="list-group">
-            <TweetBox>
-                <button type="button" className="inner-body list-group-item list-group-item-action">
-                    <Image image={props.image} />
+
+
+// const TweetBody = (props) => {
+//     return (
+//         <div class="list-group">
+//             <TweetBox onClick={(e) => this.displayTweet(e)}>
+//                 <button type="button" className="inner-body list-group-item list-group-item-action">
+//                     <Image image={props.image} />
+//                     <div className="body">
+//                         <div className="inner-body-inner">
+//                             <Name name={props.name} />
+//                             <Handle handle={props.handle} />
+//                         </div>
+//                         <Tweet tweet={props.tweet} />
+//                     </div>
+//                 </button>
+//             </TweetBox>
+//             <TweetBox>
+//                 <button type="button" className="inner-body list-group-item list-group-item-action">
+//                     <Image image={props.image} />
+//                     <div className="body">
+//                         <div className="inner-body-inner">
+//                             <Name name={props.name} />
+//                             <Handle handle={props.handle} />
+//                         </div>
+//                         <Tweet tweet={props.tweet} />
+//                     </div>
+//                 </button>
+//             </TweetBox>
+//         </div>
+//     )
+// };
+
+
+
+class TweetBody extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            redirectToTweet: false
+        }
+        this.displayTweet = this.displayTweet.bind(this);
+    }
+
+    displayTweet() {
+
+        try {
+            document.querySelector("#root > div > div > div > div:nth-child(1) > div > div.col-sm-3.sidebar > div > button:nth-child(7)").click();
+        }
+        catch (e) {
+            console.log(e);
+        }
+
+
+    }
+
+    render() {
+
+        console.log(this.state);
+        return (
+            <div class="list-group">
+                <button type="button" className="inner-body list-group-item list-group-item-action" onClick={(e) => this.displayTweet()}>
+                    <Image image={this.props.image} />
                     <div className="body">
                         <div className="inner-body-inner">
-                            <Name name={props.name} />
-                            <Handle handle={props.handle} />
+                            <Name name={this.props.name} />
+                            <Handle handle={this.props.handle} />
                         </div>
-                        <Tweet tweet={props.tweet} />
+                        <Tweet tweet={this.props.tweet} />
                     </div>
                 </button>
-            </TweetBox>
-        </div>
-    )
-};
+
+                <button type="button" className="inner-body list-group-item list-group-item-action">
+                    <Image image={this.props.image} />
+                    <div className="body">
+                        <div className="inner-body-inner">
+                            <Name name={this.props.name} />
+                            <Handle handle={this.props.handle} />
+                        </div>
+                        <Tweet tweet={this.props.tweet} />
+                    </div>
+                </button>
+
+            </div>
+        )
+    }
+
+}
+
+
+
 
 export { TweetBody }

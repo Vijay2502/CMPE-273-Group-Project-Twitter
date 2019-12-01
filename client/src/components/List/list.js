@@ -102,6 +102,7 @@ class List extends Component {
 
     render() {
         return (
+
             <PullToRefresh
                 class="list-mail-container"
                 pullDownContent={<PullDownContent />}
