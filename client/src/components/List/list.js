@@ -116,14 +116,13 @@ class List extends Component {
             let handle = "@mahendru_sakshi"
             //`@${user.name.first}${user.name.last}`;
             let image = user.image;
-            let tweet = user.name;
             console.log(image);
             return (
                 <ListBody
                     key={index}
                     name={name}
                     handle={handle}
-                    tweet={tweet}
+                    tweet={user}
                     image={image} />
 
             )

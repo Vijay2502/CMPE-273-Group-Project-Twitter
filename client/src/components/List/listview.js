@@ -1,5 +1,6 @@
 import React from 'react';
-import '../../css/list.css'
+import '../../css/list.css';
+import {Link} from 'react-router-dom';
 
 const TweetBox = (props) => {
     return (
@@ -34,25 +35,29 @@ const Name = (props) => {
 };
 
 const Tweet = (props) => {
-    if (props.title !== undefined) {
+    console.log("Tweet",props);
+    if (props.tweet.description !== undefined) {
+        console.log("Tweet if",props.tweet.name);
         return (
             <div class="tweet-list">
-                <Title title={props.title} />
-                {props.tweet}
+                <Title title={props.tweet.name} />
+                {/* <Link to={{ pathname: '/cart', state: {res:res}}}>{res.name}</Link> */}
+                   {/* <p>{props.tweet.description}</p>  */}
                 <div style={{ display: 'inline-block' }}>
-                    <Members members={props.members} />
-                    <Subscribers subscribers={props.subscribers} />
+                    <Members members={props.tweet.members} />
+                    <Subscribers subscribers={props.tweet.subscribers} />
                 </div>
             </div>
         )
     } else {
+        console.log("Tweet return");
         return (
             <div className="tweet-list">
-                {props.tweet}
+                    <Title title={props.tweet.name} />
                 <br />
                 <div style={{ display: 'inline-block' }}>
-                    <Members members={props.members} />{' '}{' '}
-                    <Subscribers subscribers={props.subscribers} />
+                    <Members members={props.tweet.members} />{' '}{' '}
+                    <Subscribers subscribers={props.tweet.subscribers} />
                 </div>
             </div>
         )
@@ -60,9 +65,11 @@ const Tweet = (props) => {
 };
 
 const Title = (props) => {
+    console.log("title props",props)
     if (props !== undefined) {
         return (
-            <p>{props.title}</p>
+           <div> <Link style={{color:"black"}} to={{  pathname: '/listtweet',state: { tweetId: props.id}}}>
+            {props.title}</Link></div>
         )
     }
 };
@@ -95,7 +102,8 @@ const ListBody = (props) => {
     return (
         <div class="list-group">
             <TweetBox>
-                <button type="button" className="inner-body-list list-group-item list-group-item-action">
+            {/* type="button"  */}
+                <div className="inner-body-list list-group-item list-group-item-action">
                     <Image image={props.image} />
                     <div className="body">
                         <div className="inner-body-inner-list">
@@ -104,7 +112,7 @@ const ListBody = (props) => {
                         </div>
                         <Tweet tweet={props.tweet} />
                     </div>
-                </button >
+                </div >
             </TweetBox>
         </div>
     )
