@@ -191,6 +191,18 @@ module.exports.bookmarkTweet = function (userId, tweetId, cb) {
         });
 }
 
+module.exports.getBookmarks = function (userId, cb) {
+
+            return repository.BookmarkedTweets.update(
+                { "ownerId": userId },
+            ).then(function (bookmark) {
+                return cb(null, {
+                    tweets: tweetMapper(bookmark.bookMarkedTweets)
+                });
+            })
+        
+}
+
 
 //insert into tweet collection with isRetweet true
 module.exports.retweet = function (tweetId, reTweet, cb) {
