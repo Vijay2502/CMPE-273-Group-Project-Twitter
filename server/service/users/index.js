@@ -397,7 +397,7 @@ module.exports.getListsAsMember = function (userId, limit, offset, cb) {
                     });
                 }
                 return user.getListsAsMember({
-                    attributes: ['id', 'name', 'description'],
+                    attributes: ['id', 'name', 'description', 'data'],
                     limit,
                     offset,
                     required: false
@@ -447,7 +447,7 @@ module.exports.getListsAsSubscriber = function (userId, limit, offset, cb) {
                     });
                 }
                 return user.getListsAsSubscriber({
-                    attributes: ['id', 'name', 'description'],
+                    attributes: ['id', 'name', 'description', 'data'],
                     limit,
                     offset,
                     required: false
@@ -497,7 +497,7 @@ module.exports.getListsAsOwner = function (userId, limit, offset, cb) {
                     });
                 }
                 return user.getLists({
-                    attributes: ['id', 'name', 'description'],
+                    attributes: ['id', 'name', 'description', 'data'],
                     limit,
                     offset,
                     required: false
