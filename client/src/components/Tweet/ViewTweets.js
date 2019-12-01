@@ -35,22 +35,21 @@ class ViewTweets extends Component {
                 triggerHeight={50}>
                 <div className="main-body">
                     {console.log("this.props.dataFromParent123", this.props.dataFromParent)}
-                    {this.props.dataFromParent.map((user, index) => {
-                        let name = `${user.name}`;
-                        let handle = `@${user.name.first}${user.name.last}`;
-                        let image = user.image;
-                        let tweet = user.tweet;
+                    {this.props.dataFromParent.map((tweet, index) => {
+                        let name = `${tweet.name}`;
+                        let handle = `@${tweet.name.first}${tweet.name.last}`;
+                        let image = tweet.image;
+                        let tweetText = tweet.tweet;
+                        let likeIncrement = 0;
                         console.log(image);
                         return (
                             <div>
-
                                 <TweetBody
                                     key={index}
                                     name={name}
                                     handle={handle}
-                                    tweet={tweet}
+                                    tweet={tweetText}
                                     image={image}
-
                                 />
 
                                 <div style={styles.container}>
@@ -66,16 +65,25 @@ class ViewTweets extends Component {
                                         type="button"
                                         className="list-group-item list-group-item-action borderless"
                                         style={styles.retweet}
+                                        onClick={() => {
+                                            this.props.retweetTweetCallback(tweet.tweetId, tweet.userId)
+                                        }}
                                     >
                                         <FontAwesomeIcon icon={faRetweet} />
+                                        {tweet.retweetCount}
                                     </button>
-                                    <button
-                                        type="button"
-                                        className="list-group-item list-group-item-action borderless"
-                                        style={styles.like}
-                                    >
-                                        <FontAwesomeIcon icon={faHeart} />
-                                    </button>
+                                            <button
+                                                type="button"
+                                                className="list-group-item list-group-item-action borderless"
+                                                style={styles.like}
+                                                onClick={() => {
+                                                    this.props.likeTweetCallback(tweet.tweetId, tweet.userId)
+                                                    likeIncrement = likeIncrement + 1;
+                                                }}
+                                            >
+                                                <FontAwesomeIcon icon={faHeart} />
+                                                {tweet.likes + likeIncrement}
+                                            </button>
                                     <button
                                         type="button"
                                         className="list-group-item list-group-item-action borderless"
@@ -83,15 +91,15 @@ class ViewTweets extends Component {
                                     >
                                         <FontAwesomeIcon icon={faShareSquare} />
                                     </button>
-
-                                    <Modal
-                                        show={this.state.isOpenCommentModal}
-                                        onHide={this.closeCommentModal}
-                                        animation={false}
-                                    >
-                                        <CreateTweet />
-                                    </Modal>
                                 </div>
+
+                                <Modal
+                                    show={this.state.isOpenCommentModal}
+                                    onHide={this.closeCommentModal}
+                                    animation={false}
+                                >
+                                    <CreateTweet />
+                                </Modal>
                             </div>
                         )
                     })}

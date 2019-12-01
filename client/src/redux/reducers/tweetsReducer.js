@@ -44,8 +44,12 @@ export default function tweetReducer(state = initialState, action) {
         return Object.assign({}, state, {
             userTweets: action.payload.data.data.tweets.map((tweet, index) => {
                 const tweetCustom = {};
+                tweetCustom.tweetId = tweet.id;
+                tweetCustom.userId = localStorage.getItem("id");
                 tweetCustom.name = localStorage.getItem("firstName") + " " + localStorage.getItem("lastName");
                 tweetCustom.tweet = tweet.data.text;
+                tweetCustom.likes = tweet.likes;
+                tweetCustom.retweetCount = tweet.retweetCount;
                 return tweetCustom;
             })
         });
