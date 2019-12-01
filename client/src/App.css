@@ -26,3 +26,7 @@
 {
     display: none;
 }
+
+.list-group-item-action:focus, .list-group-item-action:hover{
+    background: transparent !important;
+}
