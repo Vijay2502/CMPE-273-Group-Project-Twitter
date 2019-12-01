@@ -24,8 +24,6 @@ class ViewTweets extends Component {
         this.setState({ isOpenCommentModal: false });
     };
 
-
-
     render() {
         console.log("render HomeTweetList");
         return (
@@ -36,7 +34,8 @@ class ViewTweets extends Component {
                 pullDownThreshold={2}
                 triggerHeight={50}>
                 <div className="main-body">
-                    {[...this.props.dataFromParent].map((user, index) => {
+                    {console.log("this.props.dataFromParent123", this.props.dataFromParent)}
+                    {this.props.dataFromParent.map((user, index) => {
                         let name = `${user.name.first} ${user.name.last}`;
                         let handle = `@${user.name.first}${user.name.last}`;
                         let image = user.image;
