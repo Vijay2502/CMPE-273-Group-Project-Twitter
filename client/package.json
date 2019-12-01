@@ -19,6 +19,7 @@
     "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^16.11.0",
     "react-grid-layout": "^0.17.1",
+    "react-infinite-scroller": "^1.2.4",
     "react-js-pull-to-refresh": "^1.2.2",
     "react-redux": "^7.1.3",
     "react-router": "^5.1.2",
