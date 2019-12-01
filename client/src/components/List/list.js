@@ -7,13 +7,12 @@ import {getOwnedLists,getMemberLists,getSubscribedLists} from "../../redux/actio
 
 function mapStateToProps(store) {
     return {
-        signupSuccess: store.auth.signupSuccess,
-        signupMessage: store.auth.signupMessage,
-        ownedlists: store.auth.ownedlists,
-        subscribedList:store.auth.subscribedList,
-          membersList:store.auth.membersList,
-          currentList:store.auth.currentList
-
+        status: store.list.status,
+        data: store.list.data,
+        ownedlists: store.list.ownedlists,
+        subscribedList:store.list.subscribedList,
+        membersList:store.list.membersList,
+        currentList:store.list.currentList
     }
 }
 
@@ -80,39 +79,44 @@ class List extends Component {
     }
 
     showOwnerBox() {
+        console.log("ownerBox");
         this.setState({ isOwner: true, isSubscriber: false, isMember: false });
         this.setState({
             users: this.props.ownedlists
         });
-        this.props.getOwnedLists();
+        this.props.getOwnedLists(6);
     }
 
     showSubscriberBox() {
+        console.log("subscriberBox");
         this.setState({ isOwner: false, isSubscriber: true, isMember: false });
         this.setState({
             users: this.props.subscribedList
         });
-        this.props.getSubscribedLists();
+        this.props.getSubscribedLists(6);
     }
 
     showMemberBox() {
+        console.log("memberBox");
         this.setState({ isOwner: false, isSubscriber: false, isMember: true });
         this.setState({
             users: this.props.membersList
         });
-        this.props.getMemberLists();
+        this.props.getMemberLists(6);
     }
 
     showContent() {
         let content
-        if(this.state.users!=undefined && this.props.users.length==0){
+        if(this.state.users!=undefined && this.state.users.length==0) {
          content=<div>No lists</div>
         }
        else{content = this.state.users.map((user, index) => {
-            let name = `${user.name.first} ${user.name.last}`;
-            let handle = `@${user.name.first}${user.name.last}`;
+            let name ="Sakshi Mahendru"
+            // `${user.name.first} ${user.name.last}`;
+            let handle = "@mahendru_sakshi"
+            //`@${user.name.first}${user.name.last}`;
             let image = user.image;
-            let tweet = user.tweet;
+            let tweet = user.name;
             console.log(image);
             return (
                 <ListBody
