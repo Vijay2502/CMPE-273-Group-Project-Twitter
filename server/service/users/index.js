@@ -188,7 +188,7 @@ module.exports.getById = function (userId, cb) {
             }, function (err) {
                 return cb(err);
             });
-        }
+       }
     })
 
 }
@@ -397,7 +397,7 @@ module.exports.getListsAsMember = function (userId, limit, offset, cb) {
                     });
                 }
                 return user.getListsAsMember({
-                    attributes: ['id', 'name', 'description', 'data'],
+                    attributes: ['id', 'name', 'description', 'data',  'createdAt'],
                     limit,
                     offset,
                     required: false
@@ -410,7 +410,7 @@ module.exports.getListsAsMember = function (userId, limit, offset, cb) {
                             name: l.name,
                             description: l.description,
                             data: l.data,
-                            createdAt: f.UserFollowing.createdAt
+                            createdAt: l.createdAt
                         })),
                         nextOffset: (offset + limit) < count ? (offset + limit) : 0
                     });
@@ -447,7 +447,7 @@ module.exports.getListsAsSubscriber = function (userId, limit, offset, cb) {
                     });
                 }
                 return user.getListsAsSubscriber({
-                    attributes: ['id', 'name', 'description', 'data'],
+                    attributes: ['id', 'name', 'description', 'data', 'createdAt'],
                     limit,
                     offset,
                     required: false
@@ -460,7 +460,7 @@ module.exports.getListsAsSubscriber = function (userId, limit, offset, cb) {
                             name: l.name,
                             description: l.description,
                             data: l.data,
-                            createdAt: f.UserFollowing.createdAt
+                            createdAt: l.createdAt
                         })),
                         nextOffset: (offset + limit) < count ? (offset + limit) : 0
                     });
@@ -497,7 +497,7 @@ module.exports.getListsAsOwner = function (userId, limit, offset, cb) {
                     });
                 }
                 return user.getLists({
-                    attributes: ['id', 'name', 'description', 'data'],
+                    attributes: ['id', 'name', 'description', 'data', 'createdAt'],
                     limit,
                     offset,
                     required: false
@@ -510,7 +510,7 @@ module.exports.getListsAsOwner = function (userId, limit, offset, cb) {
                             name: l.name,
                             description: l.description,
                             data: l.data,
-                            createdAt: f.UserFollowing.createdAt
+                            createdAt: l.createdAt
                         })),
                         nextOffset: (offset + limit) < count ? (offset + limit) : 0
                     });

@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {connect} from "react-redux";
+import React, { Component } from 'react';
+import { connect } from "react-redux";
 import CanvasJSReact from '../../lib/canvasjs.react';
-import {PullDownContent, PullToRefresh, RefreshContent, ReleaseContent} from "react-js-pull-to-refresh";
-import {TweetBody} from "../HomeTweetList/listview";
+import { PullDownContent, PullToRefresh, RefreshContent, ReleaseContent } from "react-js-pull-to-refresh";
+import TweetBody from "../HomeTweetList/listview";
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 var CanvasJS = CanvasJSReact.CanvasJS;
@@ -92,11 +92,11 @@ class NumberOfTweetsGraph extends Component {
             data: [{
                 type: "bar",
                 dataPoints: [
-                    {y: 2200000000, label: "Tweet 1"},
-                    {y: 1800000000, label: "Tweet 2"},
-                    {y: 800000000, label: "Tweet 3"},
-                    {y: 563000000, label: "Tweet 4"},
-                    {y: 376000000, label: "Tweet 5"},
+                    { y: 2200000000, label: "Tweet 1" },
+                    { y: 1800000000, label: "Tweet 2" },
+                    { y: 800000000, label: "Tweet 3" },
+                    { y: 563000000, label: "Tweet 4" },
+                    { y: 376000000, label: "Tweet 5" },
                 ]
             }]
         };
@@ -104,14 +104,14 @@ class NumberOfTweetsGraph extends Component {
         return (
             <div>
                 <CanvasJSChart options={options}
-                    /* onRef={ref => this.chart = ref} */
+                /* onRef={ref => this.chart = ref} */
                 />
 
-                <div style={{width: 566}}>
+                <div style={{ width: 566 }}>
                     <PullToRefresh
-                        pullDownContent={<PullDownContent/>}
-                        releaseContent={<ReleaseContent/>}
-                        refreshContent={<RefreshContent/>}
+                        pullDownContent={<PullDownContent />}
+                        releaseContent={<ReleaseContent />}
+                        refreshContent={<RefreshContent />}
                         pullDownThreshold={2}
                         onRefresh={this.handleRefresh}
                         triggerHeight={50}
@@ -132,7 +132,7 @@ class NumberOfTweetsGraph extends Component {
                                             name={name}
                                             handle={handle}
                                             tweet={tweet}
-                                            image={image}/>
+                                            image={image} />
                                     </div>
                                 )
                             })}

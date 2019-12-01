@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { PullDownContent, PullToRefresh, RefreshContent, ReleaseContent } from "react-js-pull-to-refresh";
 import '../../css/list.css'
-import { TweetBody } from './listview.js'
+import { ListBody } from './listview.js'
 import { connect } from "react-redux";
-import { signUp } from "../../redux/actions/authActions";
 import {getOwnedLists,getMemberLists,getSubscribedLists} from "../../redux/actions/listActions";
-import {connect} from "react-redux";
 
 function mapStateToProps(store) {
     return {
@@ -31,7 +29,7 @@ class List extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: this.props.,
+            users:[],
             isOwner: true,
             isSubscriber: false,
             isMember: false
@@ -54,7 +52,10 @@ class List extends Component {
 
     getUser() {
         //fetch list
-         this.props.getOwnedLists(6);
+        this.props.getOwnedLists(6);
+        this.setState({
+            users: this.props.ownedlists
+        });
         // fetch('https://randomuser.me/api/')
         //     .then(response => {
         //         if (response.ok) return response.json();
@@ -80,21 +81,34 @@ class List extends Component {
 
     showOwnerBox() {
         this.setState({ isOwner: true, isSubscriber: false, isMember: false });
+        this.setState({
+            users: this.props.ownedlists
+        });
         this.props.getOwnedLists();
     }
 
     showSubscriberBox() {
         this.setState({ isOwner: false, isSubscriber: true, isMember: false });
+        this.setState({
+            users: this.props.subscribedList
+        });
         this.props.getSubscribedLists();
     }
 
     showMemberBox() {
         this.setState({ isOwner: false, isSubscriber: false, isMember: true });
+        this.setState({
+            users: this.props.membersList
+        });
         this.props.getMemberLists();
     }
 
     showContent() {
-        let content = this.props.currentList.map((user, index) => {
+        let content
+        if(this.state.users!=undefined && this.props.users.length==0){
+         content=<div>No lists</div>
+        }
+       else{content = this.state.users.map((user, index) => {
             let name = `${user.name.first} ${user.name.last}`;
             let handle = `@${user.name.first}${user.name.last}`;
             let image = user.image;
@@ -110,12 +124,14 @@ class List extends Component {
 
             )
         });
+    }
         return content;
     }
 
 
     render() {
         return (
+
             <PullToRefresh
                 class="list-mail-container"
                 pullDownContent={<PullDownContent />}
@@ -163,7 +179,7 @@ class List extends Component {
                         let tweet = user.tweet;
                         console.log(image);
                         return (
-                            <TweetBody
+                            <ListBody
                                 key={index}
                                 name={name}
                                 handle={handle}

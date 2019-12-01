@@ -40,9 +40,7 @@ const TweetSchema = new Schema({
 		userId: [Number]
 	},
 	replyTo: String,
-	replies: [
-		String
-	],
+	replyCount: Number,
 	hashTags: [
 		String
 	]

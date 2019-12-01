@@ -3,6 +3,7 @@ const router = express.Router();
 const Tweet = require('../routes/tweets');
 const BookMarkedTweet = require('../routes/bookmarked-tweets');
 const User = require('./users');
+const Chat = require('./conversation');
 const Analytics = require('./analytics');
 const Search = require('./search');
 //const User_producer = require('../kafka-producer').User;
@@ -25,13 +26,13 @@ router.put('/user/:id/unfollow', User.unfollow);       ///tested
 router.get('/user/:id/followers', User.getFollowers);  ///tested
 router.get('/user/:id/followees', User.getFollowees);  ///tested
 router.get('/user/:id/subscriber/lists', User.getListsAsSubscriber);
-router.get('/user/:id/memeber/lists', User.getListsAsMember);
+router.get('/user/:id/member/lists', User.getListsAsMember);
 router.get('/user/:id/owner/lists', User.getListsAsOwner);
 router.put('/user/:id/deactivate', User.deactivate);
 router.put('/user/:id/reactivate', User.reactivate);
 
 //LIST APIS
-router.post('/list/create', List.create); /// bug
+router.post('/list/create', List.create); /// tested
 router.get('/list/get/:id', List.get);
 router.put('/list/:id/subscribe', List.subscribe);
 router.put('/list/:id/unsubscribe', List.unsubscribe);
@@ -50,10 +51,12 @@ router.put('/tweet/:userId/bookmark', BookMarkedTweet.bookmarkTweet);   ///doubt
 router.post('/tweet/:tweetId/retweet', Tweet.retweet);             ///tested
 router.post('/tweet/:id/reply', Tweet.reply);
 router.get('/tweet/:id/replies', Tweet.getReplies);
-router.get('/tweet/:userId/bySubscriber', Tweet.getTweetsBySubscriber);
-router.delete('/tweet/:tweetId/delete', Tweet.deleteTweet);          ///tested
-router.get('/tweet/byList/:listId', Tweet.getTweetsByList);         ///
+router.delete('/tweet/:tweetId/delete', Tweet.deleteTweet);          ///tested       ///
 router.get('/tweet/getByHashtag/:hashtag', Tweet.getByHashtag);     ///
+
+
+router.get('/feed/user/:userId', Tweet.getTweetsBySubscriber);
+router.get('/feed/list/:listId', Tweet.getTweetsByList);
 
 // SEARCH APIS
 router.get('/search/users', Search.userSearch);
@@ -69,6 +72,10 @@ router.get('/analytics/user/:id/tweets/by-retweets', Analytics.topTweetsByRetwee
 router.get('/analytics/user/:id/tweets/count/hourly', Analytics.hourlyTweetCountPerDay);
 router.get('/analytics/user/:id/tweets/count/daily', Analytics.dailyTweetCountPerWeek);
 router.get('/analytics/user/:id/tweets/count/monthy', Analytics.monthlyTweetCountPerYear);
+
+//CONVERSATION APIS
+router.get('/conversation/getByUser/:userId', Chat.getByUser);
+router.get('/conversation/getMessages/:channel', Chat.getByChannel);
 
 
 module.exports = router;
