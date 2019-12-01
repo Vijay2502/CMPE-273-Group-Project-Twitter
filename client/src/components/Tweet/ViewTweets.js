@@ -40,6 +40,7 @@ class ViewTweets extends Component {
                         let handle = `@${tweet.name.first}${tweet.name.last}`;
                         let image = tweet.image;
                         let tweetText = tweet.tweet;
+                        let likeIncrement = 0;
                         console.log(image);
                         return (
                             <div>
@@ -64,6 +65,9 @@ class ViewTweets extends Component {
                                         type="button"
                                         className="list-group-item list-group-item-action borderless"
                                         style={styles.retweet}
+                                        onClick={() => {
+                                            this.props.retweetTweetCallback(tweet.tweetId, tweet.userId)
+                                        }}
                                     >
                                         <FontAwesomeIcon icon={faRetweet} />
                                         {tweet.retweetCount}
@@ -72,10 +76,13 @@ class ViewTweets extends Component {
                                                 type="button"
                                                 className="list-group-item list-group-item-action borderless"
                                                 style={styles.like}
-                                                onClick={() => this.props.likeTweetCallback(tweet.tweetId, tweet.userId)}
+                                                onClick={() => {
+                                                    this.props.likeTweetCallback(tweet.tweetId, tweet.userId)
+                                                    likeIncrement = likeIncrement + 1;
+                                                }}
                                             >
                                                 <FontAwesomeIcon icon={faHeart} />
-                                                {tweet.likes}
+                                                {tweet.likes + likeIncrement}
                                             </button>
                                     <button
                                         type="button"

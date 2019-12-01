@@ -12,13 +12,23 @@ export function createTweet(payload) {
     }
 }
 
+export function retweetTweet(payload) {
+    console.log("retweetTweet payload");
+    console.log(payload);
+
+    return (dispatch) => {
+        axios.post(`http://${HOSTNAME}:8080/api/v1/tweet/${payload.tweetId}/retweet`, payload)
+            .then((response) => dispatch(likeTweetDispatch(response.data)));
+    }
+}
+
 export function likeTweet(payload) {
     console.log("likeTweet payload");
     console.log(payload);
 
     return (dispatch) => {
         axios.post(`http://${HOSTNAME}:8080/api/v1/tweet/${payload.userId}/like`, payload)
-            .then((response) => dispatch(likeTweetDispatch(response.data)));
+            .then((response) => dispatch(retweetTweetDispatch(response.data)));
     }
 }
 
@@ -47,8 +57,15 @@ export const createTweetDispatch = (returnData) => {
     return { type: CREATE_TWEET, payload: returnData }
 };
 
+export const retweetTweetDispatch = (returnData) => {
+    console.log("Inside retweetTweetDispatch");
+    console.log(returnData);
+
+    return { type: LIKE_TWEET, payload: returnData }
+};
+
 export const likeTweetDispatch = (returnData) => {
-    console.log("Inside createTweetDispatch");
+    console.log("Inside likeTweetDispatch");
     console.log(returnData);
 
     return { type: LIKE_TWEET, payload: returnData }
