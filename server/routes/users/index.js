@@ -61,9 +61,21 @@ module.exports.login = function (request, response) {
 
 module.exports.update = function (request, response) {
 
-    if (!(request.body.email && request.body.name && request.body.id)) {
-        return response.status(400).send("MISSING FIELDS");
+    if (!(request.body.id)) {
+        return response.status(400).send("ID MISSING");
     }
+
+    return userService.update(request.body, function(err, user){
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: {
+                user
+            }
+        });
+    })
 
 
 
@@ -170,6 +182,30 @@ module.exports.getListsAsSubscriber = function (request, response) {
 
 module.exports.getListsAsOwner = function (request, response) {
     return userService.getListsAsOwner(request.params.id, request.query.limit, request.query.offset, function (err, res) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: res
+        });
+    });
+}
+
+module.exports.deactivate = function(request, response){
+    return userService.deactivate(request.params.id, function (err, res) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: res
+        });
+    });
+}
+
+module.exports.reactivate = function(request, response){
+    return userService.reactivate(request.params.id, function (err, res) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
         }
