@@ -6,6 +6,7 @@ const User = require('./users');
 const Chat = require('./conversation');
 const Analytics = require('./analytics');
 const Search = require('./search');
+const utils = require('../service/utils');
 //const User_producer = require('../kafka-producer').User;
 //const Tweet_producer = require('../kafka-producer').Tweet;
 const List = require('./lists');
@@ -15,6 +16,8 @@ var auth = {
 };
 
 router.use(passport.initialize());
+
+router.post('/img-upload', utils.uploadImage);
 
 //USER APIS
 router.post('/user/register', User.register);          ///tested
