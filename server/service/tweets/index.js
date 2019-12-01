@@ -225,7 +225,7 @@ module.exports.reply = function (hostTweetId, replyTweet, cb) {
 module.exports.getReplies = function (tweetId, limit, offset, cb) {
     limit = limit ? Number(limit) : Number(process.env.DEFAULT_PAGE_LIMIT);
     offset = offset ? Number(offset) : 0;
-    
+
     repository.Tweet.find({
         replyTo: tweetId
     },

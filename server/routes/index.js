@@ -74,8 +74,8 @@ router.get('/analytics/user/:id/tweets/count/daily', Analytics.dailyTweetCountPe
 router.get('/analytics/user/:id/tweets/count/monthy', Analytics.monthlyTweetCountPerYear);
 
 //CONVERSATION APIS
-router.get('/getByUser/:userId', Chat.getByUser);
-router.get('/getMessages/:channel', Chat.getByChannel);
+router.get('/conversation/getByUser/:userId', Chat.getByUser);
+router.get('/conversation/getMessages/:channel', Chat.getByChannel);
 
 
 module.exports = router;
