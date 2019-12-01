@@ -3,20 +3,24 @@ import { PullDownContent, PullToRefresh, RefreshContent, ReleaseContent } from "
 import '../../css/list.css'
 import { ListBody } from './listview.js'
 import { connect } from "react-redux";
-import { signUp } from "../../redux/actions/authActions";
-import { getOwnedLists } from "../../redux/actions/listActions";
-
+import {getOwnedLists,getMemberLists,getSubscribedLists} from "../../redux/actions/listActions";
 
 function mapStateToProps(store) {
     return {
-        signupSuccess: store.auth.signupSuccess,
-        signupMessage: store.auth.signupMessage,
+        status: store.list.status,
+        data: store.list.data,
+        ownedlists: store.list.ownedlists,
+        subscribedList:store.list.subscribedList,
+        membersList:store.list.membersList,
+        currentList:store.list.currentList
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        getOwnedLists: (id) => dispatch(getOwnedLists(id))
+        getOwnedLists: (id) => dispatch(getOwnedLists(id)),
+        getSubscribedLists:(id) => dispatch(getSubscribedLists(id)),
+        getMemberLists:(id) => dispatch(getMemberLists(id))
     };
 }
 
@@ -24,7 +28,7 @@ class List extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: [],
+            users:[],
             isOwner: true,
             isSubscriber: false,
             isMember: false
@@ -48,6 +52,9 @@ class List extends Component {
     getUser() {
         //fetch list
         this.props.getOwnedLists(6);
+        this.setState({
+            users: this.props.ownedlists
+        });
         // fetch('https://randomuser.me/api/')
         //     .then(response => {
         //         if (response.ok) return response.json();
@@ -72,34 +79,55 @@ class List extends Component {
     }
 
     showOwnerBox() {
+        console.log("ownerBox");
         this.setState({ isOwner: true, isSubscriber: false, isMember: false });
+        this.setState({
+            users: this.props.ownedlists
+        });
+        this.props.getOwnedLists(6);
     }
 
     showSubscriberBox() {
+        console.log("subscriberBox");
         this.setState({ isOwner: false, isSubscriber: true, isMember: false });
+        this.setState({
+            users: this.props.subscribedList
+        });
+        this.props.getSubscribedLists(6);
     }
 
     showMemberBox() {
+        console.log("memberBox");
         this.setState({ isOwner: false, isSubscriber: false, isMember: true });
+        this.setState({
+            users: this.props.membersList
+        });
+        this.props.getMemberLists(6);
     }
 
     showContent() {
-        let content = this.state.users.map((user, index) => {
-            let name = `${user.name.first} ${user.name.last}`;
-            let handle = `@${user.name.first}${user.name.last}`;
+        let content
+        if(this.state.users!=undefined && this.state.users.length==0) {
+         content=<div>No lists</div>
+        }
+       else{content = this.state.users.map((user, index) => {
+            let name ="Sakshi Mahendru"
+            // `${user.name.first} ${user.name.last}`;
+            let handle = "@mahendru_sakshi"
+            //`@${user.name.first}${user.name.last}`;
             let image = user.image;
-            let tweet = user.tweet;
             console.log(image);
             return (
                 <ListBody
                     key={index}
                     name={name}
                     handle={handle}
-                    tweet={tweet}
+                    tweet={user}
                     image={image} />
 
             )
         });
+    }
         return content;
     }
 
@@ -147,7 +175,7 @@ class List extends Component {
                             </div>
                         </div>
                     </div>
-                    {[...this.state.users].map((user, index) => {
+                    {/* {[...this.state.users].map((user, index) => {
                         let name = `${user.name.first} ${user.name.last}`;
                         let handle = `@${user.name.first}${user.name.last}`;
                         let image = user.image;
@@ -161,7 +189,8 @@ class List extends Component {
                                 tweet={tweet}
                                 image={image} />
                         )
-                    })}
+                    })} */}
+                    {this.showContent()}
                 </div>
             </PullToRefresh>
         );

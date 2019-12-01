@@ -148,10 +148,10 @@ class Sidebar extends Component {
                             <FontAwesomeIcon icon={faListAlt} />
                             <span>List</span>
                         </button>
-                        <Button class="list-group-item list-group-item-action borderless" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}  >
+                        <button class="list-group-item list-group-item-action borderless" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}  >
                             <FontAwesomeIcon icon={faEllipsisH} />
                             <span>More</span>
-                        </Button>
+                        </button>
                         <Menu
                             id="simple-menu"
                             anchorEl={this.state.anchorEl}

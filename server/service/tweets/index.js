@@ -19,6 +19,7 @@ function tweetMapper(tweets){
             likes: tweet.likes.count,
             views: tweet.views.count,
             retweetCount: tweet.retweetCount,
+            replyCount: tweet.replyCount,
             data: tweet.data ? tweet.data : null,
             retweet: tweet.retweet,
             hashTags: tweet.hashTags,
@@ -54,6 +55,7 @@ module.exports.create = function (newTweet, cb) {
         likes: { count: 0, userId: [] },
         views: { count: 0, userId: [] },
         retweetCount: 0,
+        replyCount: 0,
         replyTo: newTweet.replyTo ? newTweet.replyTo : null,
         hashTags: hashTags && _.isArray(hashTags) && hashTags.length > 0 ? hashTags : ["#general"]
     }).then(function (tweet) {
@@ -68,7 +70,8 @@ module.exports.create = function (newTweet, cb) {
 
 
 module.exports.getByOwnerId = function (ownerId, pagination, cb) {
-    repository.Tweet.find({ ownerId: ownerId }, null, 
+    repository.Tweet.find({ ownerId: ownerId,
+        'active':true }, null, 
         {...pagination, sort: {'createdAt':-1}})
         .then(function (tweets) {
             return cb(null, {
@@ -88,7 +91,8 @@ module.exports.getByTweetId = function (tweetId, cb) {
         if (tweet) {
             return cb(null, JSON.parse(tweet));
         } else {
-            repository.Tweet.findOne({ tweetId: tweetId })
+            repository.Tweet.findOne({ tweetId: tweetId,
+                'active':true })
                 .then(function (tweet) {
                     if (tweet) {
                         var tweetDTO = tweetMapper(tweet);
@@ -170,7 +174,7 @@ module.exports.viewTweet = function (userId, tweetId, cb) {
 
 
 module.exports.bookmarkTweet = function (userId, tweetId, cb) {
-    let bookmarkedTweets_arr = [];
+
     repository.Tweet.findOne({ tweetId: tweetId })
         .then(function (tweet) {
             repository.BookmarkedTweets.update(
@@ -185,6 +189,18 @@ module.exports.bookmarkTweet = function (userId, tweetId, cb) {
         }, function (err) {
             return cb(err);
         });
+}
+
+module.exports.getBookmarks = function (userId, cb) {
+
+            return repository.BookmarkedTweets.find(
+                { "ownerId": userId },
+            ).then(function (bookmark) {
+                return cb(null, {
+                    tweets: tweetMapper(bookmark.bookMarkedTweets)
+                });
+            })
+        
 }
 
 
@@ -202,7 +218,8 @@ module.exports.retweet = function (tweetId, reTweet, cb) {
             likes: { count: 0, userId: [] },
             views: { count: 0, userId: [] },
             retweetCount: 0,
-            replies: [],
+            replyCount: 0,
+            replyTo: null,
             hashTags: reTweet.hashTags
         }
         repository.Tweet.create(obj)
@@ -216,7 +233,16 @@ module.exports.retweet = function (tweetId, reTweet, cb) {
 }
 
 module.exports.reply = function (hostTweetId, replyTweet, cb) {
-    module.exports.create({
+    repository.Tweet.findOneAndUpdate(
+        { tweetId: hostTweetId },
+        { $inc: { "replyCount": 1 }}
+    ).then(function (tweet) {
+        console.log('reply count incremented');
+    }, function(err){
+        console.log(err);
+    });
+
+    return module.exports.create({
         ...replyTweet,
         replyTo: hostTweetId
     }, cb);
@@ -258,7 +284,8 @@ module.exports.getTweetsBySubscriber = function (userId, pagination, cb) {
             var arr = followees.map(f => f.id);
             arr.push(userId);
             return repository.Tweet.find(
-                { "ownerId": { "$in": arr } }, null, {...pagination, sort: {'createdAt':-1}})
+                { "ownerId": { "$in": arr },
+                'active':true }, null, {...pagination, sort: {'createdAt':-1}})
                 .then(function (tweets) {
                     return cb(null,{
                         tweets: tweetMapper(tweets),
@@ -300,7 +327,8 @@ module.exports.getByList = function (listId, pagination, cb) {
         }).then(members => {
             var arr = members.map(f => f.id);
             return repository.Tweet.find(
-                { "ownerId": { "$in": arr } }, null, {...pagination, sort: {'createdAt':-1}})
+                { "ownerId": { "$in": arr },
+                'active':true }, null, {...pagination, sort: {'createdAt':-1}})
                 .then(function (tweets) {
                     return cb(null,{
                         tweets: tweetMapper(tweets),

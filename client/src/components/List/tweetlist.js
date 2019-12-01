@@ -4,23 +4,28 @@ import ViewTweets from "../Tweet/ViewTweets";
 import GridLayout from 'react-grid-layout';
 import Search from '../List/search';
 import Sidebar from '../Sidebar/sidebar';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBirthdayCake, faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
-////////////////////// REDUX CODE //////////////////////
-// function mapStateToProps(store) {
-//   return {
-//     profile_image: store.login.profile_image
-//   };
-// }
-// function mapDispatchToProps(dispatch) {
-//   return {
-//     getResProfile: data => dispatch(getResProfile(data))
-// }
+import { connect } from "react-redux";
+import {getListById,getTweetByList} from "../../redux/actions/listActions";
+
+function mapStateToProps(store) {
+  return {
+      currentList:store.list.currentList,
+      feed: store.list.feed
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+      getListById: (id) => dispatch(getListById(id)),
+      getTweetByList: (id) => dispatch(getTweetByList(id))
+  };
+}
 
 class tweetlist extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      id : props.location.state.tweetId,
       editProfile: false, //for modal
       listName: "Cast and Crew",
       userName: "@SiliconHBO",
@@ -30,6 +35,7 @@ class tweetlist extends Component {
       buttonText: "Subscribed",
       class: "btn btn-primary"
     };
+    console.log("id sent from parent",this.state.id);
     this.handleClick = this.handleClick.bind(this);
   }
   componentWillMount = () => {
@@ -37,6 +43,8 @@ class tweetlist extends Component {
   }
 
   getUser = () => {
+    this.props.getListById(6);
+    this.props.getTweetByList(6);
     fetch('https://randomuser.me/api/')
       .then(response => {
         if (response.ok) return response.json();
@@ -70,11 +78,13 @@ class tweetlist extends Component {
   }
 
   handleClick(flag) {
-    this.state.isSubscribed = flag;
+    this.setState({
+      isSubscribed : flag
+    })
     console.log(this.state.buttonText);
     this.setState({
-      buttonText: (this.state.buttonText == "Subscribed") ? "Unsubscribed" : "Subscribed",
-      class: (this.state.class == "btn btn-primary") ? "btn btn-outline-primary" : "btn btn-primary"
+      buttonText: (this.state.buttonText === "Subscribed") ? "Unsubscribed" : "Subscribed",
+      class: (this.state.class === "btn btn-primary") ? "btn btn-outline-primary" : "btn btn-primary"
     })
   }
 
@@ -125,6 +135,4 @@ class tweetlist extends Component {
   }
 }
 
-export default tweetlist;
-/////////////////////// CALL FOR REDUX ACTION ///////////////////
-// export default connect(mapStateToProps,mapDispatchToProps)(profile);
+export default connect(mapStateToProps,mapDispatchToProps)(tweetlist);

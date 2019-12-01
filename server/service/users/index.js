@@ -188,7 +188,7 @@ module.exports.getById = function (userId, cb) {
             }, function (err) {
                 return cb(err);
             });
-        }
+       }
     })
 
 }

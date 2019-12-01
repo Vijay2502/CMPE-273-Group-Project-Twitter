@@ -3,7 +3,7 @@ const _ = require('lodash');
 const { User, List, sequelize } = require('../../repository/mysql');
 const { Tweet } = require('../../repository/mongo');
 
-module.exports.listSearch = function( text, limit, offset, cb ){
+module.exports.listSearch = function( text, limit, offset, userId, cb ){
     var terms = Array.from(new Set([text].concat( text.trim().replace(/(\s)+/).split(' '))));
     if(!terms)
         return cb(null, []);
@@ -39,14 +39,39 @@ module.exports.listSearch = function( text, limit, offset, cb ){
         limit
     }).then(function(lists){
         if(lists && _.isArray(lists)){
-            return cb(null, {
-                lists: lists.map(f => ({
-                    id: f.id,
-                    name: f.name,
-                    description: f.description,
-                    data: f.data
-                })),
-                nextOffset: (lists.length <= limit)? 0 : (limit) + (offset)
+
+            return User.findOne({
+                where:{
+                    id: userId?userId:-1
+                }
+            }).then(function(user){
+                if(!user){
+                    return cb(null, {
+                        lists: lists.map(f => ({
+                            id: f.id,
+                            name: f.name,
+                            description: f.description,
+                            data: f.data,
+                            subscribed: false
+                        })),
+                        nextOffset: (lists.length <= limit)? 0 : (limit) + (offset)
+                    });
+                }
+                return user.getListsAsSubscriber({attributes: ['id']}).then(subscribedLists => {
+                    subscribedLists = subscribedLists.map(f => f.id);
+                    return cb(null, {
+                        lists: lists.map(f => ({
+                            id: f.id,
+                            name: f.name,
+                            description: f.description,
+                            data: f.data,
+                            subscribed: subscribedLists.includes(f.id)
+                        })),
+                        nextOffset: (lists.length <= limit)? 0 : (limit) + (offset)
+                    });
+                }, function(err){
+                    return cb(err);
+                })
             });
         }
         return cb(null, null);
@@ -55,7 +80,7 @@ module.exports.listSearch = function( text, limit, offset, cb ){
     });
 }
 
-module.exports.userSearch = function( text , limit, offset, cb ){
+module.exports.userSearch = function( text, limit, offset, userId, cb ){
     var terms = Array.from(new Set([text].concat( text.trim().replace(/(\s)+/).split(' '))));
     if(!terms)
         return cb(null, []);
@@ -106,15 +131,41 @@ module.exports.userSearch = function( text , limit, offset, cb ){
         limit
     }).then(function(users){
         if(users && _.isArray(users)){
-            return cb(null, {
-                users: users.map(f => ({
-                    id: f.id,
-                    firstName: f.firstName,
-                    lastName: f.lastName,
-                    username: f.username,
-                    data: f.data
-                })),
-                nextOffset: (users.length <= limit)? 0 : (limit) + (offset)
+
+            return User.findOne({
+                where:{
+                    id: userId?userId:-1
+                }
+            }).then(function(user){
+                if(!user){
+                    return cb(null, {
+                        users: users.map(f => ({
+                            id: f.id,
+                            firstName: f.firstName,
+                            lastName: f.lastName,
+                            username: f.username,
+                            data: f.data,
+                            followed: false
+                        })),
+                        nextOffset: (users.length <= limit)? 0 : (limit) + (offset)
+                    });
+                }
+                return user.getFollowees({attributes: ['id']}).then(followees => {
+                    followees = followees.map(f => f.id);
+                    return cb(null, {
+                        users: users.map(f => ({
+                            id: f.id,
+                            firstName: f.firstName,
+                            lastName: f.lastName,
+                            username: f.username,
+                            data: f.data,
+                            followed: followees.includes(f.id)
+                        })),
+                        nextOffset: (users.length <= limit)? 0 : (limit) + (offset)
+                    });
+                }, function(err){
+                    return cb(err);
+                })
             });
         }
         return cb(null, null);
@@ -139,13 +190,15 @@ module.exports.topicSearch = function( text , limit, offset, cb ){
     Tweet.find({
         hashTags: {
             $elemMatch:{
-                $regex: searchterm
+                $regex: searchterm,
+                $options: 'i'
             }
         },
-        'tweets.active':true
+        'active':true
     },
     null,
     {
+        sort: {'createdAt':-1},
         skip: offset,
         limit: limit
     }).then(function(tweets){
@@ -153,12 +206,16 @@ module.exports.topicSearch = function( text , limit, offset, cb ){
             return cb(null, {
                 tweets:tweets.map(tweet => ({
                     id: tweet.tweetId,
+                    ownerId: tweet.ownerId,
+                    owner: tweet.owner,
                     likes: tweet.likes.count,
                     views: tweet.views.count,
                     retweetCount: tweet.retweetCount,
+                    replyCount: tweet.replyCount,
                     data: tweet.data ? tweet.data : null,
                     retweet: tweet.retweet,
-                    hashTags: tweet.hashTags
+                    hashTags: tweet.hashTags,
+                    createdAt: tweet.createdAt
                 })),
                 nextOffset: (tweets.length <= limit)? 0 : (limit) + (offset)
             });

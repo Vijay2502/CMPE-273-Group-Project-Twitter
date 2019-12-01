@@ -99,11 +99,11 @@ class TweetBody extends Component {
         this.displayTweet = this.displayTweet.bind(this);
     }
 
-    displayTweet() {
+    displayTweet(id) {
 
         try {
+            document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(7)").setAttribute("data-tweet-id", id);
             document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(7)").click();
-
         }
         catch (e) {
             console.log(e);
@@ -117,7 +117,7 @@ class TweetBody extends Component {
         console.log(this.state);
         return (
             <div class="list-group">
-                <button type="button" className="inner-body list-group-item list-group-item-action" onClick={(e) => this.displayTweet()}>
+                <button type="button" className="inner-body list-group-item list-group-item-action" onClick={(e) => this.displayTweet("3cd8c430-13ec-11ea-a40d-57a00194fdf6")}>
                     <Image image={this.props.image} />
                     <div className="body">
                         <div className="inner-body-inner">

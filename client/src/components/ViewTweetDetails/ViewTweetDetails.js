@@ -54,9 +54,9 @@ class ViewTweetDetails extends Component {
 
     }
 
-    getReplies = () => {
+    getReplies = (id) => {
         console.log("In get reply");
-        axios.get(`http://localhost:8080/api/v1/tweet/3cd8c430-13ec-11ea-a40d-57a00194fdf6/replies`)
+        axios.get(`http://localhost:8080/api/v1/tweet/${id}/replies`)
             .then(response => {
                 console.log(response);
                 this.setState(
@@ -73,23 +73,35 @@ class ViewTweetDetails extends Component {
     componentDidMount() {
         console.log("this works");
 
-
-        // get messages
-        axios.defaults.withCredential = true;
-        let channel = '1|2';
-        let firstName = localStorage.getItem('firstName');
-        axios.get(`http://localhost:8080/api/v1/tweet/byId/3cd8c430-13ec-11ea-a40d-57a00194fdf6`)
-            .then(response => {
-                console.log(response);
-                this.setState(
-                    {
-                        "data": response.data.data  // What??
-                    }, () => this.getReplies()
-                );
-            })
-            .catch(err => {
-                console.error(err);
+        try {
+            // get messages
+            let tweetId = document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(7)").getAttribute("data-tweet-id");
+            this.setState({
+                tweetId
+            }, () => {
+                axios.defaults.withCredential = true;
+                let channel = '1|2';
+                let firstName = localStorage.getItem('firstName');
+                axios.get(`http://localhost:8080/api/v1/tweet/byId/${tweetId}`)
+                    .then(response => {
+                        console.log(response);
+                        this.setState(
+                            {
+                                "data": response.data.data  // What??
+                            }, () => this.getReplies(tweetId)
+                        );
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
             });
+
+        }
+        catch (e) {
+            console.log(e);
+        }
+
+
     }
 
     goBackToFeeds() {
@@ -111,6 +123,12 @@ class ViewTweetDetails extends Component {
         if (!tweetData) {
             return (null);
         }
+
+        let dateObj = new Date(tweetData.createdAt);
+        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        let date1 = dateObj.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+        let date2 = months[dateObj.getMonth()] + " " + dateObj.getDate() + ", " + dateObj.getFullYear();
+
         console.log(tweetData);
         return (
 
@@ -136,7 +154,10 @@ class ViewTweetDetails extends Component {
                         </div>
                         <div className="tweet-date">
                             {
-                                tweetData.createdAt
+                                date1
+                            } &#8226;&nbsp;
+                            {
+                                date2
                             }
                         </div>
 

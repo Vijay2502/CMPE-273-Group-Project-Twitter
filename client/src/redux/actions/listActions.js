@@ -1,4 +1,4 @@
-import {CREATE_LIST,ADD_MEMBER,REMOVE_MEMBER,GET_LIST_ID,GET_MEMBERS_IN_LIST,GET_SUBSCRIBERS_IN_LIST,GET_OWNEDLISTS,GET_SUBSCRIBEDLIST,GET_MEMBERLISTS,GET_TWEETS_LIST} from "../../redux/constants/actionTypes";
+import {CREATE_LIST,ADD_MEMBER,REMOVE_MEMBER,GET_LIST_ID,GET_TWEETS_BY_LIST,GET_MEMBERS_IN_LIST,GET_SUBSCRIBERS_IN_LIST,GET_OWNEDLISTS,GET_SUBSCRIBEDLIST,GET_MEMBERLISTS,GET_TWEETS_LIST} from "../../redux/constants/actionTypes";
 import {HOSTNAME} from "../../constants/appConstants";
 
 import axios from 'axios';
@@ -57,7 +57,7 @@ export function getListById(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1//list/get/:id`)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/list/get/:id`)
             .then((response) => dispatch(getListbyIdDispatch(response.data)));
     }
 }
@@ -66,6 +66,23 @@ export const getListbyIdDispatch = (returnData) => {
     console.log(returnData);
 
     return {type: GET_LIST_ID, payload: returnData}
+};
+
+//  ***********  GET TWEET BY LIST ***********
+export function getTweetByList(id) {
+    console.log("getTweetByList payload");
+    console.log(id);
+
+    return (dispatch) => {
+        axios.get(`http://${HOSTNAME}:8080/api/v1/feed/list/${id}`)
+            .then((response) => dispatch(getTweetByListDispatch(response.data)));
+    }
+}
+export const getTweetByListDispatch = (returnData) => {
+    console.log("Inside getTweetByListDispatch");
+    console.log(returnData);
+
+    return {type: GET_TWEETS_BY_LIST, payload: returnData}
 };
 
 //  ***********  GET MEMBERS ***********
@@ -114,34 +131,36 @@ export function getOwnedLists(id) {
 export const getOwnedListDispatch = (returnData) => {
     console.log("Inside getOwnedListDispatch");
     console.log(returnData);
-
+    if(returnData!=null || returnData!=''){
     return {type: GET_OWNEDLISTS, payload: returnData}
+    }
 };
 
 //  ***********  GET SUBSCRIBED LISTS***********
-export function getSubscribedLists(payload) {
+export function getSubscribedLists(id) {
     console.log("getSubscribedList  payload");
-    console.log(payload);
+    console.log(id);
 
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/user/:id/subscriber/lists`)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/user/${id}/subscriber/lists`)
             .then((response) => dispatch(getSubscribedListDispatch(response.data)));
     }
 }
 export const getSubscribedListDispatch = (returnData) => {
     console.log("Inside getSubscribedListDispatch");
     console.log(returnData);
-
+    if(returnData!==null || returnData!==''){
     return {type: GET_SUBSCRIBEDLIST, payload: returnData}
+    }
 };
 
 //  ***********  GET MEMBER LISTS***********
-export function getMemberLists(payload) {
+export function getMemberLists(id) {
     console.log("getMemberLists payload");
-    console.log(payload);
+    console.log(id);
 
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/user/:id/memeber/lists`)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/user/${id}/member/lists`)
             .then((response) => dispatch(getMemberListsDispatch(response.data)));
     }
 }
@@ -149,8 +168,9 @@ export function getMemberLists(payload) {
 export const getMemberListsDispatch = (returnData) => {
     console.log("Inside getMemberListsDispatch");
     console.log(returnData);
-
+    if(returnData!=null || returnData!=''){
     return {type: GET_MEMBERLISTS, payload: returnData}
+    }
 };
 
 
@@ -167,6 +187,5 @@ export function getTweetByListId(payload) {
 export const getTweetByListIdDispatch = (returnData) => {
     console.log("Inside getTweetByListIdDispatch");
     console.log(returnData);
-
     return {type: GET_TWEETS_LIST, payload: returnData}
 };
