@@ -146,7 +146,7 @@ module.exports.getSubscribers = function (listId, limit, offset, cb) {
                         message: 'NO CONTENT'
                     });
                 }
-                return user.getSubscribers({
+                return list.getSubscribers({
                     attributes: ['id', 'firstName', 'lastName', 'username', 'email'],
                     limit,
                     offset,

@@ -26,7 +26,7 @@ router.put('/user/:id/unfollow', User.unfollow);       ///tested
 router.get('/user/:id/followers', User.getFollowers);  ///tested
 router.get('/user/:id/followees', User.getFollowees);  ///tested
 router.get('/user/:id/subscriber/lists', User.getListsAsSubscriber);
-router.get('/user/:id/memeber/lists', User.getListsAsMember);
+router.get('/user/:id/member/lists', User.getListsAsMember);
 router.get('/user/:id/owner/lists', User.getListsAsOwner);
 router.put('/user/:id/deactivate', User.deactivate);
 router.put('/user/:id/reactivate', User.reactivate);
@@ -51,10 +51,12 @@ router.put('/tweet/:userId/bookmark', BookMarkedTweet.bookmarkTweet);   ///doubt
 router.post('/tweet/:tweetId/retweet', Tweet.retweet);             ///tested
 router.post('/tweet/:id/reply', Tweet.reply);
 router.get('/tweet/:id/replies', Tweet.getReplies);
-router.get('/tweet/:userId/bySubscriber', Tweet.getTweetsBySubscriber);
-router.delete('/tweet/:tweetId/delete', Tweet.deleteTweet);          ///tested
-router.get('/tweet/byList/:listId', Tweet.getTweetsByList);         ///
+router.delete('/tweet/:tweetId/delete', Tweet.deleteTweet);          ///tested       ///
 router.get('/tweet/getByHashtag/:hashtag', Tweet.getByHashtag);     ///
+
+
+router.get('/feed/user/:userId', Tweet.getTweetsBySubscriber);
+router.get('/feed/list/:listId', Tweet.getTweetsByList);
 
 // SEARCH APIS
 router.get('/search/users', Search.userSearch);
