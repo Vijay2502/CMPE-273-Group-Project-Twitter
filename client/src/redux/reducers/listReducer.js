@@ -10,7 +10,8 @@ const initialState = {
     errorMessage:"",
     currentList:"",
     subscribers:[],
-    members:[]
+    members:[],
+    feed:[]
 };
 
 export default function listReducer(state = initialState, action) {
@@ -66,7 +67,7 @@ export default function listReducer(state = initialState, action) {
         return Object.assign({}, state, {
            status: action.payload.status === "ok" ? true : false,
             data: action.payload.data,
-            subscribedList:action.payload.data.subscribedList
+            subscribedList:action.payload.data.listsAsSubscriber
         });
     }
     else if (action.type === GET_MEMBERLISTS) {

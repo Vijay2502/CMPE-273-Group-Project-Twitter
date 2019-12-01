@@ -44,12 +44,11 @@ class CreateList extends React.Component {
         this.state = {
             openListModal: false,
             addMemberModal:false,
-            name:"",
-            description:"",
             search:"",
-            chipData:[ { key: 0, label: 'sakshi' },  { key: 0, label: 'priya' }],
+            chipData:[ { key: 0, label: 'sakshi' },  { key: 1, label: 'priya' }],
             buttonVal:false
         }
+        this.handleChange = this.handleAdd.bind(this);
         // this.newList = this.newList.bind(this);
         // this.createList = this.createList.bind(this);
     }
@@ -80,18 +79,22 @@ class CreateList extends React.Component {
     }
         this.nextModal();
         this.setState({openListModal: false});
-    }
+    };
     createList=()=>{ 
     }
-
-    handleChange(event, {name, value}) {
-        this.setState({ [name]: value });
+    // (event, {name, value})
+    handleChange=(event)=> {
+        event.preventDefault();
+        console.log("handlechnage",event);
+        this.setState({
+            ...this.state,
+             [event.target.name]: event.target.value });
       }
     handleSearch = (e) => {
         e.preventDefault();
         this.getUser();
         console.log("testing search");
-    }
+    };
    handleDelete = chipToDelete => () => {
        let chips= this.state.chipData
         this.setState({
@@ -99,8 +102,9 @@ class CreateList extends React.Component {
         })
       };
    handleAdd = chipToAdd => (e) => {
+       e.preventDefault();
     let chips= this.state.chipData
-        let newMember = { key : this.state.chipData.length(),label:'Shim'}
+        let newMember = { key : 2,label:'Shim'}
         this.setState({
             chipData : chips.filter(chip => chips.push(newMember))
         })
@@ -117,7 +121,7 @@ class CreateList extends React.Component {
                     this.setState({
                         search: [
                             {
-                                name: data.results[0].name,
+                                // name: data.results[0].name,
                                 image: data.results[0].picture.medium,
                                 email: data.results[0].email
                             },
@@ -130,7 +134,8 @@ class CreateList extends React.Component {
             .catch(error => {
                 console.log(error);
             });
-    }
+    };
+
     render() {
         let searchList = null;
         if (this.state.search.length > 0) {
@@ -184,7 +189,7 @@ class CreateList extends React.Component {
                                     <Form.Control
                                         name="name"
                                         placeholder="name"
-                                        value={this.state.listName}
+                                        value={this.state.name}
                                         onChange={this.handleChange}
                                     />
                                 </Form.Group>
@@ -195,7 +200,7 @@ class CreateList extends React.Component {
                                         as="textarea"
                                         rows="3"
                                         placeholder="description"
-                                        value={this.state.Description}
+                                        value={this.state.description}
                                         onChange={this.handleChange}
                                     />
                                 </Form.Group>
