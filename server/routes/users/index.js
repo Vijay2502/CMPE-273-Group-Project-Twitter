@@ -61,9 +61,21 @@ module.exports.login = function (request, response) {
 
 module.exports.update = function (request, response) {
 
-    if (!(request.body.email && request.body.name && request.body.id)) {
-        return response.status(400).send("MISSING FIELDS");
+    if (!(request.body.id)) {
+        return response.status(400).send("ID MISSING");
     }
+
+    return userService.update(request.body, function(err, user){
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: {
+                user
+            }
+        });
+    })
 
 
 

@@ -5,8 +5,8 @@ const BookMarkedTweet = require('../routes/bookmarked-tweets');
 const User = require('./users');
 const Analytics = require('./analytics');
 const Search = require('./search');
-const User_producer = require('../kafka-producer').User;
-const Tweet_producer = require('../kafka-producer').Tweet;
+//const User_producer = require('../kafka-producer').User;
+//const Tweet_producer = require('../kafka-producer').Tweet;
 const List = require('./lists');
 var passport = require('passport');
 var auth = {
@@ -19,6 +19,7 @@ router.use(passport.initialize());
 router.post('/user/register', User.register);          ///tested
 router.post('/user/login', User.login);                ///tested
 router.get('/user/:id', User.get);                     ///tested
+router.put('/user/update', User.update);
 router.put('/user/:id/follow', User.follow);           ///tested
 router.put('/user/:id/unfollow', User.unfollow);       ///tested
 router.get('/user/:id/followers', User.getFollowers);  ///tested
