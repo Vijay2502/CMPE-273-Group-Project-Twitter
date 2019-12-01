@@ -23,7 +23,7 @@ module.exports.create = function (newTweet, cb) {
         views: { count: 0, userId: [] },
         retweetCount: 0,
         replyTo: newTweet.replyTo ? newTweet.replyTo : null,
-        hashTags: hashTags
+        hashTags: hashTags && _.isArray(hashTags) && hashTags.length > 0 ? hashTags : ["#general"]
     }).then(function (tweet) {
         return cb(null, {
             id: tweet.tweetId
