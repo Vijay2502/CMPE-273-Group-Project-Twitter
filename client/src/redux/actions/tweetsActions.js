@@ -18,7 +18,10 @@ export function retweetTweet(payload) {
 
     return (dispatch) => {
         axios.post(`http://${HOSTNAME}:8080/api/v1/tweet/${payload.tweetId}/retweet`, payload)
-            .then((response) => dispatch(likeTweetDispatch(response.data)));
+            .then((response) => dispatch(likeTweetDispatch(response.data)))
+            .catch(err => {
+                console.log("retweetTweet err")
+                console.log(err) });;
     }
 }
 
@@ -32,6 +35,16 @@ export function likeTweet(payload) {
     }
 }
 
+export function replyTweet(payload) {
+    console.log("replyTweet payload");
+    console.log(payload);
+
+    return (dispatch) => {
+        axios.post(`http://${HOSTNAME}:8080/api/v1/tweet/${payload.tweetId}/reply`, payload)
+            .then((response) => dispatch(replyTweetDispatch(response.data)));
+    }
+}
+
 export function getTweetsById(data) {
     return function (dispatch) {
         // var headers = {
@@ -41,7 +54,8 @@ export function getTweetsById(data) {
         axios.defaults.withCredentials = true;
         axios
             .get(`http://${HOSTNAME}:8080/api/v1/tweet/byOwner/` + data.user_id)
-            .then(response => dispatch(getUserTweets(response))).catch(err => { console.log(err); });
+            .then(response => dispatch(getUserTweets(response)))
+            .catch(err => { console.log(err); });
     };
 }
 
@@ -65,6 +79,13 @@ export const retweetTweetDispatch = (returnData) => {
 };
 
 export const likeTweetDispatch = (returnData) => {
+    console.log("Inside likeTweetDispatch");
+    console.log(returnData);
+
+    return { type: LIKE_TWEET, payload: returnData }
+};
+
+export const replyTweetDispatch = (returnData) => {
     console.log("Inside likeTweetDispatch");
     console.log(returnData);
 

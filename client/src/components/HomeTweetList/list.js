@@ -3,7 +3,7 @@ import '../../css/hometweetlist.css'
 import { TweetBody } from './listview.js'
 import ViewTweets from "../Tweet/ViewTweets";
 import {connect} from "react-redux";
-import {getTweetsById, likeTweet, retweetTweet} from "../../redux/actions/tweetsActions";
+import {getTweetsById, likeTweet, retweetTweet, replyTweet} from "../../redux/actions/tweetsActions";
 
 // import Search from './search.js'
 
@@ -62,7 +62,7 @@ class HomeTweetList extends Component {
         payload.tweetId = tweetId;
         payload.data = tweetData;
         payload.owner = owner;
-        payload.userId = retweetingUserId;
+        payload.ownerId = retweetingUserId;
 
         this.props.retweetTweet(payload);
     }
@@ -78,6 +78,18 @@ class HomeTweetList extends Component {
 
         this.props.likeTweet(payload);
     }
+
+    // replyTweet(data, userId) {
+    //     console.log("replyTweet")
+    //     console.log("data", data)
+    //     console.log("userId", userId)
+    //
+    //     const payload = {};
+    //     payload.data = data;
+    //     payload.ownerId = userId;
+    //
+    //     this.props.likeTweet(payload);
+    // }
 
     getUser() {
         fetch('https://randomuser.me/api/')
@@ -106,7 +118,9 @@ class HomeTweetList extends Component {
         console.log("render HomeTweetList");
         return (
             <div>
-                <ViewTweets dataFromParent={this.props.tweets} likeTweetCallback={this.likeTweet} retweetTweetCallback={this.retweetTweet}/>
+                <ViewTweets dataFromParent={this.props.tweets}
+                            likeTweetCallback={this.likeTweet}
+                            retweetTweetCallback={this.retweetTweet}/>
             </div>
         );
     }

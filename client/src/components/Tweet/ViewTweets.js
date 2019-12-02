@@ -43,13 +43,13 @@ class ViewTweets extends Component {
                         let handle = `@${tweet.owner.username}`;
                         let image = tweet.image;
                         let tweetText = tweet.data.text;
-                        console.log(image);
 
                         const buttonData = {};
-                        buttonData.tweetId = tweet.tweetId;
-                        buttonData.userId = tweet.userId;
+                        buttonData.tweetId = tweet.id;
+                        buttonData.userId = tweet.ownerId;
                         buttonData.retweetCount = tweet.retweetCount;
                         buttonData.likes = tweet.likes;
+                        buttonData.replyCount = tweet.replyCount;
                         buttonData.tweetData = tweet.data;
 
                         const owner = {};
@@ -58,7 +58,7 @@ class ViewTweets extends Component {
                         owner["username"] = localStorage.getItem("username");
                         owner["image"] = "";
 
-                        buttonData.owner = tweet.owner;
+                        buttonData.owner = owner;
                         buttonData.retweetingUserId = localStorage.getItem("id");
 
                         return (
@@ -71,56 +71,10 @@ class ViewTweets extends Component {
                                     image={image}
                                 />
 
-                                <TweetButtons data={buttonData} likeTweetCallback={this.props.likeTweetCallback} retweetTweetCallback={this.props.retweetTweetCallback}/>
-
-                                {/*<div style={styles.container}>*/}
-                                {/*    <button*/}
-                                {/*        type="button"*/}
-                                {/*        className="list-group-item list-group-item-action borderless"*/}
-                                {/*        style={styles.reply}*/}
-                                {/*        onClick={this.openCommentModal}*/}
-                                {/*    >*/}
-                                {/*        <FontAwesomeIcon icon={faComment} />*/}
-                                {/*    </button>*/}
-                                {/*    <button*/}
-                                {/*        type="button"*/}
-                                {/*        className="list-group-item list-group-item-action borderless"*/}
-                                {/*        style={styles.retweet}*/}
-                                {/*        onClick={() => {*/}
-                                {/*            this.props.retweetTweetCallback(tweet.tweetId, tweet.userId)*/}
-                                {/*        }}*/}
-                                {/*    >*/}
-                                {/*        <FontAwesomeIcon icon={faRetweet} />*/}
-                                {/*        {tweet.retweetCount}*/}
-                                {/*    </button>*/}
-                                {/*            <button*/}
-                                {/*                type="button"*/}
-                                {/*                className="list-group-item list-group-item-action borderless"*/}
-                                {/*                style={styles.like}*/}
-                                {/*                onClick={() => {*/}
-                                {/*                    this.props.likeTweetCallback(tweet.tweetId, tweet.userId)*/}
-                                {/*                    likeIncrement = likeIncrement + 1;*/}
-                                {/*                }}*/}
-                                {/*            >*/}
-                                {/*                <FontAwesomeIcon icon={faHeart} />*/}
-                                {/*                {tweet.likes + likeIncrement}*/}
-                                {/*            </button>*/}
-                                {/*    <button*/}
-                                {/*        type="button"*/}
-                                {/*        className="list-group-item list-group-item-action borderless"*/}
-                                {/*        style={styles.share}*/}
-                                {/*    >*/}
-                                {/*        <FontAwesomeIcon icon={faShareSquare} />*/}
-                                {/*    </button>*/}
-                                {/*</div>*/}
-
-                                {/*<Modal*/}
-                                {/*    show={this.state.isOpenCommentModal}*/}
-                                {/*    onHide={this.closeCommentModal}*/}
-                                {/*    animation={false}*/}
-                                {/*>*/}
-                                {/*    <CreateTweet />*/}
-                                {/*</Modal>*/}
+                                <TweetButtons data={buttonData}
+                                              likeTweetCallback={this.props.likeTweetCallback}
+                                              retweetTweetCallback={this.props.retweetTweetCallback}
+                                              replyTweetCallback={this.props.replyTweetCallback}/>
                             </div>
                         )
                     })}

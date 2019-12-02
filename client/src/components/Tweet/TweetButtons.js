@@ -3,7 +3,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faComment, faHeart} from "@fortawesome/free-regular-svg-icons";
 import {faRetweet, faShareSquare} from "@fortawesome/free-solid-svg-icons";
 import {Modal} from "react-bootstrap";
-import CreateTweet from "./CreateTweet";
+import ReplyTweet from "./ReplyTweet";
 
 class TweetButtons extends Component {
     constructor(props) {
@@ -11,22 +11,26 @@ class TweetButtons extends Component {
         this.state = {
             retweetIncrement: 0,
             likeIncrement: 0,
+            replyCountIncrement: 0,
             isOpenCommentModal: false
         };
     }
 
-    openCommentModal = e => {
+    openCommentModal = () => {
         this.setState({ isOpenCommentModal: true });
     };
 
-    closeCommentModal = e => {
+    closeCommentModal = () => {
         this.setState({ isOpenCommentModal: false });
     };
 
-    render() {
-        console.log("render TweetButtons");
-        console.log(this.state.props);
+    triggerReplyCountIncrement = () => {
+        this.setState({ replyCountIncrement: 1 });
+    };
 
+
+
+    render() {
         return (
             <div>
                 <div style={styles.container}>
@@ -37,26 +41,31 @@ class TweetButtons extends Component {
                         onClick={this.openCommentModal}
                     >
                         <FontAwesomeIcon icon={faComment} />
+                        {this.props.data.replyCount + this.state.replyCountIncrement}
                     </button>
+
                     <button
                         type="button"
                         className="list-group-item list-group-item-action borderless"
                         style={styles.retweet}
                         onClick={() => {
-                            this.props.retweetTweetCallback(this.props.data.tweetId, this.props.data.userId)
+                            console.log("faRetweet this.props.data", this.props.data)
+                            this.props.retweetTweetCallback(this.props.data.tweetData, this.props.data.owner,
+                                this.props.data.retweetingUserId, this.props.data.tweetId)
                             this.setState({retweetIncrement: 1})
                         }}
                     >
                         <FontAwesomeIcon icon={faRetweet} />
                         {this.props.data.retweetCount + this.state.retweetIncrement}
                     </button>
+
                     <button
                         type="button"
                         className="list-group-item list-group-item-action borderless"
                         style={styles.like}
                         onClick={() => {
-                            this.props.likeTweetCallback(this.props.data.tweetData, this.props.data.owner,
-                                this.props.data.retweetingUserId, this.props.data.tweetId)
+                            console.log("faHeart this.props.data", this.props.data)
+                            this.props.likeTweetCallback(this.props.data.tweetId, this.props.data.userId)
                             this.setState({likeIncrement: 1})
                         }}
                     >
@@ -77,7 +86,9 @@ class TweetButtons extends Component {
                     onHide={this.closeCommentModal}
                     animation={false}
                 >
-                    <CreateTweet />
+                    <ReplyTweet data={this.props.data.tweetId}
+                                triggerReplyCountIncrement={this.triggerReplyCountIncrement}
+                                closeCommentModal={this.closeCommentModal}/>
                 </Modal>
             </div>
         )
