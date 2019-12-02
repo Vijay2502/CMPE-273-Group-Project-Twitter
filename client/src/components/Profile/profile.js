@@ -7,6 +7,7 @@ import { faBirthdayCake, faCalendarAlt } from "@fortawesome/free-solid-svg-icons
 import ViewTweets from "../Tweet/ViewTweets";
 import { getProfile, getfollowees, getfollowers } from "../../redux/actions/userActions";
 import { getTweetsById } from "../../redux/actions/tweetsActions";
+import axios from 'axios';
 
 
 function mapStateToProps(store) {
@@ -32,21 +33,20 @@ class profile extends Component {
         super(props);
         this.state = {
             editProfile: false, //for modal
-            selectedCoverPic: "",
-            selectedProfilePic: "",
+            selectedCoverPic: null,
+            selectedProfilePic: null,
             users: []
         };
-        this.onCoverPicUpload = this.onCoverPicUpload.bind(this);
-        this.onProfilePicUpload = this.onProfilePicUpload.bind(this);
+        // this.onCoverPicUpload = this.onCoverPicUpload.bind(this);
+        // this.onProfilePicUpload = this.onProfilePicUpload.bind(this);
     }
     componentWillMount = () => {
         const data = {
-            user_id: 1
-        }; const data0 = {
-            user_id: 1212
+            user_id: localStorage.getItem('id')
         };
+
         this.props.getProfileDetails(data);
-        this.props.getUserTweets(data);
+        this.props.getUserTweets({ user_id: 1 });
         this.props.getUserfollowees(data);// ISSUE WITH API SO COMMENTING
         this.props.getUserfollowers(data);// ISSUE WITH API SO COMMENTING
         this.getUser();
@@ -91,6 +91,18 @@ class profile extends Component {
     cancelEdit = () => {
         this.setState({ editProfile: false });
     };
+    onCoverPicUploadHandler = (event) => {
+        // this.setState({
+        //     selectedCoverPic: event.target.files[0]
+        // });
+        console.log("test onCoverPicUploadHandler");
+    };
+    onProfilePicUploadHandler = (event) => {
+        this.setState({
+            selectedProfilePic: event.target.files[0]
+        });
+        console.log("profile pic");
+    };
     saveProfile = (e) => {
         // save profile code
         e.preventDefault();
@@ -100,90 +112,86 @@ class profile extends Component {
                 Updatedata[e.target[i].id] = e.target[i].value;
             }
         }
-        // console.log(JSON.stringify(data));
+
         let dataFinal = {
+            id: localStorage.getItem('id'),
             firstName: Updatedata.formGridFName,
             lastName: Updatedata.formGridLName,
             data: {
+            }
+        };
+
+        const data = new FormData();
+        if (this.state.selectedProfilePic) {
+            console.log("inside if condition");
+            data.append('image', this.state.selectedProfilePic, this.state.selectedProfilePic.name);
+            axios.post('http://localhost:8080/api/v1/img-upload', data, {
+                headers: {
+                    'accept': 'application/json',
+                    'Accept-Language': 'en-US,en;q=0.8',
+                    'Content-Type': `multipart/form-data; boundary=${data._boundary}`
+                    // 'Authorization': localStorage.getItem('token')
+                }
+            }).then((response) => {
+                // console.log("Res data ", dataFinal);
+                // dataFinal.data.ProfileImg = response.data.location;
+                dataFinal.data = {
+                    ProfileImg: response.data.location,
+                    website: Updatedata.formGridWebsite,
+                    location: Updatedata.formGridLocation,
+                    bio: Updatedata.formGridBio
+                };
+
+                console.log("testing data with image:", dataFinal);
+
+                axios.put('http://localhost:8080/api/v1/user/update', dataFinal)
+                    .then(res => {
+                        console.log("test result :", res);
+                        if (res.data.status === "ok") {
+                            alert("Profile updated successfully");
+                            localStorage.setItem('firstName', res.data.data.user.firstName);
+                            localStorage.setItem('lastName', res.data.data.user.lastName);
+                            // store.dispatch(loadUser());
+                            this.setState({
+                                editProfile: false,
+                                selectedProfilePic: res.data.data.user.data.ProfileImg
+                                // user: res.data.user
+                            });
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            }).catch(err => {
+                console.log(err);
+            });
+        } else {
+            dataFinal.data = {
+                ProfileImg: "",
                 website: Updatedata.formGridWebsite,
                 location: Updatedata.formGridLocation,
                 bio: Updatedata.formGridBio
-            }
-        };
-        console.log("Res data ", dataFinal);
-        // const data = new FormData();
-        // if (this.state.selectedCoverPic) {
-        //     data.append('image', this.state.selectedCoverPic, this.state.selectedCoverPic.name);
-        //     axios.post(API_PATH + '/img-upload', data, {
-        //         headers: {
-        //             'accept': 'application/json',
-        //             'Accept-Language': 'en-US,en;q=0.8',
-        //             'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
-        //             'Authorization': localStorage.getItem('token')
-        //         }
-        //     }).then()
-        // }
-
-
-
-
-
-
-        // this.props.updateApi(data);
-        // this.setState({ editProfile: false });
+            };
+            console.log("testing data wo image:", dataFinal);
+            axios.put('http://localhost:8080/api/v1/user/update', dataFinal)
+                .then(res => {
+                    console.log(res);
+                    if (res.data.status === "ok") {
+                        alert("Profile updated successfully");
+                        // store.dispatch(loadUser());
+                        localStorage.setItem('firstName', res.data.data.user.firstName);
+                        localStorage.setItem('lastName', res.data.data.user.lastName);
+                        this.setState({
+                            editProfile: false
+                            // user: res.data.user
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }
     };
-    onCoverPicUploadHandler = (event) => {
-        this.setState({
-            selectedCoverPic: event.target.files[0]
-        });
-    };
-    onCoverPicUpload(files) {
-        console.log("onFileChange event triggered");
-        // if (files == null || files.length == 0) return;
-        // let file = files[0];
-        // const data = new FormData();
-        // data.append("image", file, file.name);
-        // var headers = {
-        //   "Content-Type": "application/json",
-        //   Authorization: "Bearer " + sessionStorage.getItem("token")
-        // };
-        // axios
-        //   .post(`http://` + connectionUrl + `/image/${email_id}/imgupload`, data, {
-        //     headers: headers
-        //   })
-        //   .then(res => {
-        //     if (res.status === 200) {
-        //       this.setState({ profile_image: res.data.imageUrl.imageUrl });
-        //       console.log("success", this.state.profile_image);
-        //     }
-        //   })
-        //   .catch(err => console.error(err));
-        console.log("image uploading code. ");
-    }
-
-    onProfilePicUpload(files) {
-        console.log("onFileChange event triggered");
-        // if (files == null || files.length == 0) return;
-        // let file = files[0];
-        // const data = new FormData();
-        // data.append("image", file, file.name);
-        // var headers = {
-        //   "Content-Type": "application/json",
-        //   Authorization: "Bearer " + sessionStorage.getItem("token")
-        // };
-        // axios
-        //   .post(`http://` + connectionUrl + `/image/${email_id}/imgupload`, data, {
-        //     headers: headers
-        //   })
-        //   .then(res => {
-        //     if (res.status === 200) {
-        //       this.setState({ profile_image: res.data.imageUrl.imageUrl });
-        //       console.log("success", this.state.profile_image);
-        //     }
-        //   })
-        //   .catch(err => console.error(err));
-        console.log("image uploading code. ");
-    }
 
     render() {
         console.log("checking props", JSON.stringify(this.props));
@@ -213,7 +221,7 @@ class profile extends Component {
                 </div>
                 <div class="profile-pic-btn-container row">
                     <div class="profile-profile-pic col-sm-6">
-                        <img src={userData.profilePic ? userData.profilePic : require("../../static/images/profile_pic.png")} height="120" />
+                        <img src={userData.ProfileImg ? userData.ProfileImg : require("../../static/images/profile_pic.png")} height="120" width="120px" />
                     </div>
                     <div class="col-sm-6 edit-btn">
                         <button
@@ -227,7 +235,7 @@ class profile extends Component {
                 </div>
                 <div class="profile-details row">
                     <div class="col-sm-12">
-                        <div class="profile-name-header ">{usrDetails.firstName ? usrDetails.firstName : "" + " " + usrDetails.lastName ? usrDetails.lastName : ""}</div>
+                        <div class="profile-name-header ">{usrDetails.firstName ? usrDetails.firstName : ""} {usrDetails.lastName ? usrDetails.lastName : ""}</div>
                         <div class="profile-detail-font">@{usrDetails.username ? usrDetails.username : ""}</div>
                         <div class="profile-dates row">
                             <div class="col-sm-4 profile-detail-font">
@@ -258,14 +266,13 @@ class profile extends Component {
                 >
                     <Modal.Header closeButton>
                         <div class="btn-tweet">
-                            <button
+                            <label
+                                for="submit-btn"
                                 class="btn btn-primary save-btn"
-                                type="button"
-
                             // onClick={this.saveProfile}
                             >
                                 Save
-                            </button>
+                            </label>
                         </div>
                         <Modal.Title>Edit Profile</Modal.Title>
                     </Modal.Header>
@@ -276,12 +283,12 @@ class profile extends Component {
                                     class="profile-pic-btn"
                                     type="file"
                                     accept="image/*"
-                                    id="proile-pic-upload"
+                                    id="cover-pic-upload"
                                     // onClick={e => this.onCoverPicUpload(e.target.files)}
                                     onChange={this.onCoverPicUploadHandler}
                                 ></input>
 
-                                <label for="proile-pic-upload">
+                                <label for="cover-pic-upload">
                                     <img
                                         src={userData.coverPic ? userData.coverPic : require("../../static/images/cover_pic1.png")}
                                         width="100%"
@@ -295,20 +302,22 @@ class profile extends Component {
                                     type="file"
                                     accept="image/*"
                                     id="proile-pic-upload"
-                                    onClick={e => this.onProfilePicUpload(e.target.files)}
+                                    onChange={this.onProfilePicUploadHandler}
+                                // onClick={e => this.onProfilePicUploadHandler(e.target.files)}
                                 ></input>
 
                                 <label for="proile-pic-upload">
                                     <img
-                                        src={userData.profilePic ? userData.profilePic : require("../../static/images/profile_pic.png")}
+                                        src={userData.ProfileImg ? userData.ProfileImg : require("../../static/images/profile_pic.png")}
                                         height="80px"
+                                        width="80px"
                                     />
                                 </label>
                             </div>
                         </div>
                         <div class="edit-details-form">
                             <Form onSubmit={this.saveProfile}>
-                                <Button variant="primary" type="submit">submit</Button>
+                                <button type="submit" id="submit-btn" class="hidden">submit</button>
                                 <Form.Group controlId="formGridFName">
                                     <Form.Label>Firstname</Form.Label>
                                     <Form.Control
