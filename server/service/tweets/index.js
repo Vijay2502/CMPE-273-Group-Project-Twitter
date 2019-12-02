@@ -207,7 +207,7 @@ module.exports.getBookmarks = function (userId, cb) {
 
 //insert into tweet collection with isRetweet true
 module.exports.retweet = function (tweetId, reTweet, cb) {
-    var hashTags = extractHashTags(newTweet.data);
+    var hashTags = extractHashTags(reTweet.data);
     repository.Tweet.findOneAndUpdate({ tweetId: tweetId },
         { $inc: { "retweetCount": 1 } }
     ).then(function (tweet) {
