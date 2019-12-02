@@ -28,11 +28,10 @@ class messagelist extends Component {
 
     }
     handleChange = (e) => {
-
-        e.preventDefault();
         //search user api in below function
         this.setState({ username: e.target.value });
     }
+
     componentDidMount = () => {
         //////////////////get the list of previous chat list of the users/////////////////
         axios.defaults.withCredential = true;
@@ -52,21 +51,29 @@ class messagelist extends Component {
             });
     }
 
-    searchUsers = () => {
+    searchUsers = (e) => {
+        alert('ffff');
+        e.preventDefault();
+        var params = new URLSearchParams();
+        params.append("text", this.state.username);
+        let request = {
+            params: params
+        };
         axios.defaults.withCredential = true;
-        //let userId = localStorage.getItem('first_name');
+        //let userId = localStorage.getItem('userId');
         let userId = 1;
-        // axios.get(`http://localhost:8080/api/v1/search/users`)
-        //     .then(response => {
-        //         this.setState(
-        //             {
-        //                 chatList: []
-        //             }, () => console.log('message response', this.state.chatList)
-        //         );
-        //     })
-        //     .catch(err => {
-        //         console.error(err);
-        //     });
+        axios.get(`http://localhost:8080/api/v1/search/users`, request)
+            .then(response => {
+                console.log("check here ->>>>>>>>>>>>", response.data.data.users);
+                this.setState(
+                    {
+                        chatList: []
+                    }, () => console.log('message response', this.state.chatList)
+                );
+            })
+            .catch(err => {
+                console.error(err);
+            });
     }
 
 
@@ -200,10 +207,10 @@ class messagelist extends Component {
                         <Modal.Title>New Message</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Form class="search-body" onSubmit={() => this.searchUsers()}>
+                        <Form class="search-body" onSubmit={this.searchUsers}>
                             <Form.Group controlId="formBasicEmail">
                                 {/* <FontAwesomeIcon icon={faSearch} /> */}
-                                <Form.Control type="text" placeholder="Search people" value={this.state.username} onChange={() => this.handleChange()}>
+                                <Form.Control type="text" placeholder="Search people" value={this.state.username} onChange={this.handleChange}>
                                     {/* <FontAwesomeIcon icon={faSearch} /> */}
                                 </Form.Control>
                                 <div class="search-result">{userList}</div>

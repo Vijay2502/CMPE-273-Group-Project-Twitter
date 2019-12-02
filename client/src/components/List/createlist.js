@@ -70,14 +70,14 @@ class CreateList extends React.Component {
         console.log("list description", this.state.description);
         if(this.state.name!=undefined && this.state.description!=undefined){
         const payload ={
-            "userId":6,
+            "userId":localStorage.getItem("id"),
             "name": this.state.name,
             "description" : this.state.description,
             "data":{
-                "username":"test4",
-                "firstName":"test",
-                "lastName":"last",
-                "userId":6
+                "username":localStorage.getItem("username"),
+                "firstName":localStorage.getItem("firstName"),
+                "lastName":localStorage.getItem("lastName"),
+                "userId":localStorage.getItem("id"),
             }
         }
         this.props.createList(payload);
@@ -115,8 +115,9 @@ class CreateList extends React.Component {
 
       };
    handleAddMembers = () =>{
+    this.setState({addMemberModal: false});
        let payload = {
-           "userId":6,
+           "userId":1,
            "id":2,
            "memberId":this.state.chipData
        }

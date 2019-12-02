@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import CanvasJSReact from '../../lib/canvasjs.react';
 import { PullDownContent, PullToRefresh, RefreshContent, ReleaseContent } from "react-js-pull-to-refresh";
 import TweetBody from "../HomeTweetList/listview";
+import ViewTweets from "../Tweet/ViewTweets"
 import { getTopTenTweetsByViews } from "../../redux/actions/analyticsActions";
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -10,7 +11,7 @@ var CanvasJS = CanvasJSReact.CanvasJS;
 
 function mapStateToProps(store) {
     return {
-        topTenTweetsByViews: store.analytics.getTopTenTweetsByViews,
+        topTenTweetsByViews: store.analytics.topTenTweetsByViews,
     }
 }
 
@@ -24,13 +25,13 @@ class TopTenTweetsByViews extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: [],
         };
     }
 
-    componentWillMount() {
-        this.getUser();
-        this.props.getTopTenTweetsByViews();
+    componentDidMount() {
+        const payload = {};
+        payload.ownerId = localStorage.getItem("id")
+        this.props.getTopTenTweetsByViews(payload);
     }
 
     addSymbols(e) {
@@ -41,37 +42,6 @@ class TopTenTweetsByViews extends Component {
         var suffix = suffixes[order];
         return CanvasJS.formatNumber(e.value / Math.pow(1000, order)) + suffix;
     }
-
-    handleRefresh() {
-        //dispatch
-        return new Promise((resolve) => {
-            this.getUser()
-        });
-    }
-
-    getUser() {
-        fetch('https://randomuser.me/api/')
-            .then(response => {
-                if (response.ok) return response.json();
-                throw new Error('Request failed.');
-            })
-            .then(data => {
-                this.setState({
-                    users: [
-                        {
-                            name: data.results[0].name,
-                            image: data.results[0].picture.medium,
-                            tweet: data.results[0].email,
-                        },
-                        ...this.state.users,
-                    ]
-                });
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    }
-
 
     render() {
         const options = {
@@ -106,43 +76,16 @@ class TopTenTweetsByViews extends Component {
         };
 
         return (
+            // <h1>analytics</h1>
+
             <div>
+                <h1>TopTenTweetsByViews</h1>
+                {console.log("topTenTweetsByViews", this.props.topTenTweetsByViews)}
+                <ViewTweets dataFromParent={this.props.topTenTweetsByViews} isDisableButtons={true}/>
                 <CanvasJSChart options={options}
                 /* onRef={ref => this.chart = ref} */
                 />
 
-                <div style={{ width: 566 }}>
-                    <PullToRefresh
-                        pullDownContent={<PullDownContent />}
-                        releaseContent={<ReleaseContent />}
-                        refreshContent={<RefreshContent />}
-                        pullDownThreshold={2}
-                        onRefresh={this.handleRefresh}
-                        triggerHeight={50}
-                        backgroundColor='white'>
-
-                        <div className="main-body">
-                            {[...this.state.users].map((user, index) => {
-                                let name = `${user.name.first} ${user.name.last}`;
-                                let handle = `@${user.name.first}${user.name.last}`;
-                                let image = user.image;
-                                let tweet = user.tweet;
-                                console.log(image);
-                                return (
-                                    <div>
-                                        <h5>Tweet 1</h5>
-                                        <TweetBody
-                                            key={index}
-                                            name={name}
-                                            handle={handle}
-                                            tweet={tweet}
-                                            image={image} />
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    </PullToRefresh>
-                </div>
                 {/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
             </div>
         );

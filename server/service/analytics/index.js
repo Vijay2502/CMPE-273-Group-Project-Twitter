@@ -105,7 +105,8 @@ module.exports.topTweetsByRetweets = function (userId, cb) {
                     retweet: tweet.retweet,
                     replies: tweet.replies,
                     data: tweet.data,
-                    hashTags: tweet.hashTags
+                    hashTags: tweet.hashTags,
+                    retweetCount: tweet.retweetCount
                 }
             }));
             return cb(null, res);
@@ -165,14 +166,14 @@ module.exports.hourlyTweetCountPerDay = function (userId, cb) {
     ]).then(function (data) {
         if (data) {
 
-            var res = data.reduce((r,record) => ({
+            var res = data.reduce((r, record) => ({
                 ...r,
                 [record._id]: record.count
-            }),{});
-            res = Array(24).fill().reduce( (entry, x, idx) => {
-                
+            }), {});
+            res = Array(24).fill().reduce((entry, x, idx) => {
+
                 const key = `${idx < 12 ? idx + " am" : (idx - 12) + " pm"}`
-                entry.push({[key]: res[key]?res[key]:0});
+                entry.push({ [key]: res[key] ? res[key] : 0 });
                 return entry;
 
             }, []);
@@ -232,14 +233,14 @@ module.exports.dailyTweetCountPerWeek = function (userId, cb) {
         }
     ]).then(function (data) {
         if (data) {
-            var res = data.reduce((r,record) => ({
+            var res = data.reduce((r, record) => ({
                 ...r,
                 [record._id]: record.count
-            }),{});
-            res = Array(7).fill().reduce( (entry, x, idx) => {
-                
+            }), {});
+            res = Array(7).fill().reduce((entry, x, idx) => {
+
                 const key = moment(currentTime).subtract('days', (7 - (idx + 1))).format('dddd')
-                entry.push({[key]: res[key]?res[key]:0});
+                entry.push({ [key]: res[key] ? res[key] : 0 });
                 return entry;
 
             }, []);
@@ -299,14 +300,14 @@ module.exports.monthlyTweetCountPerYear = function (userId, cb) {
         }
     ]).then(function (data) {
         if (data) {
-            var res = data.reduce((r,record) => ({
+            var res = data.reduce((r, record) => ({
                 ...r,
                 [record._id]: record.count
-            }),{});
-            res = Array(12).fill().reduce( (entry, x, idx) => {
-                
+            }), {});
+            res = Array(12).fill().reduce((entry, x, idx) => {
+
                 const key = moment(currentTime).subtract('months', (12 - (idx + 1))).format('MMMM')
-                entry.push({[key]: res[key]?res[key]:0});
+                entry.push({ [key]: res[key] ? res[key] : 0 });
                 return entry;
 
             }, []);
