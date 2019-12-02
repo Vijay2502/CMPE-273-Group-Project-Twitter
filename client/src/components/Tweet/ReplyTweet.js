@@ -3,8 +3,10 @@ import { Button, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
-import { createTweet } from "../../redux/actions/tweetsActions";
+import {replyTweet, replyTweetDispatch} from "../../redux/actions/tweetsActions";
 import "./tweets.css"
+import axios from "axios";
+import {HOSTNAME} from "../../constants/appConstants";
 
 function mapStateToProps(store) {
     return {}
@@ -12,18 +14,18 @@ function mapStateToProps(store) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        createTweet: (payload) => dispatch(createTweet(payload))
+        replyTweet: (payload) => dispatch(replyTweet(payload))
     };
 }
 
-class CreateTweet extends Component {
+class ReplyTweet extends Component {
     image = () => {
         return (
             <img src={require("../../static/images/profile_pic.png")} alt="Logo" className="profile-pic" />
         )
     };
 
-    createTweet = (e) => {
+    replyTweet = (e) => {
         e.preventDefault();
 
         const data = {};
@@ -33,23 +35,17 @@ class CreateTweet extends Component {
             }
         }
 
-        const owner = {};
-        owner["firstName"] = localStorage.getItem("firstName");
-        owner["lastName"] = localStorage.getItem("lastName");
-        owner["username"] = localStorage.getItem("username");
-        owner["image"] = "";
+        const payload = {}
+        payload.data = data;
+        payload.tweetId = this.props.data;
+        payload.ownerId = localStorage.getItem("id");
 
-        const tweet = {}
-        tweet["data"] = data;
-        tweet["ownerId"] = localStorage.getItem("id");
-        tweet["owner"] = owner;
-        tweet["retweet"] = [];
-        tweet["hashTags"] = [];
+        console.log("replyTweet payload");
+        console.log(payload);
 
-        console.log("createTweet payload");
-        console.log(tweet);
-
-        this.props.createTweet(tweet);
+        this.props.replyTweet(payload);
+        this.props.triggerReplyCountIncrement();
+        this.props.closeCommentModal();
     };
 
     onFileChange(files) {
@@ -57,9 +53,11 @@ class CreateTweet extends Component {
     }
 
     render() {
+        console.log("replyTweet this.props.data", this.props.data)
+
         return (
             <div style={{ padding: 10 }}>
-                <Form onSubmit={this.createTweet}>
+                <Form onSubmit={this.replyTweet}>
                     <div>
                         <Form.Row>
                             <div style={styles.profileImage}> {this.image()}</div>
@@ -136,5 +134,6 @@ const styles = {
     },
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateTweet);
+//export default ReplyTweet;
+export default connect(mapStateToProps, mapDispatchToProps)(ReplyTweet);
 

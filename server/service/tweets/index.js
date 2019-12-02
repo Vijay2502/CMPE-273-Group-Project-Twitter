@@ -8,6 +8,7 @@ function extractHashTags(data) {
     if (data.text && _.isString(data.text)) {
         return data.text.match(/\B(#[A-Za-z0-9\-\.\_\?]+\b)/g);
     }
+    return ['#general'];
 }
 
 function tweetMapper(tweets){
@@ -206,13 +207,14 @@ module.exports.getBookmarks = function (userId, cb) {
 
 //insert into tweet collection with isRetweet true
 module.exports.retweet = function (tweetId, reTweet, cb) {
+    var hashTags = extractHashTags(newTweet.data);
     repository.Tweet.findOneAndUpdate({ tweetId: tweetId },
         { $inc: { "retweetCount": 1 } }
     ).then(function (tweet) {
         let obj = {
             tweetId: uuidv1(),
             data: reTweet.data,
-            ownerId: reTweet.userId,
+            ownerId: reTweet.ownerId,
             owner: reTweet.owner,
             retweet: { isRetweet: true, tweetId: tweetId },
             likes: { count: 0, userId: [] },
@@ -220,7 +222,7 @@ module.exports.retweet = function (tweetId, reTweet, cb) {
             retweetCount: 0,
             replyCount: 0,
             replyTo: null,
-            hashTags: reTweet.hashTags
+            hashTags: hashTags && _.isArray(hashTags) && hashTags.length > 0 ? hashTags : ["#general"]
         }
         repository.Tweet.create(obj)
             .then(function (result) {

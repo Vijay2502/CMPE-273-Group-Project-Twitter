@@ -3,7 +3,7 @@ import '../../css/hometweetlist.css'
 import { TweetBody } from './listview.js'
 import ViewTweets from "../Tweet/ViewTweets";
 import {connect} from "react-redux";
-import {getTweetsById, likeTweet, retweetTweet} from "../../redux/actions/tweetsActions";
+import {getTweetsById, likeTweet, retweetTweet, bookmarkTweet} from "../../redux/actions/tweetsActions";
 
 // import Search from './search.js'
 
@@ -18,6 +18,8 @@ function mapDispatchToProps(dispatch) {
         getTweets: (payload) => dispatch(getTweetsById(payload)),
         likeTweet: (payload) => dispatch(likeTweet(payload)),
         retweetTweet: (payload) => dispatch(retweetTweet(payload)),
+        bookmarkTweet: (payload) => dispatch(bookmarkTweet(payload)),
+
     };
 }
 
@@ -30,9 +32,10 @@ class HomeTweetList extends Component {
         };
 
         this.handleRefresh = this.handleRefresh.bind(this);
-        this.getUser = this.getUser.bind(this)
-        this.likeTweet = this.likeTweet.bind(this)
-        this.retweetTweet = this.retweetTweet.bind(this)
+        this.getUser = this.getUser.bind(this);
+        this.likeTweet = this.likeTweet.bind(this);
+        this.retweetTweet = this.retweetTweet.bind(this);
+        this.bookmarkTweet = this.bookmarkTweet.bind(this);
     }
 
     handleRefresh() {
@@ -48,14 +51,21 @@ class HomeTweetList extends Component {
         this.props.getTweets(payload);
     }
 
-    retweetTweet(tweetId, userId) {
+    // this.props.likeTweetCallback(this.props.data.tweetData, this.props.data.owner,
+    //                                 this.props.data.userId, this.props.data.tweetId)
+    retweetTweet(tweetData, owner, retweetingUserId, tweetId) {
         console.log("retweetTweet")
         console.log("tweetId", tweetId)
-        console.log("userId", userId)
+
+        const retweet = {};
+        retweet.isRetweet = true;
+        retweet.tweetId = tweetId;
 
         const payload = {};
         payload.tweetId = tweetId;
-        payload.userId = userId;
+        payload.data = tweetData;
+        payload.owner = owner;
+        payload.ownerId = retweetingUserId;
 
         this.props.retweetTweet(payload);
     }
@@ -70,6 +80,18 @@ class HomeTweetList extends Component {
         payload.userId = userId;
 
         this.props.likeTweet(payload);
+    }
+
+    bookmarkTweet(tweetId, userId) {
+        console.log("bookmarkTweet")
+        console.log("tweetId", tweetId)
+        console.log("userId", userId)
+
+        const payload = {};
+        payload.tweetId = tweetId;
+        payload.userId = userId;
+
+        this.props.bookmarkTweet(payload);
     }
 
     getUser() {
@@ -99,7 +121,10 @@ class HomeTweetList extends Component {
         console.log("render HomeTweetList");
         return (
             <div>
-                <ViewTweets dataFromParent={this.props.tweets} likeTweetCallback={this.likeTweet} retweetTweetCallback={this.retweetTweet}/>
+                <ViewTweets dataFromParent={this.props.tweets}
+                            likeTweetCallback={this.likeTweet}
+                            retweetTweetCallback={this.retweetTweet}
+                            bookmarkCallback={this.bookmarkTweet}/>
             </div>
         );
     }
