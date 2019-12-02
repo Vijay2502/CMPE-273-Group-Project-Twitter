@@ -10,8 +10,7 @@ const conversationSchema = new Schema({
 	messages: [
 		{
 			sender: String,
-			message: String,
-			createdAt: String
+			message: String
 		}
 	],
 	senderId: { type: Number },

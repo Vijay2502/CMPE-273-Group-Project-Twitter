@@ -22,8 +22,7 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            users:
-                []
+            redirectVar: false
         }
     }
 
@@ -43,6 +42,9 @@ class Login extends Component {
     render() {
         return (
             <div style={styles.container}>
+                {this.state.redirectVar === true && <Redirect to={{
+                    pathname: "/signup"
+                }}/>}
                 {this.props.signinSuccess === true && <Redirect to={{
                     pathname: "/home"
                 }}/>}
@@ -75,7 +77,7 @@ class Login extends Component {
                         <Form.Row>
                             <Form.Label style={{paddingTop: 10, paddingRight: 5}}>New to Twitter?</Form.Label>
 
-                            <Button style={styles.signUpButton} variant="primary" type="submit">
+                            <Button style={styles.signUpButton} variant="primary" onClick={() => this.setState({redirectVar: true})}>
                                 Sign up
                             </Button>
                         </Form.Row>
