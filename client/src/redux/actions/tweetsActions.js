@@ -1,4 +1,4 @@
-import { CREATE_TWEET, GET_USER_TWEETS, LIKE_TWEET } from "../../redux/constants/actionTypes";
+import { CREATE_TWEET, GET_USER_TWEETS, LIKE_TWEET, RETWEET_TWEET, REPLY_TWEET, BOOKMARK_TWEET } from "../../redux/constants/actionTypes";
 import { HOSTNAME } from "../../constants/appConstants";
 import axios from 'axios';
 
@@ -18,7 +18,10 @@ export function retweetTweet(payload) {
 
     return (dispatch) => {
         axios.post(`http://${HOSTNAME}:8080/api/v1/tweet/${payload.tweetId}/retweet`, payload)
-            .then((response) => dispatch(likeTweetDispatch(response.data)));
+            .then((response) => dispatch(likeTweetDispatch(response.data)))
+            .catch(err => {
+                console.log("retweetTweet err")
+                console.log(err) });;
     }
 }
 
@@ -27,8 +30,28 @@ export function likeTweet(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.post(`http://${HOSTNAME}:8080/api/v1/tweet/${payload.userId}/like`, payload)
+        axios.put(`http://${HOSTNAME}:8080/api/v1/tweet/${payload.userId}/like`, payload)
             .then((response) => dispatch(retweetTweetDispatch(response.data)));
+    }
+}
+
+export function replyTweet(payload) {
+    console.log("replyTweet payload");
+    console.log(payload);
+
+    return (dispatch) => {
+        axios.post(`http://${HOSTNAME}:8080/api/v1/tweet/${payload.tweetId}/reply`, payload)
+            .then((response) => dispatch(replyTweetDispatch(response.data)));
+    }
+}
+
+export function bookmarkTweet(payload) {
+    console.log("replyTweet payload");
+    console.log(payload);
+
+    return (dispatch) => {
+        axios.put(`http://${HOSTNAME}:8080/api/v1/user/${payload.userId}/bookmark-tweet/${payload.tweetId}`)
+            .then((response) => dispatch(bookmarkTweetDispatch(response.data)));
     }
 }
 
@@ -41,7 +64,8 @@ export function getTweetsById(data) {
         axios.defaults.withCredentials = true;
         axios
             .get(`http://${HOSTNAME}:8080/api/v1/tweet/byOwner/` + data.user_id)
-            .then(response => dispatch(getUserTweets(response))).catch(err => { console.log(err); });
+            .then(response => dispatch(getUserTweets(response)))
+            .catch(err => { console.log(err); });
     };
 }
 
@@ -61,7 +85,7 @@ export const retweetTweetDispatch = (returnData) => {
     console.log("Inside retweetTweetDispatch");
     console.log(returnData);
 
-    return { type: LIKE_TWEET, payload: returnData }
+    return { type: RETWEET_TWEET, payload: returnData }
 };
 
 export const likeTweetDispatch = (returnData) => {
@@ -71,5 +95,18 @@ export const likeTweetDispatch = (returnData) => {
     return { type: LIKE_TWEET, payload: returnData }
 };
 
+export const replyTweetDispatch = (returnData) => {
+    console.log("Inside likeTweetDispatch");
+    console.log(returnData);
+
+    return { type: REPLY_TWEET, payload: returnData }
+};
+
+export const bookmarkTweetDispatch = (returnData) => {
+    console.log("Inside likeTweetDispatch");
+    console.log(returnData);
+
+    return { type: BOOKMARK_TWEET, payload: returnData }
+};
 
 

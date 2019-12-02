@@ -6,6 +6,7 @@ import Search from '../List/search';
 import Sidebar from '../Sidebar/sidebar';
 import { connect } from "react-redux";
 import {getListById,getTweetByList} from "../../redux/actions/listActions";
+import axios from 'axios';
 
 function mapStateToProps(store) {
   return {
@@ -25,12 +26,17 @@ class tweetlist extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id : props.location.state.tweetId,
+      listId : 4,
+      // props.location.state.listtId,
+      userId : 6,
+      // props.location.state.usertId,
       editProfile: false, //for modal
       listName: "Cast and Crew",
       userName: "@SiliconHBO",
       name: "SiliconValley",
       users: [],
+      members:[],
+      subscribers:[],
       isSubscribed: true,
       buttonText: "Subscribed",
       class: "btn btn-primary"
@@ -43,8 +49,63 @@ class tweetlist extends Component {
   }
 
   getUser = () => {
-    this.props.getListById(6);
-    this.props.getTweetByList(6);
+    // this.props.getListById(this.state.listId);
+    if(this.state.listId!=undefined){
+        axios.get(`http://localhost:8080/api/v1/list/get/${this.state.listId}`)
+        .then(response => {
+          console.log("getlistbyid",response)
+            this.setState(
+                {
+                    listName:response.data.data.list.name,
+                    userName:response.data.data.list.data.username,
+                    name:response.data.data.list.data.firstName + response.data.data.list.data.lastName,
+                }, () => console.log('message response',response)
+            );
+        })
+        .catch(err => {
+            console.error(err);
+        });
+
+        // this.props.getTweetByList(this.state.listId);
+        axios.get(`http://localhost:8080/api/v1/feed/list/${this.state.listId}`)
+        .then(response => {
+          console.log("getTeetBYlist",response)
+            this.setState(
+                {
+                     users: response.data.data.tweets
+                }, () => console.log('message response',this.state.users)
+            );
+        })
+        .catch(err => {
+            console.error(err);
+        });
+
+        axios.get(`http://localhost:8080/api/v1/list/${this.state.listId}/members`)
+        .then(response => {
+         
+            console.log("members count",response.data.data.members);
+            this.setState(
+              {
+            members :response.data.data.members
+              });
+            
+        })
+        .catch(err => {
+            console.error(err);
+        });
+
+        axios.get(`http://localhost:8080/api/v1/list/${this.state.listId}/subscribers`)
+        .then(response => {
+            console.log(" subscribers  count",response.data.data.subscribers );
+            this.setState(
+              {
+           subscribers :response.data.data.subscribers
+              });
+        })
+        .catch(err => {
+            console.error(err);
+        });
+      }
     fetch('https://randomuser.me/api/')
       .then(response => {
         if (response.ok) return response.json();

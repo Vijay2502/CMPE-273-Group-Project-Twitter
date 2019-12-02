@@ -1,10 +1,10 @@
 import React from 'react';
 import '../../css/list.css';
 import {Link} from 'react-router-dom';
+import axios from 'axios';
 
-const TweetBox = (props) => {
+const ListBox = (props) => {
     return (
-
         <div className="owner-body">
             {props.children}
         </div>
@@ -34,7 +34,7 @@ const Name = (props) => {
     )
 };
 
-const Tweet = (props) => {
+const List = (props) => {
     console.log("Tweet",props);
     if (props.tweet.description !== undefined) {
         console.log("Tweet if",props.tweet.name);
@@ -44,8 +44,8 @@ const Tweet = (props) => {
                 {/* <Link to={{ pathname: '/cart', state: {res:res}}}>{res.name}</Link> */}
                    <p>{props.tweet.description}</p> 
                 <div style={{ display: 'inline-block' }}>
-                    <Members members={props.tweet.members} />
-                    <Subscribers subscribers={props.tweet.subscribers} />
+                    <Members members={props.tweet} />
+                    <Subscribers subscribers={props.tweet} />
                 </div>
             </div>
         )
@@ -56,8 +56,8 @@ const Tweet = (props) => {
                     <Title title={props} />
                 <br />
                 <div style={{ display: 'inline-block' }}>
-                    <Members members={props.tweet.members} />{' '}{' '}
-                    <Subscribers subscribers={props.tweet.subscribers} />
+                    <Members members={props.tweet} />{' '}{' '}
+                    <Subscribers subscribers={props.tweet} />
                 </div>
             </div>
         )
@@ -68,7 +68,8 @@ const Title = (props) => {
     console.log("title props",props.title)
     if (props !== undefined) {
         return (
-           <div> <Link style={{color:"black"}} to={{  pathname: '/listtweet',state: { tweetId: props.title.id}}}>
+           <div> <Link style={{color:"black"}} to={{  pathname: '/listtweet',
+           state: { listId: props.title.id,userId:props.title.data.userId}}}>
             {props.title.name}
             </Link></div>
         )
@@ -76,33 +77,43 @@ const Title = (props) => {
 };
 
 const Members = (props) => {
-    if (props.members !== undefined) {
-        return (
-            <p style={{ display: 'inline-block' }}>{props.members} members</p>
-        )
-    } else {
-        return (
-            <p style={{ display: 'inline-block' }}>0 members</p>
-        )
-    }
+    let members=[]
+    console.log("members props",props)
+    axios.get(`http://localhost:8080/api/v1/list/${props.members.id}/members`)
+        .then(response => {
+            console.log("members count",response.data.data.members);
+            members = response.data.data.members
+            
+        })
+        .catch(err => {
+            console.error(err);
+        });
+    return (
+                <p style={{ display: 'inline-block' }}> {members.length} members</p>
+            )
 };
 
 const Subscribers = (props) => {
-    if (props.subscribers !== undefined) {
-        return (
-            <p style={{ display: 'inline-block' }}>  {props.subscribers} susbribers</p>
-        )
-    } else {
-        return (
-            <p style={{ display: 'inline-block' }}> 0 subscribers</p>
-        )
-    }
+    console.log("subscrobers props",props)
+    let subscribers=[]
+    console.log("subscribers props",props)
+    axios.get(`http://localhost:8080/api/v1/list/${props.subscribers.id}/subscribers`)
+        .then(response => {
+            console.log(" subscribers  count",response.data.data.subscribers );
+            subscribers = response.data.data.subscribers
+        })
+        .catch(err => {
+            console.error(err);
+        });
+    return (
+        <p style={{ display: 'inline-block' }}> {subscribers.length} subscribers</p>
+    )
 };
 
 const ListBody = (props) => {
     return (
         <div class="list-group">
-            <TweetBox>
+            <ListBox>
             {/* type="button"  */}
                 <div className="inner-body-list list-group-item list-group-item-action">
                     <Image image={props.image} />
@@ -111,10 +122,10 @@ const ListBody = (props) => {
                             <Name name={props.name} />
                             <Handle handle={props.handle} />
                         </div>
-                        <Tweet tweet={props.tweet} />
+                        <List tweet={props.tweet} />
                     </div>
                 </div >
-            </TweetBox>
+            </ListBox>
         </div>
     )
 };

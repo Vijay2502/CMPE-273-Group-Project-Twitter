@@ -2,8 +2,8 @@ const tweetService = require('../../service/tweets');
 
 
 module.exports.createTweet = function (request, response) {
-    if (!(request.body && request.body.data && request.body.ownerId && request.body.retweet
-        && request.body.hashTags)) {
+    if (!(request.body && request.body.data && request.body.ownerId
+        && request.body.owner)) {
         return response.status(400).send("INVALID REQUEST");
     }
     return tweetService.create(request.body, function (err, res) {
@@ -119,8 +119,7 @@ module.exports.viewTweet = function (request, response) {
 }
 
 module.exports.retweet = function (request, response) {
-    if (!(request.body && request.params.tweetId && request.body.data && request.body.userId && request.body.retweet
-        && request.body.hashTags)) {
+    if (!(request.body && request.params.tweetId && request.body.data && request.body.ownerId && request.body.owner)) {
         return response.status(400).send("INVALID REQUEST");
     }
 
