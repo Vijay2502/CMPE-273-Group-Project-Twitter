@@ -160,7 +160,10 @@ class Sidebar extends Component {
                             onClose={this.handleClose}
                         >
                             <MenuItem onClick={this.handleClose}>Analytics</MenuItem>
-                            <MenuItem onClick={this.handleClose}>Settings and privicy</MenuItem>
+                            <MenuItem onClick={() => {
+                                this.sendData("Settings");
+                                this.handleClose();
+                            }}>Settings and privicy</MenuItem>
                             <MenuItem onClick={this.handleClose}>Logout</MenuItem>
                         </Menu>
                         {/* <button

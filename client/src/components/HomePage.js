@@ -11,6 +11,7 @@ import Search from '../components/List/search.js'
 import CreateList from '../components/List/createlist.js';
 import BookMarks from './Tweet/BookMarkedTweets';
 import ViewDetailedTweet from './ViewTweetDetails/ViewTweetDetails';
+import Settings from './Account/settings'
 
 
 class HomePage extends Component {
@@ -37,36 +38,42 @@ class HomePage extends Component {
                     {/* <div key="b" data-grid={{ x: 4, y: 0, w: 4, h: 11, static: true }}> */}
                     <div className="col-lg-7">
                         {this.state.currentScreen === "Home" &&
-                        <div class="parent-container col-sm-12">
-                            <div class="top-label">Home</div>
-                            <div class="top-label-border"></div>
-                            <div><Tweet /></div>
-                            <div class="tweet-container-border"></div>
-                            <div class="home-tweet-container"><HomeTweetList /></div>
-                        </div>}
+                            <div class="parent-container col-sm-12">
+                                <div class="top-label">Home</div>
+                                <div class="top-label-border"></div>
+                                <div><Tweet /></div>
+                                <div class="tweet-container-border"></div>
+                                <div class="home-tweet-container"><HomeTweetList /></div>
+                            </div>}
 
                         {this.state.currentScreen === "Profile" &&
-                        <Profile />}
+                            <Profile />}
 
                         {this.state.currentScreen === "Messages" &&
-                        <Messages />}
+                            <Messages />}
 
                         {this.state.currentScreen === "Bookmarks" &&
-                        <div class="parent-container-bookmark col-sm-12" ><BookMarks /></div>
+                            <div class="parent-container-bookmark col-sm-12" ><BookMarks /></div>
                         }
 
+                        {this.state.currentScreen === "Settings" &&
+                            <Settings />
+                        }
+
+
+
                         {this.state.currentScreen === "List" &&
-                        <div class="parent-container-list col-sm-12">
-                            <div class="top-label-list-header">
-                                <div class="top-label-list">List</div>
-                                <div><CreateList /></div>
+                            <div class="parent-container-list col-sm-12">
+                                <div class="top-label-list-header">
+                                    <div class="top-label-list">List</div>
+                                    <div><CreateList /></div>
+                                </div>
+                                <List />
                             </div>
-                            <List />
-                        </div>
                         }
 
                         {this.state.currentScreen === "ViewDetailedTweet" &&
-                        <div class="parent-container-bookmark col-sm-12" ><ViewDetailedTweet /></div>
+                            <div class="parent-container-bookmark col-sm-12" ><ViewDetailedTweet /></div>
                         }
 
                     </div>

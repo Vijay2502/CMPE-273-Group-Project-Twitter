@@ -37,45 +37,17 @@ class profile extends Component {
             selectedProfilePic: null,
             users: []
         };
-        // this.onCoverPicUpload = this.onCoverPicUpload.bind(this);
-        // this.onProfilePicUpload = this.onProfilePicUpload.bind(this);
     }
     componentWillMount = () => {
         const data = {
             user_id: localStorage.getItem('id')
         };
-
         this.props.getProfileDetails(data);
         this.props.getUserTweets({ user_id: 1 });
         this.props.getUserfollowees(data);// ISSUE WITH API SO COMMENTING
         this.props.getUserfollowers(data);// ISSUE WITH API SO COMMENTING
-        this.getUser();
     }
 
-    getUser = () => {
-        fetch('https://randomuser.me/api/')
-            .then(response => {
-                if (response.ok) return response.json();
-                throw new Error('Request failed.');
-            })
-            .then(data => {
-                for (let i = 0; i < 5; i++) {
-                    this.setState({
-                        users: [
-                            {
-                                name: data.results[0].name,
-                                image: data.results[0].picture.medium,
-                                tweet: data.results[0].email,
-                            },
-                            ...this.state.users,
-                        ]
-                    });
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    }
     editProfile = () => {
         this.setState({ editProfile: true });
     };
@@ -92,16 +64,14 @@ class profile extends Component {
         this.setState({ editProfile: false });
     };
     onCoverPicUploadHandler = (event) => {
-        // this.setState({
-        //     selectedCoverPic: event.target.files[0]
-        // });
-        console.log("test onCoverPicUploadHandler");
+        this.setState({
+            selectedCoverPic: event.target.files[0]
+        });
     };
     onProfilePicUploadHandler = (event) => {
         this.setState({
             selectedProfilePic: event.target.files[0]
         });
-        console.log("profile pic");
     };
     saveProfile = (e) => {
         // save profile code
@@ -112,7 +82,6 @@ class profile extends Component {
                 Updatedata[e.target[i].id] = e.target[i].value;
             }
         }
-
         let dataFinal = {
             id: localStorage.getItem('id'),
             firstName: Updatedata.formGridFName,
