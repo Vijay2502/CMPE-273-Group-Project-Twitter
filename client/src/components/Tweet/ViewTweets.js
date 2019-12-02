@@ -1,22 +1,20 @@
 import React, { Component } from 'react';
-import { Button, Form, Modal } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage, faRetweet, faShareSquare } from "@fortawesome/free-solid-svg-icons";
 import { PullDownContent, PullToRefresh, RefreshContent, ReleaseContent } from "react-js-pull-to-refresh";
 import TweetBody from "../HomeTweetList/listview";
 import TweetButtons from "../Tweet/TweetButtons";
-import { faComment, faHeart } from "@fortawesome/free-regular-svg-icons";
-import CreateTweet from "./CreateTweet";
 import { connect } from "react-redux";
 import { likeTweet, retweetTweet, bookmarkTweet } from "../../redux/actions/tweetsActions";
 
+function mapStateToProps(store) {
+    return {
+    }
+}
 
 function mapDispatchToProps(dispatch) {
     return {
         likeTweet: (payload) => dispatch(likeTweet(payload)),
         retweetTweet: (payload) => dispatch(retweetTweet(payload)),
         bookmarkTweet: (payload) => dispatch(bookmarkTweet(payload)),
-
     };
 }
 
@@ -24,9 +22,12 @@ class ViewTweets extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: [],
             isOpenCommentModal: false
         };
+
+        this.likeTweet = this.likeTweet.bind(this);
+        this.retweetTweet = this.retweetTweet.bind(this);
+        this.bookmarkTweet = this.bookmarkTweet.bind(this);
     }
 
 
@@ -127,27 +128,4 @@ class ViewTweets extends Component {
     }
 }
 
-const styles = {
-    container: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        "margin-left": 65,
-        "margin-right": 10
-    },
-    reply: {
-        //alignItems: "left",
-    },
-    retweet: {
-        //alignItems: "center",
-    },
-    like: {
-        //alignItems: "center",
-    },
-    share: {
-        //alignItems: "right",
-    }
-};
-
-export default connect(mapDispatchToProps)(ViewTweets);
-//export default ViewTweets;
+export default connect(mapStateToProps, mapDispatchToProps)(ViewTweets);

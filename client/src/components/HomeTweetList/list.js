@@ -3,7 +3,7 @@ import '../../css/hometweetlist.css'
 import { TweetBody } from './listview.js'
 import ViewTweets from "../Tweet/ViewTweets";
 import { connect } from "react-redux";
-import { getTweetsById, likeTweet, retweetTweet, bookmarkTweet } from "../../redux/actions/tweetsActions";
+import { getTweetsById, } from "../../redux/actions/tweetsActions";
 
 // import Search from './search.js'
 
@@ -25,14 +25,11 @@ class HomeTweetList extends Component {
         super(props);
         this.state = {
             users: [],
-            openCommentModal: false
         };
 
         this.handleRefresh = this.handleRefresh.bind(this);
         this.getUser = this.getUser.bind(this);
-        this.likeTweet = this.likeTweet.bind(this);
-        this.retweetTweet = this.retweetTweet.bind(this);
-        this.bookmarkTweet = this.bookmarkTweet.bind(this);
+
     }
 
     handleRefresh() {
@@ -112,26 +109,6 @@ class HomeTweetList extends Component {
         );
     }
 }
-
-const styles = {
-    container: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between"
-    },
-    reply: {
-        //alignItems: "left",
-    },
-    retweet: {
-        //alignItems: "center",
-    },
-    like: {
-        //alignItems: "center",
-    },
-    share: {
-        //alignItems: "right",
-    }
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeTweetList);
 
