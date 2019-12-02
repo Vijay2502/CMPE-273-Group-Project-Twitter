@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../css/hometweetlist.css';
+import '../../../css/hometweetlist.css';
 const UserBox = (props) => {
     return (
         <div className="tweet-body">
@@ -42,7 +42,7 @@ const UserBody = (props) => {
                         <div className="inner-body-inner">
                             <Name name={props.user.firstName + " " + props.user.lastName} />
                             <Handle handle={`@${props.user.username}`} />
-                        </div>                        
+                        </div>
                     </div>
                 </button>
             </UserBox>

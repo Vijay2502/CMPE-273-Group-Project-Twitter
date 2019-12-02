@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import axios from 'axios'; 
+import axios from 'axios';
 import { Button, Row, Col } from 'reactstrap';
 
 
@@ -9,7 +9,7 @@ const API_PATH = `http://${HOSTNAME}:8080`
 
 class UserComponent extends Component {
     state = {
-        followed : this.props.user.followed,
+        followed: this.props.user.followed,
     }
 
     tokenConfig = () => {
@@ -28,7 +28,7 @@ class UserComponent extends Component {
     };
 
     follow = (followeeId) => {
-        axios.post(API_PATH+ `/user/${this.props.callerId}/follow`, {followeeId}, this.tokenConfig()).then(res => {
+        axios.post(API_PATH + `/user/${this.props.callerId}/follow`, { followeeId }, this.tokenConfig()).then(res => {
             if (res.data.status == "ok") {
                 this.setState({
                     followed: true
@@ -37,11 +37,11 @@ class UserComponent extends Component {
         }).catch(err => {
             console.log(err);
         });
-            
+
     }
 
     unfollow = (followeeId) => {
-        axios.post(API_PATH+ `/user/${this.props.callerId}/unfollow`, {followeeId}, this.tokenConfig()).then(res => {
+        axios.post(API_PATH + `/user/${this.props.callerId}/unfollow`, { followeeId }, this.tokenConfig()).then(res => {
             if (res.data.status == "ok") {
                 this.setState({
                     followed: false
@@ -50,28 +50,28 @@ class UserComponent extends Component {
         }).catch(err => {
             console.log(err);
         });
-            
+
     }
 
-    render(){
-        <Row>
+    render() {
+        return (<Row>
             <Col>
-        <UserBody
-            user= {this.props.user}
-        />
-        </Col>
-        <Col>
-        {this.props.callerId?(this.state.followed? (<div class="reply-tweet-submit-container" >
-        <Button class="btn-container" color='danger' type="submit">
-                                    Unfollow
+                <UserBody
+                    user={this.props.user}
+                />
+            </Col>
+            <Col>
+                {this.props.callerId ? (this.state.followed ? (<div class="reply-tweet-submit-container" >
+                    <Button class="btn-container" color='danger' type="submit">
+                        Unfollow
         </Button>
-        </div>):(<div class="reply-tweet-submit-container" >
-        <Button class="btn-container" color='primary' type="submit">
-                                    Follow
+                </div>) : (<div class="reply-tweet-submit-container" >
+                    <Button class="btn-container" color='primary' type="submit">
+                        Follow
         </Button>
-        </div>)):<div></div>}
-        </Col>
-        </Row>
+                </div>)) : <div></div>}
+            </Col>
+        </Row>)
     }
 }
 
