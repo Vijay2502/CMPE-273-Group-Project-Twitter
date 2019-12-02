@@ -1,199 +1,236 @@
 import React, { Component } from 'react';
-import { PullToRefresh, PullDownContent, ReleaseContent, RefreshContent } from "react-js-pull-to-refresh";
-import '../../css/list.css'
+import { Modal, Col } from 'react-bootstrap';
+import InfiniteScroll from 'react-infinite-scroller';
+import { UserRow } from './User/UserBody';
+import TweetBody from "../HomeTweetList/listview";
+import ViewTweets from "../Tweet/ViewTweets";
+import {connect} from "react-redux";
+import {getTweetsById, likeTweet, retweetTweet, bookmarkTweet} from "../../redux/actions/tweetsActions";
+import '../../css/list.css';
+import axios from 'axios';
+import UserList from './User/UserList';
+import { HOSTNAME } from "../../constants/appConstants";
+const API_PATH = `http://${HOSTNAME}:8080`
+
+
+
+function mapStateToProps(store) {
+  return {
+      tweets: store.tweets.userTweets
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+      getTweets: (payload) => dispatch(getTweetsById(payload)),
+      likeTweet: (payload) => dispatch(likeTweet(payload)),
+      retweetTweet: (payload) => dispatch(retweetTweet(payload)),
+      bookmarkTweet: (payload) => dispatch(bookmarkTweet(payload)),
+
+  };
+}
 
 class SearchView extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      users:
-        [
-        ],
-      isOwner: true,
-      isSubscriber: false,
-      isMember:false
+      users: {
+        nextOffset: 0,
+        records: [
+
+        ]
+      },
+      tweets: {
+        nextOffset: 0,
+        records: [
+
+        ]
+      },
+      lists: {
+        nextOffset: 0,
+        records: [
+
+        ]
+      },
+      isLatest: true,
+      isPeople: false,
+      isLists: false
     }
 
-    this.handleRefresh = this.handleRefresh.bind(this)
-    this.getUser = this.getUser.bind(this)
+    this.handleRefresh = this.handleRefresh.bind(this);
+    this.getUsers = this.getUsers.bind(this);
+    this.peopleBox = this.peopleBox.bind(this);
+    this.getTopics = this.getTopics.bind(this);
+    this.latestBox = this.latestBox.bind(this);
+    this.getLists = this.getLists.bind(this);
+    this.listsBox = this.listsBox.bind(this);
+    this.switch = this.switch.bind(this);
+    this.likeTweet = this.likeTweet.bind(this);
+    this.retweetTweet = this.retweetTweet.bind(this);
+    this.bookmarkTweet = this.bookmarkTweet.bind(this);
   }
 
-  handleRefresh() {
-    //dispatch
-    return new Promise((resolve) => {
-      this.getUser()
-    });
-  }
   componentWillMount() {
-    this.getUser()
+    this.getUser();
+    this.getLists();
+    this.getTopics();
   }
 
-  getUser() {
-    fetch('https://randomuser.me/api/')
-      .then(response => {
-        if (response.ok) return response.json();
-        throw new Error('Request failed.');
-      })
-      .then(data => {
+  getUsers() {
+    axios.get(API_PATH + `/search/users?text=${this.props.text}&limit=10&offset=${this.state.users.nextOffset}`).then(res => {
+      if (res.data && res.data.data && res.data.data.users && res.data.data.nextOffset >= 0) {
         this.setState({
-          users: [
-            {
-              name: data.results[0].name,
-              image: data.results[0].picture.medium,
-              tweet: data.results[0].email,
-            },
-            ...this.state.users,
-          ]
+          users: {
+            nextOffset: res.data.data.nextOffset,
+            records: this.state.users.records.concat(res.data.data.users)
+          }
         });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
-  showOwnerBox() {
-    this.setState({isOwner: true, isSubscriber: false,isMember:false});
-  }
+      }
 
-  showSubscriberBox(){
-    this.setState({isOwner: false, isSubscriber: true,isMember:false});
-  }
-
-showMemberBox() {
-  this.setState({isOwner: false, isSubscriber: false,isMember:true});
-}
-
-  showContent(){
-   let content = this.state.users.map((user, index) => {
-      let name = `${user.name.first} ${user.name.last}`
-      let handle = `@${user.name.first}${user.name.last}`
-      let image = user.image
-      let tweet = user.tweet
-      console.log(image)
-      return (
-   <TweetBody
-            key={index}
-            name={name}
-            handle={handle}
-            tweet={tweet}
-            image={image} />
-        
-      )
+    }).catch(err => {
+      console.log(err);
     })
-    return content;
   }
+
+  getTopics() {
+    axios.get(API_PATH + `/search/topics?text=${this.props.text}&limit=10&offset=${this.state.tweets.nextOffset}`).then(res => {
+      if (res.data && res.data.data && res.data.data.tweets && res.data.data.nextOffset >= 0) {
+        this.setState({
+          tweets: {
+            nextOffset: res.data.data.nextOffset,
+            records: this.state.tweets.records.concat(res.data.data.tweets)
+          }
+        });
+      }
+
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
+  getLists() {
+    axios.get(API_PATH + `/search/lists?text=${this.props.text}&limit=10&offset=${this.state.lists.nextOffset}`).then(res => {
+      if (res.data && res.data.data && res.data.data.lists && res.data.data.nextOffset >= 0) {
+        this.setState({
+          lists: {
+            nextOffset: res.data.data.nextOffset,
+            records: this.state.lists.records.concat(res.data.data.lists)
+          }
+        });
+      }
+
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
+  showLatestBox() {
+    this.setState({ isLatest: true, isPeople: false, isLists: false });
+  }
+
+  showPeopleBox() {
+    this.setState({ isLatest: false, isPeople: true, isLists: false });
+  }
+
+  showListBox() {
+    this.setState({ isLatest: false, isPeople: false, isLists: true });
+  }
+
+
+  peopleBox() {
+    
+    return (<UserList 
+      users = {this.state.users.records}
+      profile = {this.props.userDetails}
+      getUsers = {this.getUsers}
+      hasMore = {this.state.users.nextOffset != 0}
+
+    />)
+
+  }
+
+  latestBox() {
+
+    return (<Col>
+      <ViewTweets dataFromParent={this.state.tweets.records}
+                            likeTweetCallback={this.likeTweet}
+                            retweetTweetCallback={this.retweetTweet}
+                            bookmarkCallback={this.bookmarkTweet}/>
+    </Col>)
+
+  }
+
+  listsBox() {
+    var listBodies = this.state.lists.records.map(list => {
+      return (<TweetBody
+        key={list.id}
+        name={list.name}
+        handle={``}
+        tweet={list.description}
+        image={""} />)
+    });
+    return (<Col>
+      <InfiniteScroll
+        pageStart={0}
+        loadMore={this.getUser}
+        hasMore={this.state.users.nextOffset != 0}
+        loader={<div className="loader" key={0}>Loading ...</div>}
+        useWindow={false}
+      >
+        {listBodies}
+      </InfiniteScroll>
+    </Col>)
+  }
+
+  switch() {
+    if (this.state.isLatest) {
+      return this.latestBox();
+    } else if (this.state.isPeople) {
+      return this.peopleBox();
+    } else {
+      return this.listsBox();
+    }
+  }
+
 
 
   render() {
     return (
-      <PullToRefresh
-        pullDownContent={<PullDownContent />}
-        releaseContent={<ReleaseContent />}
-        refreshContent={<RefreshContent />}
-        pullDownThreshold={2}
-        onRefresh={this.handleRefresh}
-        triggerHeight={50}
-        backgroundColor='black'>
-        <div className="main-body">
+      <div className="main-body">
         <div className="list-body">
-      <div className="box-controller">
-       <div
-         className={"controller " + (this.state.isOwner
-         ? "selected-controller"
-         : "")}
-         onClick={this
-         .showOwnerBox
-         .bind(this)}>
-         Latest
+          <div className="box-controller">
+            <div
+              className={"controller " + (this.state.isLatest
+                ? "selected-controller"
+                : "")}
+              onClick={this
+                .showLatestBox
+                .bind(this)}>
+              Latest
        </div>
-       <div
-         className={"controller " + (this.state.isSubscriber
-         ? "selected-controller"
-         : "")}
-         onClick={this
-         .showSubscriberBox
-         .bind(this)}>
-         People
+            <div
+              className={"controller " + (this.state.isPeople
+                ? "selected-controller"
+                : "")}
+              onClick={this
+                .showPeopleBox
+                .bind(this)}>
+              People
        </div>
-       <div
-         className={"controller " + (this.state.isMember
-         ? "selected-controller"
-         : "")}
-         onClick={this
-         .showMemberBox
-         .bind(this)}>
-         Photos
+            <div
+              className={"controller " + (this.state.isLists
+                ? "selected-controller"
+                : "")}
+              onClick={this
+                .showListsBox
+                .bind(this)}>
+              Lists
        </div>
-       <div
-         className={"controller " + (this.state.isMember
-         ? "selected-controller"
-         : "")}
-         onClick={this
-         .showMemberBox
-         .bind(this)}>
-         Videos
-       </div>
-     </div>
-    </div>
-          {[...this.state.users].map((user, index) => {
-            let name = `${user.name.first} ${user.name.last}`
-            let handle = `@${user.name.first}${user.name.last}`
-            let image = user.image
-            let tweet = user.tweet
-            console.log(image)
-            return (
-              <div>
-              <TweetBody
-                  key={index}
-                  name={name}
-                  handle={handle}
-                  tweet={tweet}
-                  image={image} />
 
-              <div style={styles.container}>
-                <button
-                    type="button"
-                    className="list-group-item list-group-item-action borderless"
-                    style={styles.reply}
-                    onClick={this.openCommentModal}
-                >
-                  <FontAwesomeIcon icon={faComment}/>
-                </button>
-                <button
-                    type="button"
-                    className="list-gr oup-item list-group-item-action borderless"
-                    style={styles.retweet}
-                >
-                  <FontAwesomeIcon icon={faRetweet}/>
-                </button>
-                <button
-                    type="button"
-                    className="list-group-item list-group-item-action borderless"
-                    style={styles.like}
-                >
-                  <FontAwesomeIcon icon={faHeart}/>
-                </button>
-                <button
-                    type="button"
-                    className="list-gr oup-item list-group-item-action borderless"
-                    style={styles.share}
-                >
-                  <FontAwesomeIcon icon={faShareSquare}/>
-                </button>
-
-                <Modal
-                    show={this.state.openCommentModal}
-                    onHide={this.closeCommentModal}
-                    animation={false}
-                    style={{width: 666}}
-                >
-                  <Tweet/>
-                </Modal>
-              </div>
-            </div>
-        )
-      })}
-    </div>
-      </PullToRefresh>
+          </div>
+        </div>
+        {this.switch()}
+      </div>
     );
   }
 }
@@ -218,5 +255,6 @@ const styles = {
   }
 };
 
-export default SearchView;
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchView);
 

@@ -43,7 +43,7 @@ class messagelist extends Component {
                 console.log(response.data);
                 this.setState(
                     {
-                        chatList: []
+                        chatList: response.data.data
                     }, () => console.log('message response', this.state.chatList)
                 );
             })
@@ -69,6 +69,25 @@ class messagelist extends Component {
         //     });
     }
 
+
+    findParticipant = (data = []) => {
+
+        try {
+            let firstName = localStorage.getItem("firstName");
+            let participantName = "";
+            data.forEach((message) => {
+                if (message.sender && message.sender != firstName) {
+                    participantName = message.sender;
+                }
+            });
+            return participantName;
+        }
+        catch (e) {
+            console.log(e);
+            return "";
+        }
+
+    }
 
     render() {
         let userList = null, noMsgContainer = null, messageList = null;
@@ -110,14 +129,52 @@ class messagelist extends Component {
         }
         else {
             messageList = this.state.chatList.map(chat => {
-                console.log(JSON.stringify(chat));
+
+                //Get Last Seen Date            
+                let lastSeen = '';
+                let lastdate = new Date(chat.updatedAt);
+                let currentDate = new Date();
+                const daysDiff = Math.ceil((currentDate - lastdate) / (1000 * 60 * 60));
+                if (daysDiff <= 24)
+                    lastSeen = daysDiff + " hr";
+                else
+                    lastSeen = (daysDiff % 24) + " days"
+
+
+                //Get Last Message 
+                let lastMessage = "";
+                if (chat.messages && chat.messages.length > 0) {
+                    lastMessage = chat.messages[chat.messages.length - 1]["message"];
+                }
+
+                //Get Incoming message details
+                let participantName = "User";
+                participantName = this.findParticipant(chat.messages);
+                console.log(participantName);
                 return (
                     <div class="list-group">
-                        <div class="list-group-item list-group-item-action chat-list-container row">
-                            <div class="image-container col-sm-2"><img src={chat.image} class="msg-profile-image" alt="avatar"></img></div>
-                            <div class="profile-name col-sm-3">{chat.name.first + " " + chat.name.last}</div>
-                            <div class="profile-email col-sm-4">{chat.email}</div>
-                            <div class="profile-date col-sm-3">Aug, 10 2019</div>
+                        <div class="list-group-item list-group-item-action chat-list-container row chat-vs">
+
+                            <div className="user-chat-container">
+                                <div className="user-details">
+                                    <div className="user-name">
+                                        {
+                                            participantName
+                                        }
+                                    </div>
+                                    <div className="last-message">
+                                        {
+                                            lastMessage
+                                        }
+                                    </div>
+                                </div>
+                                <div className="last-date">
+                                    {lastSeen}
+                                </div>
+
+
+                            </div>
+
                         </div>
                     </div>);
             });

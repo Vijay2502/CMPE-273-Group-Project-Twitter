@@ -74,7 +74,6 @@ class ViewTweetDetails extends Component {
         console.log("this works");
 
         try {
-            // get messages
             let tweetId = document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(7)").getAttribute("data-tweet-id");
             this.setState({
                 tweetId
