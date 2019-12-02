@@ -9,11 +9,11 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
 import Paper from '@material-ui/core/Paper';
 import TagFacesIcon from '@material-ui/icons/TagFaces';
-
+import axios from 'axios';
+import image from '../../images/profile.png';
 function mapStateToProps(store) {
     return {
-        successMessage: store.list.successMessage,
-        errorMessage: store.list.errorMessage,
+        currentList : store.list.currentList
     }
 }
 
@@ -45,8 +45,8 @@ class CreateList extends React.Component {
         this.state = {
             openListModal: false,
             addMemberModal:false,
-            search:"",
-            chipData:[ { key: 0, label: 'sakshi' },  { key: 1, label: 'priya' }],
+            search:[],
+            chipData:[],
             buttonVal:false
         }
         this.handleChange = this.handleChange.bind(this);
@@ -72,15 +72,19 @@ class CreateList extends React.Component {
         const payload ={
             "userId":6,
             "name": this.state.name,
-            "descripton" : this.state.description
+            "description" : this.state.description,
+            "data":{
+                "username":"test4",
+                "firstName":"test",
+                "lastName":"last",
+                "userId":6
+            }
         }
         this.props.createList(payload);
     }
         this.nextModal();
         this.setState({openListModal: false});
     };
-    createList=()=>{ 
-    }
     handleChange(e) {
         this.setState({ 
             [e.target.name]: e.target.value 
@@ -88,7 +92,7 @@ class CreateList extends React.Component {
       }
     handleSearch = (e) => {
         e.preventDefault();
-        this.getUser();
+        this.getUser(e.target.value);
         console.log("testing search");
     };
    handleDelete = chipToDelete => () => {
@@ -97,39 +101,41 @@ class CreateList extends React.Component {
             chipData : chips.filter(chip => chip.key !== chipToDelete.key)
         })
       };
-   handleAdd = chipToAdd => (e) => {
+   handleAdd= (e,user) => {
        e.preventDefault();
+       console.log("handleADD",user);
+    
     let chips= this.state.chipData
-        let newMember = { key : 2,label:'Shim'}
+        let newMember = { key : chips.length,label:user.username,id:user.id}
+        chips.push(newMember);
+        console.log(chips);
         this.setState({
-            chipData : chips.filter(chip => chips.push(newMember))
-        })
-      };
-    getUser = () => {
-        fetch('https://randomuser.me/api/')
-            .then(response => {
-                if (response.ok) return response.json();
-                throw new Error('Request failed.');
-            })
-            .then(data => {
-                console.log("kjjsjk", JSON.stringify(data));
-                for (let i = 0; i < 5; i++) {
-                    this.setState({
-                        search: [
-                            {
-                                // name: data.results[0].name,
-                                image: data.results[0].picture.medium,
-                                email: data.results[0].email
-                            },
-                            ...this.state.search,
-                        ]
-                    });
-                }
+            chipData : chips
+        });
 
-            })
-            .catch(error => {
-                console.log(error);
-            });
+      };
+   handleAddMembers = () =>{
+       let payload = {
+           "userId":6,
+           "id":2,
+           "memberId":this.state.chipData
+       }
+       this.props.addMem(payload);
+   }
+
+    getUser = (test) => {
+        console.log("getuser",test);
+        axios.get(`http://localhost:8080/api/v1/search/users?text=test`)
+        .then(response => {
+            this.setState(
+                {
+                     search: response.data.data.users
+                }, () => console.log('message response',this.state.search)
+            );
+        })
+        .catch(err => {
+            console.error(err);
+        });
     };
 
     render() {
@@ -137,16 +143,15 @@ class CreateList extends React.Component {
         if (this.state.search.length > 0) {
             console.log("here");
             searchList = this.state.search.map(user => {
-                console.log(JSON.stringify(user));
                 return (
                     <div class="list-group">
                         <div class="list-group-item list-group-item-action user-list row">
-                            <div class="image-container col-sm-2"><img src={user.image} class="profile-image" alt="avatar"></img></div>
+                            <div class="image-container col-sm-2"><img class="profile-image" alt="avatar"></img></div>
                             <div class="col-sm-10">
-                                {/* <div class="profile-name">{user.name.first + " " + user.name.last}</div>
-                                <div class="profile-email">{user.email}</div> */}
-                                <div>chat - link</div>
-
+                                <button onClick={(e) => this.handleAdd(e,user)}>
+                                <div class="profile-email">{user.username}</div> 
+                                <div class="profile-name">{user.firstName + " " + user.lastName}</div>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -195,7 +200,7 @@ class CreateList extends React.Component {
                             <button
                                 class="btn btn-primary save-btn"
                                 type="button"
-                                onClick={this.Create}
+                                onClick={this.handleAddMembers}
                             >
                                 Done
                             </button>
@@ -221,9 +226,8 @@ class CreateList extends React.Component {
                     <Modal.Body>
                         <Form class="search-body" onSubmit={this.handleSearch}>
                                 {/* <FontAwesomeIcon icon={faSearch} /> */}
-                                <Form.Control type="text" placeholder="Search people">
+                                <input type="text" placeholder="Search people"/>
                                     {/* <FontAwesomeIcon icon={faSearch} /> */}
-                                </Form.Control>
                                 <div class="search-result">{searchList}</div>
                         </Form>
                     </Modal.Body>

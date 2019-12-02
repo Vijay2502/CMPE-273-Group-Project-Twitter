@@ -22,12 +22,12 @@ export const createDispatch = (returnData) => {
 export function addMem(payload) {
     console.log("addMem payload");
     console.log(payload);
-
     return (dispatch) => {
-        axios.post(`http://${HOSTNAME}:8080/api/v1//list/:id/add-member`, payload)
+        axios.post(`http://${HOSTNAME}:8080/api/v1/list/${payload.userId}/add-member`, payload)
             .then((response) => dispatch(addMembersDispatch(response.data)));
     }
 }
+
 export const addMembersDispatch = (returnData) => {
     console.log("Inside addMembersDispatch");
     console.log(returnData);
@@ -40,7 +40,7 @@ export function removeMem(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.post(`http://${HOSTNAME}:8080/api/v1//list/:id/remove-member`, payload)
+        axios.post(`http://${HOSTNAME}:8080/api/v1//list/${payload.userId}/remove-member`, payload)
             .then((response) => dispatch(removeMembersDispatch(response.data)));
     }
 }
@@ -125,15 +125,20 @@ export function getOwnedLists(id) {
     console.log(id);
     return (dispatch) => {
         axios.get(`http://${HOSTNAME}:8080/api/v1/user/${id}/owner/lists`)
-            .then((response) => dispatch(getOwnedListDispatch(response.data)));
+            .then((response) => {
+                if(response.status==204){
+                    return "No-Content"
+                }
+                else{
+                   return dispatch(getOwnedListDispatch(response.data))
+                }
+            });        
     }
 }
 export const getOwnedListDispatch = (returnData) => {
     console.log("Inside getOwnedListDispatch");
     console.log(returnData);
-    if(returnData!=null || returnData!=''){
     return {type: GET_OWNEDLISTS, payload: returnData}
-    }
 };
 
 //  ***********  GET SUBSCRIBED LISTS***********
@@ -143,15 +148,20 @@ export function getSubscribedLists(id) {
 
     return (dispatch) => {
         axios.get(`http://${HOSTNAME}:8080/api/v1/user/${id}/subscriber/lists`)
-            .then((response) => dispatch(getSubscribedListDispatch(response.data)));
+        .then((response) => {
+            if(response.status==204){
+                return "No-Content"
+            }
+            else{
+               return dispatch(getSubscribedListDispatch(response.data))
+            }
+        }); 
     }
 }
 export const getSubscribedListDispatch = (returnData) => {
     console.log("Inside getSubscribedListDispatch");
     console.log(returnData);
-    if(returnData!==null || returnData!==''){
     return {type: GET_SUBSCRIBEDLIST, payload: returnData}
-    }
 };
 
 //  ***********  GET MEMBER LISTS***********
@@ -161,16 +171,21 @@ export function getMemberLists(id) {
 
     return (dispatch) => {
         axios.get(`http://${HOSTNAME}:8080/api/v1/user/${id}/member/lists`)
-            .then((response) => dispatch(getMemberListsDispatch(response.data)));
+        .then((response) => {
+            if(response.status==204){
+                return "No-Content"
+            }
+            else{
+               return dispatch(getMemberListsDispatch(response.data))
+            }
+        }); 
     }
 }
 
 export const getMemberListsDispatch = (returnData) => {
     console.log("Inside getMemberListsDispatch");
     console.log(returnData);
-    if(returnData!=null || returnData!=''){
     return {type: GET_MEMBERLISTS, payload: returnData}
-    }
 };
 
 

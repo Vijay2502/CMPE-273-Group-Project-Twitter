@@ -194,7 +194,7 @@ module.exports.bookmarkTweet = function (userId, tweetId, cb) {
 
 module.exports.getBookmarks = function (userId, cb) {
 
-            return repository.BookmarkedTweets.find(
+            return repository.BookmarkedTweets.findOne(
                 { "ownerId": userId },
             ).then(function (bookmark) {
                 return cb(null, {

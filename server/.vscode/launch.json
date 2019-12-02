@@ -16,18 +16,17 @@
             "env": {
                 "TWITTER_API_PATH":"/api/v1",
                 "PORT":8080,
-                //"MONGO_URL":"mongodb+srv://admin:welcome123@twitter-ul0jl.mongodb.net/test?retryWrites=true&w=majority",
                 "MONGO_URL":"mongodb+srv://vijay1234:vijay1234@cluster0-v1zbh.mongodb.net/test?retryWrites=true&w=majority",
-                // "MYSQLDB_HOST":"",
-                // "MYSQLDB_PORT":3306,
-                // "MYSQLDB_NAME":"twitter",
-                // "MYSQLDB_USER":"admin",
-                // "MYSQLDB_PASSWORD":"",
                 "MYSQLDB_HOST":"localhost",
                 "MYSQLDB_PORT":3306,
-                "MYSQLDB_NAME":"twitter",
+                "MYSQLDB_NAME":"twitterl",
                 "MYSQLDB_USER":"root",
-                "MYSQLDB_PASSWORD":"",
+                "MYSQLDB_PASSWORD":"root",
+                // "MYSQLDB_HOST":"localhost",
+                // "MYSQLDB_PORT":3306,
+                // "MYSQLDB_NAME":"twitter",
+                // "MYSQLDB_USER":"root",
+                // "MYSQLDB_PASSWORD":"welcome123",
                 "SEQUELIZE_SYNC":0,
                 "TOKEN_BEARER":"bearer",
                 "JWT_SECRET":"CMPE273GROUP4AASVVTWITTERSECRET",
@@ -35,11 +34,7 @@
                 "DEFAULT_PAGE_LIMIT": 10,
                 "REDIS_URL": "localhost",
                 "REDIS_PORT": 6379,
-                "CACHE_EXPIRY_TIME": 3600,
-                "S3_ACCESS_KEY_ID": "",
-                "S3_SECRET_ACCESS_KEY":"",
-                "S3_BUCKET_NAME":"cmpe273-group-imgstore",
-                "MAX_FILE_SIZE":5000
+                "CACHE_EXPIRY_TIME": 3600
             }
         }
     ]
