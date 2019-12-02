@@ -27,7 +27,7 @@ module.exports.create = function (newList, cb) {
 
 }
 
-module.exports.getById = function (listId, cb) {
+module.exports.getById = function (listId, userId, cb) {
     repository.List.findOne({
         where: {
             id: listId
@@ -35,14 +35,20 @@ module.exports.getById = function (listId, cb) {
     }).then(function (list) {
 
         if (list) {
-            return cb(null, {
-                list: {
-                    id: list.id,
-                    name: list.name,
-                    description: list.description,
-                    ownerId: list.userId,
-                    data: list.data ? list.data : null
-                }
+            return list.hasSubscriber(userId).then(has => {
+                return cb(null, {
+                    list: {
+                        id: list.id,
+                        name: list.name,
+                        description: list.description,
+                        ownerId: list.userId,
+                        subscribed: has,
+                        createdAt: list.createdAt,
+                        data: list.data ? list.data : null
+                    }
+                });
+            }, function (err) {
+                return cb(err);
             });
         }
         return cb({
@@ -148,6 +154,7 @@ module.exports.getSubscribers = function (listId, limit, offset, cb) {
                 }
                 return list.getSubscribers({
                     attributes: ['id', 'firstName', 'lastName', 'username', 'email'],
+                    where:{active:true},
                     limit,
                     offset,
                     required: false
@@ -249,6 +256,7 @@ module.exports.getMembers = function (listId, limit, offset, cb) {
                 }
                 return list.getMembers({
                     attributes: ['id', 'firstName', 'lastName', 'username', 'email'],
+                    where:{active:true},
                     limit,
                     offset,
                     required: false
