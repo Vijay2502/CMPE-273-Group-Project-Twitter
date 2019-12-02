@@ -67,7 +67,7 @@ class CreateTweet extends Component {
                             <div style={styles.tweetTextBox}>
                                 <textarea
                                     class="form-control text-area"
-                                    id="message-text"
+                                    id="text"
                                     placeholder="Tweet your reply"
                                     rows="3"
                                 ></textarea>

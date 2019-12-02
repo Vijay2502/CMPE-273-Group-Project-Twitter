@@ -1,16 +1,34 @@
-import { CREATE_TWEET, GET_USER_TWEETS } from "../../redux/constants/actionTypes";
+import { CREATE_TWEET, GET_USER_TWEETS, LIKE_TWEET } from "../../redux/constants/actionTypes";
 import { HOSTNAME } from "../../constants/appConstants";
 import axios from 'axios';
 
 export function createTweet(payload) {
-    console.log("signInMongo payload");
+    console.log("createTweet payload");
     console.log(payload);
 
     return (dispatch) => {
-        console.log("Inside signInMongo");
-
         axios.post(`http://${HOSTNAME}:8080/api/v1/tweet/create`, payload)
             .then((response) => dispatch(createTweetDispatch(response.data)));
+    }
+}
+
+export function retweetTweet(payload) {
+    console.log("retweetTweet payload");
+    console.log(payload);
+
+    return (dispatch) => {
+        axios.post(`http://${HOSTNAME}:8080/api/v1/tweet/${payload.tweetId}/retweet`, payload)
+            .then((response) => dispatch(likeTweetDispatch(response.data)));
+    }
+}
+
+export function likeTweet(payload) {
+    console.log("likeTweet payload");
+    console.log(payload);
+
+    return (dispatch) => {
+        axios.post(`http://${HOSTNAME}:8080/api/v1/tweet/${payload.userId}/like`, payload)
+            .then((response) => dispatch(retweetTweetDispatch(response.data)));
     }
 }
 
@@ -38,3 +56,20 @@ export const createTweetDispatch = (returnData) => {
 
     return { type: CREATE_TWEET, payload: returnData }
 };
+
+export const retweetTweetDispatch = (returnData) => {
+    console.log("Inside retweetTweetDispatch");
+    console.log(returnData);
+
+    return { type: LIKE_TWEET, payload: returnData }
+};
+
+export const likeTweetDispatch = (returnData) => {
+    console.log("Inside likeTweetDispatch");
+    console.log(returnData);
+
+    return { type: LIKE_TWEET, payload: returnData }
+};
+
+
+

@@ -1,5 +1,6 @@
 //Create all the constants to be used in Redux
 export const CREATE_TWEET = "CREATE_TWEET";
+export const LIKE_TWEET = "LIKE_TWEET";
 export const SIGN_UP = "SIGN_UP";
 export const SIGN_IN = "SIGN_IN";
 export const FETCH_LOGIN = "FETCH_LOGIN";//sample constant
@@ -11,6 +12,7 @@ export const CREATE_LIST = "CREATE_LIST";
 export const ADD_MEMBER = "ADD_MEMBER";
 export const REMOVE_MEMBER = "REMOVE_MEMBER";
 export const GET_LIST_ID = "GET_LIST_ID";
+export const GET_TWEETS_BY_LIST = "GET_TWEETS_BY_LIST";
 export const GET_MEMBERS_IN_LIST = "GET_MEMBERS_IN_LIST";
 export const GET_SUBSCRIBERS_IN_LIST = "GET_SUBSCRIBERS_IN_LIST";
 export const GET_MEMBERLISTS = "GET_MEMBERLISTS";

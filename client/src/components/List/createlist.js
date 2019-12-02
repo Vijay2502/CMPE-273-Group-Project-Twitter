@@ -3,7 +3,7 @@ import {Form,Modal} from "react-bootstrap";
 import "../Messages/messagelist.css";
 import AssignmentSharpIcon from '@material-ui/icons/AssignmentSharp';
 import IconButton from '@material-ui/core/IconButton';
-import {createList} from "../../redux/actions/listActions";
+import {createList,addMem} from "../../redux/actions/listActions";
 import {connect} from "react-redux";
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
@@ -19,7 +19,8 @@ function mapStateToProps(store) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        createList: (payload) => dispatch(createList(payload))
+        createList: (payload) => dispatch(createList(payload)),
+        addMem : (payload) => dispatch(addMem(payload))
     };
 }
 
@@ -44,14 +45,11 @@ class CreateList extends React.Component {
         this.state = {
             openListModal: false,
             addMemberModal:false,
-            name:"",
-            description:"",
             search:"",
-            chipData:[ { key: 0, label: 'sakshi' },  { key: 0, label: 'priya' }],
+            chipData:[ { key: 0, label: 'sakshi' },  { key: 1, label: 'priya' }],
             buttonVal:false
         }
-        // this.newList = this.newList.bind(this);
-        // this.createList = this.createList.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     newList = () => {
@@ -80,18 +78,19 @@ class CreateList extends React.Component {
     }
         this.nextModal();
         this.setState({openListModal: false});
-    }
+    };
     createList=()=>{ 
     }
-
-    handleChange(event, {name, value}) {
-        this.setState({ [name]: value });
+    handleChange(e) {
+        this.setState({ 
+            [e.target.name]: e.target.value 
+        });
       }
     handleSearch = (e) => {
         e.preventDefault();
         this.getUser();
         console.log("testing search");
-    }
+    };
    handleDelete = chipToDelete => () => {
        let chips= this.state.chipData
         this.setState({
@@ -99,8 +98,9 @@ class CreateList extends React.Component {
         })
       };
    handleAdd = chipToAdd => (e) => {
+       e.preventDefault();
     let chips= this.state.chipData
-        let newMember = { key : this.state.chipData.length(),label:'Shim'}
+        let newMember = { key : 2,label:'Shim'}
         this.setState({
             chipData : chips.filter(chip => chips.push(newMember))
         })
@@ -117,7 +117,7 @@ class CreateList extends React.Component {
                     this.setState({
                         search: [
                             {
-                                name: data.results[0].name,
+                                // name: data.results[0].name,
                                 image: data.results[0].picture.medium,
                                 email: data.results[0].email
                             },
@@ -130,7 +130,8 @@ class CreateList extends React.Component {
             .catch(error => {
                 console.log(error);
             });
-    }
+    };
+
     render() {
         let searchList = null;
         if (this.state.search.length > 0) {
@@ -142,8 +143,8 @@ class CreateList extends React.Component {
                         <div class="list-group-item list-group-item-action user-list row">
                             <div class="image-container col-sm-2"><img src={user.image} class="profile-image" alt="avatar"></img></div>
                             <div class="col-sm-10">
-                                <div class="profile-name">{user.name.first + " " + user.name.last}</div>
-                                <div class="profile-email">{user.email}</div>
+                                {/* <div class="profile-name">{user.name.first + " " + user.name.last}</div>
+                                <div class="profile-email">{user.email}</div> */}
                                 <div>chat - link</div>
 
                             </div>
@@ -176,37 +177,9 @@ class CreateList extends React.Component {
                         <Modal.Title>Create List</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                    <div class="edit-list-form">
-                            <Form>
-                            {/* <input maxlength="25" name="name" type="text" id="moomINPUT_1"/> */}
-                                <Form.Group controlId="formGridName" >
-                                    <Form.Label>Name</Form.Label>
-                                    <Form.Control
-                                        name="name"
-                                        placeholder="name"
-                                        value={this.state.listName}
-                                        onChange={this.handleChange}
-                                    />
-                                </Form.Group>
-                                <Form.Group controlId="formGridBio">
-                                    <Form.Label>Description</Form.Label>
-                                    <Form.Control
-                                        name="description"
-                                        as="textarea"
-                                        rows="3"
-                                        placeholder="description"
-                                        value={this.state.Description}
-                                        onChange={this.handleChange}
-                                    />
-                                </Form.Group>
-                            </Form>
-                        </div>
-                        {/* <form>
-                            <input maxlength="25" name="name" type="text" id="moomINPUT_1"/>
-                            <input type="text" id="name" class="fadeIn second" name="name" placeholder="name"/>
-                            <input type="text" id="description" class="fadeIn third" name="description" placeholder="description"/>
-                        </form> */}
-                    </Modal.Body>
+                <input name='name' label='Name' placeholder='Name' onChange={this.handleChange}  value={this.state.name} />
+               <input name='description' label='Description' placeholder='Description' onChange={this.handleChange}  value={this.state.description} />
+           </Modal.Body> 
                 </Modal>
 
 
@@ -247,13 +220,11 @@ class CreateList extends React.Component {
                     </Modal.Header>
                     <Modal.Body>
                         <Form class="search-body" onSubmit={this.handleSearch}>
-                            <Form.Group controlId="formBasicEmail">
                                 {/* <FontAwesomeIcon icon={faSearch} /> */}
                                 <Form.Control type="text" placeholder="Search people">
                                     {/* <FontAwesomeIcon icon={faSearch} /> */}
                                 </Form.Control>
                                 <div class="search-result">{searchList}</div>
-                            </Form.Group>
                         </Form>
                     </Modal.Body>
                 </Modal>

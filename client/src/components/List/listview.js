@@ -40,9 +40,9 @@ const Tweet = (props) => {
         console.log("Tweet if",props.tweet.name);
         return (
             <div class="tweet-list">
-                <Title title={props.tweet.name} />
+                <Title title={props.tweet} />
                 {/* <Link to={{ pathname: '/cart', state: {res:res}}}>{res.name}</Link> */}
-                   {/* <p>{props.tweet.description}</p>  */}
+                   <p>{props.tweet.description}</p> 
                 <div style={{ display: 'inline-block' }}>
                     <Members members={props.tweet.members} />
                     <Subscribers subscribers={props.tweet.subscribers} />
@@ -53,7 +53,7 @@ const Tweet = (props) => {
         console.log("Tweet return");
         return (
             <div className="tweet-list">
-                    <Title title={props.tweet.name} />
+                    <Title title={props} />
                 <br />
                 <div style={{ display: 'inline-block' }}>
                     <Members members={props.tweet.members} />{' '}{' '}
@@ -65,11 +65,12 @@ const Tweet = (props) => {
 };
 
 const Title = (props) => {
-    console.log("title props",props)
+    console.log("title props",props.title)
     if (props !== undefined) {
         return (
-           <div> <Link style={{color:"black"}} to={{  pathname: '/listtweet',state: { tweetId: props.id}}}>
-            {props.title}</Link></div>
+           <div> <Link style={{color:"black"}} to={{  pathname: '/listtweet',state: { tweetId: props.title.id}}}>
+            {props.title.name}
+            </Link></div>
         )
     }
 };
