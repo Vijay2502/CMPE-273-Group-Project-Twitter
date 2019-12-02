@@ -81,8 +81,10 @@
     display: none;
 }
 .tweets-heading{
+    text-align: center;
+    margin-bottom:1px;
     border-bottom: solid;
-    border-color: rgb(149, 149, 211);
+    border-color:#0069d9;
     margin-top: 10px;
     font-weight: lighter;
     font-family: sans-serif;
