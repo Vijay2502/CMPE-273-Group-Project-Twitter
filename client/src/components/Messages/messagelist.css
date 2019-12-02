@@ -66,3 +66,34 @@
     font-weight: bold;
     align-content: center;
 }
+
+.chat-vs{
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+}
+
+.chat-vs:hover{
+    background: #f7f7f7 !important;
+}
+
+.chat-vs .user-details{
+    width: 85%;
+    max-width: 85%;
+}
+
+.chat-vs .last-date{
+    position: absolute;
+    top: 12px;
+    right: 10px;
+}
+
+.chat-vs .last-message{
+    color: #b5b1b1;
+}
+
+.chat-vs .user-name{
+    font-weight: 700;
+    font-size: 18px;
+    font-family: inherit;
+}

@@ -7,9 +7,9 @@ const url = require('url');
 const uuid = require('uuid/v4');
 
 const s3 = new aws.S3({
-    accessKeyId: process.env.S3_ACCESS_KEY_ID,
-    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
-    Bucket: process.env.S3_BUCKET_NAME
+    secretAccessKey: "p8SMmqITia8IEXBQxI11sql4SOG+C521XvxDlFje",
+    accessKeyId: "AKIAVE7T3Q4UIDRYF65E",
+    Bucket: "grubhub-bucket"
 });
 
 function checkFileType(file, cb) {
@@ -29,7 +29,7 @@ function checkFileType(file, cb) {
 const imgUpload = multer({
     storage: multerS3({
         s3: s3,
-        bucket: process.env.S3_BUCKET_NAME,
+        bucket: "grubhub-bucket",
         acl: 'public-read',
         key: function (req, file, cb) {
             cb(null, path.basename(file.originalname, path.extname(file.originalname)) + '-' + uuid() + path.extname(file.originalname))

@@ -118,7 +118,10 @@ class TweetBody extends Component {
         return (
             <div class="list-group">
                 <button type="button" className="inner-body list-group-item list-group-item-action" onClick={(e) => this.displayTweet("3cd8c430-13ec-11ea-a40d-57a00194fdf6")}>
-                    <Image image={this.props.image} />
+                    {
+                        this.props.image ? (<Image image={this.props.image} />) : (<Image image="https://thefader-res.cloudinary.com/private_images/w_760,c_limit,f_auto,q_auto:best/TwitterLogo__55acee_jntmic/twitter-applications-verified.jpg" />)
+                    }
+
                     <div className="body">
                         <div className="inner-body-inner">
                             <Name name={this.props.name} />
