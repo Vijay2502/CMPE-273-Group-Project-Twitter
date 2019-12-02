@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import '../../css/hometweetlist.css'
 import { TweetBody } from './listview.js'
 import ViewTweets from "../Tweet/ViewTweets";
-import {connect} from "react-redux";
-import {getTweetsById, likeTweet, retweetTweet, bookmarkTweet} from "../../redux/actions/tweetsActions";
+import { connect } from "react-redux";
+import { getTweetsById, likeTweet, retweetTweet, bookmarkTweet } from "../../redux/actions/tweetsActions";
 
 // import Search from './search.js'
 
@@ -16,9 +16,6 @@ function mapStateToProps(store) {
 function mapDispatchToProps(dispatch) {
     return {
         getTweets: (payload) => dispatch(getTweetsById(payload)),
-        likeTweet: (payload) => dispatch(likeTweet(payload)),
-        retweetTweet: (payload) => dispatch(retweetTweet(payload)),
-        bookmarkTweet: (payload) => dispatch(bookmarkTweet(payload)),
 
     };
 }
@@ -54,9 +51,6 @@ class HomeTweetList extends Component {
     // this.props.likeTweetCallback(this.props.data.tweetData, this.props.data.owner,
     //                                 this.props.data.userId, this.props.data.tweetId)
     retweetTweet(tweetData, owner, retweetingUserId, tweetId) {
-        console.log("retweetTweet")
-        console.log("tweetId", tweetId)
-
         const retweet = {};
         retweet.isRetweet = true;
         retweet.tweetId = tweetId;
@@ -71,10 +65,6 @@ class HomeTweetList extends Component {
     }
 
     likeTweet(tweetId, userId) {
-        console.log("likeTweet")
-        console.log("tweetId", tweetId)
-        console.log("userId", userId)
-
         const payload = {};
         payload.tweetId = tweetId;
         payload.userId = userId;
@@ -83,10 +73,6 @@ class HomeTweetList extends Component {
     }
 
     bookmarkTweet(tweetId, userId) {
-        console.log("bookmarkTweet")
-        console.log("tweetId", tweetId)
-        console.log("userId", userId)
-
         const payload = {};
         payload.tweetId = tweetId;
         payload.userId = userId;
@@ -121,10 +107,7 @@ class HomeTweetList extends Component {
         console.log("render HomeTweetList");
         return (
             <div>
-                <ViewTweets dataFromParent={this.props.tweets}
-                            likeTweetCallback={this.likeTweet}
-                            retweetTweetCallback={this.retweetTweet}
-                            bookmarkCallback={this.bookmarkTweet}/>
+                <ViewTweets dataFromParent={this.props.tweets} />
             </div>
         );
     }

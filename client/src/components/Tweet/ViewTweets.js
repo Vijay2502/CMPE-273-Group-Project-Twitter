@@ -7,6 +7,18 @@ import TweetBody from "../HomeTweetList/listview";
 import TweetButtons from "../Tweet/TweetButtons";
 import { faComment, faHeart } from "@fortawesome/free-regular-svg-icons";
 import CreateTweet from "./CreateTweet";
+import { connect } from "react-redux";
+import { likeTweet, retweetTweet, bookmarkTweet } from "../../redux/actions/tweetsActions";
+
+
+function mapDispatchToProps(dispatch) {
+    return {
+        likeTweet: (payload) => dispatch(likeTweet(payload)),
+        retweetTweet: (payload) => dispatch(retweetTweet(payload)),
+        bookmarkTweet: (payload) => dispatch(bookmarkTweet(payload)),
+
+    };
+}
 
 class ViewTweets extends Component {
     constructor(props) {
@@ -17,6 +29,36 @@ class ViewTweets extends Component {
         };
     }
 
+
+    retweetTweet(tweetData, owner, retweetingUserId, tweetId) {
+        const retweet = {};
+        retweet.isRetweet = true;
+        retweet.tweetId = tweetId;
+
+        const payload = {};
+        payload.tweetId = tweetId;
+        payload.data = tweetData;
+        payload.owner = owner;
+        payload.ownerId = retweetingUserId;
+
+        this.props.retweetTweet(payload);
+    }
+
+    likeTweet(tweetId, userId) {
+        const payload = {};
+        payload.tweetId = tweetId;
+        payload.userId = userId;
+
+        this.props.likeTweet(payload);
+    }
+
+    bookmarkTweet(tweetId, userId) {
+        const payload = {};
+        payload.tweetId = tweetId;
+        payload.userId = userId;
+
+        this.props.bookmarkTweet(payload);
+    }
     openCommentModal = e => {
         this.setState({ isOpenCommentModal: true });
     };
@@ -72,10 +114,10 @@ class ViewTweets extends Component {
                                 />
 
                                 <TweetButtons data={buttonData}
-                                              likeTweetCallback={this.props.likeTweetCallback}
-                                              retweetTweetCallback={this.props.retweetTweetCallback}
-                                              replyTweetCallback={this.props.replyTweetCallback}
-                                              bookmarkCallback={this.props.bookmarkCallback}/>
+                                    likeTweetCallback={this.likeTweet}
+                                    retweetTweetCallback={this.retweetTweet}
+                                    replyTweetCallback={this.replyTweetCallback}
+                                    bookmarkCallback={this.bookmarkTweet} />
                             </div>
                         )
                     })}
@@ -107,4 +149,5 @@ const styles = {
     }
 };
 
-export default ViewTweets;
+export default connect(mapDispatchToProps)(ViewTweets);
+//export default ViewTweets;
