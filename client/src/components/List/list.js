@@ -51,7 +51,7 @@ class List extends Component {
 
     getUser() {
         //fetch list
-        this.props.getOwnedLists(6);
+        this.props.getOwnedLists(localStorage.getItem("id"));
         this.setState({
             users: this.props.ownedlists
         });
@@ -84,7 +84,7 @@ class List extends Component {
         this.setState({
             users: this.props.ownedlists
         });
-        this.props.getOwnedLists(6);
+        this.props.getOwnedLists(localStorage.getItem("id"));
     }
 
     showSubscriberBox() {
@@ -93,7 +93,7 @@ class List extends Component {
         this.setState({
             users: this.props.subscribedList
         });
-        this.props.getSubscribedLists(6);
+        this.props.getSubscribedLists(localStorage.getItem("id"));
     }
 
     showMemberBox() {
@@ -102,7 +102,7 @@ class List extends Component {
         this.setState({
             users: this.props.membersList
         });
-        this.props.getMemberLists(6);
+        this.props.getMemberLists(localStorage.getItem("id"));
     }
 
     showContent() {
