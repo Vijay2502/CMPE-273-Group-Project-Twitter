@@ -2,6 +2,8 @@
 export const CREATE_TWEET = "CREATE_TWEET";
 export const LIKE_TWEET = "LIKE_TWEET";
 export const RETWEET_TWEET = "RETWEET_TWEET";
+export const REPLY_TWEET = "REPLY_TWEET";
+export const BOOKMARK_TWEET = "BOOKMARK_TWEET";
 export const SIGN_UP = "SIGN_UP";
 export const SIGN_IN = "SIGN_IN";
 export const FETCH_LOGIN = "FETCH_LOGIN";//sample constant

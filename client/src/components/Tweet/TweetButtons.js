@@ -65,7 +65,7 @@ class TweetButtons extends Component {
                         style={styles.like}
                         onClick={() => {
                             console.log("faHeart this.props.data", this.props.data)
-                            this.props.likeTweetCallback(this.props.data.tweetId, this.props.data.userId)
+                            this.props.likeTweetCallback(this.props.data.tweetId, this.props.data.retweetingUserId)
                             this.setState({likeIncrement: 1})
                         }}
                     >
@@ -76,6 +76,9 @@ class TweetButtons extends Component {
                         type="button"
                         className="list-group-item list-group-item-action borderless"
                         style={styles.share}
+                        onClick={() => {
+                            this.props.bookmarkCallback(this.props.data.tweetId, this.props.data.retweetingUserId)
+                        }}
                     >
                         <FontAwesomeIcon icon={faShareSquare} />
                     </button>

@@ -74,7 +74,8 @@ class ViewTweets extends Component {
                                 <TweetButtons data={buttonData}
                                               likeTweetCallback={this.props.likeTweetCallback}
                                               retweetTweetCallback={this.props.retweetTweetCallback}
-                                              replyTweetCallback={this.props.replyTweetCallback}/>
+                                              replyTweetCallback={this.props.replyTweetCallback}
+                                              bookmarkCallback={this.props.bookmarkCallback}/>
                             </div>
                         )
                     })}

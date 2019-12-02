@@ -3,7 +3,7 @@ import '../../css/hometweetlist.css'
 import { TweetBody } from './listview.js'
 import ViewTweets from "../Tweet/ViewTweets";
 import {connect} from "react-redux";
-import {getTweetsById, likeTweet, retweetTweet, replyTweet} from "../../redux/actions/tweetsActions";
+import {getTweetsById, likeTweet, retweetTweet, bookmarkTweet} from "../../redux/actions/tweetsActions";
 
 // import Search from './search.js'
 
@@ -18,6 +18,8 @@ function mapDispatchToProps(dispatch) {
         getTweets: (payload) => dispatch(getTweetsById(payload)),
         likeTweet: (payload) => dispatch(likeTweet(payload)),
         retweetTweet: (payload) => dispatch(retweetTweet(payload)),
+        bookmarkTweet: (payload) => dispatch(bookmarkTweet(payload)),
+
     };
 }
 
@@ -30,9 +32,10 @@ class HomeTweetList extends Component {
         };
 
         this.handleRefresh = this.handleRefresh.bind(this);
-        this.getUser = this.getUser.bind(this)
-        this.likeTweet = this.likeTweet.bind(this)
-        this.retweetTweet = this.retweetTweet.bind(this)
+        this.getUser = this.getUser.bind(this);
+        this.likeTweet = this.likeTweet.bind(this);
+        this.retweetTweet = this.retweetTweet.bind(this);
+        this.bookmarkTweet = this.bookmarkTweet.bind(this);
     }
 
     handleRefresh() {
@@ -79,17 +82,17 @@ class HomeTweetList extends Component {
         this.props.likeTweet(payload);
     }
 
-    // replyTweet(data, userId) {
-    //     console.log("replyTweet")
-    //     console.log("data", data)
-    //     console.log("userId", userId)
-    //
-    //     const payload = {};
-    //     payload.data = data;
-    //     payload.ownerId = userId;
-    //
-    //     this.props.likeTweet(payload);
-    // }
+    bookmarkTweet(tweetId, userId) {
+        console.log("bookmarkTweet")
+        console.log("tweetId", tweetId)
+        console.log("userId", userId)
+
+        const payload = {};
+        payload.tweetId = tweetId;
+        payload.userId = userId;
+
+        this.props.bookmarkTweet(payload);
+    }
 
     getUser() {
         fetch('https://randomuser.me/api/')
@@ -120,7 +123,8 @@ class HomeTweetList extends Component {
             <div>
                 <ViewTweets dataFromParent={this.props.tweets}
                             likeTweetCallback={this.likeTweet}
-                            retweetTweetCallback={this.retweetTweet}/>
+                            retweetTweetCallback={this.retweetTweet}
+                            bookmarkCallback={this.bookmarkTweet}/>
             </div>
         );
     }
