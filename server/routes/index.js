@@ -16,6 +16,7 @@ var auth = {
 };
 
 router.use(passport.initialize());
+require('../auth/passport')(passport);
 
 router.post('/img-upload', utils.uploadImage);
 

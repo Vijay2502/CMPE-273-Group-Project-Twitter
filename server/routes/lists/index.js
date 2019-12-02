@@ -35,7 +35,8 @@ module.exports.update = function (request, response) {
 
 module.exports.get = function (request, response) {
 
-    return listService.getById(request.params.id, function (err, data) {
+    const userId = request.user && request.user.id && request.params.id != request.user.id? request.user.id: -1;
+    return listService.getById(request.params.id, userId, function (err, data) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
         }

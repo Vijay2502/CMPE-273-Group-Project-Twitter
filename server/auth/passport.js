@@ -11,7 +11,7 @@ module.exports = function (passport) {
     console.log(opts);
     passport.use(new JwtStrategy(opts, function (jwt_payload, callback) {
         console.log(jwt_payload);
-        userService.getById(jwt_payload.id, function(err, user){
+        userService.getById(jwt_payload.id, -1, function(err, user){
             if(err){
                 return callback(err, false);
             }

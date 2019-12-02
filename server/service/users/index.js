@@ -147,7 +147,7 @@ module.exports.update = function (newUser, cb) {
 }
 
 
-module.exports.getById = function (userId, cb) {
+module.exports.getById = function (userId, followerId, cb) {
 
     cache.get('user-getById-' + userId, function (err, user) {
         if (user) {
@@ -160,25 +160,32 @@ module.exports.getById = function (userId, cb) {
             }).then(function (user) {
 
                 if (user) {
-                    var userDTO = {
-                        id: user.id,
-                        firstName: user.firstName,
-                        lastName: user.lastName,
-                        username: user.username,
-                        email: user.email,
-                        data: user.data ? user.data : null
-                    };
-
-                    cache.set('user-getById-' + userId, JSON.stringify(userDTO), function (err) {
-                        if (err) {
-                            console.log("Write to Cache Failed >>>> err: " + JSON.stringify(err, null, 4));
-                        } else {
-                            cache.expire('user-getById-' + userId, process.env.CACHE_EXPIRY_TIME);
-                        }
-
+                    return user.hasFollower(followerId).then(has=>{
+                        var userDTO = {
+                            id: user.id,
+                            firstName: user.firstName,
+                            lastName: user.lastName,
+                            username: user.username,
+                            email: user.email,
+                            followed: has,
+                            createdAt: user.createdAt,
+                            data: user.data ? user.data : null
+                        };
+    
+                        cache.set('user-getById-' + userId, JSON.stringify(userDTO), function (err) {
+                            if (err) {
+                                console.log("Write to Cache Failed >>>> err: " + JSON.stringify(err, null, 4));
+                            } else {
+                                cache.expire('user-getById-' + userId, process.env.CACHE_EXPIRY_TIME);
+                            }
+    
+                        })
+    
+                        return cb(null, userDTO);
+                    }, function(err){
+                        return cb(err);
                     })
-
-                    return cb(null, userDTO);
+                    
                 }
                 return cb({
                     code: 404,
@@ -295,23 +302,31 @@ module.exports.getFollowers = function (userId, limit, offset, cb) {
                 }
                 return user.getFollowers({
                     attributes: ['id', 'firstName', 'lastName', 'username', 'email'],
+                    where:{active:true},
                     limit,
                     offset,
                     required: false
                 }).then(followers => {
-                    return cb(null, {
-                        id: user.id,
-                        count,
-                        followers: followers.map(f => ({
-                            id: f.id,
-                            firstName: f.firstName,
-                            lastName: f.lastName,
-                            username: f.username,
-                            email: f.email,
-                            createdAt: f.UserFollowing.createdAt
-                        })),
-                        nextOffset: (offset + limit) < count ? (offset + limit) : 0
-                    });
+                    return user.getFollowees({attributes: ['id']}).then(followees => {
+                        followees = followees.map(f => f.id);
+                        return cb(null, {
+                            id: user.id,
+                            count,
+                            followers: followers.map(f => ({
+                                id: f.id,
+                                firstName: f.firstName,
+                                lastName: f.lastName,
+                                username: f.username,
+                                email: f.email,
+                                followed: followees.includes(f.id),
+                                createdAt: f.UserFollowing.createdAt
+                            })),
+                            nextOffset: (offset + limit) < count ? (offset + limit) : 0
+                        });
+                    
+                }, function(err){
+                    return cb(err);
+                })
                 }, function (err) {
                     return cb(err);
                 });
@@ -347,6 +362,7 @@ module.exports.getFollowees = function (userId, limit, offset, cb) {
                 }
                 return user.getFollowees({
                     attributes: ['id', 'firstName', 'lastName', 'username', 'email'],
+                    where:{active:true},
                     limit,
                     offset,
                     required: false
@@ -360,6 +376,7 @@ module.exports.getFollowees = function (userId, limit, offset, cb) {
                             lastName: f.lastName,
                             username: f.username,
                             email: f.email,
+                            followed: true,
                             createdAt: f.UserFollowing.createdAt
                         })),
                         nextOffset: (offset + limit) < count ? (offset + limit) : 0
