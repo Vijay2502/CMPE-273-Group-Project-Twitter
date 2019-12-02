@@ -7,7 +7,7 @@ export function getTopTenTweetsByViews(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.post(`http://${HOSTNAME}:3001/access/login`, payload)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/analytics/user/${payload.ownerId}/tweets/by-views`, payload)
             .then((response) => dispatch(getTopTenTweetsByViewsDispatch(response.data)));
     }
 }

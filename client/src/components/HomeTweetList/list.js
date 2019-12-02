@@ -16,7 +16,6 @@ function mapStateToProps(store) {
 function mapDispatchToProps(dispatch) {
     return {
         getTweets: (payload) => dispatch(getTweetsById(payload)),
-
     };
 }
 
@@ -29,7 +28,6 @@ class HomeTweetList extends Component {
 
         this.handleRefresh = this.handleRefresh.bind(this);
         this.getUser = this.getUser.bind(this);
-
     }
 
     handleRefresh() {

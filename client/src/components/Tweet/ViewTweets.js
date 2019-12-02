@@ -79,11 +79,11 @@ class ViewTweets extends Component {
                 triggerHeight={50}>
                 <div className="main-body">
                     {console.log("this.props.dataFromParent123", this.props.dataFromParent)}
-                    {this.props.dataFromParent.map((tweet, index) => {
+                    {this.props.dataFromParent !== undefined && this.props.dataFromParent.map((tweet, index) => {
                         console.log("tweet" + index)
                         console.log(tweet)
-                        let name = tweet.owner !== undefined ? `${tweet.owner.firstName} ${tweet.owner.lastName}` : "";
-                        let handle = `@${tweet.owner.username}`;
+                        let name = tweet.owner !== undefined ? `${tweet.owner.firstName} ${tweet.owner.lastName}` : "name";
+                        let handle = tweet.owner !== undefined ? `@${tweet.owner.username}` : "@username";
                         let image = tweet.image;
                         let tweetText = tweet.data.text;
 
@@ -114,11 +114,12 @@ class ViewTweets extends Component {
                                     image={image}
                                 />
 
+                                {this.props.isDisableButtons !== true &&
                                 <TweetButtons data={buttonData}
                                     likeTweetCallback={this.likeTweet}
                                     retweetTweetCallback={this.retweetTweet}
                                     replyTweetCallback={this.replyTweetCallback}
-                                    bookmarkCallback={this.bookmarkTweet} />
+                                    bookmarkCallback={this.bookmarkTweet} />}
                             </div>
                         )
                     })}
