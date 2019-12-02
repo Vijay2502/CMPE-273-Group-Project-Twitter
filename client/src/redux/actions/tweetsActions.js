@@ -27,7 +27,7 @@ export function likeTweet(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.post(`http://${HOSTNAME}:8080/api/v1/tweet/${payload.userId}/like`, payload)
+        axios.put(`http://${HOSTNAME}:8080/api/v1/tweet/${payload.userId}/like`, payload)
             .then((response) => dispatch(retweetTweetDispatch(response.data)));
     }
 }
