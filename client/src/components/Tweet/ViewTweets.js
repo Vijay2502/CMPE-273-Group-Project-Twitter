@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faRetweet, faShareSquare } from "@fortawesome/free-solid-svg-icons";
 import { PullDownContent, PullToRefresh, RefreshContent, ReleaseContent } from "react-js-pull-to-refresh";
 import TweetBody from "../HomeTweetList/listview";
+import TweetButtons from "../Tweet/TweetButtons";
 import { faComment, faHeart } from "@fortawesome/free-regular-svg-icons";
 import CreateTweet from "./CreateTweet";
 
@@ -42,6 +43,13 @@ class ViewTweets extends Component {
                         let tweetText = tweet.tweet;
                         let likeIncrement = 0;
                         console.log(image);
+
+                        const buttonData = {};
+                        buttonData.tweetId = tweet.tweetId;
+                        buttonData.userId = tweet.userId;
+                        buttonData.retweetCount = tweet.retweetCount;
+                        buttonData.likes = tweet.likes;
+
                         return (
                             <div>
                                 <TweetBody
@@ -52,54 +60,56 @@ class ViewTweets extends Component {
                                     image={image}
                                 />
 
-                                <div style={styles.container}>
-                                    <button
-                                        type="button"
-                                        className="list-group-item list-group-item-action borderless"
-                                        style={styles.reply}
-                                        onClick={this.openCommentModal}
-                                    >
-                                        <FontAwesomeIcon icon={faComment} />
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="list-group-item list-group-item-action borderless"
-                                        style={styles.retweet}
-                                        onClick={() => {
-                                            this.props.retweetTweetCallback(tweet.tweetId, tweet.userId)
-                                        }}
-                                    >
-                                        <FontAwesomeIcon icon={faRetweet} />
-                                        {tweet.retweetCount}
-                                    </button>
-                                            <button
-                                                type="button"
-                                                className="list-group-item list-group-item-action borderless"
-                                                style={styles.like}
-                                                onClick={() => {
-                                                    this.props.likeTweetCallback(tweet.tweetId, tweet.userId)
-                                                    likeIncrement = likeIncrement + 1;
-                                                }}
-                                            >
-                                                <FontAwesomeIcon icon={faHeart} />
-                                                {tweet.likes + likeIncrement}
-                                            </button>
-                                    <button
-                                        type="button"
-                                        className="list-group-item list-group-item-action borderless"
-                                        style={styles.share}
-                                    >
-                                        <FontAwesomeIcon icon={faShareSquare} />
-                                    </button>
-                                </div>
+                                <TweetButtons data={buttonData} likeTweetCallback={this.props.likeTweetCallback} retweetTweetCallback={this.props.retweetTweetCallback}/>
 
-                                <Modal
-                                    show={this.state.isOpenCommentModal}
-                                    onHide={this.closeCommentModal}
-                                    animation={false}
-                                >
-                                    <CreateTweet />
-                                </Modal>
+                                {/*<div style={styles.container}>*/}
+                                {/*    <button*/}
+                                {/*        type="button"*/}
+                                {/*        className="list-group-item list-group-item-action borderless"*/}
+                                {/*        style={styles.reply}*/}
+                                {/*        onClick={this.openCommentModal}*/}
+                                {/*    >*/}
+                                {/*        <FontAwesomeIcon icon={faComment} />*/}
+                                {/*    </button>*/}
+                                {/*    <button*/}
+                                {/*        type="button"*/}
+                                {/*        className="list-group-item list-group-item-action borderless"*/}
+                                {/*        style={styles.retweet}*/}
+                                {/*        onClick={() => {*/}
+                                {/*            this.props.retweetTweetCallback(tweet.tweetId, tweet.userId)*/}
+                                {/*        }}*/}
+                                {/*    >*/}
+                                {/*        <FontAwesomeIcon icon={faRetweet} />*/}
+                                {/*        {tweet.retweetCount}*/}
+                                {/*    </button>*/}
+                                {/*            <button*/}
+                                {/*                type="button"*/}
+                                {/*                className="list-group-item list-group-item-action borderless"*/}
+                                {/*                style={styles.like}*/}
+                                {/*                onClick={() => {*/}
+                                {/*                    this.props.likeTweetCallback(tweet.tweetId, tweet.userId)*/}
+                                {/*                    likeIncrement = likeIncrement + 1;*/}
+                                {/*                }}*/}
+                                {/*            >*/}
+                                {/*                <FontAwesomeIcon icon={faHeart} />*/}
+                                {/*                {tweet.likes + likeIncrement}*/}
+                                {/*            </button>*/}
+                                {/*    <button*/}
+                                {/*        type="button"*/}
+                                {/*        className="list-group-item list-group-item-action borderless"*/}
+                                {/*        style={styles.share}*/}
+                                {/*    >*/}
+                                {/*        <FontAwesomeIcon icon={faShareSquare} />*/}
+                                {/*    </button>*/}
+                                {/*</div>*/}
+
+                                {/*<Modal*/}
+                                {/*    show={this.state.isOpenCommentModal}*/}
+                                {/*    onHide={this.closeCommentModal}*/}
+                                {/*    animation={false}*/}
+                                {/*>*/}
+                                {/*    <CreateTweet />*/}
+                                {/*</Modal>*/}
                             </div>
                         )
                     })}
