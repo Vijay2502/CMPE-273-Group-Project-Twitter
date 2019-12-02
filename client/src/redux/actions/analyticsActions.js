@@ -23,7 +23,7 @@ export function getTopTenTweetsByLikes(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.post(`http://${HOSTNAME}:3001/access/login`, payload)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/analytics/user/${payload.ownerId}/tweets/by-likes`, payload)
             .then((response) => dispatch(getTopTenTweetsByLikesDispatch(response.data)));
     }
 }
@@ -39,7 +39,7 @@ export function getTopTenTweetsByRetweets(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.post(`http://${HOSTNAME}:3001/access/login`, payload)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/analytics/user/${payload.ownerId}/tweets/by-retweets`, payload)
             .then((response) => dispatch(getTopTenTweetsByRetweetsDispatch(response.data)));
     }
 }
