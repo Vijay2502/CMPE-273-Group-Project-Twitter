@@ -25,6 +25,8 @@ class TweetButtons extends Component {
 
     render() {
         console.log("render TweetButtons");
+        console.log(this.state.props);
+
         return (
             <div>
                 <div style={styles.container}>
@@ -53,7 +55,8 @@ class TweetButtons extends Component {
                         className="list-group-item list-group-item-action borderless"
                         style={styles.like}
                         onClick={() => {
-                            this.props.likeTweetCallback(this.props.data.tweetId, this.props.data.userId)
+                            this.props.likeTweetCallback(this.props.data.tweetData, this.props.data.owner,
+                                this.props.data.retweetingUserId, this.props.data.tweetId)
                             this.setState({likeIncrement: 1})
                         }}
                     >

@@ -48,14 +48,21 @@ class HomeTweetList extends Component {
         this.props.getTweets(payload);
     }
 
-    retweetTweet(tweetId, userId) {
+    // this.props.likeTweetCallback(this.props.data.tweetData, this.props.data.owner,
+    //                                 this.props.data.userId, this.props.data.tweetId)
+    retweetTweet(tweetData, owner, retweetingUserId, tweetId) {
         console.log("retweetTweet")
         console.log("tweetId", tweetId)
-        console.log("userId", userId)
+
+        const retweet = {};
+        retweet.isRetweet = true;
+        retweet.tweetId = tweetId;
 
         const payload = {};
         payload.tweetId = tweetId;
-        payload.userId = userId;
+        payload.data = tweetData;
+        payload.owner = owner;
+        payload.userId = retweetingUserId;
 
         this.props.retweetTweet(payload);
     }

@@ -50,6 +50,16 @@ class ViewTweets extends Component {
                         buttonData.userId = tweet.userId;
                         buttonData.retweetCount = tweet.retweetCount;
                         buttonData.likes = tweet.likes;
+                        buttonData.tweetData = tweet.data;
+
+                        const owner = {};
+                        owner["firstName"] = localStorage.getItem("firstName");
+                        owner["lastName"] = localStorage.getItem("lastName");
+                        owner["username"] = localStorage.getItem("username");
+                        owner["image"] = "";
+
+                        buttonData.owner = tweet.owner;
+                        buttonData.retweetingUserId = localStorage.getItem("id");
 
                         return (
                             <div>

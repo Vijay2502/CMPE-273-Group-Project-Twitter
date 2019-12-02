@@ -1,4 +1,4 @@
-import { CREATE_TWEET, GET_USER_TWEETS, LIKE_TWEET } from "../../redux/constants/actionTypes";
+import { CREATE_TWEET, GET_USER_TWEETS, LIKE_TWEET, RETWEET_TWEET } from "../../redux/constants/actionTypes";
 import { HOSTNAME } from "../../constants/appConstants";
 import axios from 'axios';
 
@@ -61,7 +61,7 @@ export const retweetTweetDispatch = (returnData) => {
     console.log("Inside retweetTweetDispatch");
     console.log(returnData);
 
-    return { type: LIKE_TWEET, payload: returnData }
+    return { type: RETWEET_TWEET, payload: returnData }
 };
 
 export const likeTweetDispatch = (returnData) => {
