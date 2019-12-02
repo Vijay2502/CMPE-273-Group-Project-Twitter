@@ -42,7 +42,7 @@ class CreateTweet extends Component {
         const tweet = {}
         tweet["data"] = data;
         tweet["ownerId"] = localStorage.getItem("id");
-        //tweet["owner"] = owner;
+        tweet["owner"] = owner;
         tweet["retweet"] = [];
         tweet["hashTags"] = [];
 
