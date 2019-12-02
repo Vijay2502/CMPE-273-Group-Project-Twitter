@@ -32,7 +32,7 @@ const Name = (props) => {
 };
 
 
-const UserRow = (props) => {
+const UserBody = (props) => {
     return (
         <div class="list-group">
             <UserBox>
@@ -50,4 +50,4 @@ const UserRow = (props) => {
     )
 };
 
-export { UserRow }
+export { UserBody }
