@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Modal } from "react-bootstrap";
+import { Form, Modal, Button } from "react-bootstrap";
 import "./profile.css";
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,7 +12,9 @@ import { getTweetsById } from "../../redux/actions/tweetsActions";
 function mapStateToProps(store) {
     return {
         userDetails: store.users.userDetails,
-        userTweets: store.tweets.userTweets
+        userTweets: store.tweets.userTweets,
+        userFollowers: store.users.follower,
+        userFollowee: store.users.followee
     };
 }
 function mapDispatchToProps(dispatch) {
@@ -30,7 +32,8 @@ class profile extends Component {
         super(props);
         this.state = {
             editProfile: false, //for modal
-            testName: "Akshit Ahuja",
+            selectedCoverPic: "",
+            selectedProfilePic: "",
             users: []
         };
         this.onCoverPicUpload = this.onCoverPicUpload.bind(this);
@@ -39,11 +42,13 @@ class profile extends Component {
     componentWillMount = () => {
         const data = {
             user_id: 1
+        }; const data0 = {
+            user_id: 1212
         };
         this.props.getProfileDetails(data);
         this.props.getUserTweets(data);
-        // this.props.getUserfollowees(data);// ISSUE WITH API SO COMMENTING
-        // this.props.getUserfollowers(data);// ISSUE WITH API SO COMMENTING
+        this.props.getUserfollowees(data);// ISSUE WITH API SO COMMENTING
+        this.props.getUserfollowers(data);// ISSUE WITH API SO COMMENTING
         this.getUser();
     }
 
@@ -86,11 +91,52 @@ class profile extends Component {
     cancelEdit = () => {
         this.setState({ editProfile: false });
     };
-    saveProfile = () => {
+    saveProfile = (e) => {
         // save profile code
-        this.setState({ editProfile: false });
-    };
+        e.preventDefault();
+        const Updatedata = {};
+        for (let i = 0; i < e.target.length; i++) {
+            if (e.target[i].id !== "") {
+                Updatedata[e.target[i].id] = e.target[i].value;
+            }
+        }
+        // console.log(JSON.stringify(data));
+        let dataFinal = {
+            firstName: Updatedata.formGridFName,
+            lastName: Updatedata.formGridLName,
+            data: {
+                website: Updatedata.formGridWebsite,
+                location: Updatedata.formGridLocation,
+                bio: Updatedata.formGridBio
+            }
+        };
+        console.log("Res data ", dataFinal);
+        // const data = new FormData();
+        // if (this.state.selectedCoverPic) {
+        //     data.append('image', this.state.selectedCoverPic, this.state.selectedCoverPic.name);
+        //     axios.post(API_PATH + '/img-upload', data, {
+        //         headers: {
+        //             'accept': 'application/json',
+        //             'Accept-Language': 'en-US,en;q=0.8',
+        //             'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
+        //             'Authorization': localStorage.getItem('token')
+        //         }
+        //     }).then()
+        // }
 
+
+
+
+
+
+        // this.props.updateApi(data);
+        // this.setState({ editProfile: false });
+    };
+    onCoverPicUploadHandler = (event) => {
+        this.setState({
+            selectedCoverPic: event.target.files[0]
+        });
+    };
     onCoverPicUpload(files) {
         console.log("onFileChange event triggered");
         // if (files == null || files.length == 0) return;
@@ -141,24 +187,33 @@ class profile extends Component {
 
     render() {
         console.log("checking props", JSON.stringify(this.props));
+        let usrDetails = this.props.userDetails ? this.props.userDetails : [];
+        let usrTweets = this.props.userTweets ? this.props.userTweets : [];
+        let tweetCount = usrTweets.length ? usrTweets.length : 0;
+        let usrFollower = this.props.userFollowers ? this.props.userFollowers : [];
+        let usrFollowee = this.props.userFollowee ? this.props.userFollowee : [];
+        let userData = usrDetails.data ? usrDetails.data : [];
+        // console.log("usrFollowee length :", Object.keys(usrFollowee).length);
+
+        console.log("checking tweetCount", tweetCount);
         return (
             <div class="profile-container col-sm-12">
                 <div class="top-details row">
                     <div class="offset-sm-1">
-                        <div class="profile-name-header">Akshit</div>
-                        <div class="profile-tweets-header">0 tweets</div>
+                        <div class="profile-name-header">{usrDetails.firstName ? usrDetails.firstName : "" + " " + usrDetails.lastName ? usrDetails.lastName : ""}</div>
+                        <div class="profile-tweets-header">{tweetCount} tweets</div>
                     </div>
                 </div>
                 <div class="profile-cover-pic row">
                     <img
-                        src={require("../../static/images/cover_pic1.png")}
+                        src={userData.coverPic ? userData.coverPic : require("../../static/images/cover_pic1.png")}
                         width="100%"
                         height="200px"
                     />
                 </div>
                 <div class="profile-pic-btn-container row">
                     <div class="profile-profile-pic col-sm-6">
-                        <img src={require("../../static/images/profile_pic.png")} height="120" />
+                        <img src={userData.profilePic ? userData.profilePic : require("../../static/images/profile_pic.png")} height="120" />
                     </div>
                     <div class="col-sm-6 edit-btn">
                         <button
@@ -172,8 +227,8 @@ class profile extends Component {
                 </div>
                 <div class="profile-details row">
                     <div class="col-sm-12">
-                        <div class="profile-name-header ">Akshit Ahuja</div>
-                        <div class="profile-detail-font">@test1234</div>
+                        <div class="profile-name-header ">{usrDetails.firstName ? usrDetails.firstName : "" + " " + usrDetails.lastName ? usrDetails.lastName : ""}</div>
+                        <div class="profile-detail-font">@{usrDetails.username ? usrDetails.username : ""}</div>
                         <div class="profile-dates row">
                             <div class="col-sm-4 profile-detail-font">
                                 <FontAwesomeIcon icon={faBirthdayCake} />
@@ -185,14 +240,14 @@ class profile extends Component {
                             </div>
                         </div>
                         <div class="followers-following row">
-                            <div class="col-sm-3 profile-detail-font">{"2"} Following</div>
-                            <div class="offset-sm-1 col-sm-3 profile-detail-font">{"2"} Following</div>
+                            <div class="col-sm-3 profile-detail-font">{usrFollower.count ? usrFollower.count : 0} Followers</div>
+                            <div class="offset-sm-1 col-sm-3 profile-detail-font">{usrFollowee.count ? usrFollowee.count : 0} Following</div>
                         </div>
                     </div>
                 </div>
-                <div class="heading row"><div class="tweets-heading col-sm-2">Tweets</div></div>
+                <div class="heading row"><div class="tweets-heading col-sm-4">Tweets</div></div>
                 <div class="tweets-list" row>
-                    <ViewTweets dataFromParent={this.state.users} />
+                    <ViewTweets dataFromParent={usrTweets} />
                 </div>
 
                 <Modal
@@ -206,7 +261,8 @@ class profile extends Component {
                             <button
                                 class="btn btn-primary save-btn"
                                 type="button"
-                                onClick={this.saveProfile}
+
+                            // onClick={this.saveProfile}
                             >
                                 Save
                             </button>
@@ -221,12 +277,13 @@ class profile extends Component {
                                     type="file"
                                     accept="image/*"
                                     id="proile-pic-upload"
-                                    onClick={e => this.onCoverPicUpload(e.target.files)}
+                                    // onClick={e => this.onCoverPicUpload(e.target.files)}
+                                    onChange={this.onCoverPicUploadHandler}
                                 ></input>
 
                                 <label for="proile-pic-upload">
                                     <img
-                                        src={require("../../static/images/cover_pic1.png")}
+                                        src={userData.coverPic ? userData.coverPic : require("../../static/images/cover_pic1.png")}
                                         width="100%"
                                         height="180px"
                                     />
@@ -243,18 +300,28 @@ class profile extends Component {
 
                                 <label for="proile-pic-upload">
                                     <img
-                                        src={require("../../static/images/profile_pic.png")}
+                                        src={userData.profilePic ? userData.profilePic : require("../../static/images/profile_pic.png")}
                                         height="80px"
                                     />
                                 </label>
                             </div>
                         </div>
                         <div class="edit-details-form">
-                            <Form>
-                                <Form.Group controlId="formGridName">
-                                    <Form.Label>Name</Form.Label>
+                            <Form onSubmit={this.saveProfile}>
+                                <Button variant="primary" type="submit">submit</Button>
+                                <Form.Group controlId="formGridFName">
+                                    <Form.Label>Firstname</Form.Label>
                                     <Form.Control
-                                        placeholder={this.props.firstName + " " + this.props.lastName}
+                                        // onChange={e => this.setState({ last_name: e.target.value })}
+                                        placeholder={usrDetails.firstName ? usrDetails.firstName : ""}
+                                    // value={this.props.firstName + " " + this.props.lastName}
+                                    />
+                                </Form.Group>
+                                <Form.Group controlId="formGridLName">
+                                    <Form.Label>Lastname</Form.Label>
+                                    <Form.Control
+                                        // onChange={e => this.setState({ last_name: e.target.value })}
+                                        placeholder={usrDetails.lastName ? usrDetails.lastName : ""}
                                     // value={this.props.firstName + " " + this.props.lastName}
                                     />
                                 </Form.Group>
@@ -263,17 +330,16 @@ class profile extends Component {
                                     <Form.Control
                                         as="textarea"
                                         rows="3"
-                                        placeholder="Add your Bio"
-                                        value=""
+                                        placeholder={userData.location ? userData.location : "Add your Bio"}
                                     />
                                 </Form.Group>
                                 <Form.Group controlId="formGridLocation">
                                     <Form.Label>Location</Form.Label>
-                                    <Form.Control placeholder="Add Your Location" value="" />
+                                    <Form.Control placeholder={userData.location ? userData.location : "Your Location"} />
                                 </Form.Group>
                                 <Form.Group controlId="formGridWebsite">
                                     <Form.Label>Website</Form.Label>
-                                    <Form.Control placeholder="Add your Website" value="" />
+                                    <Form.Control placeholder={userData.website ? userData.website : "Add your Website"} />
                                 </Form.Group>
                             </Form>
                         </div>

@@ -28,7 +28,7 @@ export function getfollowers(data) {
         // };
         axios.defaults.withCredentials = true;
         axios
-            .get(`http://${HOSTNAME}:8080/api/v1/user/` + data.user_id + `followers`)
+            .get(`http://${HOSTNAME}:8080/api/v1/user/` + data.user_id + `/followers`)
             .then(response => dispatch(getUserfollowers(response))).catch(err => { console.log(err); });
     };
 }
@@ -45,12 +45,12 @@ export function getfollowees(data) {
         // };
         axios.defaults.withCredentials = true;
         axios
-            .get(`http://${HOSTNAME}:8080/api/v1/user/` + data.user_id + `followees`)
+            .get(`http://${HOSTNAME}:8080/api/v1/user/` + data.user_id + `/followees`)
             .then(response => dispatch(getUserfollowees(response))).catch(err => { console.log(err); });
     };
 }
 
 function getUserfollowees(returndata) {
-    // console.log("Inside getUserDetails - returndata: ", JSON.stringify(returndata));
+    console.log("Inside getUserfollowees - returndata: ", JSON.stringify(returndata));
     return { type: GET_FOLLOWEES, payload: returndata };
 }
