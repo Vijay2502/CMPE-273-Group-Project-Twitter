@@ -37,11 +37,12 @@ class ViewTweets extends Component {
                 <div className="main-body">
                     {console.log("this.props.dataFromParent123", this.props.dataFromParent)}
                     {this.props.dataFromParent.map((tweet, index) => {
-                        let name = `${tweet.name}`;
-                        let handle = `@${tweet.name.first}${tweet.name.last}`;
+                        console.log("tweet" + index)
+                        console.log(tweet)
+                        let name = tweet.owner !== undefined ? `${tweet.owner.firstName} ${tweet.owner.lastName}` : "";
+                        let handle = `@${tweet.owner.username}`;
                         let image = tweet.image;
-                        let tweetText = tweet.tweet;
-                        let likeIncrement = 0;
+                        let tweetText = tweet.data.text;
                         console.log(image);
 
                         const buttonData = {};
