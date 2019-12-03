@@ -37,6 +37,10 @@ class CreateTweet extends Component {
         const data = {};
         for (let i = 0; i < e.target.length; i++) {
             if (e.target[i].id !== "") {
+                if (e.target[i].id === "img-upload") {
+                    continue;
+                }
+                
                 data[e.target[i].id] = e.target[i].value;
             }
         }
