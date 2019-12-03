@@ -55,27 +55,6 @@ class List extends Component {
         this.setState({
             users: this.props.ownedlists
         });
-        // fetch('https://randomuser.me/api/')
-        //     .then(response => {
-        //         if (response.ok) return response.json();
-        //         throw new Error('Request failed.');
-        //     })
-        //     .then(data => {
-        //         this.setState({
-        //             users: [
-        //                 {
-
-        //                     name: data.results[0].name,
-        //                     image: data.results[0].picture.medium,
-        //                     tweet: data.results[0].email,
-        //                 },
-        //                 ...this.state.users,
-        //             ]
-        //         });
-        //     })
-        //     .catch(error => {
-        //         console.log(error);
-        //     });
     }
 
     showOwnerBox() {
@@ -111,9 +90,9 @@ class List extends Component {
          content=<div>No lists</div>
         }
        else{content = this.state.users.map((user, index) => {
-            let name ="Sakshi Mahendru"
+            let name =localStorage.getItem("firstName")+localStorage.getItem("lastName");
             // `${user.name.first} ${user.name.last}`;
-            let handle = "@mahendru_sakshi"
+            let handle = "@"+localStorage.getItem("username")
             //`@${user.name.first}${user.name.last}`;
             let image = user.image;
             console.log(image);
