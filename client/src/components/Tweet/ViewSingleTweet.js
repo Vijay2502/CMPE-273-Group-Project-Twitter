@@ -82,7 +82,7 @@ class ViewSingleTweet extends Component {
         let date1 = dateObj.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
         let date2 = months[dateObj.getMonth()] + " " + dateObj.getDate() + ", " + dateObj.getFullYear();
 
-        console.log("tweet")
+        console.log("ViewSingleTweet tweet")
         console.log(tweet)
         let id = tweet.id;
         let name = tweet.owner !== undefined ? `${tweet.owner.firstName} ${tweet.owner.lastName}` : "name";

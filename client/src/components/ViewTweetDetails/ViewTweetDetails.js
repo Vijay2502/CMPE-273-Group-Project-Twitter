@@ -128,6 +128,7 @@ class ViewTweetDetails extends Component {
 
     render() {
         let tweetData = this.state.data;
+        console.log("ViewTweetDetails tweetData", tweetData)
         let tweetReplies = this.state.replies;
         console.log(this.state);
         if (!tweetData) {
@@ -148,9 +149,7 @@ class ViewTweetDetails extends Component {
                         <FontAwesomeIcon icon={faLongArrowAltLeft} /> Tweet
                     </div>
 
-
                     <ViewSingleTweet tweet={tweetData} />
-
 
                     <div class="reply-box">
                         <ViewTweets dataFromParent={tweetReplies} setTweet={this.getTweet} />
