@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { PullDownContent, PullToRefresh, RefreshContent, ReleaseContent } from "react-js-pull-to-refresh";
 import TweetBody from "../HomeTweetList/listview";
 import TweetButtons from "./TweetButtons";
 import { connect } from "react-redux";
