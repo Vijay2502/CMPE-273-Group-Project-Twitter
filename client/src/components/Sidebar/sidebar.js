@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import Tweet from "../Tweet/CreateTweet";
+
 import {
     faBell,
     faBookmark,
@@ -269,55 +271,56 @@ class Sidebar extends Component {
                     onHide={this.cancelTweet}
                     animation={false}
                 >
-                    <Modal.Header closeButton></Modal.Header>
+                    <Tweet/>
+                    {/*<Modal.Header closeButton></Modal.Header>*/}
 
-                    <Modal.Body>
-                        <Form onSubmit={this.createTweet}>
-                            <div class="tweet-container row">
-                                <div class="col-sm-1">
-                                    <img
-                                        //../../static/images/profile_pic.png
-                                        src={require("../../static/images/profile_pic.png")}
-                                        height="35"
-                                        width="35"
-                                    />
-                                </div>
-                                <div class="text-area-container col-sm-11">
-                                    <textarea
-                                        class="form-control text-area"
-                                        id="text"
-                                        placeholder="What's happening"
-                                        rows="4"
-                                    ></textarea>
-                                    {/* <Form.Group controlId="formGridcreateTweet">
-                                        <Form.Control as="textarea" rows="3" placeholder="What's happening?" />
-                                    </Form.Group> */}
-                                </div>
-                            </div>
-                            <div class="tweet-footer" >
-                                <div className="image-icon">
-                                    <input
-                                        class="image-btn"
-                                        type="file"
-                                        accept="image/*"
-                                        id="img-upload"
-                                        onChange={this.onSelectingImage}
-                                    ></input>
+                    {/*<Modal.Body>*/}
+                    {/*    <Form onSubmit={this.createTweet}>*/}
+                    {/*        <div class="tweet-container row">*/}
+                    {/*            <div class="col-sm-1">*/}
+                    {/*                <img*/}
+                    {/*                    //../../static/images/profile_pic.png*/}
+                    {/*                    src={require("../../static/images/profile_pic.png")}*/}
+                    {/*                    height="35"*/}
+                    {/*                    width="35"*/}
+                    {/*                />*/}
+                    {/*            </div>*/}
+                    {/*            <div class="text-area-container col-sm-11">*/}
+                    {/*                <textarea*/}
+                    {/*                    class="form-control text-area"*/}
+                    {/*                    id="text"*/}
+                    {/*                    placeholder="What's happening"*/}
+                    {/*                    rows="4"*/}
+                    {/*                ></textarea>*/}
+                    {/*                /!* <Form.Group controlId="formGridcreateTweet">*/}
+                    {/*                    <Form.Control as="textarea" rows="3" placeholder="What's happening?" />*/}
+                    {/*                </Form.Group> *!/*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*        <div class="tweet-footer" >*/}
+                    {/*            <div className="image-icon">*/}
+                    {/*                <input*/}
+                    {/*                    class="image-btn"*/}
+                    {/*                    type="file"*/}
+                    {/*                    accept="image/*"*/}
+                    {/*                    id="img-upload"*/}
+                    {/*                    onChange={this.onSelectingImage}*/}
+                    {/*                ></input>*/}
 
-                                    <label for="img-upload">
-                                        <FontAwesomeIcon icon={faImage} />
-                                    </label>
-                                </div>
-                                <div class="btn-tweet">
-                                    <button class="btn btn-primary submit-btn"
-                                            type="submit"
-                                    >
-                                        Tweet
-                                        </button>
-                                </div>
-                            </div>
-                        </Form>
-                    </Modal.Body>
+                    {/*                <label for="img-upload">*/}
+                    {/*                    <FontAwesomeIcon icon={faImage} />*/}
+                    {/*                </label>*/}
+                    {/*            </div>*/}
+                    {/*            <div class="btn-tweet">*/}
+                    {/*                <button class="btn btn-primary submit-btn"*/}
+                    {/*                        type="submit"*/}
+                    {/*                >*/}
+                    {/*                    Tweet*/}
+                    {/*                    </button>*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*    </Form>*/}
+                    {/*</Modal.Body>*/}
                     {/* <Modal.Footer>
                         <div className="image-icon">
                             <input

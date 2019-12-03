@@ -58,6 +58,7 @@ class CreateTweet extends Component {
         console.log(tweet);
 
         const formData = new FormData();
+        console.log("testing image state:",this.state.selectedTweetImage);
         if (this.state.selectedTweetImage) {
             console.log("inside if condition");
             formData.append('image', this.state.selectedTweetImage, this.state.selectedTweetImage.name);
@@ -74,6 +75,7 @@ class CreateTweet extends Component {
                     this.props.createTweet(tweet);
                 })
         } else {
+            console.log("XXX Insisde else")
             tweet["data"] = {...tweet["data"], image: null};
             this.props.createTweet(tweet);
         }
