@@ -27,6 +27,13 @@ export default function getTopTenTweetsByViews(state = initialState, action) {
             const tweetCustom = {};
             tweetCustom.data = tweet.tweet.data;
 
+            const owner = {};
+            owner["firstName"] = localStorage.getItem("firstName");
+            owner["lastName"] = localStorage.getItem("lastName");
+            owner["username"] = localStorage.getItem("username");
+
+            tweetCustom.owner = owner;
+
             return tweetCustom;
         });
 
@@ -49,6 +56,13 @@ export default function getTopTenTweetsByViews(state = initialState, action) {
         const tweets = action.payload.data.res.map((tweet) => {
             const tweetCustom = {};
             tweetCustom.data = tweet.tweet.data;
+
+            const owner = {};
+            owner["firstName"] = localStorage.getItem("firstName");
+            owner["lastName"] = localStorage.getItem("lastName");
+            owner["username"] = localStorage.getItem("username");
+
+            tweetCustom.owner = owner;
 
             return tweetCustom;
         });
@@ -73,6 +87,14 @@ export default function getTopTenTweetsByViews(state = initialState, action) {
             const tweetCustom = {};
 
             tweetCustom.data = tweet.tweet.data;
+
+            const owner = {};
+            owner["firstName"] = localStorage.getItem("firstName");
+            owner["lastName"] = localStorage.getItem("lastName");
+            owner["username"] = localStorage.getItem("username");
+
+            tweetCustom.owner = owner;
+
             return tweetCustom;
         });
 

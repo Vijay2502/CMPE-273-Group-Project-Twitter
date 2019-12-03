@@ -19,7 +19,7 @@ export function getTopTenTweetsByLikes(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/analytics//analytics/user/${payload.ownerId}/tweets/count/hourly`, payload)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/analytics/user/${payload.ownerId}/tweets/by-likes`, payload)
             .then((response) => dispatch(getTopTenTweetsByLikesDispatch(response.data)));
     }
 }
