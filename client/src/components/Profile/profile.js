@@ -46,7 +46,7 @@ class profile extends Component {
             user_id: localStorage.getItem('id')
         };
         this.props.getProfileDetails(data);
-        this.props.getUserTweets({ user_id: 1 });
+        this.props.getUserTweets({ data });
         this.props.getUserfollowees(data);// ISSUE WITH API SO COMMENTING
         this.props.getUserfollowers(data);// ISSUE WITH API SO COMMENTING
     }
@@ -198,7 +198,7 @@ class profile extends Component {
         }
         else if (this.state.openFollowee) {
             return (<FollowList openFollowee={this.state.openFollowee} title={"Followee List"} closeList={this.closefolloweeList}
-                users={usrFollowee.followee}
+                users={usrFollowee.followees}
                 profile={usrDetails}
                 getUsers={usrDetails}
                 hasMore={false}

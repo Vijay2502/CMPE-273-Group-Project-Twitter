@@ -25,13 +25,13 @@ class userlist extends Component {
             </Modal.Header>
             <Modal.Body>
 
-                {/* <UserList
+                <UserList
                     users={this.props.users}
                     profile={this.props.profile}
                     getUsers={this.props.getUsers}
                     hasMore={this.props.hasMore}
 
-                /> */}
+                />
             </Modal.Body>
         </Modal>);
     }
