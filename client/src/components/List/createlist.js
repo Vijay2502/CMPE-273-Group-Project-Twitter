@@ -110,13 +110,17 @@ class CreateList extends React.Component {
 
       };
    handleAddMembers = () =>{
-    this.setState({addMemberModal: false});
-       let payload = {
-           "userId":1,
-           "id":2,
-           "memberId":this.state.chipData
+    console.log("this.prop.scurrent",this.props.currentList);
+    this.state.chipData.map(user=>{
+        console.log("user",user);
+              let payload = {
+           "id":localStorage.getItem("id"),
+           "listId":this.props.currentList.id,
+           "memberId":user.id
        }
-       this.props.addMem(payload);
+      this.props.addMem(payload);
+    });
+    this.setState({addMemberModal: false});
    }
 
     getUser = (test) => {

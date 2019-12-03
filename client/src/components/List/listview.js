@@ -77,12 +77,14 @@ const Members = (props) => {
     axios.get(`http://localhost:8080/api/v1/list/${props.members.id}/members`)
         .then(response => {
             console.log("members count",response.data.data.members);
-            members = response.data.data.members
-            
+            members = response.data.data.members    
         })
         .catch(err => {
             console.error(err);
         });
+        setTimeout(function(){ 
+            //do nothing
+         }, 2000);
     return (
                 <p style={{ display: 'inline-block' }}> {members.length} members</p>
             )
@@ -98,6 +100,9 @@ const Subscribers = (props) => {
         .catch(err => {
             console.error(err);
         });
+        setTimeout(function(){ 
+            //do nothing
+         }, 2000);
     return (
         <p style={{ display: 'inline-block' }}> {subscribers.length} subscribers</p>
     )

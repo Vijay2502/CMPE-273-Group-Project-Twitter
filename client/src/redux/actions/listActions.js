@@ -23,7 +23,7 @@ export function addMem(payload) {
     console.log("addMem payload");
     console.log(payload);
     return (dispatch) => {
-        axios.post(`http://${HOSTNAME}:8080/api/v1/list/${payload.userId}/add-member`, payload)
+        axios.post(`http://${HOSTNAME}:8080/api/v1/list/${payload.listId}/add-member`, payload)
             .then((response) => dispatch(addMembersDispatch(response.data)));
     }
 }
