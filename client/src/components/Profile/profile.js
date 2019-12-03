@@ -176,6 +176,32 @@ class profile extends Component {
     closefolloweeList = () => {
         this.setState({ openFollowee: false });
     }
+    getDate = () => {
+        if (this.props.userDetails) {
+            let date = this.props.userDetails.createdAt;
+            let newDate = new Date(date);
+            let day = newDate.getDay() + 1
+            var month = new Array();
+            month[0] = "Jan";
+            month[1] = "Feb";
+            month[2] = "Mar";
+            month[3] = "Apr";
+            month[4] = "May";
+            month[5] = "Jun";
+            month[6] = "Jul";
+            month[7] = "Aug";
+            month[8] = "Sep";
+            month[9] = "Oct";
+            month[10] = "Nov";
+            month[11] = "Dec";
+            var mon = month[newDate.getMonth()];
+            let joinedDate = day + "-" + mon + "-" + newDate.getFullYear();
+            console.log(" date :", joinedDate);
+            return joinedDate;
+        } else {
+            return ""
+        }
+    }
     render() {
         // if (this.state.openFollower) {
 
@@ -204,7 +230,7 @@ class profile extends Component {
                 hasMore={false}
             ></FollowList>)
         }
-        console.log("checking tweetCount", tweetCount);
+        // console.log("checking tweetCount", tweetCount);
         return (
             <div class="profile-container col-sm-12">
                 <div class="top-details row">
@@ -243,14 +269,17 @@ class profile extends Component {
                                 <FontAwesomeIcon icon={faBirthdayCake} />
                                 <span> born {}</span>
                             </div> */}
-                            <div class="col-sm-4 profile-detail-font">
+                            <div class="col-sm-8 profile-detail-font">
                                 <FontAwesomeIcon icon={faCalendarAlt} />
-                                <span> Joined {}</span>
+                                <span> Joined {this.getDate()}</span>
                             </div>
                         </div>
                         <div class="followers-following row">
                             <div class="col-sm-3 profile-detail-font"><Link class="link-color" onClick={this.followerList}>{usrFollower.count ? usrFollower.count : 0} Followers</Link></div>
                             <div class="offset-sm-1 col-sm-3 profile-detail-font"><Link class="link-color" onClick={this.followeeList}>{usrFollowee.count ? usrFollowee.count : 0} Following</Link></div>
+                        </div>
+                        <div class="followers-following row">
+                            <div class="col-sm-10 profile-detail-font">{userData.state ? userData.state : ""} {userData.city ? userData.city : ""} {userData.zipcode ? userData.zipcode : ""}</div>
                         </div>
                     </div>
                 </div>
