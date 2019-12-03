@@ -1,8 +1,8 @@
-import React, {Component} from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faComment, faHeart} from "@fortawesome/free-regular-svg-icons";
-import {faRetweet, faShareSquare} from "@fortawesome/free-solid-svg-icons";
-import {Modal} from "react-bootstrap";
+import React, { Component } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComment, faHeart } from "@fortawesome/free-regular-svg-icons";
+import { faRetweet, faBookmark } from "@fortawesome/free-solid-svg-icons";
+import { Modal } from "react-bootstrap";
 import ReplyTweet from "./ReplyTweet";
 
 class TweetButtons extends Component {
@@ -52,7 +52,7 @@ class TweetButtons extends Component {
                             console.log("faRetweet this.props.data", this.props.data)
                             this.props.retweetTweetCallback(this.props.data.tweetData, this.props.data.owner,
                                 this.props.data.retweetingUserId, this.props.data.tweetId)
-                            this.setState({retweetIncrement: 1})
+                            this.setState({ retweetIncrement: 1 })
                         }}
                     >
                         <FontAwesomeIcon icon={faRetweet} />
@@ -66,7 +66,7 @@ class TweetButtons extends Component {
                         onClick={() => {
                             console.log("faHeart this.props.data", this.props.data)
                             this.props.likeTweetCallback(this.props.data.tweetId, this.props.data.retweetingUserId)
-                            this.setState({likeIncrement: 1})
+                            this.setState({ likeIncrement: 1 })
                         }}
                     >
                         <FontAwesomeIcon icon={faHeart} />
@@ -80,7 +80,7 @@ class TweetButtons extends Component {
                             this.props.bookmarkCallback(this.props.data.tweetId, this.props.data.retweetingUserId)
                         }}
                     >
-                        <FontAwesomeIcon icon={faShareSquare} />
+                        <FontAwesomeIcon icon={faBookmark} />
                     </button>
                 </div>
 
@@ -90,8 +90,8 @@ class TweetButtons extends Component {
                     animation={false}
                 >
                     <ReplyTweet data={this.props.data.tweetId}
-                                triggerReplyCountIncrement={this.triggerReplyCountIncrement}
-                                closeCommentModal={this.closeCommentModal}/>
+                        triggerReplyCountIncrement={this.triggerReplyCountIncrement}
+                        closeCommentModal={this.closeCommentModal} />
                 </Modal>
             </div>
         )
