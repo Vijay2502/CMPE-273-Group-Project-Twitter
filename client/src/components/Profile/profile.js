@@ -46,7 +46,7 @@ class profile extends Component {
             user_id: localStorage.getItem('id')
         };
         this.props.getProfileDetails(data);
-        this.props.getUserTweets({ data });
+        this.props.getUserTweets(data);
         this.props.getUserfollowees(data);// ISSUE WITH API SO COMMENTING
         this.props.getUserfollowers(data);// ISSUE WITH API SO COMMENTING
     }
