@@ -56,37 +56,33 @@ class TopTenTweetsByViews extends Component {
             },
             axisY: {
                 title: "Number of views",
-                labelFormatter: this.addSymbols
+                labelFormatter: this.addSymbols,
+                interval: 1
             },
             data: [{
                 type: "bar",
-                dataPoints: [
-                    { y: 2200000000, label: "Tweet 1" },
-                    { y: 1800000000, label: "Tweet 2" },
-                    { y: 800000000, label: "Tweet 3" },
-                    { y: 563000000, label: "Tweet 4" },
-                    { y: 376000000, label: "Tweet 5" },
-                    { y: 300000000, label: "Tweet 6" },
-                    { y: 250000000, label: "Tweet 7" },
-                    { y: 220000000, label: "Tweet 8" },
-                    { y: 197000000, label: "Tweet 9" },
-                    { y: 50000000, label: "Tweet 10" },
-                ]
+                dataPoints: this.props.topTenTweetsByViews.dataPoints
+                // dataPoints: [
+                //     { y: 2200000000, label: "Tweet 1" },
+                //     { y: 1800000000, label: "Tweet 2" },
+                //     { y: 800000000, label: "Tweet 3" },
+                //     { y: 563000000, label: "Tweet 4" },
+                //     { y: 376000000, label: "Tweet 5" },
+                //     { y: 300000000, label: "Tweet 6" },
+                //     { y: 250000000, label: "Tweet 7" },
+                //     { y: 220000000, label: "Tweet 8" },
+                //     { y: 197000000, label: "Tweet 9" },
+                //     { y: 50000000, label: "Tweet 10" },
+                // ]
             }]
         };
 
         return (
-            // <h1>analytics</h1>
-
             <div>
-                <h1>TopTenTweetsByViews</h1>
-                {console.log("topTenTweetsByViews", this.props.topTenTweetsByViews)}
-                <ViewTweets dataFromParent={this.props.topTenTweetsByViews} isDisableButtons={true}/>
                 <CanvasJSChart options={options}
-                /* onRef={ref => this.chart = ref} */
+                    /* onRef={ref => this.chart = ref} */
                 />
-
-                {/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
+                <ViewTweets dataFromParent={this.props.topTenTweetsByViews.tweets} isDisableButtons={true}/>
             </div>
         );
     }

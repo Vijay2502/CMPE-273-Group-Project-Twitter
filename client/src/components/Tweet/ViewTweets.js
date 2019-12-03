@@ -107,7 +107,7 @@ class ViewTweets extends Component {
                         return (
                             <div>
                                 {this.props.isDisableButtons === true &&
-                                <h5>Tweet {index}</h5>}
+                                <h5>Tweet {index + 1}</h5>}
 
                                 <TweetBody
                                     key={index}

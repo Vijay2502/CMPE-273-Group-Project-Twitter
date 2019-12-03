@@ -55,28 +55,14 @@ class TopTenTweetsByLikes extends Component {
                 reversed: true,
             },
             axisY: {
-                title: "Number of views",
-                labelFormatter: this.addSymbols
+                title: "Number of likes",
+                labelFormatter: this.addSymbols,
+                interval: 1
             },
             data: [{
                 type: "bar",
                 dataPoints: this.props.topTenTweetsByLikes.dataPoints
             }]
-            // data: [{
-            //     type: "bar",
-            //     dataPoints: [
-            //         { y: 2200000000, label: "Tweet 1" },
-            //         { y: 1800000000, label: "Tweet 2" },
-            //         { y: 800000000, label: "Tweet 3" },
-            //         { y: 563000000, label: "Tweet 4" },
-            //         { y: 376000000, label: "Tweet 5" },
-            //         { y: 2200000000, label: "Tweet 6" },
-            //         { y: 1800000000, label: "Tweet 7" },
-            //         { y: 800000000, label: "Tweet 8" },
-            //         { y: 563000000, label: "Tweet 9" },
-            //         { y: 376000000, label: "Tweet 10" },
-            //     ]
-            // }]
         };
 
         return (
