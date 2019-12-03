@@ -3,13 +3,13 @@ import axios from 'axios';
 import { Button, Row, Col } from 'reactstrap';
 
 
-import { UserBody } from './UserBody';
+import { ListBody } from './ListBody';
 import { HOSTNAME } from "../../../constants/appConstants";
 const API_PATH = `http://${HOSTNAME}:8080`
 
-class UserComponent extends Component {
+class ListComponent extends Component {
     state = {
-        followed: this.props.user.followed,
+        subscribed: this.props.list.subscribed,
     }
 
     tokenConfig = () => {
@@ -27,11 +27,11 @@ class UserComponent extends Component {
         return config;
     };
 
-    follow = (followeeId) => {
-        axios.post(API_PATH + `/user/${this.props.callerId}/follow`, { followeeId }, this.tokenConfig()).then(res => {
+    subscribe = (subscriberId) => {
+        axios.post(API_PATH + `/user/${this.props.callerId}/subscribe`, { subscriberId }, this.tokenConfig()).then(res => {
             if (res.data.status == "ok") {
                 this.setState({
-                    followed: true
+                    subscribed: true
                 });
             }
         }).catch(err => {
@@ -40,11 +40,11 @@ class UserComponent extends Component {
 
     }
 
-    unfollow = (followeeId) => {
-        axios.post(API_PATH + `/user/${this.props.callerId}/unfollow`, { followeeId }, this.tokenConfig()).then(res => {
+    unsubscribe = (subscriberId) => {
+        axios.post(API_PATH + `/user/${this.props.callerId}/unsubscribe`, { subscriberId }, this.tokenConfig()).then(res => {
             if (res.data.status == "ok") {
                 this.setState({
-                    followed: false
+                    subscribed: false
                 });
             }
         }).catch(err => {
@@ -55,20 +55,21 @@ class UserComponent extends Component {
 
     render() {
         return (<Row>
-                        <Col className="col-10">
+            <Col className="col-9">
             <div className="inner-body list-group-item-action">
-                <UserBody
-                    user={this.props.user}
-                /></div>
+                <ListBody
+                    list={this.props.list}
+                />
+                </div>
             </Col>
             <Col className="text-right my-auto">
-                {this.props.callerId ? (this.state.followed ? (<div class="reply-tweet-submit-container" >
-                    <Button class="btn-container" color='danger' type="submit" onClick={this.unfollow.bind(this.props.callerId)}>
-                        Unfollow
+                {this.props.callerId ? (this.state.subscribed ? (<div class="reply-tweet-submit-container" >
+                    <Button class="btn-container" color='danger' type="submit" onClick={this.subscribe.bind(this.props.callerId)}>
+                        Subscribe
         </Button>
                 </div>) : (<div class="reply-tweet-submit-container" >
-                    <Button class="btn-container" color='primary' type="submit" onClick={this.follow.bind(this.props.callerId)}>
-                        Follow
+                    <Button class="btn-container" color='primary' type="submit" onClick={this.unsubscribe.bind(this.props.callerId)}>
+                        Unsubscribe
         </Button>
                 </div>)) : <div></div>}
             </Col>
@@ -76,4 +77,4 @@ class UserComponent extends Component {
     }
 }
 
-export default UserComponent;
+export default ListComponent;

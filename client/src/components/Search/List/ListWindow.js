@@ -3,31 +3,33 @@ import axios from 'axios';
 import { Button, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import UserComponent from './UserComponent'
+import ListComponent from './ListComponent'
 import InfiniteScroll from 'react-infinite-scroller';
 
-class UserList extends Component {
+class ListWindow extends Component {
   state = {
-    users: this.props.users
+    lists: this.props.lists
   }
 
   render() {
-    var userRows = this.state.users.map(user => {
-      return (<UserComponent
-        key={user.id}
+
+    var listRows = this.props.lists.map(list => {
+      return (<ListComponent
+        key={list.id}
         callerId={this.props.profile}
-        user={user}
+        list={list}
       />)
     });
+    console.log('asdasdas',this.props.lists);
     return (<Col>
       <InfiniteScroll
         pageStart={0}
-        loadMore={this.props.getUsers}
+        loadMore={this.props.getLists}
         hasMore={this.props.hasMore}
         loader={<div className="loader" key={0}>Loading ...</div>}
         useWindow={false}
       >
-        {userRows}
+        {listRows}
       </InfiniteScroll>
     </Col>)
   }
@@ -35,4 +37,4 @@ class UserList extends Component {
 
 
 
-export default UserList;
+export default ListWindow;
