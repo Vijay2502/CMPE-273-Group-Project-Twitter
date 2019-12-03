@@ -56,7 +56,7 @@ class NumberOfTweetsGraph extends Component {
             },
             axisX: {
                 title: "Hours",
-                interval: 1
+                interval: 1,
             },
             axisY: {
                 title: "Number of tweets",

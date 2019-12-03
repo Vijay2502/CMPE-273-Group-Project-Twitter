@@ -23,6 +23,7 @@ import "./sidebar.css";
 import {createTweet} from "../../redux/actions/tweetsActions";
 import {connect} from "react-redux";
 import axios from "axios";
+import {Redirect} from "react-router";
 
 
 function mapStateToProps(store) {
@@ -43,7 +44,8 @@ class Sidebar extends Component {
             openTweetModal: false,
             anchorEl: null,
             setAnchorEl: null,
-            selectedTweetImage: null
+            selectedTweetImage: null,
+            redirectToAnalytics: false
         };
 
         this.newTweet = this.newTweet.bind(this);
@@ -162,6 +164,9 @@ class Sidebar extends Component {
     render() {
         return (
             <div class="sidebar-container row">
+                {this.state.redirectToAnalytics && <Redirect to={{
+                    pathname: "/analytics"
+                }} />}
                 <div class="col-sm-3 sidebar">
                     <div class="list-group sidebar-list col-sm-12">
                         <div className="twitter-icon">
@@ -231,6 +236,14 @@ class Sidebar extends Component {
                             <FontAwesomeIcon icon={faListAlt} />
                             <span>List</span>
                         </button>
+                        <button
+                            type="button"
+                            class="list-group-item list-group-item-action borderless"
+                            onClick={() => this.sendData("ViewDetailedList")}
+                        >
+                            <FontAwesomeIcon icon={faBookmark} />
+                            <span>View Detailed List</span>
+                        </button>
                         <button class="list-group-item list-group-item-action borderless" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}  >
                             <FontAwesomeIcon icon={faEllipsisH} />
                             <span>More</span>
@@ -242,11 +255,11 @@ class Sidebar extends Component {
                             open={Boolean(this.state.anchorEl)}
                             onClose={this.handleClose}
                         >
-                            <MenuItem onClick={this.handleClose}>Analytics</MenuItem>
+                            <MenuItem onClick={() => this.setState({redirectToAnalytics: true})}>Analytics</MenuItem>
                             <MenuItem onClick={() => {
                                 this.sendData("Settings");
                                 this.handleClose();
-                            }}>Settings and privicy</MenuItem>
+                            }}>Settings and privacy</MenuItem>
                             <MenuItem onClick={this.handleClose}>Logout</MenuItem>
                         </Menu>
                         {/* <button

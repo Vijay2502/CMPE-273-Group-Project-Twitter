@@ -9,7 +9,7 @@ import NavPage from "./NavPage/NavPage";
 import Login from "./Account/Login";
 import SignUp from "./Account/SignUp";
 import AnalyticsMain from "./Analytics/AnalyticsMain";
-import tweetlist from "./List/tweetlist";
+import tweetlist from "./List/listTweetView";
 import Chat from "./Chat/chat";
 import listMembers from "./List/listMembers"
 import Reactivate from "./Account/Reactivate";

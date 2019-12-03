@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { PullDownContent, PullToRefresh, RefreshContent, ReleaseContent } from "react-js-pull-to-refresh";
 import '../../css/list.css'
-import { ListBody } from './listview.js'
+import ListBody  from './listview.js'
 import { connect } from "react-redux";
 import {getOwnedLists,getMemberLists,getSubscribedLists} from "../../redux/actions/listActions";
 

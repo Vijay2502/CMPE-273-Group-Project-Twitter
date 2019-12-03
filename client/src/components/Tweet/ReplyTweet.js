@@ -3,10 +3,8 @@ import { Button, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
-import {replyTweet, replyTweetDispatch} from "../../redux/actions/tweetsActions";
+import { replyTweet } from "../../redux/actions/tweetsActions";
 import "./tweets.css"
-import axios from "axios";
-import {HOSTNAME} from "../../constants/appConstants";
 
 function mapStateToProps(store) {
     return {}

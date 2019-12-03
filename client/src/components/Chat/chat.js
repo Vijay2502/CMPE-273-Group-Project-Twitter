@@ -33,14 +33,16 @@ class Chat extends Component {
 
     componentDidMount() {
         const socket = io('http://localhost:3002');
-        //socket.emit('channel id');
+        console.log("---->>>>>>>>>>>>>>>>>", this.props);
 
         this.setState({
             socket: socket,
-            //channel: this.props.channel
-            channel: "1|2"
+            channel: this.props.channel
         }, () => {
             socket.emit('channel id', this.state.channel);
+
+            //socket.emit('subscribe', this.state.channel);
+            //socket.emit('subscribe', 'roomTwo');
             socket.on(this.state.channel, (message) => {
                 const messages = this.state.messages;
                 message = JSON.parse(message);
@@ -58,18 +60,22 @@ class Chat extends Component {
 
         // get messages
         axios.defaults.withCredential = true;
-        let channel = '1|2';
+        let channel = this.props.channel;
         let firstName = localStorage.getItem('firstName');
-        axios.get(`http://localhost:8080/api/v1/getMessages/${channel}`)
+        axios.get(`http://localhost:8080/api/v1/conversation/getMessages/${channel}`)
             .then(response => {
-                console.log("oooooooooo", response.data.data.messages);
-                this.setState(
-                    {
-                        messages: response.data.message.map(m => ({
-                            author: firstName == m.sender ? "me" : "them", type: 'text', data: { text: m.message }
-                        }))
-                    }
-                );
+
+                if (response.data.data) {
+                    console.log("oooooooooo", response.data.data.messages);
+                    this.setState(
+                        {
+                            messages: response.data.message.map(m => ({
+                                author: firstName == m.sender ? "me" : "them", type: 'text', data: { text: m.message }
+                            }))
+                        }
+                    );
+                }
+
             })
             .catch(err => {
                 console.error(err);
