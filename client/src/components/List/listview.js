@@ -75,31 +75,14 @@ const Title = (props) => {
 };
 
 const Members = (props) => {
-    axios.get(`http://localhost:8080/api/v1/list/${props.members.id}/members`)
-        .then(response => {
-            console.log("members count",response.data.data.members);
-            members = response.data.data.members    
-        })
-        .catch(err => {
-            console.error(err);
-        });
     return (
-                <p style={{ display: 'inline-block' }}> {members.length} members</p>
+                <p style={{ display: 'inline-block' }}> {props} members</p>
             )
 };
 
 const Subscribers = (props) => {
-
-    axios.get(`http://localhost:8080/api/v1/list/${props.subscribers.id}/subscribers`)
-        .then(response => {
-            console.log(" subscribers  count",response.data.data.subscribers );
-            subscribers = response.data.data.subscribers
-        })
-        .catch(err => {
-            console.error(err);
-        });
     return (
-        <p style={{ display: 'inline-block' }}> {subscribers.length} subscribers</p>
+        <p style={{ display: 'inline-block' }}> {props} subscribers</p>
     )
 };
 

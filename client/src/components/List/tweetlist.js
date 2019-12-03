@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import "../Profile/profile.css";
+import '../../css/list.css'
 import ViewTweets from "../Tweet/ViewTweets";
-import GridLayout from 'react-grid-layout';
-import Search from '../List/search';
-import Sidebar from '../Sidebar/sidebar';
 import { connect } from "react-redux";
 import {getListById,getTweetByList} from "../../redux/actions/listActions";
 import axios from 'axios';
@@ -38,9 +36,11 @@ class tweetlist extends Component {
       users: [],
       members:[],
       subscribers:[],
-      isSubscribed: true,
-      showEdit:(props.location.state.list.data.userId==localStorage.getItem("id"))?true:false,
-      showSubscribe:(props.location.state.list.data.userId==localStorage.getItem("id"))?false:true,
+      isSubscribed: props.location.state.list.subscribed,
+      // showEdit:(props.location.state.list.data.userId==localStorage.getItem("id"))?true:false,
+      showEdit:false,
+      // showSubscribe:(props.location.state.list.data.userId==localStorage.getItem("id"))?false:true,
+      showSubscribe:true,
       buttonText: props.location.state.list.subscribed ? "Unsubscribed" : "Subscribed",
       class: props.location.state.list.subscribed ? "btn btn-outline-primary" : "btn btn-primary"
     };
@@ -118,24 +118,40 @@ class tweetlist extends Component {
   this.getUser();
   }
 
-  handleClick(flag) {
-    this.setState({
-      isSubscribed : flag
+  handleClick() {
+    const payload={
+      "subscriberId": this.state.userId
+    }
+    if(this.state.subscribed){
+    axios.put(`http://localhost:8080/api/v1/list/${this.state.listId}/unsubscribe`,payload)
+    .then(response => {
+      this.setState({
+        buttonText: "Subscribed",
+        class:  "btn btn-primary"
+      })    
     })
-    console.log(this.state.buttonText);
-    this.setState({
-      buttonText: (this.state.buttonText === "Subscribed") ? "Unsubscribed" : "Subscribed",
-      class: (this.state.class === "btn btn-primary") ? "btn btn-outline-primary" : "btn btn-primary"
+    .catch(err => {
+        console.error(err);
+    });
+   
+  }else{
+    axios.put(`http://localhost:8080/api/v1/list/${this.state.listId}/unsubscribe`,payload)
+    .then(response => {
+      this.setState({
+        buttonText: "Unsubscribed" ,
+        class:  "btn btn-outline-primary"
+      })  
     })
+    .catch(err => {
+        console.error(err);
+    });
+
+  }
+    
   }
 
   render() {
     return (
-      <GridLayout className="layout" cols={12} rowHeight={30} width={1200}>
-        <div key="a" data-grid={{ x: 0, y: 0, w: 5, h: 2, static: true }}>
-          <Sidebar parentCallback={this.callbackFunction} />
-        </div>
-        <div key="b" data-grid={{ x: 10, y: 0, w: 8, h: 2, static: true }}>
           <div class="profile-container col-sm-12">
             <div class="top-details row">
               <div class="offset-sm-1">
@@ -163,16 +179,13 @@ class tweetlist extends Component {
                 </div>
               </div>
             </div>
-            { this.state.showSubscribe && <button type="button" class={this.state.class} onClick={() => this.handleClick(true)}>{this.state.buttonText}</button>}
+            { this.state.showSubscribe && <button type="button" class={this.state.class} onClick={() => this.handleClick()}>{this.state.buttonText}</button>}
             { this.state.showEdit && <button type="button" class="btn btn-outline-primary" >Edit List</button>}
             <div class="heading row"><div class="tweets-heading col-sm-2">Tweets</div></div>
             <div class="tweets-list" row>
-              {/* <ViewTweets dataFromParent={this.state.users} /> */}
+              <ViewTweets dataFromParent={this.state.users} />
             </div>
           </div>
-        </div>
-        <div key="c" data-grid={{ x: 5, y: 0, w: 6, h: 2, static: true }}><Search /></div>
-      </GridLayout>
     );
   }
 }
