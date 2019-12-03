@@ -1,10 +1,17 @@
-import {GET_TOP_TEN_TWEETS_BY_VIEWS, GET_TOP_TEN_TWEETS_BY_LIKES, GET_TOP_TEN_TWEETS_BY_RETWEETS} from "../constants/actionTypes";
+import {
+    GET_TOP_TEN_TWEETS_BY_VIEWS,
+    GET_TOP_TEN_TWEETS_BY_LIKES,
+    GET_TOP_TEN_TWEETS_BY_RETWEETS,
+    GET_NUMBER_OF_HOURLY_TWEETS, GET_NUMBER_OF_MONTHLY_TWEETS, GET_NUMBER_OF_DAILY_TWEETS
+} from "../constants/actionTypes";
 
 const initialState = {
     topTenTweetsByViews: [],
     topTenTweetsByLikes: [],
     topTenTweetsByRetweets: [],
-    numgerOfTweetsGraphs: [],
+    numberOfHourlyTweets: [],
+    numberOfDailyTweets: [],
+    numberOfMonthlyTweets: [],
 };
 
 export default function getTopTenTweetsByViews(state = initialState, action) {
@@ -80,7 +87,49 @@ export default function getTopTenTweetsByViews(state = initialState, action) {
         return Object.assign({}, state, {
             topTenTweetsByRetweets: response,
         });
+    } else if (action.type === GET_NUMBER_OF_HOURLY_TWEETS) {
+        return Object.assign({}, state, {
+            numberOfHourlyTweets: action.payload.data.res.map((pair, index) => {
+                const keys = Object.keys(pair);
+
+                const yxValues = {};
+
+                yxValues["y"] = pair[keys[0]];
+                yxValues["label"] = keys[0];
+                return yxValues;
+            })
+        });
+    } else if (action.type === GET_NUMBER_OF_DAILY_TWEETS) {
+        return Object.assign({}, state, {
+            numberOfDailyTweets: action.payload.data.res.map((pair, index) => {
+                console.log("GET_NUMBER_OF_DAILY_TWEETS pair", pair)
+                const keys = Object.keys(pair);
+                console.log("key", keys)
+
+                const yxValues = {};
+
+                yxValues["y"] = pair[keys[0]];
+                yxValues["label"] = keys[0];
+                return yxValues;
+            })
+        });
+    } else if (action.type === GET_NUMBER_OF_MONTHLY_TWEETS) {
+        return Object.assign({}, state, {
+            numberOfMonthlyTweets: action.payload.data.res.map((pair, index) => {
+                console.log("GET_NUMBER_OF_MONTHLY_TWEETS pair", pair)
+                const keys = Object.keys(pair);
+                console.log("key", keys)
+
+                const yxValues = {};
+
+                yxValues["y"] = pair[keys[0]];
+                yxValues["label"] = keys[0];
+                return yxValues;
+            })
+        });
     }
+
+
 
     return state;
 }
