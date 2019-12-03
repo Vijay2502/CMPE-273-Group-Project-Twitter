@@ -3,6 +3,8 @@ import '../../css/list.css';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 
+let members=[]
+let subscribers=[]
 const ListBox = (props) => {
     return (
         <div className="owner-body">
@@ -65,7 +67,7 @@ const Title = (props) => {
     if (props !== undefined) {
         return (
            <div> <Link style={{color:"black"}} to={{  pathname: '/listtweet',
-           state: { listId: props.title.id,userId:props.title.data.userId}}}>
+           state: { listId: props.title.id,list:props.title}}}>
             {props.title.name}
             </Link></div>
         )
@@ -73,7 +75,6 @@ const Title = (props) => {
 };
 
 const Members = (props) => {
-    let members=[]
     axios.get(`http://localhost:8080/api/v1/list/${props.members.id}/members`)
         .then(response => {
             console.log("members count",response.data.data.members);
@@ -82,16 +83,13 @@ const Members = (props) => {
         .catch(err => {
             console.error(err);
         });
-        setTimeout(function(){ 
-            //do nothing
-         }, 2000);
     return (
                 <p style={{ display: 'inline-block' }}> {members.length} members</p>
             )
 };
 
 const Subscribers = (props) => {
-    let subscribers=[]
+
     axios.get(`http://localhost:8080/api/v1/list/${props.subscribers.id}/subscribers`)
         .then(response => {
             console.log(" subscribers  count",response.data.data.subscribers );
@@ -100,9 +98,6 @@ const Subscribers = (props) => {
         .catch(err => {
             console.error(err);
         });
-        setTimeout(function(){ 
-            //do nothing
-         }, 2000);
     return (
         <p style={{ display: 'inline-block' }}> {subscribers.length} subscribers</p>
     )
