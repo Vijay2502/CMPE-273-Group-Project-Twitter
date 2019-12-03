@@ -18,12 +18,15 @@ class HomePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentScreen: "Home"
+            currentScreen: "Home",
+            viewDetailedTweetScreenPropId: null
         }
     }
 
     callbackFunction = (screenName) => {
-        this.setState({ currentScreen: screenName })
+        let tweetId = document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(7)").getAttribute("data-tweet-id");
+
+        this.setState({ currentScreen: screenName, viewDetailedTweetScreenPropId: tweetId })
     };
 
     render() {
@@ -72,8 +75,8 @@ class HomePage extends Component {
                             </div>
                         }
 
-                        {this.state.currentScreen === "ViewDetailedTweet" &&
-                            <div class="parent-container-bookmark col-sm-12" ><ViewDetailedTweet /></div>
+                        {this.state.currentScreen === "ViewDetailedTweet" && this.state.viewDetailedTweetScreenPropId &&
+                            (<div class="parent-container-bookmark col-sm-12" ><ViewDetailedTweet tweetId={this.state.viewDetailedTweetScreenPropId} /></div>)
                         }
 
                     </div>

@@ -7,6 +7,8 @@ import { faComment, faHeart } from "@fortawesome/free-regular-svg-icons";
 import { faImage, faRetweet, faShareSquare, faLongArrowAltLeft } from "@fortawesome/free-solid-svg-icons";
 import { Button, Form, Modal } from "react-bootstrap";
 import CreateTweet from "../Tweet/CreateTweet";
+import ViewTweets from '../Tweet/ViewTweets';
+import ViewSingleTweet from "../Tweet/ViewSingleTweet";
 
 
 const Image = (props) => {
@@ -70,11 +72,12 @@ class ViewTweetDetails extends Component {
             });
     }
 
-    componentDidMount() {
+    getTweet = (id) => {
         console.log("this works");
 
         try {
-            let tweetId = document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(7)").getAttribute("data-tweet-id");
+            let tweetId = id//document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(7)").getAttribute("data-tweet-id");
+            console.log(">>>>>>>>>> id ", tweetId);
             this.setState({
                 tweetId
             }, () => {
@@ -87,8 +90,9 @@ class ViewTweetDetails extends Component {
                         this.setState(
                             {
                                 "data": response.data.data  // What??
-                            }, () => this.getReplies(tweetId)
+                            }
                         );
+                        this.getReplies(tweetId);
                     })
                     .catch(err => {
                         console.error(err);
@@ -99,9 +103,17 @@ class ViewTweetDetails extends Component {
         catch (e) {
             console.log(e);
         }
+    }
+
+    componentDidMount() {
+        console.log("this works");
+
+        this.getTweet(this.props.tweetId);
 
 
     }
+
+
 
     goBackToFeeds() {
         console.log("back");
@@ -115,7 +127,6 @@ class ViewTweetDetails extends Component {
 
 
     render() {
-
         let tweetData = this.state.data;
         let tweetReplies = this.state.replies;
         console.log(this.state);
@@ -133,80 +144,17 @@ class ViewTweetDetails extends Component {
 
             tweetData.data ? (<div class="list-group">
                 <div className="list-group-item list-group-item-action display-tweet" style={{ "display": "block" }}>
-
                     <div className="tweet-header" onClick={this.goBackToFeeds}>
                         <FontAwesomeIcon icon={faLongArrowAltLeft} /> Tweet
                     </div>
 
-                    <Image image={tweetData.owner.image ? tweetData.owner.image : null} />
-                    <div className="body">
-                        <div className="inner-body-inner">
-                            <Name name={tweetData.owner.firstName} />
-                            <Handle handle={"@" + tweetData.owner.username} />
-                        </div>
-                        <Tweet tweet={this.props.tweet} />
-                    </div>
 
-                    <div className="tweet-details">
-                        <div className="tweet-text">
-                            {tweetData.data.text}
-                        </div>
-                        <div className="tweet-date">
-                            {
-                                date1
-                            } &#8226;&nbsp;
-                            {
-                                date2
-                            }
-                        </div>
+                    <ViewSingleTweet tweet={tweetData} />
 
 
-                        {/* REPEATED CODE - CHANGE TO RCC */}
-                        <div style={styles.container}>
-                            <button
-                                type="button"
-                                className="list-group-item list-group-item-action borderless"
-                                style={styles.reply}
-                                onClick={this.openCommentModal}
-                            >
-                                <FontAwesomeIcon icon={faComment} />
-                            </button>
-                            <button
-                                type="button"
-                                className="list-group-item list-group-item-action borderless"
-                                style={styles.retweet}
-                            >
-                                <FontAwesomeIcon icon={faRetweet} />
-                            </button>
-                            <button
-                                type="button"
-                                className="list-group-item list-group-item-action borderless"
-                                style={styles.like}
-                            >
-                                <FontAwesomeIcon icon={faHeart} />
-                            </button>
-                            <button
-                                type="button"
-                                className="list-group-item list-group-item-action borderless"
-                                style={styles.share}
-                            >
-                                <FontAwesomeIcon icon={faShareSquare} />
-                            </button>
-
-                            <Modal
-                                show={this.state.isOpenCommentModal}
-                                onHide={this.closeCommentModal}
-                                animation={false}
-                            >
-                                <CreateTweet />
-                            </Modal>
-                        </div>
-
-
-
-                        <div class="reply-box">
-
-                            {
+                    <div class="reply-box">
+                        <ViewTweets dataFromParent={tweetReplies} setTweet={this.getTweet} />
+                        {/* {
                                 tweetReplies.map((tweet) => {
                                     return (
                                         <div className="reply">
@@ -262,18 +210,18 @@ class ViewTweetDetails extends Component {
                                         </div>
                                     )
                                 })
-                            }
-
-                        </div>
-
-
+                            } */}
 
                     </div>
 
 
+
                 </div>
 
-            </div>) : null
+
+            </div>
+
+            ) : null
         )
     }
 

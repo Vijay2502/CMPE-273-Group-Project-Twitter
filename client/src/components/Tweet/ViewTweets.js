@@ -107,7 +107,7 @@ class ViewTweets extends Component {
                         return (
                             <div>
                                 {this.props.isDisableButtons === true &&
-                                <h5>Tweet {index + 1}</h5>}
+                                    <h5>Tweet {index + 1}</h5>}
 
                                 <TweetBody
                                     key={index}
@@ -115,14 +115,15 @@ class ViewTweets extends Component {
                                     handle={handle}
                                     tweet={tweetText}
                                     image={image}
+                                    setTweet={this.props.setTweet ? this.props.setTweet : false}
                                 />
 
                                 {this.props.isDisableButtons !== true &&
-                                <TweetButtons data={buttonData}
-                                    likeTweetCallback={this.likeTweet}
-                                    retweetTweetCallback={this.retweetTweet}
-                                    replyTweetCallback={this.replyTweetCallback}
-                                    bookmarkCallback={this.bookmarkTweet} />}
+                                    <TweetButtons data={buttonData}
+                                        likeTweetCallback={this.likeTweet}
+                                        retweetTweetCallback={this.retweetTweet}
+                                        replyTweetCallback={this.replyTweetCallback}
+                                        bookmarkCallback={this.bookmarkTweet} />}
                             </div>
                         )
                     })}
