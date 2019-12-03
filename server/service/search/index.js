@@ -34,6 +34,12 @@ module.exports.listSearch = function( text, limit, offset, userId, cb ){
                 }
             ]
         },
+        include:[
+            {
+                model: User,
+                attributes: ['id', 'firstName', 'lastName', 'username', 'data']
+            }
+        ],
         order: [['createdAt', 'DESC']],
         offset,
         limit
@@ -52,6 +58,7 @@ module.exports.listSearch = function( text, limit, offset, userId, cb ){
                             name: f.name,
                             description: f.description,
                             data: f.data,
+                            owner: f.user,
                             subscribed: false
                         })),
                         nextOffset: (lists.length <= limit)? 0 : (limit) + (offset)
@@ -65,6 +72,7 @@ module.exports.listSearch = function( text, limit, offset, userId, cb ){
                             name: f.name,
                             description: f.description,
                             data: f.data,
+                            owner: f.user,
                             subscribed: subscribedLists.includes(f.id)
                         })),
                         nextOffset: (lists.length <= limit)? 0 : (limit) + (offset)
@@ -217,7 +225,7 @@ module.exports.topicSearch = function( text , limit, offset, cb ){
                     hashTags: tweet.hashTags,
                     createdAt: tweet.createdAt
                 })),
-                nextOffset: (tweets.length <= limit)? 0 : (limit) + (offset)
+                nextOffset: (tweets.length < limit)? 0 : (limit) + (offset)
             });
         }
         return cb(null, null);
