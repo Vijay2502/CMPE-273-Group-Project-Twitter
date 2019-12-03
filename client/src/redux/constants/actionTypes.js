@@ -6,6 +6,7 @@ export const REPLY_TWEET = "REPLY_TWEET";
 export const BOOKMARK_TWEET = "BOOKMARK_TWEET";
 export const SIGN_UP = "SIGN_UP";
 export const SIGN_IN = "SIGN_IN";
+export const SIGN_IN_ERROR = "SIGN_IN_ERROR";
 export const FETCH_LOGIN = "FETCH_LOGIN";//sample constant
 export const GET_TOP_TEN_TWEETS_BY_VIEWS = "GET_TOP_TEN_TWEETS_BY_VIEWS";
 export const GET_TOP_TEN_TWEETS_BY_LIKES = "GET_TOP_TEN_TWEETS_BY_LIKES";

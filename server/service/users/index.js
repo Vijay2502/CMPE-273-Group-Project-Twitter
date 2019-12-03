@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const repository = require('../../repository/mysql');
-const {Tweet} = require('../../repository/mongo');
+const { Tweet } = require('../../repository/mongo');
 const cache = require('../../cache');
 const async = require('async');
 
@@ -73,22 +73,22 @@ module.exports.update = function (newUser, cb) {
                     if (newUser.password && newUser.currentPassword) {
 
                         return module.exports.verifyAndAssignToken(newUser.currentPassword, user, function (err, token) {
-                            if(err){
+                            if (err) {
                                 return icb(err);
                             }
 
-                        return bcrypt.genSalt(10, (err, salt) => {
-                            if (err) return cb(err);
-
-                            return bcrypt.hash(newUser.password, salt, (err, hash) => {
+                            return bcrypt.genSalt(10, (err, salt) => {
                                 if (err) return cb(err);
 
-                                newUser.password = hash;
-                                return icb();
-                            });
-                        });
+                                return bcrypt.hash(newUser.password, salt, (err, hash) => {
+                                    if (err) return cb(err);
 
-                    });
+                                    newUser.password = hash;
+                                    return icb();
+                                });
+                            });
+
+                        });
                     } else {
                         newUser.password = user.password;
                         return icb();
@@ -96,7 +96,7 @@ module.exports.update = function (newUser, cb) {
                 }
             ], function (err) {
 
-                if(err){
+                if (err) {
                     return cb(err);
                 }
 
@@ -127,7 +127,7 @@ module.exports.update = function (newUser, cb) {
 
                         })
 
-                        return module.exports.getById(newUser.id, cb);
+                        return module.exports.getById(newUser.id, -1, cb);
 
                     }, function (err) {
                         return cb(err);
@@ -160,7 +160,7 @@ module.exports.getById = function (userId, followerId, cb) {
             }).then(function (user) {
 
                 if (user) {
-                    return user.hasFollower(followerId).then(has=>{
+                    return user.hasFollower(followerId).then(has => {
                         var userDTO = {
                             id: user.id,
                             firstName: user.firstName,
@@ -171,21 +171,21 @@ module.exports.getById = function (userId, followerId, cb) {
                             createdAt: user.createdAt,
                             data: user.data ? user.data : null
                         };
-    
+
                         cache.set('user-getById-' + userId, JSON.stringify(userDTO), function (err) {
                             if (err) {
                                 console.log("Write to Cache Failed >>>> err: " + JSON.stringify(err, null, 4));
                             } else {
                                 cache.expire('user-getById-' + userId, process.env.CACHE_EXPIRY_TIME);
                             }
-    
+
                         })
-    
+
                         return cb(null, userDTO);
-                    }, function(err){
+                    }, function (err) {
                         return cb(err);
                     })
-                    
+
                 }
                 return cb({
                     code: 404,
@@ -195,7 +195,7 @@ module.exports.getById = function (userId, followerId, cb) {
             }, function (err) {
                 return cb(err);
             });
-       }
+        }
     })
 
 }
@@ -302,12 +302,12 @@ module.exports.getFollowers = function (userId, limit, offset, cb) {
                 }
                 return user.getFollowers({
                     attributes: ['id', 'firstName', 'lastName', 'username', 'email'],
-                    where:{active:true},
+                    where: { active: true },
                     limit,
                     offset,
                     required: false
                 }).then(followers => {
-                    return user.getFollowees({attributes: ['id']}).then(followees => {
+                    return user.getFollowees({ attributes: ['id'] }).then(followees => {
                         followees = followees.map(f => f.id);
                         return cb(null, {
                             id: user.id,
@@ -323,10 +323,10 @@ module.exports.getFollowers = function (userId, limit, offset, cb) {
                             })),
                             nextOffset: (offset + limit) < count ? (offset + limit) : 0
                         });
-                    
-                }, function(err){
-                    return cb(err);
-                })
+
+                    }, function (err) {
+                        return cb(err);
+                    })
                 }, function (err) {
                     return cb(err);
                 });
@@ -362,7 +362,7 @@ module.exports.getFollowees = function (userId, limit, offset, cb) {
                 }
                 return user.getFollowees({
                     attributes: ['id', 'firstName', 'lastName', 'username', 'email'],
-                    where:{active:true},
+                    where: { active: true },
                     limit,
                     offset,
                     required: false
@@ -414,7 +414,7 @@ module.exports.getListsAsMember = function (userId, limit, offset, cb) {
                     });
                 }
                 return user.getListsAsMember({
-                    attributes: ['id', 'name', 'description', 'data',  'createdAt'],
+                    attributes: ['id', 'name', 'description', 'data', 'createdAt'],
                     limit,
                     offset,
                     required: false
@@ -547,56 +547,56 @@ module.exports.getListsAsOwner = function (userId, limit, offset, cb) {
     })
 }
 
-module.exports.deactivate = function(userId, cb){
+module.exports.deactivate = function (userId, cb) {
     repository.User.update({
         active: false
-    },{
-        where:{
-            id:userId
+    }, {
+        where: {
+            id: userId
         }
-    }).then(function(user){
+    }).then(function (user) {
 
         Tweet.update({
-            ownerId:userId
-        },{
+            ownerId: userId
+        }, {
             active: false
-        }).then(function(tweets){
+        }).then(function (tweets) {
             console.log("Tweets deactivated")
-        }, function(err){
+        }, function (err) {
             console.log(err);
         })
 
         return cb(null, { message: "DEACTIVATION SUCCESFULL" });
 
 
-    }, function(err){
+    }, function (err) {
         return cb(err);
     })
 }
 
-module.exports.reactivate = function(userId, cb){
+module.exports.reactivate = function (userId, cb) {
     return repository.User.update({
         active: true
-    },{
-        where:{
-            id:userId
+    }, {
+        where: {
+            id: userId
         }
-    }).then(function(user){
+    }).then(function (user) {
 
         Tweet.update({
-            ownerId:userId
-        },{
+            ownerId: userId
+        }, {
             active: true
-        }).then(function(tweets){
+        }).then(function (tweets) {
             console.log("Tweets reactivated")
-        }, function(err){
+        }, function (err) {
             console.log(err);
         })
 
         return cb(null, { message: "REACTIVATION SUCCESFULL" });
 
 
-    }, function(err){
+    }, function (err) {
         return cb(err);
     })
 }
