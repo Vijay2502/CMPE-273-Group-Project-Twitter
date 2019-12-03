@@ -53,8 +53,6 @@ const Tweet = (props) => {
     )
 };
 
-
-
 // const TweetBody = (props) => {
 //     return (
 //         <div class="list-group">
@@ -100,24 +98,27 @@ class TweetBody extends Component {
     }
 
     displayTweet(id) {
-
-        try {
-            document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(7)").setAttribute("data-tweet-id", id);
-            document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(7)").click();
+        console.log("ID >>>>>> ", id);
+        if (this.props.setTweet) {
+            this.props.setTweet(id);
+        } else {
+            try {
+                document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(7)").setAttribute("data-tweet-id", this.props.id);
+                document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(7)").click();
+            }
+            catch (e) {
+                console.log(e);
+            }
         }
-        catch (e) {
-            console.log(e);
-        }
-
 
     }
 
     render() {
 
-        console.log(this.state);
+        console.log("check props ----------------", this.props);
         return (
             <div class="list-group">
-                <button type="button" className="inner-body list-group-item list-group-item-action" onClick={(e) => this.displayTweet("3cd8c430-13ec-11ea-a40d-57a00194fdf6")}>
+                <button type="button" className="inner-body list-group-item list-group-item-action" onClick={(e) => this.displayTweet(this.props.id)}>
                     {
                         this.props.image ? (<Image image={this.props.image} />) : (<Image image="https://thefader-res.cloudinary.com/private_images/w_760,c_limit,f_auto,q_auto:best/TwitterLogo__55acee_jntmic/twitter-applications-verified.jpg" />)
                     }
@@ -136,8 +137,5 @@ class TweetBody extends Component {
     }
 
 }
-
-
-
 
 export default TweetBody;
