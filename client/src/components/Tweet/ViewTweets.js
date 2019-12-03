@@ -86,7 +86,7 @@ class ViewTweets extends Component {
                         let handle = tweet.owner !== undefined ? `@${tweet.owner.username}` : "@username";
                         let image = tweet.image;
                         let tweetText = tweet.data.text;
-
+                        let id = tweet.id;
                         const buttonData = {};
                         buttonData.tweetId = tweet.id;
                         buttonData.userId = tweet.ownerId;
@@ -110,6 +110,7 @@ class ViewTweets extends Component {
                                     <h5>Tweet {index + 1}</h5>}
 
                                 <TweetBody
+                                    id={id}
                                     key={index}
                                     name={name}
                                     handle={handle}
