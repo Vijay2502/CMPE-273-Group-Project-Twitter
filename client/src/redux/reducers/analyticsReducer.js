@@ -27,6 +27,13 @@ export default function getTopTenTweetsByViews(state = initialState, action) {
             const tweetCustom = {};
             tweetCustom.data = tweet.tweet.data;
 
+            const owner = {};
+            owner["firstName"] = localStorage.getItem("firstName");
+            owner["lastName"] = localStorage.getItem("lastName");
+            owner["username"] = localStorage.getItem("username");
+
+            tweetCustom.owner = owner;
+
             return tweetCustom;
         });
 
@@ -49,6 +56,13 @@ export default function getTopTenTweetsByViews(state = initialState, action) {
         const tweets = action.payload.data.res.map((tweet) => {
             const tweetCustom = {};
             tweetCustom.data = tweet.tweet.data;
+
+            const owner = {};
+            owner["firstName"] = localStorage.getItem("firstName");
+            owner["lastName"] = localStorage.getItem("lastName");
+            owner["username"] = localStorage.getItem("username");
+
+            tweetCustom.owner = owner;
 
             return tweetCustom;
         });
@@ -73,6 +87,14 @@ export default function getTopTenTweetsByViews(state = initialState, action) {
             const tweetCustom = {};
 
             tweetCustom.data = tweet.tweet.data;
+
+            const owner = {};
+            owner["firstName"] = localStorage.getItem("firstName");
+            owner["lastName"] = localStorage.getItem("lastName");
+            owner["username"] = localStorage.getItem("username");
+
+            tweetCustom.owner = owner;
+
             return tweetCustom;
         });
 
@@ -133,8 +155,18 @@ export default function getTopTenTweetsByViews(state = initialState, action) {
         });
     } else if (action.type === GET_PROFILE_VIEW_DATA) {
         return Object.assign({}, state, {
-            profileViewData: []
-        })
+            profileViewData: action.payload.data.res.map((pair, index) => {
+                console.log("GET_PROFILE_VIEW_DATA pair", pair)
+                const keys = Object.keys(pair);
+                console.log("key", keys)
+
+                const yxValues = {};
+
+                yxValues["y"] = pair[keys[0]];
+                yxValues["label"] = keys[0];
+                return yxValues;
+            })
+        });
     }
 
 
