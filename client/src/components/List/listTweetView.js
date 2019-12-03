@@ -5,6 +5,7 @@ import ViewTweets from "../Tweet/ViewTweets";
 import { connect } from "react-redux";
 import {getListById,getTweetByList} from "../../redux/actions/listActions";
 import axios from 'axios';
+import listImg from '../../images/EEDaJw0U4AADASA.jpeg';
 
 function mapStateToProps(store) {
   return {
@@ -26,7 +27,7 @@ function mapDispatchToProps(dispatch) {
 class ListTweetView extends Component {
   constructor(props) {
     super(props);
-    console.log("listtweetview",this.props);
+    console.log("listtweetview",this.props.listDetailedProps.data.userId);
     
     this.state = {
       listId : this.props.listDetailedProps.id,
@@ -39,10 +40,8 @@ class ListTweetView extends Component {
       members:[],
       subscribers:[],
       isSubscribed: this.props.listDetailedProps.subscribed,
-      // showEdit:(props.location.state.list.data.userId==localStorage.getItem("id"))?true:false,
-      showEdit:false,
-      // showSubscribe:(props.location.state.list.data.userId==localStorage.getItem("id"))?false:true,
-      showSubscribe:true,
+      showEdit:(this.props.listDetailedProps.data.userId==localStorage.getItem("id"))?true:false,
+      showSubscribe:(this.props.listDetailedProps.data.userId==localStorage.getItem("id"))?false:true,
       buttonText: this.props.listDetailedProps.subscribed ? "Unsubscribed" : "Subscribed",
       class: this.props.listDetailedProps.subscribed ? "btn btn-outline-primary" : "btn btn-primary"
     };
@@ -172,7 +171,7 @@ class ListTweetView extends Component {
             </div>
             <div class="profile-cover-pic row">
               <img
-                src={require("../../static/images/cover_pic1.png")}
+                src={listImg}
                 width="100%"
                 height="200px"
               />
