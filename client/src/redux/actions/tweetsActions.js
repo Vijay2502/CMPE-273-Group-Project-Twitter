@@ -1,4 +1,4 @@
-import { CREATE_TWEET, GET_USER_TWEETS, LIKE_TWEET, RETWEET_TWEET, REPLY_TWEET, BOOKMARK_TWEET } from "../../redux/constants/actionTypes";
+import { CREATE_TWEET, GET_USER_TWEETS, LIKE_TWEET, RETWEET_TWEET, REPLY_TWEET, BOOKMARK_TWEET, GET_BOOKMARKED_TWEETS } from "../../redux/constants/actionTypes";
 import { HOSTNAME } from "../../constants/appConstants";
 import axios from 'axios';
 
@@ -69,6 +69,16 @@ export function getTweetsById(data) {
     };
 }
 
+export function getBookmarkedTweets(payload) {
+    console.log("replyTweet payload");
+    console.log(payload);
+
+    return (dispatch) => {
+        axios .get(`http://${HOSTNAME}:8080/api/v1/user/${payload.ownerId}/bookmarks`)
+            .then((response) => dispatch(getBookmarkedTweetsDispatch(response.data)));
+    }
+}
+
 function getUserTweets(returndata) {
     console.log("Inside getUserTweets - returndata: ", JSON.stringify(returndata));
     return { type: GET_USER_TWEETS, payload: returndata };
@@ -103,10 +113,17 @@ export const replyTweetDispatch = (returnData) => {
 };
 
 export const bookmarkTweetDispatch = (returnData) => {
-    console.log("Inside likeTweetDispatch");
+    console.log("Inside bookmarkTweetDispatch");
     console.log(returnData);
 
     return { type: BOOKMARK_TWEET, payload: returnData }
+};
+
+export const getBookmarkedTweetsDispatch = (returnData) => {
+    console.log("Inside getBookmarkedTweetsDispatch");
+    console.log(returnData);
+
+    return { type: GET_BOOKMARKED_TWEETS, payload: returnData }
 };
 
 

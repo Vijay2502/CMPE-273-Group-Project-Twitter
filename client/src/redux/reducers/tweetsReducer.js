@@ -1,9 +1,10 @@
-import { CREATE_TWEET, GET_USER_TWEETS } from "../../redux/constants/actionTypes";
+import { CREATE_TWEET, GET_USER_TWEETS, GET_BOOKMARKED_TWEETS } from "../../redux/constants/actionTypes";
 
 const initialState = {
     createTweetSuccess: null,
     createTweetMessage: null,
-    userTweets: []
+    userTweets: [],
+    bookmarkedTweets: []
 };
 
 function generateTweets(tweets) {
@@ -33,9 +34,7 @@ export default function tweetReducer(state = initialState, action) {
             createTweetSuccess: action.payload.signinSuccess,
             createTweetMessage: action.payload.signinMessage,
         });
-    }
-
-    if (action.type === GET_USER_TWEETS) {
+    } else if (action.type === GET_USER_TWEETS) {
         const gottweets = generateTweets(action.payload.data.data);
         console.log("gottweets");
         console.log(gottweets);
@@ -54,6 +53,10 @@ export default function tweetReducer(state = initialState, action) {
             //     return tweetCustom;
             // })
         });
+    } else if (action.type === GET_BOOKMARKED_TWEETS) {
+        return Object.assign({}, state, {
+            bookmarkedTweets: action.payload.data.tweets
+        })
     }
 
 
