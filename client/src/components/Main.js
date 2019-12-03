@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Route } from "react-router-dom";
 import ListPage from "../containers/listPage";
 import Profile from "./Profile/profile";
+import UserProfile from "./Profile/userprofile";
 import HomeTweetList from '../components/HomeTweetList/list'
 import HomePage from "./HomePage";
 import NavPage from "./NavPage/NavPage";
@@ -11,6 +12,7 @@ import AnalyticsMain from "./Analytics/AnalyticsMain";
 import tweetlist from "./List/tweetlist";
 import Chat from "./Chat/chat";
 import listMembers from "./List/listMembers"
+import Reactivate from "./Account/Reactivate";
 class Main extends Component {
     render() {
         return (
@@ -27,6 +29,9 @@ class Main extends Component {
                 <Route path="/analytics" component={AnalyticsMain} />
                 <Route exact path="/chat" component={Chat} />
                 <Route exact path="/listm" component={listMembers} />
+                <Route exact path="/userprofile" component={UserProfile} />
+                <Route exact path="/reactivate" component={Reactivate} />
+
                 {/*<Switch>*/}
                 {/*  <Route path="/" component={Sidebar} />*/}
                 {/*  <Route exact path="/list" component={Lists} />*/}

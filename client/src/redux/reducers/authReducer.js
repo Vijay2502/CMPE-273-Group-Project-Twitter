@@ -1,4 +1,4 @@
-import {SIGN_IN, SIGN_UP, SIGN_IN_ERROR} from "../../redux/constants/actionTypes";
+import { SIGN_IN, SIGN_UP, SIGN_IN_ERROR } from "../../redux/constants/actionTypes";
 
 const initialState = {
     signupSuccess: null,
@@ -7,11 +7,12 @@ const initialState = {
     signinMessage: null,
     userType: null,
     token: null,
-    userId: null
+    userId: null,
+    userActive: null
 };
 
 export default function authReducer(state = initialState, action) {
-    console.log("action.payload");
+    console.log("signin auth reducer:");
     console.log(action.payload);
 
     if (action.type === SIGN_IN) {
@@ -20,13 +21,16 @@ export default function authReducer(state = initialState, action) {
         localStorage.setItem('firstName', action.payload.data.user.firstName);
         localStorage.setItem('lastName', action.payload.data.user.lastName);
         localStorage.setItem('id', action.payload.data.user.id);
+        localStorage.setItem('userActive', action.payload.data.user.active);//// to change
 
         //To do
         localStorage.setItem('image', action.payload.data.user.username);
 
         return Object.assign({}, state, {
             signinSuccess: action.payload.status === "ok" ? true : false,
-            signinMessage: "",
+            signinMessage: ""
+            // userActive: false
+            // userActive : action.payload.user.active
         });
     } else if (action.type === SIGN_IN_ERROR) {
         return Object.assign({}, state, {

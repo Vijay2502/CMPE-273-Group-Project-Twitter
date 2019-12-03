@@ -106,12 +106,12 @@ class profile extends Component {
                 }
             }).then((response) => {
                 // console.log("Res data ", dataFinal);
-                // dataFinal.data.ProfileImg = response.data.location;
+                // dataFinal.data.profileImage = response.data.location;
                 dataFinal.data = {
-                    ProfileImg: response.data.location,
-                    website: Updatedata.formGridWebsite,
-                    location: Updatedata.formGridLocation,
-                    bio: Updatedata.formGridBio
+                    profileImage: response.data.location ? response.data.location : undefined,
+                    website: Updatedata.formGridWebsite ? Updatedata.formGridWebsite : undefined,
+                    location: Updatedata.formGridLocation ? Updatedata.formGridLocation : undefined,
+                    bio: Updatedata.formGridBio ? Updatedata.formGridBio : undefined
                 };
 
                 console.log("testing data with image:", dataFinal);
@@ -126,7 +126,7 @@ class profile extends Component {
                             // store.dispatch(loadUser());
                             this.setState({
                                 editProfile: false,
-                                selectedProfilePic: res.data.data.user.data.ProfileImg
+                                selectedProfilePic: res.data.data.user.data.profileImage
                                 // user: res.data.user
                             });
                         }
@@ -139,10 +139,10 @@ class profile extends Component {
             });
         } else {
             dataFinal.data = {
-                ProfileImg: "",
-                website: Updatedata.formGridWebsite,
-                location: Updatedata.formGridLocation,
-                bio: Updatedata.formGridBio
+                profileImage: undefined,
+                website: Updatedata.formGridWebsite ? Updatedata.formGridWebsite : undefined,
+                location: Updatedata.formGridLocation ? Updatedata.formGridLocation : undefined,
+                bio: Updatedata.formGridBio ? Updatedata.formGridBio : undefined
             };
             console.log("testing data wo image:", dataFinal);
             axios.put('http://localhost:8080/api/v1/user/update', dataFinal)
@@ -222,7 +222,7 @@ class profile extends Component {
                 </div>
                 <div class="profile-pic-btn-container row">
                     <div class="profile-profile-pic col-sm-6">
-                        <img src={userData.ProfileImg ? userData.ProfileImg : require("../../static/images/profile_pic.png")} height="120" width="120px" />
+                        <img src={userData.profileImage ? userData.profileImage : require("../../static/images/profile_pic.png")} height="120" width="120px" />
                     </div>
                     <div class="col-sm-6 edit-btn">
                         <button
@@ -309,7 +309,7 @@ class profile extends Component {
 
                                 <label for="proile-pic-upload">
                                     <img
-                                        src={userData.ProfileImg ? userData.ProfileImg : require("../../static/images/profile_pic.png")}
+                                        src={userData.profileImage ? userData.profileImage : require("../../static/images/profile_pic.png")}
                                         height="80px"
                                         width="80px"
                                     />
