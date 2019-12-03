@@ -13,7 +13,8 @@ import BookMarks from './Tweet/BookMarkedTweets';
 import ListTweetView from './List/listTweetView';
 import ViewDetailedTweet from './ViewTweetDetails/ViewTweetDetails';
 import Settings from './Account/settings'
-import SearchView from './Search/SearchView'
+//import SearchView from './Search/SearchView'
+import SearchView from './Search/searchView'
 import { Redirect } from "react-router";
 
 
