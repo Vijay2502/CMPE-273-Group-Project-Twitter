@@ -113,7 +113,7 @@ class profile extends Component {
                     location: Updatedata.formGridLocation ? Updatedata.formGridLocation : undefined,
                     bio: Updatedata.formGridBio ? Updatedata.formGridBio : undefined
                 };
-
+                localStorage.setItem('image', dataFinal.data.profileImage);
                 console.log("testing data with image:", dataFinal);
 
                 axios.put('http://localhost:8080/api/v1/user/update', dataFinal)
