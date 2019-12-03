@@ -48,7 +48,7 @@ class ProfileViews extends Component {
                 text: "Last 30 day user profile views"
             },
             axisX: {
-                title: "Tweets",
+                title: "Dates",
                 interval: 1
             },
             axisY: {
@@ -58,18 +58,6 @@ class ProfileViews extends Component {
             data: [{
                 type: "column",
                 dataPoints: this.props.profileViewData
-                // dataPoints: [
-                //     { y: 1, label: "Tweet 1" },
-                //     { y: 2, label: "Tweet 2" },
-                //     { y: 3, label: "Tweet 3" },
-                //     { y: 4, label: "Tweet 4" },
-                //     { y: 4, label: "Tweet 5" },
-                //     { y: 5, label: "Tweet 6" },
-                //     { y: 1, label: "Tweet 7" },
-                //     { y: 6, label: "Tweet 8" },
-                //     { y: 1, label: "Tweet 9" },
-                //     { y: 1, label: "Tweet 10" },
-                // ]
             }]
         };
 
