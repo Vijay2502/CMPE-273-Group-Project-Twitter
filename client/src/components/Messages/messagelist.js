@@ -16,7 +16,9 @@ class messagelist extends Component {
             receiverID: null,
             username: "",
             showChat: false,
+            channel: null,
             selectedUserForChat: null,
+            showPreviousChat: false,
             defaultImg: "https://thefader-res.cloudinary.com/private_images/w_760,c_limit,f_auto,q_auto:best/TwitterLogo__55acee_jntmic/twitter-applications-verified.jpg"
         }
     }
@@ -37,15 +39,13 @@ class messagelist extends Component {
     componentDidMount = () => {
         //////////////////get the list of previous chat list of the users/////////////////
         axios.defaults.withCredential = true;
-        //let userId = localStorage.getItem('first_name');
-        let userId = 1;
+        let userId = localStorage.getItem('id');
         axios.get(`http://localhost:8080/api/v1/conversation/getByUser/${userId}`)
             .then(response => {
-                console.log(response.data);
                 this.setState(
                     {
                         chatList: response.data.data
-                    }, () => console.log('message response', this.state.chatList)
+                    }
                 );
             })
             .catch(err => {
@@ -80,9 +80,6 @@ class messagelist extends Component {
 
 
     setClick = (receiverId, index) => {
-        console.log(index);
-        console.log(this.state);
-        console.log(this.state.users[index]);
         if (this.state.users[index]) {
             let _this = this;
             this.setState({ showChat: true, receiverId: receiverId }, () => {
@@ -121,6 +118,28 @@ class messagelist extends Component {
 
     closeModal = () => {
         this.setState({ startNewChat: false, users: [], username: "" });
+    }
+
+    setpreviousChat = (chat, participantName) => {
+        this.setState({ showPreviousChat: true, channel: chat.channel }, () => {
+            try {
+                if (!document.querySelector(".sc-chat-window").classList.contains("opened")) {
+                    document.querySelector("#sc-launcher > div.sc-launcher").click();
+                }
+                document.querySelector(".sc-header--team-name").innerHTML = participantName;
+            }
+            catch (e) {
+                console.log(e);
+            }
+        });
+    }
+
+    previousChat = () => {
+        if (this.state.showPreviousChat) {
+            return (<React.Fragment>
+                <Chat channel={this.state.channel} />
+            </React.Fragment>)
+        }
     }
 
     findParticipant = (data = []) => {
@@ -203,9 +222,8 @@ class messagelist extends Component {
                 //Get Incoming message details
                 let participantName = "User";
                 participantName = this.findParticipant(chat.messages);
-                console.log(participantName);
                 return (
-                    <div class="list-group">
+                    <div class="list-group" onClick={() => this.setpreviousChat(chat, participantName)}>
                         <div class="list-group-item list-group-item-action chat-list-container row chat-vs">
 
                             <div className="user-chat-container">
@@ -236,6 +254,7 @@ class messagelist extends Component {
         return (
             <React.Fragment>
                 {this.openChat()}
+                {this.previousChat()}
                 < div class="message-list-container col-sm-10" >
 
                     <div class="message-header row">

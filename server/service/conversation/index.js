@@ -33,8 +33,9 @@ module.exports.getByChannel = function (channel, cb) {
 }
 
 module.exports.getByUser = function (userId, cb) {
-    repository.Conversation.find(
-        { senderId: userId })
+    repository.Conversation.find({
+        "$or": [{ senderId: userId }, { receiverId: userId }]
+    })
         .then(function (chats) {
             return cb(null, chats);
 

@@ -16,20 +16,6 @@ class Chat extends Component {
     }
 
 
-    // shouldComponentUpdate(a, b) {
-
-    //     try {
-    //         if (a && a.channel) {
-    //             localStorage.setItem("channel", JSON.stringify(a.channel));
-    //         }
-    //     }
-    //     catch (e) {
-    //         console.log(e);
-    //     }
-
-    //     return true;
-    // }
-
 
     componentDidMount() {
         const socket = io('http://localhost:3002');
@@ -40,9 +26,6 @@ class Chat extends Component {
             channel: this.props.channel
         }, () => {
             socket.emit('channel id', this.state.channel);
-
-            //socket.emit('subscribe', this.state.channel);
-            //socket.emit('subscribe', 'roomTwo');
             socket.on(this.state.channel, (message) => {
                 const messages = this.state.messages;
                 message = JSON.parse(message);
@@ -62,11 +45,12 @@ class Chat extends Component {
         axios.defaults.withCredential = true;
         let channel = this.props.channel;
         let firstName = localStorage.getItem('firstName');
+        let userId = localStorage.getItem('id');
         axios.get(`http://localhost:8080/api/v1/conversation/getMessages/${channel}`)
             .then(response => {
 
                 if (response.data.data) {
-                    console.log("oooooooooo", response.data.data.messages);
+                    console.log("getByChannel", response.data.data);
                     this.setState(
                         {
                             messages: response.data.message.map(m => ({
