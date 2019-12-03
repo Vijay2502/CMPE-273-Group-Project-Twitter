@@ -18,6 +18,19 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import "./sidebar.css";
+import {createTweet} from "../../redux/actions/tweetsActions";
+import {connect} from "react-redux";
+
+
+function mapStateToProps(store) {
+    return {}
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        createTweet: (payload) => dispatch(createTweet(payload))
+    };
+}
 
 // import "../../images/home.png";
 class Sidebar extends Component {
@@ -74,6 +87,35 @@ class Sidebar extends Component {
 
     handleClose = () => {
         this.setState({ anchorEl: null });
+    };
+
+    createTweet = (e) => {
+        e.preventDefault();
+
+        const data = {};
+        for (let i = 0; i < e.target.length; i++) {
+            if (e.target[i].id !== "") {
+                data[e.target[i].id] = e.target[i].value;
+            }
+        }
+
+        const owner = {};
+        owner["firstName"] = localStorage.getItem("firstName");
+        owner["lastName"] = localStorage.getItem("lastName");
+        owner["username"] = localStorage.getItem("username");
+        owner["image"] = "";
+
+        const tweet = {}
+        tweet["data"] = data;
+        tweet["ownerId"] = localStorage.getItem("id");
+        tweet["owner"] = owner;
+        tweet["retweet"] = [];
+        tweet["hashTags"] = [];
+
+        console.log("createTweet payload");
+        console.log(tweet);
+
+        this.props.createTweet(tweet);
     };
 
     render() {
@@ -191,7 +233,7 @@ class Sidebar extends Component {
                     <Modal.Header closeButton></Modal.Header>
 
                     <Modal.Body>
-                        <Form>
+                        <Form onSubmit={this.createTweet}>
                             <div class="tweet-container row">
                                 <div class="col-sm-1">
                                     <img
@@ -204,7 +246,7 @@ class Sidebar extends Component {
                                 <div class="text-area-container col-sm-11">
                                     <textarea
                                         class="form-control text-area"
-                                        id="message-text"
+                                        id="text"
                                         placeholder="What's happening"
                                         rows="4"
                                     ></textarea>
@@ -228,7 +270,9 @@ class Sidebar extends Component {
                                     </label>
                                 </div>
                                 <div class="btn-tweet">
-                                    <button class="btn btn-primary submit-btn" type="button">
+                                    <button class="btn btn-primary submit-btn"
+                                            type="submit"
+                                    >
                                         Tweet
                                         </button>
                                 </div>
@@ -261,4 +305,5 @@ class Sidebar extends Component {
     }
 }
 
-export default Sidebar;
+//export default Sidebar;
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

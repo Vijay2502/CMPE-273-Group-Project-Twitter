@@ -23,6 +23,7 @@ export default function listReducer(state = initialState, action) {
             ...initialState,
             status: action.payload.status === "ok" ? true : false,
             data: action.payload.data,
+            currentList: action.payload.data.list
         });
     } else if (action.type === ADD_MEMBER) {
         return Object.assign({}, state, {

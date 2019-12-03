@@ -26,12 +26,12 @@ class tweetlist extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      listId : props.location.state.listtId,
+      listId : props.location.state.listId,
       userId : props.location.state.usertId,
       editProfile: false, //for modal
-      listName: "Cast and Crew",
-      userName: "@SiliconHBO",
-      name: "SiliconValley",
+      listName: "",
+      userName: "",
+      name: "",
       users: [],
       members:[],
       subscribers:[],
@@ -42,7 +42,7 @@ class tweetlist extends Component {
     console.log("id sent from parent",this.state.listId);
     this.handleClick = this.handleClick.bind(this);
   }
-  componentWillMount = () => {
+  componentDidMount = () => {
     this.getUser()
   }
 
@@ -176,15 +176,15 @@ class tweetlist extends Component {
                   <div class="profile-detail-font">{this.state.userName}</div>
                 </div>
                 <div class="followers-following row">
-                  <div class="col-sm-2 profile-detail-font">{"2"} Following</div>
-                  <div class="col-sm-2 profile-detail-font">{"2"} Following</div>
+                  <div class="col-sm-2 profile-detail-font">{"2"} Members</div>
+                  <div class="col-sm-2 profile-detail-font">{"2"} Subscribers</div>
                 </div>
               </div>
             </div>
             <button type="button" class={this.state.class} onClick={() => this.handleClick(true)}>{this.state.buttonText}</button>
             <div class="heading row"><div class="tweets-heading col-sm-2">Tweets</div></div>
             <div class="tweets-list" row>
-              <ViewTweets dataFromParent={this.state.users} />
+              {/* <ViewTweets dataFromParent={this.state.users} /> */}
             </div>
           </div>
         </div>
