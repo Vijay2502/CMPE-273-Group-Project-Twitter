@@ -47,7 +47,8 @@ class CreateList extends React.Component {
             addMemberModal:false,
             search:[],
             chipData:[],
-            buttonVal:false
+            buttonVal:false,
+            searchString : ""
         }
         this.handleChange = this.handleChange.bind(this);
     }
@@ -81,16 +82,22 @@ class CreateList extends React.Component {
         this.props.createList(payload);
     }
         this.nextModal();
-        this.setState({openListModal: false});
+        this.setState({
+            openListModal: false
+        });
     };
     handleChange(e) {
         this.setState({ 
             [e.target.name]: e.target.value 
         });
+        this.setState({
+            buttonVal: true
+        });
       }
-    handleSearch = (e) => {
+    handleSearch(e){
         e.preventDefault();
-        this.getUser(e.target.value);
+        console.log("handlesearch",this.state.searchString)
+        this.getUser(this.state.searchString);
     };
    handleDelete = chipToDelete => () => {
        let chips= this.state.chipData
@@ -122,10 +129,13 @@ class CreateList extends React.Component {
     });
     this.setState({addMemberModal: false});
    }
+   handleChangeSearch = (e) => {
+    this.setState({searchString : e.target.value});
+   }
 
-    getUser = (test) => {
+    getUser(test) {
         console.log("getuser",test);
-        axios.get(`http://localhost:8080/api/v1/search/users?text=test`)
+        axios.get(`http://localhost:8080/api/v1/search/users?text=${test}`)
         .then(response => {
             this.setState(
                 {
@@ -173,7 +183,7 @@ class CreateList extends React.Component {
                                 class="btn btn-primary save-btn"
                                 type="button"
                                 onClick={this.nextList}
-                                disabled={this.state.buttonVal}
+                                disabled={!this.state.buttonVal}
                             >
                                 Next
                             </button>
@@ -223,12 +233,12 @@ class CreateList extends React.Component {
     </div>
                     </Modal.Header>
                     <Modal.Body>
-                        <Form class="search-body" onSubmit={this.handleSearch}>
+                        <form class="search-body" onSubmit={e=>this.handleSearch(e)}>
                                 {/* <FontAwesomeIcon icon={faSearch} /> */}
-                                <input type="text" placeholder="Search people"/>
+                                <input type="text" placeholder="Search people" value = {this.state.searchString} onChange={this.handleChangeSearch}/>
                                     {/* <FontAwesomeIcon icon={faSearch} /> */}
                                 <div class="search-result">{searchList}</div>
-                        </Form>
+                        </form>
                     </Modal.Body>
                 </Modal>
             </div>

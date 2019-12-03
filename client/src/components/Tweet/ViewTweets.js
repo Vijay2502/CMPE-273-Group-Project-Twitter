@@ -84,7 +84,7 @@ class ViewTweets extends Component {
                         console.log(tweet)
                         let name = tweet.owner !== undefined ? `${tweet.owner.firstName} ${tweet.owner.lastName}` : "name";
                         let handle = tweet.owner !== undefined ? `@${tweet.owner.username}` : "@username";
-                        let image = tweet.image;
+                        let image = tweet.owner.image;
                         let tweetText = tweet.data.text;
                         let id = tweet.id;
                         const buttonData = {};
@@ -99,7 +99,7 @@ class ViewTweets extends Component {
                         owner["firstName"] = localStorage.getItem("firstName");
                         owner["lastName"] = localStorage.getItem("lastName");
                         owner["username"] = localStorage.getItem("username");
-                        owner["image"] = "";
+                        owner["image"] = localStorage.getItem("image");
 
                         buttonData.owner = owner;
                         buttonData.retweetingUserId = localStorage.getItem("id");
