@@ -35,10 +35,17 @@ class ReplyTweet extends Component {
             }
         }
 
+        const owner = {};
+        owner["firstName"] = localStorage.getItem("firstName");
+        owner["lastName"] = localStorage.getItem("lastName");
+        owner["username"] = localStorage.getItem("username");
+        owner["image"] = "";
+
         const payload = {}
         payload.data = data;
         payload.tweetId = this.props.data;
         payload.ownerId = localStorage.getItem("id");
+        payload.owner = owner;
 
         console.log("replyTweet payload");
         console.log(payload);
