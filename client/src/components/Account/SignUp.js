@@ -27,8 +27,25 @@ class SignUp extends Component {
         this.signUp = this.signUp.bind(this);
         this.state = {
             redirectVar: false,
-            test: false
+            test: false,
+            isAddressCorrect: null,
+            isAddressCorrectMessage: null
         }
+    }
+
+    statesNamesArray = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"]
+    statesNames = new Set(this.statesNamesArray.map((state) => {return state.toLowerCase()}))
+    stateCodesArray = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "MD", "MA", "MI", "MN", "MS", "MO", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"];
+    stateCodes = new Set(this.stateCodesArray.map((state) => {return state.toLowerCase()}))
+
+    checkValidState = (state) => {
+        return (this.statesNames.has(state.trim().toLowerCase()) || this.stateCodes.has(state.trim().toLowerCase()))
+    }
+
+    checkValidZipcode = (zipcode) => {
+        const regexFiveDigit = RegExp('^[0-9][0-9][0-9][0-9][0-9]$');
+        const regexNineDigit = RegExp('^[0-9][0-9][0-9][0-9][0-9]\-[0-9][0-9][0-9][0-9]$');
+        return (regexFiveDigit.test(zipcode.trim().toLowerCase()) || regexNineDigit.test(zipcode.trim().toLowerCase()))
     }
 
     signUp = (e) => {
@@ -41,8 +58,27 @@ class SignUp extends Component {
             }
         }
 
-        this.props.signUp(data);
-        this.setState({ test: true });
+        let updatedData={
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            password: data.password,
+            username: data.username,
+            data:{
+                city: data.city,
+                state: data.state,
+                zipcode: data.zipcode
+            }
+        }
+
+        console.log("signUp updatedData", updatedData);
+        if (!this.checkValidState(data.state)) {
+            this.setState({isAddressCorrect: false, isAddressCorrectMessage: "Invalid state in address"})
+        } else if (!this.checkValidZipcode(data.zipcode)) {
+            this.setState({isAddressCorrect: false, isAddressCorrectMessage: "Invalid zipcode in address"})
+        } else {
+            this.setState({isAddressCorrect: true}, () => this.props.signUp(updatedData));
+        }
     };
 
 
@@ -66,6 +102,16 @@ class SignUp extends Component {
                         <Toast.Body>You have successfully signed-up! You are being redirected to the login page in 5 seconds.</Toast.Body>
                     </Toast>
                 </Expire>}
+
+                {this.state.isAddressCorrect !== null && this.state.isAddressCorrect === false &&
+                <Toast>
+                    <Toast.Header>
+                        <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
+                        <strong className="mr-auto">Notification</strong>
+                    </Toast.Header>
+                    <Toast.Body>{this.state.isAddressCorrectMessage}</Toast.Body>
+                </Toast>
+                }
 
 
                 <div>
@@ -99,6 +145,21 @@ class SignUp extends Component {
                         <Form.Label>Password</Form.Label>
                         <Form.Control type="password" placeholder="Enter a strong password" />
                     </Form.Group>
+
+                    <Form.Row>
+                        <Form.Group as={Col} controlId="city">
+                            <Form.Label>City</Form.Label>
+                            <Form.Control placeholder="City name" />
+                        </Form.Group>
+                        <Form.Group as={Col} controlId="state">
+                            <Form.Label>State</Form.Label>
+                            <Form.Control placeholder="State name or code" />
+                        </Form.Group>
+                        <Form.Group as={Col} controlId="zipcode">
+                            <Form.Label>Zipcode</Form.Label>
+                            <Form.Control placeholder="12345 or 12345-6789"/>
+                        </Form.Group>
+                    </Form.Row>
 
                     <Button style={styles.signUpButton} variant="primary" type="submit">
                         Sign up

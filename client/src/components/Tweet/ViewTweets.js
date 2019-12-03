@@ -119,6 +119,16 @@ class ViewTweets extends Component {
                                     setTweet={this.props.setTweet ? this.props.setTweet : false}
                                 />
 
+                                {tweet.data.image &&
+                                    <div className="profile-cover-pic row">
+                                    <img
+                                        src={tweet.data.image}
+                                        width="100%"
+                                        height="200px"
+                                    />
+                                </div>}
+
+
                                 {this.props.isDisableButtons !== true &&
                                     <TweetButtons data={buttonData}
                                         likeTweetCallback={this.likeTweet}

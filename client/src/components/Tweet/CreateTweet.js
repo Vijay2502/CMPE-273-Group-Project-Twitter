@@ -5,6 +5,7 @@ import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
 import { createTweet } from "../../redux/actions/tweetsActions";
 import "./tweets.css"
+import axios from "axios";
 
 function mapStateToProps(store) {
     return {}
@@ -17,6 +18,13 @@ function mapDispatchToProps(dispatch) {
 }
 
 class CreateTweet extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            selectedTweetImage: null,
+        };
+    }
+
     image = () => {
         return (
             <img src={require("../../static/images/profile_pic.png")} alt="Logo" className="profile-pic" />
@@ -49,11 +57,36 @@ class CreateTweet extends Component {
         console.log("createTweet payload");
         console.log(tweet);
 
-        this.props.createTweet(tweet);
+        const formData = new FormData();
+        console.log("testing image state:",this.state.selectedTweetImage);
+        if (this.state.selectedTweetImage) {
+            console.log("inside if condition");
+            formData.append('image', this.state.selectedTweetImage, this.state.selectedTweetImage.name);
+            axios.post('http://localhost:8080/api/v1/img-upload', formData, {
+                headers: {
+                    'accept': 'application/json',
+                    'Accept-Language': 'en-US,en;q=0.8',
+                    'Content-Type': `multipart/form-data; boundary=${formData._boundary}`
+                    // 'Authorization': localStorage.getItem('token')
+                }}).then((response) => {
+                    tweet["data"] = {...tweet["data"], image: response.data.location};
+
+                    console.log("testing data with image:", tweet);
+                    this.props.createTweet(tweet);
+                })
+        } else {
+            console.log("XXX Insisde else")
+            tweet["data"] = {...tweet["data"], image: null};
+            this.props.createTweet(tweet);
+        }
     };
 
-    onFileChange(files) {
-        console.log("onFileChange event triggered");
+    onSelectingImage = (e) => {
+        this.setState({
+            selectedTweetImage: e.target.files[0]
+        }, () => {
+            console.log("selectedTweetImage", this.state.selectedTweetImage)
+        });
     }
 
     render() {
@@ -86,7 +119,7 @@ class CreateTweet extends Component {
                                     type="file"
                                     accept="image/*"
                                     id="img-upload"
-                                    onClick={e => this.onFileChange(e.target.files)}
+                                    onChange={this.onSelectingImage}
                                 ></input>
 
                                 <label htmlFor="img-upload">

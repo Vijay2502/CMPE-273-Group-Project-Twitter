@@ -36,17 +36,28 @@ module.exports.getById = function (listId, userId, cb) {
 
         if (list) {
             return list.hasSubscriber(userId).then(has => {
-                return cb(null, {
-                    list: {
-                        id: list.id,
-                        name: list.name,
-                        description: list.description,
-                        ownerId: list.userId,
-                        subscribed: has,
-                        createdAt: list.createdAt,
-                        data: list.data ? list.data : null
-                    }
+                return list.countMembers().then(membersCount => {
+                    return list.countSubscribers().then(subscribersCount => {
+                        return cb(null, {
+                            list: {
+                                id: list.id,
+                                name: list.name,
+                                description: list.description,
+                                ownerId: list.userId,
+                                subscribed: has,
+                                membersCount,
+                                subscribersCount,
+                                createdAt: list.createdAt,
+                                data: list.data ? list.data : null
+                            }
+                        });
+                    }, function (err) {
+                        return cb(err);
+                    });
+                }, function (err) {
+                    return cb(err);
                 });
+                
             }, function (err) {
                 return cb(err);
             });
