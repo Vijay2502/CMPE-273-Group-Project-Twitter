@@ -1,5 +1,6 @@
 import {GET_TOP_TEN_TWEETS_BY_VIEWS, GET_TOP_TEN_TWEETS_BY_LIKES, GET_TOP_TEN_TWEETS_BY_RETWEETS,
-    GET_NUMBER_OF_HOURLY_TWEETS, GET_NUMBER_OF_DAILY_TWEETS, GET_NUMBER_OF_MONTHLY_TWEETS } from "../../redux/constants/actionTypes";
+    GET_NUMBER_OF_HOURLY_TWEETS, GET_NUMBER_OF_DAILY_TWEETS, GET_NUMBER_OF_MONTHLY_TWEETS, GET_PROFILE_VIEW_DATA }
+    from "../../redux/constants/actionTypes";
 import {HOSTNAME} from "../../constants/appConstants";
 import axios from 'axios';
 
@@ -63,6 +64,16 @@ export function getNumberOfMonthlyTweets(payload) {
     }
 }
 
+export function getProfileViewData(payload) {
+    console.log("getTop10TweetsByView payload");
+    console.log(payload);
+
+    return (dispatch) => {
+        axios.get(`http://${HOSTNAME}:8080/api/v1/analytics/user/${payload.ownerId}/tweets/count/monthy`, payload)
+            .then((response) => dispatch(getProfileViewDataDispatch(response.data)));
+    }
+}
+
 export const getTopTenTweetsByViewsDispatch = (returnData) => {
     console.log("Inside getTop10TweetsByViewDispatch dispatch");
     console.log(returnData);
@@ -97,5 +108,11 @@ export const getNumberOfMonthlyTweetsDispatch = (returnData) => {
     console.log("Inside getNumberOfMonthlyTweetsDispatch ");
     console.log(returnData);
     return {type: GET_NUMBER_OF_MONTHLY_TWEETS, payload: returnData}
+};
+
+export const getProfileViewDataDispatch = (returnData) => {
+    console.log("Inside getNumberOfMonthlyTweetsDispatch ");
+    console.log(returnData);
+    return {type: GET_PROFILE_VIEW_DATA, payload: returnData}
 };
 

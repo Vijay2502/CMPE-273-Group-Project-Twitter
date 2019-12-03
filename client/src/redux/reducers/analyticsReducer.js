@@ -2,7 +2,10 @@ import {
     GET_TOP_TEN_TWEETS_BY_VIEWS,
     GET_TOP_TEN_TWEETS_BY_LIKES,
     GET_TOP_TEN_TWEETS_BY_RETWEETS,
-    GET_NUMBER_OF_HOURLY_TWEETS, GET_NUMBER_OF_MONTHLY_TWEETS, GET_NUMBER_OF_DAILY_TWEETS
+    GET_NUMBER_OF_HOURLY_TWEETS,
+    GET_NUMBER_OF_MONTHLY_TWEETS,
+    GET_NUMBER_OF_DAILY_TWEETS,
+    GET_PROFILE_VIEW_DATA
 } from "../constants/actionTypes";
 
 const initialState = {
@@ -12,6 +15,7 @@ const initialState = {
     numberOfHourlyTweets: [],
     numberOfDailyTweets: [],
     numberOfMonthlyTweets: [],
+    profileViewData: []
 };
 
 export default function getTopTenTweetsByViews(state = initialState, action) {
@@ -127,6 +131,10 @@ export default function getTopTenTweetsByViews(state = initialState, action) {
                 return yxValues;
             })
         });
+    } else if (action.type === GET_PROFILE_VIEW_DATA) {
+        return Object.assign({}, state, {
+            profileViewData: []
+        })
     }
 
 
