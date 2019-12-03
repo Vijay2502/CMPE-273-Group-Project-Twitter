@@ -40,8 +40,8 @@ class ListTweetView extends Component {
       members:[],
       subscribers:[],
       isSubscribed: this.props.listDetailedProps.subscribed,
+      showSubscribe:(this.props.listDetailedProps.subscribed)?false:true,
       showEdit:(this.props.listDetailedProps.data.userId==localStorage.getItem("id"))?true:false,
-      showSubscribe:(this.props.listDetailedProps.data.userId==localStorage.getItem("id"))?false:true,
       buttonText: this.props.listDetailedProps.subscribed ? "Unsubscribed" : "Subscribed",
       class: this.props.listDetailedProps.subscribed ? "btn btn-outline-primary" : "btn btn-primary"
     };
