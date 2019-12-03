@@ -231,6 +231,14 @@ class Sidebar extends Component {
                             <FontAwesomeIcon icon={faListAlt} />
                             <span>List</span>
                         </button>
+                        <button
+                            type="button"
+                            class="list-group-item list-group-item-action borderless"
+                            onClick={() => this.sendData("ViewDetailedList")}
+                        >
+                            <FontAwesomeIcon icon={faBookmark} />
+                            <span>View Detailed List</span>
+                        </button>
                         <button class="list-group-item list-group-item-action borderless" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}  >
                             <FontAwesomeIcon icon={faEllipsisH} />
                             <span>More</span>

@@ -23,26 +23,28 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-class tweetlist extends Component {
+class ListTweetView extends Component {
   constructor(props) {
     super(props);
+    console.log("listtweetview",this.props);
+    
     this.state = {
-      listId : props.location.state.listId,
-      userId : props.location.state.list.data.userId,
-      list: props.location.state.list,
+      listId : this.props.listDetailedProps.id,
+      userId : this.props.listDetailedProps.data.userId,
+      list: "",
       listName: "",
       userName: "",
       name: "",
       users: [],
       members:[],
       subscribers:[],
-      isSubscribed: props.location.state.list.subscribed,
+      isSubscribed: this.props.listDetailedProps.subscribed,
       // showEdit:(props.location.state.list.data.userId==localStorage.getItem("id"))?true:false,
       showEdit:false,
       // showSubscribe:(props.location.state.list.data.userId==localStorage.getItem("id"))?false:true,
       showSubscribe:true,
-      buttonText: props.location.state.list.subscribed ? "Unsubscribed" : "Subscribed",
-      class: props.location.state.list.subscribed ? "btn btn-outline-primary" : "btn btn-primary"
+      buttonText: this.props.listDetailedProps.subscribed ? "Unsubscribed" : "Subscribed",
+      class: this.props.listDetailedProps.subscribed ? "btn btn-outline-primary" : "btn btn-primary"
     };
     console.log("id sent from parent",this.state.listId);
     console.log("list",this.state.list);
@@ -63,8 +65,12 @@ class tweetlist extends Component {
             this.setState(
                 {
                     listName:response.data.data.list.name,
-                    userName:response.data.data.list.data.username,
+                    userName:"@"+response.data.data.list.data.username,
                     name:response.data.data.list.data.firstName + response.data.data.list.data.lastName,
+                    isSubscribed: response.data.data.list.subscribed,
+                    memCount:response.data.data.list.membersCount,
+                    subCount:response.data.data.list.subscribersCount,
+                    list:response.data.data.list
                 }, () => console.log('message response',response)
             );
         })
@@ -119,12 +125,15 @@ class tweetlist extends Component {
   }
 
   handleClick() {
+    console.log("handleclick");
     const payload={
       "subscriberId": this.state.userId
     }
     if(this.state.subscribed){
+      console.log("not subscribed");
     axios.put(`http://localhost:8080/api/v1/list/${this.state.listId}/unsubscribe`,payload)
     .then(response => {
+      console.log(response)
       this.setState({
         buttonText: "Subscribed",
         class:  "btn btn-primary"
@@ -135,8 +144,10 @@ class tweetlist extends Component {
     });
    
   }else{
-    axios.put(`http://localhost:8080/api/v1/list/${this.state.listId}/unsubscribe`,payload)
+    console.log("subscribed");
+    axios.put(`http://localhost:8080/api/v1/list/${this.state.listId}/subscribe`,payload)
     .then(response => {
+      console.log(response)
       this.setState({
         buttonText: "Unsubscribed" ,
         class:  "btn btn-outline-primary"
@@ -174,8 +185,8 @@ class tweetlist extends Component {
                   <div class="profile-detail-font">{this.state.userName}</div>
                 </div>
                 <div class="followers-following row">
-                  <div class="col-sm-2 profile-detail-font">{"2"} Members</div>
-                  <div class="col-sm-2 profile-detail-font">{"2"} Subscribers</div>
+                  <div class="col-sm-2 profile-detail-font">{this.state.memCount} Members</div>
+                  <div class="col-sm-2 profile-detail-font">{this.state.subCount} Subscribers</div>
                 </div>
               </div>
             </div>
@@ -190,4 +201,4 @@ class tweetlist extends Component {
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(tweetlist);
+export default connect(mapStateToProps,mapDispatchToProps)(ListTweetView);

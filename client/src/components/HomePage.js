@@ -10,6 +10,7 @@ import GridLayout from 'react-grid-layout';
 import Search from '../components/List/search.js'
 import CreateList from '../components/List/createlist.js';
 import BookMarks from './Tweet/BookMarkedTweets';
+import ListTweetView from './List/listTweetView';
 import ViewDetailedTweet from './ViewTweetDetails/ViewTweetDetails';
 import Settings from './Account/settings'
 import {Redirect} from "react-router";
@@ -20,17 +21,20 @@ class HomePage extends Component {
         super(props);
         this.state = {
             currentScreen: "Home",
-            viewDetailedTweetScreenPropId: null
+            viewDetailedTweetScreenPropId: null,
+            viewDetailedListProps: null
         }
     }
 
     callbackFunction = (screenName) => {
         let tweetId = document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(7)").getAttribute("data-tweet-id");
-
         this.setState({ currentScreen: screenName, viewDetailedTweetScreenPropId: tweetId })
+        let listProps = document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(10)").getAttribute("data-list-props");
+        this.setState({  viewDetailedListProps: JSON.parse(listProps) })
     };
 
     render() {
+        console.log(this.state);
         return (
             <div className="container twitter-container">
                 {localStorage.getItem("token") === null &&
@@ -79,9 +83,12 @@ class HomePage extends Component {
                                 <List />
                             </div>
                         }
-
-                        {this.state.currentScreen === "ViewDetailedTweet" && this.state.viewDetailedTweetScreenPropId &&
+                       {this.state.currentScreen === "ViewDetailedTweet" && this.state.viewDetailedTweetScreenPropId &&
                             (<div class="parent-container-bookmark col-sm-12" ><ViewDetailedTweet tweetId={this.state.viewDetailedTweetScreenPropId} /></div>)
+                        }
+
+                        {this.state.currentScreen === "ViewDetailedList" && this.state.viewDetailedListProps &&
+                            (<div class="parent-container-bookmark col-sm-12" ><ListTweetView listDetailedProps={this.state.viewDetailedListProps}/></div>)
                         }
 
                     </div>
