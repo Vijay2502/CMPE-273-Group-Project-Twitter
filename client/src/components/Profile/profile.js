@@ -178,28 +178,34 @@ class profile extends Component {
     }
     getDate = () => {
         if (this.props.userDetails) {
-            let date = this.props.userDetails.createdAt;
-            let newDate = new Date(date);
-            let day = newDate.getDay() + 1
-            var month = new Array();
-            month[0] = "Jan";
-            month[1] = "Feb";
-            month[2] = "Mar";
-            month[3] = "Apr";
-            month[4] = "May";
-            month[5] = "Jun";
-            month[6] = "Jul";
-            month[7] = "Aug";
-            month[8] = "Sep";
-            month[9] = "Oct";
-            month[10] = "Nov";
-            month[11] = "Dec";
-            var mon = month[newDate.getMonth()];
-            let joinedDate = day + "-" + mon + "-" + newDate.getFullYear();
-            console.log(" date :", joinedDate);
-            return joinedDate;
+            if (this.props.userDetails.createdAt) {
+                let date = this.props.userDetails.createdAt;
+                console.log("kkkk:", date);
+                let newDate = new Date(date);
+                let day = newDate.getDay() + 1
+                var month = new Array();
+                month[0] = "Jan";
+                month[1] = "Feb";
+                month[2] = "Mar";
+                month[3] = "Apr";
+                month[4] = "May";
+                month[5] = "Jun";
+                month[6] = "Jul";
+                month[7] = "Aug";
+                month[8] = "Sep";
+                month[9] = "Oct";
+                month[10] = "Nov";
+                month[11] = "Dec";
+                var mon = month[newDate.getMonth()];
+                let joinedDate = day + "-" + mon + "-" + newDate.getFullYear();
+                console.log(" date :", joinedDate);
+                return joinedDate;
+            } else {
+                return ""
+            }
+
         } else {
-            return ""
+            return " "
         }
     }
     render() {
