@@ -20,7 +20,7 @@ function mapStateToProps(store) {
 function mapDispatchToProps(dispatch) {
     return {
         createList: (payload) => dispatch(createList(payload)),
-        addMem : (payload) => dispatch(addMem(payload))
+        addMem : (payload,id) => dispatch(addMem(payload,id))
     };
 }
 
@@ -115,10 +115,10 @@ class CreateList extends React.Component {
         console.log("user",user);
               let payload = {
            "id":localStorage.getItem("id"),
-           "listId":this.props.currentList.id,
+        
            "memberId":user.id
        }
-      this.props.addMem(payload);
+      this.props.addMem(payload,this.props.currentList.id,);
     });
     this.setState({addMemberModal: false});
    }
