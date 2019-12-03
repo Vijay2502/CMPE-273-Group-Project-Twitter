@@ -13,6 +13,8 @@ import BookMarks from './Tweet/BookMarkedTweets';
 import ListTweetView from './List/listTweetView';
 import ViewDetailedTweet from './ViewTweetDetails/ViewTweetDetails';
 import Settings from './Account/settings'
+//import SearchView from './Search/SearchView'
+import SearchView from './Search/searchView'
 import { Redirect } from "react-router";
 
 
@@ -22,9 +24,19 @@ class HomePage extends Component {
         this.state = {
             currentScreen: "Home",
             viewDetailedTweetScreenPropId: null,
+            searchText: null,
             viewDetailedListProps: null
         }
     }
+
+    search = (text) => {
+        this.setState({
+            currentScreen: "SearchView",
+            searchText: text
+        })
+        
+    }
+
 
     callbackFunction = (screenName) => {
         let tweetId = document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(7)").getAttribute("data-tweet-id");
@@ -72,6 +84,19 @@ class HomePage extends Component {
                             <Settings />
                         }
 
+                        {this.state.currentScreen === "SearchView" &&
+                        <div class="parent-container col-sm-12">
+                        <div class="top-label">Home</div>
+                        <div class="top-label-border"></div>
+                        <div className="col-lg-12 p-3">
+                        <Search search = {this.search}/>
+                    </div>
+                        <div class="tweet-container-border"></div>
+                        <SearchView text={this.state.searchText} />
+                    </div>
+                            
+                        }
+
 
 
                         {this.state.currentScreen === "List" &&
@@ -94,9 +119,9 @@ class HomePage extends Component {
                     </div>
 
                     {/* <div key="c" data-grid={{ x: 8, y: 0, w: 4, h: 11, static: true }}> */}
-                    <div className="col-lg-2">
-                        <Search />
-                    </div>
+                    {this.state.currentScreen === "SearchView"?(<div className="col-md-2"></div> ):(<div className="col-md-2">
+                        <Search search = {this.search}/>
+                    </div>)}
 
                 </div>
             </div>

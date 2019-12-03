@@ -9,26 +9,15 @@ import {getTweetsById, likeTweet, retweetTweet, bookmarkTweet} from "../../redux
 import '../../css/list.css';
 import axios from 'axios';
 import UserList from './User/UserList';
+import ListWindow from './List/ListWindow';
+import Scroller from './Scroller';
 import { HOSTNAME } from "../../constants/appConstants";
-const API_PATH = `http://${HOSTNAME}:8080`
+const API_PATH = `http://${HOSTNAME}:8080/api/v1`
 
 
 
-function mapStateToProps(store) {
-  return {
-      tweets: store.tweets.userTweets
-  }
-}
 
-function mapDispatchToProps(dispatch) {
-  return {
-      getTweets: (payload) => dispatch(getTweetsById(payload)),
-      likeTweet: (payload) => dispatch(likeTweet(payload)),
-      retweetTweet: (payload) => dispatch(retweetTweet(payload)),
-      bookmarkTweet: (payload) => dispatch(bookmarkTweet(payload)),
 
-  };
-}
 
 class SearchView extends Component {
   constructor(props) {
@@ -57,7 +46,6 @@ class SearchView extends Component {
       isLists: false
     }
 
-    this.handleRefresh = this.handleRefresh.bind(this);
     this.getUsers = this.getUsers.bind(this);
     this.peopleBox = this.peopleBox.bind(this);
     this.getTopics = this.getTopics.bind(this);
@@ -65,24 +53,34 @@ class SearchView extends Component {
     this.getLists = this.getLists.bind(this);
     this.listsBox = this.listsBox.bind(this);
     this.switch = this.switch.bind(this);
-    this.likeTweet = this.likeTweet.bind(this);
-    this.retweetTweet = this.retweetTweet.bind(this);
-    this.bookmarkTweet = this.bookmarkTweet.bind(this);
   }
 
   componentWillMount() {
-    this.getUser();
-    this.getLists();
-    this.getTopics();
+    this.getUsers(this.props.text, this.state.users.nextOffset);
+    this.getLists(this.props.text, this.state.lists.nextOffset);
+    this.getTopics(this.props.text, this.state.tweets.nextOffset);
   }
 
-  getUsers() {
-    axios.get(API_PATH + `/search/users?text=${this.props.text}&limit=10&offset=${this.state.users.nextOffset}`).then(res => {
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log(nextProps);
+    if(nextProps.text != this.props.text){
+      this.getUsers(nextProps.text,0);
+      this.getLists(nextProps.text,0);
+      this.getTopics(nextProps.text,0);
+      this.showLatestBox();
+    }
+      return true;
+  }
+
+  getUsers(text, nextOffset) {
+    console.log('getUsers',text, nextOffset)
+    axios.get(API_PATH + `/search/users?text=${text}&limit=10&offset=${nextOffset}`).then(res => {
       if (res.data && res.data.data && res.data.data.users && res.data.data.nextOffset >= 0) {
+        console.log(res.data.data);
         this.setState({
           users: {
             nextOffset: res.data.data.nextOffset,
-            records: this.state.users.records.concat(res.data.data.users)
+            records: nextOffset==0?res.data.data.users:this.state.users.records.concat(res.data.data.users)
           }
         });
       }
@@ -92,13 +90,15 @@ class SearchView extends Component {
     })
   }
 
-  getTopics() {
-    axios.get(API_PATH + `/search/topics?text=${this.props.text}&limit=10&offset=${this.state.tweets.nextOffset}`).then(res => {
+  getTopics(text, nextOffset) {
+    console.log('in getTopics')
+    axios.get(API_PATH + `/search/topics?text=${text}&limit=10&offset=${nextOffset}`).then(res => {
       if (res.data && res.data.data && res.data.data.tweets && res.data.data.nextOffset >= 0) {
+        console.log(res.data.data);
         this.setState({
           tweets: {
             nextOffset: res.data.data.nextOffset,
-            records: this.state.tweets.records.concat(res.data.data.tweets)
+            records: nextOffset==0?res.data.data.tweets:this.state.tweets.records.concat(res.data.data.tweets)
           }
         });
       }
@@ -108,13 +108,15 @@ class SearchView extends Component {
     })
   }
 
-  getLists() {
-    axios.get(API_PATH + `/search/lists?text=${this.props.text}&limit=10&offset=${this.state.lists.nextOffset}`).then(res => {
+  getLists(text, nextOffset) {
+    console.log('getLists')
+    axios.get(API_PATH + `/search/lists?text=${text}&limit=10&offset=${nextOffset}`).then(res => {
       if (res.data && res.data.data && res.data.data.lists && res.data.data.nextOffset >= 0) {
+        console.log(res.data.data);
         this.setState({
           lists: {
             nextOffset: res.data.data.nextOffset,
-            records: this.state.lists.records.concat(res.data.data.lists)
+            records: nextOffset==0?res.data.data.lists:this.state.lists.records.concat(res.data.data.lists)
           }
         });
       }
@@ -132,7 +134,7 @@ class SearchView extends Component {
     this.setState({ isLatest: false, isPeople: true, isLists: false });
   }
 
-  showListBox() {
+  showListsBox() {
     this.setState({ isLatest: false, isPeople: false, isLists: true });
   }
 
@@ -141,7 +143,7 @@ class SearchView extends Component {
     
     return (<UserList 
       users = {this.state.users.records}
-      profile = {this.props.userDetails}
+      profile = {localStorage.getItem('id')}
       getUsers = {this.getUsers}
       hasMore = {this.state.users.nextOffset != 0}
 
@@ -152,34 +154,20 @@ class SearchView extends Component {
   latestBox() {
 
     return (<Col>
-      <ViewTweets dataFromParent={this.state.tweets.records}
-                            likeTweetCallback={this.likeTweet}
-                            retweetTweetCallback={this.retweetTweet}
-                            bookmarkCallback={this.bookmarkTweet}/>
+      <ViewTweets dataFromParent={this.state.tweets.records} />
     </Col>)
 
   }
 
   listsBox() {
-    var listBodies = this.state.lists.records.map(list => {
-      return (<TweetBody
-        key={list.id}
-        name={list.name}
-        handle={``}
-        tweet={list.description}
-        image={""} />)
-    });
-    return (<Col>
-      <InfiniteScroll
-        pageStart={0}
-        loadMore={this.getUser}
-        hasMore={this.state.users.nextOffset != 0}
-        loader={<div className="loader" key={0}>Loading ...</div>}
-        useWindow={false}
-      >
-        {listBodies}
-      </InfiniteScroll>
-    </Col>)
+    console.log(">>>>>>> props ",this.props)
+    return (<ListWindow
+      lists = {this.state.lists.records}
+      profile = {localStorage.getItem('id')}
+      getLists = {this.getLists}
+      hasMore = {this.state.lists.nextOffset != 0}
+
+    />)
   }
 
   switch() {
@@ -256,5 +244,5 @@ const styles = {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchView);
+export default (SearchView);
 
