@@ -43,7 +43,6 @@ class TopFiveTweetsByRetweets extends Component {
         return CanvasJS.formatNumber(e.value / Math.pow(1000, order)) + suffix;
     }
 
-
     render() {
         const options = {
             animationEnabled: true,
@@ -56,18 +55,13 @@ class TopFiveTweetsByRetweets extends Component {
                 reversed: true,
             },
             axisY: {
-                title: "Number of views",
-                labelFormatter: this.addSymbols
+                title: "Number of retweets",
+                labelFormatter: this.addSymbols,
+                interval: 1,
             },
             data: [{
                 type: "bar",
-                dataPoints: [
-                    { y: 2200000000, label: "Tweet 1" },
-                    { y: 1800000000, label: "Tweet 2" },
-                    { y: 800000000, label: "Tweet 3" },
-                    { y: 563000000, label: "Tweet 4" },
-                    { y: 376000000, label: "Tweet 5" },
-                ]
+                dataPoints: this.props.topTenTweetsByRetweets.dataPoints
             }]
         };
 
@@ -76,8 +70,7 @@ class TopFiveTweetsByRetweets extends Component {
                 <CanvasJSChart options={options}
                 /* onRef={ref => this.chart = ref} */
                 />
-                <ViewTweets dataFromParent={this.props.topTenTweetsByRetweets} isDisableButtons={true}/>
-
+                <ViewTweets dataFromParent={this.props.topTenTweetsByRetweets.tweets} isDisableButtons={true}/>
 
                 {/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
             </div>

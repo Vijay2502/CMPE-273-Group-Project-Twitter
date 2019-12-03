@@ -8,6 +8,7 @@ import TopTenTweetsByViews from "./TopTenTweetsByViews"
 import TopTenTweetsByLikes from "./TopTenTweetsByLikes"
 import TopFiveTweetsByRetweets from "./TopFiveTweetsByRetweets"
 import NumberOfTweetsGraph from "./NumberOfTweetsGraph"
+import ProfileViews from "./ProfileViews"
 
 function mapStateToProps(store) {
     return {}
@@ -42,8 +43,8 @@ class AnalyticsMain extends Component {
                             <Nav.Link as={NavLink} to='/analytics/TopFiveTweetsByRetweets'>Top Five Tweets By
                                 Retweets</Nav.Link>
                             <Nav.Link as={NavLink} to='/analytics/NumberOfTweetsGraph'>Number Of Tweets Graph</Nav.Link>
+                            <Nav.Link as={NavLink} to='/analytics/ProfileViews'>Profile View Graph</Nav.Link>
                         </Nav>
-
                         <Nav className="ml-auto">
                             <Nav.Link as={NavLink} to='/analytics/signOut/'>SignOut</Nav.Link>
                         </Nav>
@@ -55,6 +56,7 @@ class AnalyticsMain extends Component {
                         <Route exact path='/analytics/TopTenTweetsByLikes' component={TopTenTweetsByLikes}/>
                         <Route exact path='/analytics/TopFiveTweetsByRetweets' component={TopFiveTweetsByRetweets}/>
                         <Route exact path='/analytics/NumberOfTweetsGraph/' component={NumberOfTweetsGraph}/>
+                        <Route exact path='/analytics/ProfileViews/' component={ProfileViews}/>
                         {/*<Route exact path='/analytics/signOut/' component={SignOut}/>*/}
                     </Switch>
                 </div>

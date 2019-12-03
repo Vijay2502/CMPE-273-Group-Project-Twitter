@@ -1,36 +1,34 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import CanvasJSReact from '../../lib/canvasjs.react';
-import { getTopTenTweetsByLikes } from "../../redux/actions/analyticsActions";
-import ViewTweets from "../Tweet/ViewTweets";
+import { getProfileViewData } from "../../redux/actions/analyticsActions";
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 var CanvasJS = CanvasJSReact.CanvasJS;
 
 function mapStateToProps(store) {
     return {
-        topTenTweetsByLikes: store.analytics.topTenTweetsByLikes,
+        //profileViewData: store.analytics.profileViewData,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        getTopTenTweetsByLikes: (payload) => dispatch(getTopTenTweetsByLikes(payload))
+        //getProfileViewData: (payload) => dispatch(getProfileViewData(payload))
     };
 }
 
-class TopTenTweetsByLikes extends Component {
+class ProfileViews extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: [],
         };
     }
 
     componentDidMount() {
         const payload = {};
-        payload.ownerId = localStorage.getItem("id");
-        this.props.getTopTenTweetsByLikes(payload);
+        payload.ownerId = localStorage.getItem("id")
+        //this.props.getProfileViewData(payload);
     }
 
     addSymbols(e) {
@@ -42,40 +40,47 @@ class TopTenTweetsByLikes extends Component {
         return CanvasJS.formatNumber(e.value / Math.pow(1000, order)) + suffix;
     }
 
-
     render() {
         const options = {
             animationEnabled: true,
             theme: "light2",
             title: {
-                text: "Top 10 tweets by likes"
+                text: "Top 10 tweets by views"
             },
             axisX: {
                 title: "Tweets",
                 reversed: true,
             },
             axisY: {
-                title: "Number of likes",
-                labelFormatter: this.addSymbols,
+                title: "Number of views",
+                //labelFormatter: this.addSymbols,
                 interval: 1
             },
             data: [{
                 type: "bar",
-                dataPoints: this.props.topTenTweetsByLikes.dataPoints
+                //dataPoints: this.props.profileViewData
+                dataPoints: [
+                    { y: 1, label: "Tweet 1" },
+                    { y: 2, label: "Tweet 2" },
+                    { y: 3, label: "Tweet 3" },
+                    { y: 4, label: "Tweet 4" },
+                    { y: 4, label: "Tweet 5" },
+                    { y: 5, label: "Tweet 6" },
+                    { y: 1, label: "Tweet 7" },
+                    { y: 6, label: "Tweet 8" },
+                    { y: 1, label: "Tweet 9" },
+                    { y: 1, label: "Tweet 10" },
+                ]
             }]
         };
 
         return (
             <div>
-                <CanvasJSChart options={options}
-                /* onRef={ref => this.chart = ref} */
-                />
-
-                <ViewTweets dataFromParent={this.props.topTenTweetsByLikes.tweets} isDisableButtons={true}/>
-                {/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
+                <h1>hi</h1>
+                <CanvasJSChart options={options} />
             </div>
         );
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TopTenTweetsByLikes);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileViews);

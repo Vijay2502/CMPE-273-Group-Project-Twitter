@@ -1,10 +1,21 @@
-import {GET_TOP_TEN_TWEETS_BY_VIEWS, GET_TOP_TEN_TWEETS_BY_LIKES, GET_TOP_TEN_TWEETS_BY_RETWEETS} from "../constants/actionTypes";
+import {
+    GET_TOP_TEN_TWEETS_BY_VIEWS,
+    GET_TOP_TEN_TWEETS_BY_LIKES,
+    GET_TOP_TEN_TWEETS_BY_RETWEETS,
+    GET_NUMBER_OF_HOURLY_TWEETS,
+    GET_NUMBER_OF_MONTHLY_TWEETS,
+    GET_NUMBER_OF_DAILY_TWEETS,
+    GET_PROFILE_VIEW_DATA
+} from "../constants/actionTypes";
 
 const initialState = {
     topTenTweetsByViews: [],
     topTenTweetsByLikes: [],
     topTenTweetsByRetweets: [],
-    numgerOfTweetsGraphs: [],
+    numberOfHourlyTweets: [],
+    numberOfDailyTweets: [],
+    numberOfMonthlyTweets: [],
+    profileViewData: []
 };
 
 export default function getTopTenTweetsByViews(state = initialState, action) {
@@ -12,39 +23,33 @@ export default function getTopTenTweetsByViews(state = initialState, action) {
     console.log(action.payload);
 
     if (action.type === GET_TOP_TEN_TWEETS_BY_VIEWS) {
-        return Object.assign({}, state, {
-            topTenTweetsByViews: action.payload.data.res.map((tweet, index) => {
-                const tweetCustom = {};
+        const tweets = action.payload.data.res.map((tweet) => {
+            const tweetCustom = {};
+            tweetCustom.data = tweet.tweet.data;
 
-                tweetCustom.data = tweet.tweet.data;
-                tweetCustom.likes = tweet.likes;
-                tweetCustom.retweetCount = tweet.retweetCount;
-                return tweetCustom;
-            })
+            return tweetCustom;
+        });
+
+        const dataPoints = action.payload.data.res.map((tweet, index) => {
+            const yxValues = {};
+
+            yxValues["y"] = tweet.numOfViews;
+            yxValues["label"] = "Tweet " + index;
+            return yxValues;
+        });
+
+        const response = {};
+        response.tweets = tweets;
+        response.dataPoints = dataPoints;
+
+        return Object.assign({}, state, {
+            topTenTweetsByViews: response
         });
     } else if (action.type === GET_TOP_TEN_TWEETS_BY_LIKES) {
-        // data: [{
-        //     type: "bar",
-        //     dataPoints: [
-        //         { y: 2200000000, label: "Tweet 1" },
-        //         { y: 1800000000, label: "Tweet 2" },
-        //         { y: 800000000, label: "Tweet 3" },
-        //         { y: 563000000, label: "Tweet 4" },
-        //         { y: 376000000, label: "Tweet 5" },
-        //         { y: 2200000000, label: "Tweet 6" },
-        //         { y: 1800000000, label: "Tweet 7" },
-        //         { y: 800000000, label: "Tweet 8" },
-        //         { y: 563000000, label: "Tweet 9" },
-        //         { y: 376000000, label: "Tweet 10" },
-        //     ]
-        // }]
-
-        const tweets = action.payload.data.res.map((tweet, index) => {
+        const tweets = action.payload.data.res.map((tweet) => {
             const tweetCustom = {};
-
             tweetCustom.data = tweet.tweet.data;
-            tweetCustom.likes = tweet.likes;
-            tweetCustom.retweetCount = tweet.retweetCount;
+
             return tweetCustom;
         });
 
@@ -64,18 +69,75 @@ export default function getTopTenTweetsByViews(state = initialState, action) {
             topTenTweetsByLikes: response
         });
     } else if (action.type === GET_TOP_TEN_TWEETS_BY_RETWEETS) {
-        return Object.assign({}, state, {
-            //topTenTweetsByRetweets: action.payload.tweets,
-            topTenTweetsByRetweets: action.payload.data.res.map((tweet, index) => {
-                const tweetCustom = {};
+        const tweets = action.payload.data.res.map((tweet) => {
+            const tweetCustom = {};
 
-                tweetCustom.data = tweet.tweet.data;
-                tweetCustom.likes = tweet.likes;
-                tweetCustom.retweetCount = tweet.retweetCount;
-                return tweetCustom;
+            tweetCustom.data = tweet.tweet.data;
+            return tweetCustom;
+        });
+
+        const dataPoints = action.payload.data.res.map((tweet, index) => {
+            const yxValues = {};
+
+            yxValues["y"] = tweet.tweet.retweetCount;
+            yxValues["label"] = "Tweet " + (index + 1);
+            return yxValues;
+        });
+
+        const response = {};
+        response.tweets = tweets.slice(0, 5);
+        response.dataPoints = dataPoints.slice(0, 5);
+
+        return Object.assign({}, state, {
+            topTenTweetsByRetweets: response,
+        });
+    } else if (action.type === GET_NUMBER_OF_HOURLY_TWEETS) {
+        return Object.assign({}, state, {
+            numberOfHourlyTweets: action.payload.data.res.map((pair, index) => {
+                const keys = Object.keys(pair);
+
+                const yxValues = {};
+
+                yxValues["y"] = pair[keys[0]];
+                yxValues["label"] = keys[0];
+                return yxValues;
             })
         });
+    } else if (action.type === GET_NUMBER_OF_DAILY_TWEETS) {
+        return Object.assign({}, state, {
+            numberOfDailyTweets: action.payload.data.res.map((pair, index) => {
+                console.log("GET_NUMBER_OF_DAILY_TWEETS pair", pair)
+                const keys = Object.keys(pair);
+                console.log("key", keys)
+
+                const yxValues = {};
+
+                yxValues["y"] = pair[keys[0]];
+                yxValues["label"] = keys[0];
+                return yxValues;
+            })
+        });
+    } else if (action.type === GET_NUMBER_OF_MONTHLY_TWEETS) {
+        return Object.assign({}, state, {
+            numberOfMonthlyTweets: action.payload.data.res.map((pair, index) => {
+                console.log("GET_NUMBER_OF_MONTHLY_TWEETS pair", pair)
+                const keys = Object.keys(pair);
+                console.log("key", keys)
+
+                const yxValues = {};
+
+                yxValues["y"] = pair[keys[0]];
+                yxValues["label"] = keys[0];
+                return yxValues;
+            })
+        });
+    } else if (action.type === GET_PROFILE_VIEW_DATA) {
+        return Object.assign({}, state, {
+            profileViewData: []
+        })
     }
+
+
 
     return state;
 }
