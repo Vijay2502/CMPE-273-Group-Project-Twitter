@@ -318,3 +318,70 @@ module.exports.monthlyTweetCountPerYear = function (userId, cb) {
         return cb(err);
     })
 }
+
+module.exports.dailyProfileViewsCountPerMonth = function (userId, cb) {
+    const currentTime = moment().startOf('day').format();
+    const concat = Array(30).fill().map((_, idx) => ({
+        $cond: [
+            {
+                $and: [
+                    {
+                        $gte: [
+                            "$createdAt",
+                            moment(currentTime).subtract('days', (30 - (idx + 1))).toDate()
+                        ]
+                    },
+                    {
+                        $lt: [
+                            "$createdAt",
+                            moment(currentTime).subtract('days', (30 - (idx + 2))).toDate()
+                        ]
+                    }
+                ]
+            },
+            `${moment(currentTime).subtract('days', (30 - (idx + 1))).format('Do MMM')}`,
+            ""
+        ]
+    }));
+
+    return repo_mongo.UserAnalytics.aggregate([
+        {
+            $match: {
+                ownerId: Number(userId)
+            }
+        },
+        {
+            $project: {
+                "range": {
+                    $concat: concat
+                }
+            }
+        },
+        {
+            $group: {
+                "_id": "$range",
+                count: {
+                    $sum: 1
+                }
+            }
+        }
+    ]).then(function (data) {
+        if (data) {
+            var res = data.reduce((r, record) => ({
+                ...r,
+                [record._id]: record.count
+            }), {});
+            res = Array(30).fill().reduce((entry, x, idx) => {
+
+                const key = moment(currentTime).subtract('days', (30 - (idx + 1))).format('Do MMM');
+                entry.push({ [key]: res[key] ? res[key] : 0 });
+                return entry;
+
+            }, []);
+            return cb(null, res);
+        }
+        return cb(null, null);
+    }, function (err) {
+        return cb(err);
+    })
+}

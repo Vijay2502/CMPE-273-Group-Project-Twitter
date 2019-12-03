@@ -7,13 +7,14 @@ import logo from '../../static/images/login_twitter_logo.png';
 class Reactivate extends Component {
     constructor(props) {
         super(props);
-        this.state = { logout: false }
+        this.state = { toLogout: false, toHome: false }
     }
     logout = () => {
         //logout here
-        localStorage.clear();
-        this.setState({ logout: true });
-        return <Redirect to='/login' />
+        console.log("setting state::::::");
+        this.setState({ toLogout: true });
+        // localStorage.clear();
+        localStorage.setItem('userActive', 'truee');
     }
     activateAccount = () => {
         // call activate account 
@@ -22,17 +23,23 @@ class Reactivate extends Component {
             .then(res => {
                 console.log("test result :", res);
                 if (res.data.status === "ok") {
+                    localStorage.setItem('userActive', true)
                     alert("You have been re-activated.");
                 }
+            }).then(() => {
+                this.setState({ toHome: true })
             })
             .catch(err => {
                 console.log(err);
             });
     }
     render() {
-        if (this.state.logout) {
+        if (this.state.toHome) {
+            return <Redirect to='/home' />
+        } else if (this.state.toLogout) {
             return <Redirect to='/login' />
         }
+
         return (<div>
             <div class="reactivate-container col-sm-12">
                 <div>

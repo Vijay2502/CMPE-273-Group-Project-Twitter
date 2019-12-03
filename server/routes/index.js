@@ -77,6 +77,7 @@ router.get('/analytics/user/:id/tweets/by-retweets', Analytics.topTweetsByRetwee
 router.get('/analytics/user/:id/tweets/count/hourly', Analytics.hourlyTweetCountPerDay);
 router.get('/analytics/user/:id/tweets/count/daily', Analytics.dailyTweetCountPerWeek);
 router.get('/analytics/user/:id/tweets/count/monthy', Analytics.monthlyTweetCountPerYear);
+router.get('/analytics/user/:id/profile-views/daily', Analytics.dailyProfileViewsCountPerMonth);
 
 //CONVERSATION APIS
 router.get('/conversation/getByUser/:userId', Chat.getByUser);

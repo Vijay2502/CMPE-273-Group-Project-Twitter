@@ -91,3 +91,18 @@ module.exports.monthlyTweetCountPerYear = function (request, response) {
     });
 }
 
+module.exports.dailyProfileViewsCountPerMonth = function (request, response) {
+
+    return analyticsService.dailyProfileViewsCountPerMonth(request.params.id, function (err, res) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: {
+                res
+            }
+        });
+    });
+}
+

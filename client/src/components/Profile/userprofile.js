@@ -55,7 +55,7 @@ class userprofile extends Component {
                 </div>
                 <div class="profile-pic-btn-container row">
                     <div class="profile-profile-pic col-sm-6">
-                        <img src={this.props.ProfileImg ? this.props.ProfileImg : require("../../static/images/profile_pic.png")} height="120" width="120px" />
+                        <img src={this.props.profileImage ? this.props.profileImage : require("../../static/images/profile_pic.png")} height="120" width="120px" />
                     </div>
                     <div class="col-sm-6 edit-btn">
                         <button

@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const repository = require('../../repository/mysql');
-const { Tweet } = require('../../repository/mongo');
+const { Tweet, UserAnalytics } = require('../../repository/mongo');
 const cache = require('../../cache');
 const async = require('async');
 
@@ -19,7 +19,7 @@ module.exports.create = function (newUser, cb) {
                 username: newUser.username,
                 email: newUser.email,
                 password: newUser.password,
-                data: newUser.data ? newUser.data : null
+                data: newUser.data ? newUser.data : {}
             }).then(function (user) {
                 return cb(null, { message: "USER SUCCESSFULLY REGISTERED" });
 
@@ -106,7 +106,8 @@ module.exports.update = function (newUser, cb) {
                     username: newUser.username ? newUser.username : user.username,
                     email: newUser.email ? newUser.email : user.email,
                     password: newUser.password,
-                    data: newUser.data ? newUser.data : user.data
+                    data: newUser.data ? {...user.data,
+                        ...newUser.data} : user.data
                 };
 
                 return repository.User.update(userDTO,
@@ -151,7 +152,17 @@ module.exports.getById = function (userId, followerId, cb) {
 
     cache.get('user-getById-' + userId, function (err, user) {
         if (user) {
-            return cb(null, JSON.parse(user));
+            user = JSON.parse(user);
+            if(userId != followerId){
+                UserAnalytics.create({
+                    ownerId: user.id
+                }).then(user => {
+                    
+                }, function(err){
+                    console.log(err);
+                })
+            }
+            return cb(null, user);
         } else {
             repository.User.findOne({
                 where: {
@@ -169,7 +180,7 @@ module.exports.getById = function (userId, followerId, cb) {
                             email: user.email,
                             followed: has,
                             createdAt: user.createdAt,
-                            data: user.data ? user.data : null
+                            data: user.data ? {...user.data, views: user.data.views? user.data.views + 1: 1} : { views:1 }
                         };
 
                         cache.set('user-getById-' + userId, JSON.stringify(userDTO), function (err) {
@@ -179,7 +190,17 @@ module.exports.getById = function (userId, followerId, cb) {
                                 cache.expire('user-getById-' + userId, process.env.CACHE_EXPIRY_TIME);
                             }
 
-                        })
+                        });
+
+                        if(userId != followerId){
+                            UserAnalytics.create({
+                                ownerId: user.id
+                            }).then(user => {
+                                
+                            }, function(err){
+                                console.log(err);
+                            })
+                        }
 
                         return cb(null, userDTO);
                     }, function (err) {
@@ -195,7 +216,7 @@ module.exports.getById = function (userId, followerId, cb) {
             }, function (err) {
                 return cb(err);
             });
-        }
+       }
     })
 
 }

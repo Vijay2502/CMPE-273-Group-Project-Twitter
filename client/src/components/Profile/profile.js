@@ -106,14 +106,14 @@ class profile extends Component {
                 }
             }).then((response) => {
                 // console.log("Res data ", dataFinal);
-                // dataFinal.data.ProfileImg = response.data.location;
+                // dataFinal.data.profileImage = response.data.location;
                 dataFinal.data = {
-                    ProfileImg: response.data.location,
-                    website: Updatedata.formGridWebsite,
-                    location: Updatedata.formGridLocation,
-                    bio: Updatedata.formGridBio
+                    profileImage: response.data.location ? response.data.location : undefined,
+                    website: Updatedata.formGridWebsite ? Updatedata.formGridWebsite : undefined,
+                    location: Updatedata.formGridLocation ? Updatedata.formGridLocation : undefined,
+                    bio: Updatedata.formGridBio ? Updatedata.formGridBio : undefined
                 };
-
+                localStorage.setItem('image', dataFinal.data.profileImage);
                 console.log("testing data with image:", dataFinal);
 
                 axios.put('http://localhost:8080/api/v1/user/update', dataFinal)
@@ -126,7 +126,7 @@ class profile extends Component {
                             // store.dispatch(loadUser());
                             this.setState({
                                 editProfile: false,
-                                selectedProfilePic: res.data.data.user.data.ProfileImg
+                                selectedProfilePic: res.data.data.user.data.profileImage
                                 // user: res.data.user
                             });
                         }
@@ -139,10 +139,10 @@ class profile extends Component {
             });
         } else {
             dataFinal.data = {
-                ProfileImg: "",
-                website: Updatedata.formGridWebsite,
-                location: Updatedata.formGridLocation,
-                bio: Updatedata.formGridBio
+                profileImage: undefined,
+                website: Updatedata.formGridWebsite ? Updatedata.formGridWebsite : undefined,
+                location: Updatedata.formGridLocation ? Updatedata.formGridLocation : undefined,
+                bio: Updatedata.formGridBio ? Updatedata.formGridBio : undefined
             };
             console.log("testing data wo image:", dataFinal);
             axios.put('http://localhost:8080/api/v1/user/update', dataFinal)
@@ -176,6 +176,38 @@ class profile extends Component {
     closefolloweeList = () => {
         this.setState({ openFollowee: false });
     }
+    getDate = () => {
+        if (this.props.userDetails) {
+            if (this.props.userDetails.createdAt) {
+                let date = this.props.userDetails.createdAt;
+                console.log("kkkk:", date);
+                let newDate = new Date(date);
+                let day = newDate.getDay() + 1
+                var month = new Array();
+                month[0] = "Jan";
+                month[1] = "Feb";
+                month[2] = "Mar";
+                month[3] = "Apr";
+                month[4] = "May";
+                month[5] = "Jun";
+                month[6] = "Jul";
+                month[7] = "Aug";
+                month[8] = "Sep";
+                month[9] = "Oct";
+                month[10] = "Nov";
+                month[11] = "Dec";
+                var mon = month[newDate.getMonth()];
+                let joinedDate = day + "-" + mon + "-" + newDate.getFullYear();
+                console.log(" date :", joinedDate);
+                return joinedDate;
+            } else {
+                return ""
+            }
+
+        } else {
+            return " "
+        }
+    }
     render() {
         // if (this.state.openFollower) {
 
@@ -204,7 +236,7 @@ class profile extends Component {
                 hasMore={false}
             ></FollowList>)
         }
-        console.log("checking tweetCount", tweetCount);
+        // console.log("checking tweetCount", tweetCount);
         return (
             <div class="profile-container col-sm-12">
                 <div class="top-details row">
@@ -222,7 +254,7 @@ class profile extends Component {
                 </div>
                 <div class="profile-pic-btn-container row">
                     <div class="profile-profile-pic col-sm-6">
-                        <img src={userData.ProfileImg ? userData.ProfileImg : require("../../static/images/profile_pic.png")} height="120" width="120px" />
+                        <img src={userData.profileImage ? userData.profileImage : require("../../static/images/profile_pic.png")} height="120" width="120px" />
                     </div>
                     <div class="col-sm-6 edit-btn">
                         <button
@@ -243,14 +275,17 @@ class profile extends Component {
                                 <FontAwesomeIcon icon={faBirthdayCake} />
                                 <span> born {}</span>
                             </div> */}
-                            <div class="col-sm-4 profile-detail-font">
+                            <div class="col-sm-8 profile-detail-font">
                                 <FontAwesomeIcon icon={faCalendarAlt} />
-                                <span> Joined {}</span>
+                                <span> Joined {this.getDate()}</span>
                             </div>
                         </div>
                         <div class="followers-following row">
                             <div class="col-sm-3 profile-detail-font"><Link class="link-color" onClick={this.followerList}>{usrFollower.count ? usrFollower.count : 0} Followers</Link></div>
                             <div class="offset-sm-1 col-sm-3 profile-detail-font"><Link class="link-color" onClick={this.followeeList}>{usrFollowee.count ? usrFollowee.count : 0} Following</Link></div>
+                        </div>
+                        <div class="followers-following row">
+                            <div class="col-sm-10 profile-detail-font">{userData.state ? userData.state : ""} {userData.city ? userData.city : ""} {userData.zipcode ? userData.zipcode : ""}</div>
                         </div>
                     </div>
                 </div>
@@ -309,7 +344,7 @@ class profile extends Component {
 
                                 <label for="proile-pic-upload">
                                     <img
-                                        src={userData.ProfileImg ? userData.ProfileImg : require("../../static/images/profile_pic.png")}
+                                        src={userData.profileImage ? userData.profileImage : require("../../static/images/profile_pic.png")}
                                         height="80px"
                                         width="80px"
                                     />

@@ -6,6 +6,7 @@ const TweetsByHashtagSchema = require('./models/tweetsByHashtag');
 const TweetsByListSchema = require('./models/tweetsByList');
 const TweetsBySubscriptionSchema = require('./models/tweetsBySubscription');
 const BookmarkedTweetsSchema = require('./models/bookmarkedTweets');
+const UserAnalyticsSchema = require('./models/userAnalytics');
 
 mongoose.connect(process.env.MONGO_URL);
 
@@ -16,6 +17,7 @@ const tweetsByHashtagModel = mongoose.model('tweetsByHashtag', TweetsByHashtagSc
 const tweetsByListModel = mongoose.model('tweetsByList', TweetsByListSchema);
 const tweetsBySubscriptionModel = mongoose.model('tweetsBySubscription', TweetsBySubscriptionSchema);
 const bookmarkedTweetsModel = mongoose.model('tweetsByBookmark', BookmarkedTweetsSchema);
+const userAnalyticsModel = mongoose.model('userAnalytics', UserAnalyticsSchema);
 /*
 TODO
 - tweets by HashTag  --- done
@@ -33,5 +35,6 @@ module.exports = {
     TweetsByList: tweetsByListModel,
     TweetsBySubscription: tweetsBySubscriptionModel,
     BookmarkedTweets: bookmarkedTweetsModel,
+    UserAnalytics: userAnalyticsModel,
     mongoose: mongoose
 };
