@@ -8,8 +8,10 @@ import ViewTweets from "../Tweet/ViewTweets";
 import { getProfile, getfollowees, getfollowers } from "../../redux/actions/userActions";
 import { getTweetsById } from "../../redux/actions/tweetsActions";
 import axios from 'axios';
-
-
+import { Link } from "react-router-dom";
+import UserList from '../Search/User/UserList';
+import InfiniteScroll from 'react-infinite-scroller';
+import FollowList from "./userlist";
 function mapStateToProps(store) {
     return {
         userDetails: store.users.userDetails,
@@ -24,7 +26,6 @@ function mapDispatchToProps(dispatch) {
         getUserTweets: data => dispatch(getTweetsById(data)),
         getUserfollowers: data => dispatch(getfollowers(data)),
         getUserfollowees: data => dispatch(getfollowees(data))
-
     }
 }
 
@@ -35,7 +36,9 @@ class profile extends Component {
             editProfile: false, //for modal
             selectedCoverPic: null,
             selectedProfilePic: null,
-            users: []
+            openFollower: false,
+            users: [],
+            openFollowee: false
         };
     }
     componentWillMount = () => {
@@ -161,8 +164,22 @@ class profile extends Component {
                 });
         }
     };
-
+    followerList = () => {
+        this.setState({ openFollower: true });
+    }
+    closefollowerList = () => {
+        this.setState({ openFollower: false });
+    }
+    followeeList = () => {
+        this.setState({ openFollowee: true });
+    }
+    closefolloweeList = () => {
+        this.setState({ openFollowee: false });
+    }
     render() {
+        // if (this.state.openFollower) {
+
+        // }
         console.log("checking props", JSON.stringify(this.props));
         let usrDetails = this.props.userDetails ? this.props.userDetails : [];
         let usrTweets = this.props.userTweets ? this.props.userTweets : [];
@@ -171,7 +188,22 @@ class profile extends Component {
         let usrFollowee = this.props.userFollowee ? this.props.userFollowee : [];
         let userData = usrDetails.data ? usrDetails.data : [];
         // console.log("usrFollowee length :", Object.keys(usrFollowee).length);
-
+        if (this.state.openFollower) {
+            return (<FollowList openFollower={this.state.openFollower} title={"Follower List"} closeList={this.closefollowerList}
+                users={usrFollower.followers}
+                profile={usrDetails}
+                getUsers={usrDetails}
+                hasMore={false}
+            ></FollowList>)
+        }
+        else if (this.state.openFollowee) {
+            return (<FollowList openFollowee={this.state.openFollowee} title={"Followee List"} closeList={this.closefolloweeList}
+                users={usrFollowee.followee}
+                profile={usrDetails}
+                getUsers={usrDetails}
+                hasMore={false}
+            ></FollowList>)
+        }
         console.log("checking tweetCount", tweetCount);
         return (
             <div class="profile-container col-sm-12">
@@ -207,18 +239,18 @@ class profile extends Component {
                         <div class="profile-name-header ">{usrDetails.firstName ? usrDetails.firstName : ""} {usrDetails.lastName ? usrDetails.lastName : ""}</div>
                         <div class="profile-detail-font">@{usrDetails.username ? usrDetails.username : ""}</div>
                         <div class="profile-dates row">
-                            <div class="col-sm-4 profile-detail-font">
+                            {/* <div class="col-sm-4 profile-detail-font">
                                 <FontAwesomeIcon icon={faBirthdayCake} />
                                 <span> born {}</span>
-                            </div>
+                            </div> */}
                             <div class="col-sm-4 profile-detail-font">
                                 <FontAwesomeIcon icon={faCalendarAlt} />
                                 <span> Joined {}</span>
                             </div>
                         </div>
                         <div class="followers-following row">
-                            <div class="col-sm-3 profile-detail-font">{usrFollower.count ? usrFollower.count : 0} Followers</div>
-                            <div class="offset-sm-1 col-sm-3 profile-detail-font">{usrFollowee.count ? usrFollowee.count : 0} Following</div>
+                            <div class="col-sm-3 profile-detail-font"><Link class="link-color" onClick={this.followerList}>{usrFollower.count ? usrFollower.count : 0} Followers</Link></div>
+                            <div class="offset-sm-1 col-sm-3 profile-detail-font"><Link class="link-color" onClick={this.followeeList}>{usrFollowee.count ? usrFollowee.count : 0} Following</Link></div>
                         </div>
                     </div>
                 </div>
