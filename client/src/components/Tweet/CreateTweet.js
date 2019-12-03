@@ -40,7 +40,7 @@ class CreateTweet extends Component {
                 if (e.target[i].id === "img-upload") {
                     continue;
                 }
-                
+
                 data[e.target[i].id] = e.target[i].value;
             }
         }
@@ -49,7 +49,7 @@ class CreateTweet extends Component {
         owner["firstName"] = localStorage.getItem("firstName");
         owner["lastName"] = localStorage.getItem("lastName");
         owner["username"] = localStorage.getItem("username");
-        owner["image"] = "";
+        owner["image"] = localStorage.getItem("image") ? localStorage.getItem("image") : "";
 
         const tweet = {}
         tweet["data"] = data;
