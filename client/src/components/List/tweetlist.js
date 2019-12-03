@@ -26,10 +26,8 @@ class tweetlist extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      listId : 4,
-      // props.location.state.listtId,
-      userId : 6,
-      // props.location.state.usertId,
+      listId : props.location.state.listtId,
+      userId : props.location.state.usertId,
       editProfile: false, //for modal
       listName: "Cast and Crew",
       userName: "@SiliconHBO",
@@ -41,7 +39,7 @@ class tweetlist extends Component {
       buttonText: "Subscribed",
       class: "btn btn-primary"
     };
-    console.log("id sent from parent",this.state.id);
+    console.log("id sent from parent",this.state.listId);
     this.handleClick = this.handleClick.bind(this);
   }
   componentWillMount = () => {
