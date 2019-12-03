@@ -1,4 +1,4 @@
-import {SIGN_IN, SIGN_UP} from "../../redux/constants/actionTypes";
+import {SIGN_IN, SIGN_UP, SIGN_IN_ERROR} from "../../redux/constants/actionTypes";
 
 const initialState = {
     signupSuccess: null,
@@ -28,11 +28,15 @@ export default function authReducer(state = initialState, action) {
             signinSuccess: action.payload.status === "ok" ? true : false,
             signinMessage: "",
         });
-    } else if (action.type === SIGN_UP) {
-
+    } else if (action.type === SIGN_IN_ERROR) {
+        return Object.assign({}, state, {
+            signinSuccess: false,
+            signinMessage: "Login failed, incorrect username or password",
+        });
+    } if (action.type === SIGN_UP) {
         return Object.assign({}, state, {
             signupSuccess: action.payload.status === "ok" ? true : false,
-            signupMessage: action.payload.data.message,
+            signupMessage: "",
         });
     }
 

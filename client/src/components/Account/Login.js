@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import logo from '../../static/images/login_twitter_logo.png';
 import {signIn} from "../../redux/actions/authActions";
 import {connect} from "react-redux";
-import {Button, Form} from "react-bootstrap";
+import {Button, Form, Toast} from "react-bootstrap";
 import {Redirect} from "react-router";
+import Expire from "./Expire";
 
 function mapStateToProps(store) {
     return {
@@ -48,6 +49,14 @@ class Login extends Component {
                 {this.props.signinSuccess === true && <Redirect to={{
                     pathname: "/home"
                 }}/>}
+                {this.props.signinSuccess === false &&
+                <Toast>
+                    <Toast.Header>
+                        <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
+                        <strong className="mr-auto">Notification</strong>
+                    </Toast.Header>
+                    <Toast.Body>{this.props.signinMessage}</Toast.Body>
+                </Toast>}
 
                 <div>
                     <img style={styles.logo} src={logo} alt="Quora"/>
