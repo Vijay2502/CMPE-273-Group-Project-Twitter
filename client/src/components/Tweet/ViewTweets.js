@@ -86,6 +86,19 @@ class ViewTweets extends Component {
                         let handle = tweet.owner !== undefined ? `@${tweet.owner.username}` : "@username";
                         let image = tweet.owner.image;
                         let tweetText = tweet.data.text;
+
+                        let dateObj = new Date(tweet.createdAt);
+                        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                        let date1 = dateObj.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+                        let date2 = months[dateObj.getMonth()] + " " + dateObj.getDate() + ", " + dateObj.getFullYear();
+
+                        let createdAt = <div>{
+                            date1
+                        } &#8226;&nbsp;
+                            {
+                                date2
+                            }</div>;
+                        
                         let id = tweet.id;
                         const buttonData = {};
                         buttonData.tweetId = tweet.id;
@@ -116,6 +129,7 @@ class ViewTweets extends Component {
                                     handle={handle}
                                     tweet={tweetText}
                                     image={image}
+                                    createdAt={createdAt}
                                     setTweet={this.props.setTweet ? this.props.setTweet : false}
                                 />
 

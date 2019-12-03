@@ -107,6 +107,7 @@ class CreateTweet extends Component {
                                     id="text"
                                     placeholder="Tweet your reply"
                                     rows="3"
+                                    maxlength="280"
                                 ></textarea>
                                 {/* <Form.Group controlId="formGridAddress1">
                                     <Form.Control as="textarea" row="3" placeholder="Tweet your reply" />

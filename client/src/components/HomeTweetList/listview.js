@@ -10,8 +10,6 @@ class TweetBox extends Component {
         console.log(props);
     }
 
-
-
     render() {
         return (
             <div className="tweet-body" >
@@ -49,6 +47,14 @@ const Tweet = (props) => {
     return (
         <div className="tweet">
             {props.tweet}
+        </div>
+    )
+};
+
+const CreatedAt = (props) => {
+    return (
+        <div className="createdAt">
+            {props.createdAt}
         </div>
     )
 };
@@ -127,6 +133,7 @@ class TweetBody extends Component {
                         <div className="inner-body-inner">
                             <Name name={this.props.name} />
                             <Handle handle={this.props.handle} />
+                            <CreatedAt createdAt={this.props.createdAt} />
                         </div>
                         <Tweet tweet={this.props.tweet} />
                     </div>

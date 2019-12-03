@@ -62,8 +62,18 @@
     margin-top: 14px;
     margin-left: 15px;
     font-size: medium;
-
 }
+
+.createdAt{
+    font-weight: lighter;
+    font-family: sans-serif;
+    color: rgb(101, 119, 134);
+    margin-left: 20px;
+    margin-top: 14px;
+    margin-left: 15px;
+    font-size: medium;
+}
+
 .tweet{
     margin-left: 15px;
     margin-top: 7px;

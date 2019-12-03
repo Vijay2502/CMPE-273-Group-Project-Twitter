@@ -123,41 +123,41 @@ class SignUp extends Component {
                     <Form.Row>
                         <Form.Group as={Col} controlId="firstName">
                             <Form.Label>First name</Form.Label>
-                            <Form.Control placeholder="What's your first name?" />
+                            <Form.Control placeholder="What's your first name?" required/>
                         </Form.Group>
                         <Form.Group as={Col} controlId="lastName">
                             <Form.Label>Last name</Form.Label>
-                            <Form.Control placeholder="What's your last name?" />
+                            <Form.Control placeholder="What's your last name?" required/>
                         </Form.Group>
                     </Form.Row>
 
                     <Form.Group controlId="username">
                         <Form.Label>Username</Form.Label>
-                        <Form.Control placeholder="Enter a cool username" />
+                        <Form.Control placeholder="Enter a cool username" required/>
                     </Form.Group>
 
                     <Form.Group controlId="email">
                         <Form.Label>Email</Form.Label>
-                        <Form.Control placeholder="What's your email?" />
+                        <Form.Control placeholder="What's your email?" required/>
                     </Form.Group>
 
                     <Form.Group controlId="password">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Enter a strong password" />
+                        <Form.Control type="password" placeholder="Enter a strong password" required/>
                     </Form.Group>
 
                     <Form.Row>
                         <Form.Group as={Col} controlId="city">
                             <Form.Label>City</Form.Label>
-                            <Form.Control placeholder="City name" />
+                            <Form.Control placeholder="City name" required/>
                         </Form.Group>
                         <Form.Group as={Col} controlId="state">
                             <Form.Label>State</Form.Label>
-                            <Form.Control placeholder="State name or code" />
+                            <Form.Control placeholder="State name or code" required/>
                         </Form.Group>
                         <Form.Group as={Col} controlId="zipcode">
                             <Form.Label>Zipcode</Form.Label>
-                            <Form.Control placeholder="12345 or 12345-6789"/>
+                            <Form.Control placeholder="12345 or 12345-6789" required/>
                         </Form.Group>
                     </Form.Row>
 
