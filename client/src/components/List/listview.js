@@ -35,9 +35,7 @@ const Name = (props) => {
 };
 
 const List = (props) => {
-    console.log("Tweet",props);
     if (props.tweet.description !== undefined) {
-        console.log("Tweet if",props.tweet.name);
         return (
             <div class="tweet-list">
                 <Title title={props.tweet} />
@@ -50,7 +48,6 @@ const List = (props) => {
             </div>
         )
     } else {
-        console.log("Tweet return");
         return (
             <div className="tweet-list">
                     <Title title={props} />
@@ -65,7 +62,6 @@ const List = (props) => {
 };
 
 const Title = (props) => {
-    console.log("title props",props.title)
     if (props !== undefined) {
         return (
            <div> <Link style={{color:"black"}} to={{  pathname: '/listtweet',
@@ -78,7 +74,6 @@ const Title = (props) => {
 
 const Members = (props) => {
     let members=[]
-    console.log("members props",props)
     axios.get(`http://localhost:8080/api/v1/list/${props.members.id}/members`)
         .then(response => {
             console.log("members count",response.data.data.members);
@@ -94,9 +89,7 @@ const Members = (props) => {
 };
 
 const Subscribers = (props) => {
-    console.log("subscrobers props",props)
     let subscribers=[]
-    console.log("subscribers props",props)
     axios.get(`http://localhost:8080/api/v1/list/${props.subscribers.id}/subscribers`)
         .then(response => {
             console.log(" subscribers  count",response.data.data.subscribers );

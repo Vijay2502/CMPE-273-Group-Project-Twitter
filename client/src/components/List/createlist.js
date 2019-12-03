@@ -66,8 +66,6 @@ class CreateList extends React.Component {
     };
     nextList =()=>{
         //call create api
-        console.log("list name", this.state.name);
-        console.log("list description", this.state.description);
         if(this.state.name!=undefined && this.state.description!=undefined){
         const payload ={
             "userId":localStorage.getItem("id"),
@@ -93,7 +91,6 @@ class CreateList extends React.Component {
     handleSearch = (e) => {
         e.preventDefault();
         this.getUser(e.target.value);
-        console.log("testing search");
     };
    handleDelete = chipToDelete => () => {
        let chips= this.state.chipData
@@ -103,8 +100,6 @@ class CreateList extends React.Component {
       };
    handleAdd= (e,user) => {
        e.preventDefault();
-       console.log("handleADD",user);
-    
     let chips= this.state.chipData
         let newMember = { key : chips.length,label:user.username,id:user.id}
         chips.push(newMember);
@@ -142,7 +137,6 @@ class CreateList extends React.Component {
     render() {
         let searchList = null;
         if (this.state.search.length > 0) {
-            console.log("here");
             searchList = this.state.search.map(user => {
                 return (
                     <div class="list-group">
