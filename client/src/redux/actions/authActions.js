@@ -1,4 +1,4 @@
-import {SIGN_IN, SIGN_UP} from "../../redux/constants/actionTypes";
+import {SIGN_IN, SIGN_IN_ERROR, SIGN_UP} from "../../redux/constants/actionTypes";
 import {HOSTNAME} from "../../constants/appConstants";
 
 import axios from 'axios';
@@ -9,7 +9,8 @@ export function signIn(payload) {
 
     return (dispatch) => {
         axios.post(`http://${HOSTNAME}:8080/api/v1/user/login`, payload)
-            .then((response) => dispatch(signInDispatch(response.data)));
+            .then((response) => dispatch(signInDispatch(response.data)))
+            .catch((err) => dispatch(signInErrorDispatch(err)));
     }
 }
 
@@ -18,6 +19,12 @@ export const signInDispatch = (returnData) => {
     console.log(returnData);
 
     return {type: SIGN_IN, payload: returnData}
+};
+
+export const signInErrorDispatch = (error) => {
+    console.log("Inside signInErrorDispatch", error);
+
+    return {type: SIGN_IN_ERROR, payload: error}
 };
 
 export function signUp(payload) {

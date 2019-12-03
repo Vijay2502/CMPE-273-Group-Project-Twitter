@@ -12,6 +12,7 @@ import CreateList from '../components/List/createlist.js';
 import BookMarks from './Tweet/BookMarkedTweets';
 import ViewDetailedTweet from './ViewTweetDetails/ViewTweetDetails';
 import Settings from './Account/settings'
+import {Redirect} from "react-router";
 
 
 class HomePage extends Component {
@@ -32,6 +33,10 @@ class HomePage extends Component {
     render() {
         return (
             <div className="container twitter-container">
+                {localStorage.getItem("token") === null &&
+                <Redirect to={{
+                    pathname: "/login"
+                }}/>}
                 <div className="row" >
                     {/* <div key="a" data-grid={{ x: 0, y: 0, w: 4, h: 11, static: true }}> */}
                     <div className="col-lg-3">
