@@ -155,8 +155,18 @@ export default function getTopTenTweetsByViews(state = initialState, action) {
         });
     } else if (action.type === GET_PROFILE_VIEW_DATA) {
         return Object.assign({}, state, {
-            profileViewData: []
-        })
+            profileViewData: action.payload.data.res.map((pair, index) => {
+                console.log("GET_PROFILE_VIEW_DATA pair", pair)
+                const keys = Object.keys(pair);
+                console.log("key", keys)
+
+                const yxValues = {};
+
+                yxValues["y"] = pair[keys[0]];
+                yxValues["label"] = keys[0];
+                return yxValues;
+            })
+        });
     }
 
 

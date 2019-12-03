@@ -69,7 +69,7 @@ export function getProfileViewData(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/analytics/user/${payload.ownerId}/tweets/count/monthy`, payload)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/analytics/user/${payload.ownerId}/profile-views/daily`, payload)
             .then((response) => dispatch(getProfileViewDataDispatch(response.data)));
     }
 }

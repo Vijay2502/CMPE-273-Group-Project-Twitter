@@ -8,13 +8,13 @@ var CanvasJS = CanvasJSReact.CanvasJS;
 
 function mapStateToProps(store) {
     return {
-        //profileViewData: store.analytics.profileViewData,
+        profileViewData: store.analytics.profileViewData,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        //getProfileViewData: (payload) => dispatch(getProfileViewData(payload))
+        getProfileViewData: (payload) => dispatch(getProfileViewData(payload))
     };
 }
 
@@ -28,7 +28,7 @@ class ProfileViews extends Component {
     componentDidMount() {
         const payload = {};
         payload.ownerId = localStorage.getItem("id")
-        //this.props.getProfileViewData(payload);
+        this.props.getProfileViewData(payload);
     }
 
     addSymbols(e) {
@@ -45,38 +45,36 @@ class ProfileViews extends Component {
             animationEnabled: true,
             theme: "light2",
             title: {
-                text: "Top 10 tweets by views"
+                text: "Last 30 day user profile views"
             },
             axisX: {
                 title: "Tweets",
-                reversed: true,
+                interval: 1
             },
             axisY: {
                 title: "Number of views",
-                //labelFormatter: this.addSymbols,
-                interval: 1
+                labelFormatter: this.addSymbols,
             },
             data: [{
-                type: "bar",
-                //dataPoints: this.props.profileViewData
-                dataPoints: [
-                    { y: 1, label: "Tweet 1" },
-                    { y: 2, label: "Tweet 2" },
-                    { y: 3, label: "Tweet 3" },
-                    { y: 4, label: "Tweet 4" },
-                    { y: 4, label: "Tweet 5" },
-                    { y: 5, label: "Tweet 6" },
-                    { y: 1, label: "Tweet 7" },
-                    { y: 6, label: "Tweet 8" },
-                    { y: 1, label: "Tweet 9" },
-                    { y: 1, label: "Tweet 10" },
-                ]
+                type: "column",
+                dataPoints: this.props.profileViewData
+                // dataPoints: [
+                //     { y: 1, label: "Tweet 1" },
+                //     { y: 2, label: "Tweet 2" },
+                //     { y: 3, label: "Tweet 3" },
+                //     { y: 4, label: "Tweet 4" },
+                //     { y: 4, label: "Tweet 5" },
+                //     { y: 5, label: "Tweet 6" },
+                //     { y: 1, label: "Tweet 7" },
+                //     { y: 6, label: "Tweet 8" },
+                //     { y: 1, label: "Tweet 9" },
+                //     { y: 1, label: "Tweet 10" },
+                // ]
             }]
         };
 
         return (
             <div>
-                <h1>hi</h1>
                 <CanvasJSChart options={options} />
             </div>
         );
