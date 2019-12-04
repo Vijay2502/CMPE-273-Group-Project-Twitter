@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Modal, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -195,6 +196,14 @@ class Sidebar extends Component {
                         >
                             <FontAwesomeIcon icon={faBell} />
                             <span>Notification</span>
+                        </button>
+                        <button
+                            type="button"
+                            className="list-group-item list-group-item-action borderless"
+                            onClick={() => this.sendData("LikedTweets")}
+                        >
+                            <FontAwesomeIcon icon={faHeart}/>
+                            <span>Liked Tweets</span>
                         </button>
                         <button
                             type="button"

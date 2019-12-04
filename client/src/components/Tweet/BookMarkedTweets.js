@@ -33,11 +33,11 @@ class BookMarkedTweets extends Component {
     }
 
     render() {
-        console.log("render HomeTweetList");
+        console.log("render HomeTweetList: ", this.props);
         return (
             <div class="top-label-bookmark-header">
                 <div class="top-label-bookmark">BookMarks</div>
-                <div class="top-label-bookmark-username">{this.state.userName}</div>
+                <div class="top-label-bookmark-username">{this.props.username ? this.props.username : ""}</div>
                 <div class="bookmark-tweets-container">
                     <ViewTweets dataFromParent={this.props.bookmarkedTweets} />
                 </div>

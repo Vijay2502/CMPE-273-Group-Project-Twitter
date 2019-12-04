@@ -1,10 +1,11 @@
-import { CREATE_TWEET, GET_USER_TWEETS, GET_BOOKMARKED_TWEETS } from "../../redux/constants/actionTypes";
+import { CREATE_TWEET, GET_USER_TWEETS, GET_BOOKMARKED_TWEETS, GET_LIKED_TWEETS } from "../../redux/constants/actionTypes";
 
 const initialState = {
     createTweetSuccess: null,
     createTweetMessage: null,
     userTweets: [],
-    bookmarkedTweets: []
+    bookmarkedTweets: [],
+    likedTweets: []
 };
 
 function generateTweets(tweets) {
@@ -57,8 +58,11 @@ export default function tweetReducer(state = initialState, action) {
         return Object.assign({}, state, {
             bookmarkedTweets: action.payload.data.tweets
         })
+    } else if (action.type === GET_LIKED_TWEETS) {
+        return Object.assign({}, state, {
+            likedTweets: action.payload.data.tweets
+        })
     }
-
 
     return state;
 }
