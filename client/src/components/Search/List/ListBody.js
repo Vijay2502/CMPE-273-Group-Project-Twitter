@@ -38,7 +38,7 @@ const ListBody = (props) => {
             <ListBox>
                 <div className="inner-body list-group-item-action">
 
-                    {props.list.owner.data && props.list.owner.data.profilePic? (<Image image={props.list.owner.data.profilePic} />) : (<Image image="https://thefader-res.cloudinary.com/private_images/w_760,c_limit,f_auto,q_auto:best/TwitterLogo__55acee_jntmic/twitter-applications-verified.jpg" />)}
+                    {props.list.owner && props.list.owner.data && props.list.owner.data.profileImage? (<Image image={props.list.owner.data.profileImage} />) : (<Image image="https://thefader-res.cloudinary.com/private_images/w_760,c_limit,f_auto,q_auto:best/TwitterLogo__55acee_jntmic/twitter-applications-verified.jpg" />)}
                     <div className="body">
                         <div className="inner-body-inner">
                             <Name name={`${props.list.owner.firstName} ${props.list.owner.lastName}`} />

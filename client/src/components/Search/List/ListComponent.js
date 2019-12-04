@@ -5,7 +5,7 @@ import { Button, Row, Col } from 'reactstrap';
 
 import { ListBody } from './ListBody';
 import { HOSTNAME } from "../../../constants/appConstants";
-const API_PATH = `http://${HOSTNAME}:8080`
+const API_PATH = `http://${HOSTNAME}:8080/api/v1`
 
 class ListComponent extends Component {
     state = {
@@ -28,8 +28,8 @@ class ListComponent extends Component {
     };
 
     subscribe = (subscriberId) => {
-        axios.post(API_PATH + `/user/${this.props.callerId}/subscribe`, { subscriberId }, this.tokenConfig()).then(res => {
-            if (res.data.status == "ok") {
+        axios.put(API_PATH + `/list/${this.props.list.id}/subscribe`, { subscriberId:this.props.callerId }, this.tokenConfig()).then(res => {
+            if (res.data.status) {
                 this.setState({
                     subscribed: true
                 });
@@ -41,8 +41,8 @@ class ListComponent extends Component {
     }
 
     unsubscribe = (subscriberId) => {
-        axios.post(API_PATH + `/user/${this.props.callerId}/unsubscribe`, { subscriberId }, this.tokenConfig()).then(res => {
-            if (res.data.status == "ok") {
+        axios.put(API_PATH + `/list/${this.props.list.id}/unsubscribe`, { subscriberId:this.props.callerId }, this.tokenConfig()).then(res => {
+            if (res.data.status) {
                 this.setState({
                     subscribed: false
                 });
@@ -54,6 +54,7 @@ class ListComponent extends Component {
     }
 
     render() {
+        console.log(this.props.list);
         return (<Row>
             <Col className="col-9">
             <div className="inner-body list-group-item-action">
@@ -63,12 +64,12 @@ class ListComponent extends Component {
                 </div>
             </Col>
             <Col className="text-right my-auto">
-                {this.props.callerId ? (this.state.subscribed ? (<div class="reply-tweet-submit-container" >
-                    <Button class="btn-container" color='danger' type="submit" onClick={this.subscribe.bind(this.props.callerId)}>
+                {this.props.callerId ? (!this.state.subscribed ? (<div class="reply-tweet-submit-container" >
+                    <Button class="btn-container" color='danger' type="submit" onClick={this.subscribe.bind(this)}>
                         Subscribe
         </Button>
                 </div>) : (<div class="reply-tweet-submit-container" >
-                    <Button class="btn-container" color='primary' type="submit" onClick={this.unsubscribe.bind(this.props.callerId)}>
+                    <Button class="btn-container" color='primary' type="submit" onClick={this.unsubscribe.bind(this)}>
                         Unsubscribe
         </Button>
                 </div>)) : <div></div>}

@@ -5,7 +5,7 @@ import { Button, Row, Col } from 'reactstrap';
 
 import { UserBody } from './UserBody';
 import { HOSTNAME } from "../../../constants/appConstants";
-const API_PATH = `http://${HOSTNAME}:8080`
+const API_PATH = `http://${HOSTNAME}:8080/api/v1`
 
 class UserComponent extends Component {
     state = {
@@ -28,8 +28,8 @@ class UserComponent extends Component {
     };
 
     follow = (followeeId) => {
-        axios.post(API_PATH + `/user/${this.props.callerId}/follow`, { followeeId }, this.tokenConfig()).then(res => {
-            if (res.data.status == "ok") {
+        axios.put(API_PATH + `/user/${this.props.user.id}/follow`, { followeeId:this.props.callerId }, this.tokenConfig()).then(res => {
+            if (res.data.status ) {
                 this.setState({
                     followed: true
                 });
@@ -41,8 +41,8 @@ class UserComponent extends Component {
     }
 
     unfollow = (followeeId) => {
-        axios.post(API_PATH + `/user/${this.props.callerId}/unfollow`, { followeeId }, this.tokenConfig()).then(res => {
-            if (res.data.status == "ok") {
+        axios.put(API_PATH + `/user/${this.props.user.id}/unfollow`, { followeeId:this.props.callerId }, this.tokenConfig()).then(res => {
+            if (res.data.status ) {
                 this.setState({
                     followed: false
                 });
@@ -63,11 +63,11 @@ class UserComponent extends Component {
             </Col>
             <Col className="text-right my-auto">
                 {this.props.callerId ? (this.state.followed ? (<div class="reply-tweet-submit-container" >
-                    <Button class="btn-container" color='danger' type="submit" onClick={this.unfollow.bind(this.props.callerId)}>
+                    <Button class="btn-container" color='danger' type="submit" onClick={this.unfollow.bind(this)}>
                         Unfollow
         </Button>
                 </div>) : (<div class="reply-tweet-submit-container" >
-                    <Button class="btn-container" color='primary' type="submit" onClick={this.follow.bind(this.props.callerId)}>
+                    <Button class="btn-container" color='primary' type="submit" onClick={this.follow.bind(this)}>
                         Follow
         </Button>
                 </div>)) : <div></div>}
