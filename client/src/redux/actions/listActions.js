@@ -2,17 +2,14 @@ import { CREATE_LIST, ADD_MEMBER, REMOVE_MEMBER, GET_LIST_ID, GET_TWEETS_BY_LIST
 import { HOSTNAME } from "../../constants/appConstants";
 
 import axios from 'axios';
-var headers = {
-    "Content-Type": "application/json",
-    Authorization: localStorage.getItem("token")
-};
+
 //  *********** CREATE LIST ***********
 export function createList(payload) {
-    console.log("createList payload header:", headers);
+
     console.log(payload);
 
     return (dispatch) => {
-        axios.post(`http://${HOSTNAME}:8080/api/v1/list/create`, payload, { headers: headers })
+        axios.post(`http://${HOSTNAME}:8080/api/v1/list/create`, payload, { headers: { 'Content-type': 'application/json', 'Authorization': localStorage.getItem('token') } })
             .then((response) => dispatch(createDispatch(response.data)));
     }
 }
@@ -27,7 +24,7 @@ export function addMem(payload, id) {
     console.log("addMem payload");
     console.log(payload);
     return (dispatch) => {
-        axios.put(`http://${HOSTNAME}:8080/api/v1/list/${id}/add-member`, payload, { headers: headers })
+        axios.put(`http://${HOSTNAME}:8080/api/v1/list/${id}/add-member`, payload, { headers: { 'Content-type': 'application/json', 'Authorization': localStorage.getItem('token') } })
             .then((response) => dispatch(addMembersDispatch(response.data)));
     }
 }
@@ -44,7 +41,7 @@ export function removeMem(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.post(`http://${HOSTNAME}:8080/api/v1//list/${payload.userId}/remove-member`, payload, { headers: headers })
+        axios.post(`http://${HOSTNAME}:8080/api/v1//list/${payload.userId}/remove-member`, payload, { headers: { 'Content-type': 'application/json', 'Authorization': localStorage.getItem('token') } })
             .then((response) => dispatch(removeMembersDispatch(response.data)));
     }
 }
@@ -61,7 +58,7 @@ export function getListById(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/list/get/:id`, { headers: headers })
+        axios.get(`http://${HOSTNAME}:8080/api/v1/list/get/:id`, { headers: { 'Content-type': 'application/json', 'Authorization': localStorage.getItem('token') } })
             .then((response) => dispatch(getListbyIdDispatch(response.data)));
     }
 }
@@ -78,7 +75,7 @@ export function getTweetByList(id) {
     console.log(id);
 
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/feed/list/${id}`, { headers: headers })
+        axios.get(`http://${HOSTNAME}:8080/api/v1/feed/list/${id}`, { headers: { 'Content-type': 'application/json', 'Authorization': localStorage.getItem('token') } })
             .then((response) => dispatch(getTweetByListDispatch(response.data)));
     }
 }
@@ -95,7 +92,7 @@ export function getMemberInAList(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/list/:id/members`, { headers: headers })
+        axios.get(`http://${HOSTNAME}:8080/api/v1/list/:id/members`, { headers: { 'Content-type': 'application/json', 'Authorization': localStorage.getItem('token') } })
             .then((response) => dispatch(getMemberInAListDispatch(response.data)));
     }
 }
@@ -112,7 +109,7 @@ export function getSubscriberInAList(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/list/:id/subscribers`, { headers: headers })
+        axios.get(`http://${HOSTNAME}:8080/api/v1/list/:id/subscribers`, { headers: { 'Content-type': 'application/json', 'Authorization': localStorage.getItem('token') } })
             .then((response) => dispatch(getSubscriberInAListDispatch(response.data)));
     }
 }
@@ -128,7 +125,7 @@ export function getOwnedLists(id) {
     console.log("getOwnedList user id");
     console.log(id);
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/user/${id}/owner/lists`, { headers: headers })
+        axios.get(`http://${HOSTNAME}:8080/api/v1/user/${id}/owner/lists`, { headers: { 'Content-type': 'application/json', 'Authorization': localStorage.getItem('token') } })
             .then((response) => {
                 if (response.status == 204) {
                     return "No-Content"
@@ -151,7 +148,7 @@ export function getSubscribedLists(id) {
     console.log(id);
 
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/user/${id}/subscriber/lists`, { headers: headers })
+        axios.get(`http://${HOSTNAME}:8080/api/v1/user/${id}/subscriber/lists`, { headers: { 'Content-type': 'application/json', 'Authorization': localStorage.getItem('token') } })
             .then((response) => {
                 if (response.status == 204) {
                     return "No-Content"
@@ -174,7 +171,7 @@ export function getMemberLists(id) {
     console.log(id);
 
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/user/${id}/member/lists`, { headers: headers })
+        axios.get(`http://${HOSTNAME}:8080/api/v1/user/${id}/member/lists`, { headers: { 'Content-type': 'application/json', 'Authorization': localStorage.getItem('token') } })
             .then((response) => {
                 if (response.status == 204) {
                     return "No-Content"
@@ -199,7 +196,7 @@ export function getTweetByListId(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/tweet/byList/:listId`, { headers: headers })
+        axios.get(`http://${HOSTNAME}:8080/api/v1/tweet/byList/:listId`, { headers: { 'Content-type': 'application/json', 'Authorization': localStorage.getItem('token') } })
             .then((response) => dispatch(getTweetByListIdDispatch(response.data)));
     }
 }

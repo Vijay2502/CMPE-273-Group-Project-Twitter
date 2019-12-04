@@ -69,7 +69,7 @@ class ListTweetView extends Component {
             {
               listName: response.data.data.list.name,
               userName: "@" + response.data.data.list.data.username,
-              name: response.data.data.list.data.firstName + response.data.data.list.data.lastName,
+              name: response.data.data.list.data.firstName + " " + response.data.data.list.data.lastName,
               isSubscribed: response.data.data.list.subscribed,
               memCount: response.data.data.list.membersCount,
               subCount: response.data.data.list.subscribersCount,
