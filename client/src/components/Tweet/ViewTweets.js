@@ -87,7 +87,7 @@ class ViewTweets extends Component {
                         let handle = tweet.owner !== undefined ? `@${tweet.owner.username}` : "@username";
                         let image = tweet.owner.image;
                         let tweetText = tweet.data.text;
-                        let isRetweeted = tweet.retweet.isRetweet;
+                        let isRetweeted = tweet.retweet ? tweet.retweet.isRetweet : false;
 
                         let dateObj = new Date(tweet.createdAt);
                         let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

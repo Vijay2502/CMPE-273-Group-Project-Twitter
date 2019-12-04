@@ -89,7 +89,7 @@ class TweetButtons extends Component {
                     {
                         console.log("this.props.data.retweetingUserId", this.props.data.retweetingUserId)
                     }
-                    {this.props.data.userId.toString() === this.props.data.retweetingUserId.toString() &&
+                    {this.props.data.userId !== undefined && this.props.data.userId.toString() === this.props.data.retweetingUserId.toString() &&
                         <button
                             type="button"
                             className="list-group-item list-group-item-action borderless"
