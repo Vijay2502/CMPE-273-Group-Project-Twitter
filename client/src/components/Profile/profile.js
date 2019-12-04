@@ -375,7 +375,7 @@ class profile extends Component {
                                     <Form.Control
                                         as="textarea"
                                         rows="3"
-                                        placeholder={userData.location ? userData.location : "Add your Bio"}
+                                        placeholder={userData.bio ? userData.bio : "Add your Bio"}
                                     />
                                 </Form.Group>
                                 <Form.Group controlId="formGridLocation">
