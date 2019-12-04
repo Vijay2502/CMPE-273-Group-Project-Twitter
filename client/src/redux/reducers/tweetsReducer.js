@@ -60,7 +60,7 @@ export default function tweetReducer(state = initialState, action) {
         })
     } else if (action.type === GET_LIKED_TWEETS) {
         return Object.assign({}, state, {
-            likedTweets: action.payload.data.tweets
+            likedTweets: action.payload.data
         })
     }
 

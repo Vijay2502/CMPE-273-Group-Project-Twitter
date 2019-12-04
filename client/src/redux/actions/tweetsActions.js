@@ -49,7 +49,7 @@ export function getLikedTweets(payload) {
 
 
     return (dispatch) => {
-        axios.put(`http://${HOSTNAME}:8080/api/v1/tweet/getByLikedTweets/${payload.userId}`)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/tweet/getByLikedTweets/${payload.ownerId}`)
             .then((response) => dispatch(getLikedTweetsDispatch(response.data)));
     }
 }

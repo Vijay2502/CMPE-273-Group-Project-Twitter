@@ -64,7 +64,7 @@ class TweetButtons extends Component {
                         className="list-group-item list-group-item-action borderless"
                         style={styles.like}
                         onClick={() => {
-                            console.log("faHeart this.props.data", this.props.data)
+                            {console.log("faHeart this.props.data", this.props.data)}
                             this.props.likeTweetCallback(this.props.data.tweetId, this.props.data.retweetingUserId)
                             this.setState({ likeIncrement: 1 })
                         }}
