@@ -7,6 +7,7 @@ import {
     GET_NUMBER_OF_DAILY_TWEETS,
     GET_PROFILE_VIEW_DATA
 } from "../constants/actionTypes";
+import React from "react";
 
 const initialState = {
     topTenTweetsByViews: [],
@@ -33,6 +34,7 @@ export default function getTopTenTweetsByViews(state = initialState, action) {
             owner["username"] = localStorage.getItem("username");
 
             tweetCustom.owner = owner;
+            tweetCustom.createdAt = tweet.createdAt;
 
             return tweetCustom;
         });
@@ -45,6 +47,7 @@ export default function getTopTenTweetsByViews(state = initialState, action) {
             return yxValues;
         });
 
+        console.log("GET_TOP_TEN_TWEETS_BY_VIEWS tweets", tweets)
         const response = {};
         response.tweets = tweets;
         response.dataPoints = dataPoints;

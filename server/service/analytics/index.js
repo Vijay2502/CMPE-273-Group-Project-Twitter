@@ -118,7 +118,6 @@ module.exports.topTweetsByRetweets = function (userId, cb) {
 
 module.exports.hourlyTweetCountPerDay = function (userId, cb) {
     const currentTime = moment().startOf('day');
-    currentTime.subtract(2, "days");
     const concat = Array(24).fill().map((_, idx) => ({
         $cond: [
             {
