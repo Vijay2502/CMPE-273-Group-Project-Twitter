@@ -76,6 +76,7 @@ class SearchView extends Component {
     console.log('getUsers',text, nextOffset)
     axios.get(API_PATH + `/search/users?text=${text}&limit=10&offset=${nextOffset}`).then(res => {
       if (res.data && res.data.data && res.data.data.users && res.data.data.nextOffset >= 0) {
+
         console.log(res.data.data);
         this.setState({
           users: {
