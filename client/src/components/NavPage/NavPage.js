@@ -10,4 +10,3 @@ class NavPage extends Component {
 }
 
 export default NavPage;
-

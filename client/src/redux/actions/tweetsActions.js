@@ -1,4 +1,4 @@
-import { CREATE_TWEET, GET_USER_TWEETS, LIKE_TWEET, RETWEET_TWEET, REPLY_TWEET, BOOKMARK_TWEET, GET_BOOKMARKED_TWEETS } from "../../redux/constants/actionTypes";
+import { CREATE_TWEET, GET_USER_TWEETS, LIKE_TWEET, RETWEET_TWEET, REPLY_TWEET, BOOKMARK_TWEET, GET_BOOKMARKED_TWEETS, DELETE_TWEET } from "../../redux/constants/actionTypes";
 import { HOSTNAME } from "../../constants/appConstants";
 import axios from 'axios';
 
@@ -79,6 +79,16 @@ export function getBookmarkedTweets(payload) {
     }
 }
 
+export function deleteTweet(payload) {
+    console.log("replyTweet payload");
+    console.log(payload);
+
+    return (dispatch) => {
+        axios.delete(`http://${HOSTNAME}:8080/api/v1/tweet/${payload.tweetId}/delete`)
+            .then((response) => dispatch(deleteTweetDispatch(response.data)));
+    }
+}
+
 function getUserTweets(returndata) {
     console.log("Inside getUserTweets - returndata: ", JSON.stringify(returndata));
     return { type: GET_USER_TWEETS, payload: returndata };
@@ -126,4 +136,9 @@ export const getBookmarkedTweetsDispatch = (returnData) => {
     return { type: GET_BOOKMARKED_TWEETS, payload: returnData }
 };
 
+export const deleteTweetDispatch = (returnData) => {
+    console.log("Inside getBookmarkedTweetsDispatch");
+    console.log(returnData);
 
+    return { type: DELETE_TWEET, payload: returnData }
+};

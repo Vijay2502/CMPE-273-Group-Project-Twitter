@@ -82,16 +82,26 @@ class TweetButtons extends Component {
                     >
                         <FontAwesomeIcon icon={faBookmark} />
                     </button>
-                    <button
-                        type="button"
-                        className="list-group-item list-group-item-action borderless"
-                        style={styles.share}
-                        onClick={() => {
-                            this.props.bookmarkCallback(this.props.data.tweetId, this.props.data.retweetingUserId)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashAlt} />
-                    </button>
+
+                    {
+                        console.log("this.props.data.userId", this.props.data.userId)
+                    }
+                    {
+                        console.log("this.props.data.retweetingUserId", this.props.data.retweetingUserId)
+                    }
+                    {this.props.data.userId.toString() === this.props.data.retweetingUserId.toString() &&
+                        <button
+                            type="button"
+                            className="list-group-item list-group-item-action borderless"
+                            style={styles.share}
+                            onClick={() => {
+                                this.props.deleteTweetCallback(this.props.data.tweetId)
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faTrashAlt} />
+                        </button>
+                    }
+
                 </div>
 
                 <Modal
@@ -103,8 +113,6 @@ class TweetButtons extends Component {
                         triggerReplyCountIncrement={this.triggerReplyCountIncrement}
                         closeCommentModal={this.closeCommentModal} />
                 </Modal>
-
-
             </div>
         )
     }

@@ -3,7 +3,7 @@ import { PullDownContent, PullToRefresh, RefreshContent, ReleaseContent } from "
 import TweetBody from "../HomeTweetList/listview";
 import TweetButtons from "../Tweet/TweetButtons";
 import { connect } from "react-redux";
-import { likeTweet, retweetTweet, bookmarkTweet } from "../../redux/actions/tweetsActions";
+import { likeTweet, retweetTweet, bookmarkTweet, deleteTweet } from "../../redux/actions/tweetsActions";
 
 function mapStateToProps(store) {
     return {
@@ -15,6 +15,7 @@ function mapDispatchToProps(dispatch) {
         likeTweet: (payload) => dispatch(likeTweet(payload)),
         retweetTweet: (payload) => dispatch(retweetTweet(payload)),
         bookmarkTweet: (payload) => dispatch(bookmarkTweet(payload)),
+        deleteTweet: (payload) => dispatch(deleteTweet(payload)),
     };
 }
 
@@ -61,12 +62,11 @@ class ViewTweets extends Component {
         this.props.bookmarkTweet(payload);
     }
 
-    delete(tweetId, userId) {
+    deleteTweet = (tweetId) => {
         const payload = {};
         payload.tweetId = tweetId;
-        payload.userId = userId;
 
-        this.props.bookmarkTweet(payload);
+        this.props.deleteTweet(payload);
     }
 
     render() {
@@ -143,13 +143,13 @@ class ViewTweets extends Component {
                                     />
                                 </div>}
 
-
                                 {this.props.isDisableButtons !== true &&
                                     <TweetButtons data={buttonData}
                                         likeTweetCallback={this.likeTweet}
                                         retweetTweetCallback={this.retweetTweet}
-                                        replyTweetCallback={this.replyTweetCallback}
-                                        bookmarkCallback={this.bookmarkTweet} />}
+                                        bookmarkCallback={this.bookmarkTweet}
+                                        deleteTweetCallback={this.deleteTweet}
+                                    />}
                             </div>
                         )
                     })}
