@@ -112,7 +112,7 @@ class TweetBody extends Component {
     }
 
     displayTweet(id) {
-        console.log("ID >>>>>> ", id);
+
         if (this.props.setTweet) {
             this.props.setTweet(id);
         } else {
@@ -129,7 +129,7 @@ class TweetBody extends Component {
 
     render() {
 
-        console.log("check props ----------------", this.props);
+
         return (
             <div class="list-group">
                 <button type="button" className="inner-body list-group-item list-group-item-action" onClick={(e) => this.displayTweet(this.props.id)}>
