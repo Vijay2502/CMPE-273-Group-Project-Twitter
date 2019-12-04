@@ -127,7 +127,7 @@ class ListBody extends Component {
 
     }
     render() {
-        console.log("check list ----------------", this.props);
+        //console.log("check list ----------------", this.props);
         return (
             <div class="list-group">
                 <button type="button" className="inner-body list-group-item list-group-item-action" onClick={(e) => this.displayTweet(this.props)}>

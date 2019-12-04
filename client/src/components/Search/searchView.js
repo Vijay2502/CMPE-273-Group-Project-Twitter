@@ -12,8 +12,8 @@ import UserList from './User/UserList';
 import ListWindow from './List/ListWindow';
 import Scroller from './Scroller';
 import { HOSTNAME } from "../../constants/appConstants";
+import Spinner from "../Spinner";
 const API_PATH = `http://${HOSTNAME}:8080/api/v1`
-
 
 
 
@@ -43,7 +43,8 @@ class SearchView extends Component {
       },
       isLatest: true,
       isPeople: false,
-      isLists: false
+      isLists: false,
+      isLoading : false
     }
 
     this.getUsers = this.getUsers.bind(this);
@@ -53,12 +54,49 @@ class SearchView extends Component {
     this.getLists = this.getLists.bind(this);
     this.listsBox = this.listsBox.bind(this);
     this.switch = this.switch.bind(this);
+    this.getListType = this.getListType.bind(this);
   }
 
   componentWillMount() {
     this.getUsers(this.props.text, this.state.users.nextOffset);
     this.getLists(this.props.text, this.state.lists.nextOffset);
     this.getTopics(this.props.text, this.state.tweets.nextOffset);
+
+
+  }
+
+  componentDidMount(){
+    // let _this = this;
+    // setTimeout(()=>{
+    //       //Scroll
+        
+    
+    // try{
+    //   window.addEventListener("scroll", function(e){
+    //     //console.log("scroll",e);
+    //      console.log(window.pageYOffset + " ___ " + window.innerHeight , _this.state);
+
+        
+    //     let windowDiff = window.innerHeight -  window.pageYOffset;
+
+    //     if(windowDiff > 0 && windowDiff < 200 && _this.state.isLoading == false){
+    //       console.log("now scroll");
+    //       _this.setState({
+    //         isLoading : true
+    //       })
+    //       _this.getTopics(_this.props.text,_this.state.tweets.nextOffset);
+    //     }
+
+
+    //     //console.log(document.querySelector('.custom-scroll').offsetTop);
+    //     //console.log(window.jQuery('div.custom-scroll').position());
+    //   });
+    // }
+    // catch(e){
+    //   console.log(e);
+    // }
+
+    // },500);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -95,9 +133,10 @@ class SearchView extends Component {
         console.log(res.data.data);
         this.setState({
           users: {
-            nextOffset: res.data.data.nextOffset,
+            nextOffset: res.data.data.nextOffset==0? -1 :res.data.data.nextOffset,
             records: nextOffset==0?res.data.data.users:this.state.users.records.concat(res.data.data.users)
-          }
+          },
+          isLoading : false
         });
       }
 
@@ -111,12 +150,18 @@ class SearchView extends Component {
     axios.get(API_PATH + `/search/topics?text=${text}&limit=10&offset=${nextOffset}`, this.tokenConfig()).then(res => {
       if (res.data && res.data.data && res.data.data.tweets && res.data.data.nextOffset >= 0) {
         console.log(res.data.data);
-        this.setState({
-          tweets: {
-            nextOffset: res.data.data.nextOffset,
-            records: nextOffset==0?res.data.data.tweets:this.state.tweets.records.concat(res.data.data.tweets)
-          }
-        });
+        
+        //setTimeout(()=>{
+          this.setState({
+            tweets: {
+              nextOffset: res.data.data.nextOffset==0? -1 :res.data.data.nextOffset,
+              records: nextOffset==0?res.data.data.tweets:this.state.tweets.records.concat(res.data.data.tweets),
+              
+            },
+            isLoading : false
+          });
+        //},2999);
+
       }
 
     }).catch(err => {
@@ -131,9 +176,10 @@ class SearchView extends Component {
         console.log(res.data.data);
         this.setState({
           lists: {
-            nextOffset: res.data.data.nextOffset,
+            nextOffset: res.data.data.nextOffset==0? -1 :res.data.data.nextOffset,
             records: nextOffset==0?res.data.data.lists:this.state.lists.records.concat(res.data.data.lists)
-          }
+          },
+          isLoading : false
         });
       }
 
@@ -169,8 +215,13 @@ class SearchView extends Component {
 
   latestBox() {
 
-    return (<Col>
+    return (<Col className="scroll-container">
+    <Scroller hasMore = {this.state.tweets.nextOffset != 0} onLoadMore = {this.getTopics} >
       <ViewTweets dataFromParent={this.state.tweets.records} />
+      {
+        this.state.isLoading ? (<Spinner/>) : null
+      }
+      </Scroller>
     </Col>)
 
   }
@@ -197,10 +248,43 @@ class SearchView extends Component {
   }
 
 
+  getListType() {
+    
+    
+    this.setState({
+      isLoading : true
+    },()=>{
+      console.log("In get list type line 250", this.state);
+
+      if (this.state.isLatest)// && this.state.tweets.nextOffset!=-1)
+      {
+        console.log("1",this.state);
+        this.getTopics(this.props.text,this.state.tweets.nextOffset);
+
+      } else if (this.state.isPeople)//  && this.state.users.nextOffset!=-1) //&& !this.state.isLoading) 
+      {
+        console.log("2",this.state);
+        this.getUsers(this.props.text,this.state.users.nextOffset);
+
+      } else if (this.state.isLists) //&&  this.state.lists.nextOffset!=-1) 
+      {
+        console.log("3",this.state);
+        this.getLists(this.props.text,this.state.lists.nextOffset);
+      }
+    });
+
+
+    
+  }
+
+
 
   render() {
+
+    //let currentView  =  this.getListType();
     return (
       <div className="main-body">
+        <Scroller isLoading={this.state.isLoading} callback={this.getListType} />
         <div className="list-body">
           <div className="box-controller">
             <div
@@ -233,6 +317,7 @@ class SearchView extends Component {
 
           </div>
         </div>
+
         {this.switch()}
       </div>
     );

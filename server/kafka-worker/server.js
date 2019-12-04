@@ -25,7 +25,7 @@ function handleTopicRequest(topic_name) {
                         data: res,
                         err: err
                     }),
-                    partition: 0
+                    partition: data.partition?data.partition:0
                 }
             ];
             try {
@@ -42,5 +42,5 @@ function handleTopicRequest(topic_name) {
     });
 }
 
-handleTopicRequest('user');
+handleTopicRequest('users');
 handleTopicRequest('tweet');

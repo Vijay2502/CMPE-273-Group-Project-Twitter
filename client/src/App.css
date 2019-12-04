@@ -41,3 +41,25 @@
 .sc-chat-window{
     z-index: 9999 !important;
 }
+
+
+/* Scroll */
+
+/* .scroll-container{
+    height: 500px;
+    max-height: 500px;
+    display: block;
+    overflow: scroll;
+} */
+
+.spinner{
+    height: 100px;
+    display: block;
+    width: 150px;
+    margin: 0 auto;
+}
+
+.spinner img {
+    width: 100%;
+    height: 100%;
+}

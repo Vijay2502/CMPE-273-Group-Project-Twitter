@@ -1,6 +1,6 @@
 module.exports = {
     User: {
-        TOPIC: 'user',
+        TOPIC: 'users',
         PATH: '../routes/users'
     },
     Tweet: {
