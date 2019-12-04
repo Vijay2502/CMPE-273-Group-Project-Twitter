@@ -25,7 +25,8 @@ function request_delegator(topic, task){
             payload:{
                 params:request.params,
                 body:request.body,
-                query:request.query
+                query:request.query,
+                user:request.user?request.user:undefined
             }
         };
 

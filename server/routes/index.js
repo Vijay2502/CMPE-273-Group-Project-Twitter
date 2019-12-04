@@ -8,7 +8,7 @@ const Analytics = require('./analytics');
 const Search = require('./search');
 const utils = require('../service/utils');
 const User_producer = require('../kafka-producer').User;
-//const Tweet_producer = require('../kafka-producer').Tweet;
+const Tweet_producer = require('../kafka-producer').Tweet;
 const List = require('./lists');
 var passport = require('passport');
 var auth = {
@@ -23,7 +23,7 @@ router.post('/img-upload', utils.uploadImage);
 //USER APIS
 router.post('/user/register', User.register);          ///tested
 router.post('/user/login', User.login);                ///tested
-router.get('/user/:id', auth.userAuth, User.get);                     ///tested
+router.get('/user/:id', auth.userAuth, User_producer.get);                     ///tested
 router.put('/user/update', auth.userAuth, User.update);
 router.put('/user/:id/follow', auth.userAuth, User.follow);           ///tested
 router.put('/user/:id/unfollow', auth.userAuth, User.unfollow);       ///tested
@@ -48,7 +48,7 @@ router.get('/list/:id/members', auth.userAuth, List.getMembers);
 // TWEET APIS
 router.post('/tweet/create', auth.userAuth, Tweet.createTweet);                 ///tested
 router.get('/tweet/byOwner/:ownerId', auth.userAuth, Tweet.getTweetsByOwnerId); ///tested
-router.get('/tweet/byId/:tweetId', auth.userAuth, Tweet.getTweetByTweetId);      ///tested
+router.get('/tweet/byId/:tweetId', auth.userAuth, Tweet_producer.getTweetByTweetId);      ///tested
 router.put('/tweet/:userId/like', auth.userAuth, Tweet.likeTweet);               ///tested
 router.put('/tweet/:userId/view', auth.userAuth, Tweet.viewTweet);                ///tested 
 router.post('/tweet/:tweetId/retweet', auth.userAuth, Tweet.retweet);             ///tested
@@ -65,7 +65,7 @@ router.get('/feed/user/:userId', auth.userAuth, Tweet.getTweetsBySubscriber);
 router.get('/feed/list/:listId', auth.userAuth, Tweet.getTweetsByList);
 
 // SEARCH APIS
-router.get('/search/users', Search.userSearch);
+router.get('/search/users', auth.userAuth, Search.userSearch);
 router.get('/search/lists', auth.userAuth, Search.listSearch);
 router.get('/search/topics', auth.userAuth, Search.topicSearch);
 

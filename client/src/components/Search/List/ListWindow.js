@@ -22,15 +22,9 @@ class ListWindow extends Component {
     });
     console.log('asdasdas',this.props.lists);
     return (<Col>
-      <InfiniteScroll
-        pageStart={0}
-        loadMore={this.props.getLists}
-        hasMore={this.props.hasMore}
-        loader={<div className="loader" key={0}>Loading ...</div>}
-        useWindow={false}
-      >
+ 
         {listRows}
-      </InfiniteScroll>
+ 
     </Col>)
   }
 }

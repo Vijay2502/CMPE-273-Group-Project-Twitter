@@ -127,7 +127,7 @@ class SearchView extends Component {
 
   getUsers(text, nextOffset) {
     console.log('getUsers',text, nextOffset)
-    axios.get(API_PATH + `/search/users?text=${text}&limit=10&offset=${nextOffset}`, this.tokenConfig()).then(res => {
+    axios.get(API_PATH + `/search/users?text=${text}&limit=10&offset=${nextOffset?nextOffset:0}`, this.tokenConfig()).then(res => {
       if (res.data && res.data.data && res.data.data.users && res.data.data.nextOffset >= 0) {
 
         console.log(res.data.data);
@@ -147,7 +147,7 @@ class SearchView extends Component {
 
   getTopics(text, nextOffset) {
     console.log('in getTopics')
-    axios.get(API_PATH + `/search/topics?text=${text}&limit=10&offset=${nextOffset}`, this.tokenConfig()).then(res => {
+    axios.get(API_PATH + `/search/topics?text=${text}&limit=10&offset=${nextOffset?nextOffset:0}`, this.tokenConfig()).then(res => {
       if (res.data && res.data.data && res.data.data.tweets && res.data.data.nextOffset >= 0) {
         console.log(res.data.data);
         
@@ -170,8 +170,8 @@ class SearchView extends Component {
   }
 
   getLists(text, nextOffset) {
-    console.log('getLists')
-    axios.get(API_PATH + `/search/lists?text=${text}&limit=10&offset=${nextOffset}`, this.tokenConfig()).then(res => {
+    console.log('getLists',this.state);
+    axios.get(API_PATH + `/search/lists?text=${text}&limit=10&offset=${nextOffset?nextOffset:0}`, this.tokenConfig()).then(res => {
       if (res.data && res.data.data && res.data.data.lists && res.data.data.nextOffset >= 0) {
         console.log(res.data.data);
         this.setState({
@@ -197,7 +197,7 @@ class SearchView extends Component {
   }
 
   showListsBox() {
-    this.setState({ isLatest: false, isPeople: false, isLists: true });
+    this.setState({ isLatest: false, isPeople: false, isLists: true },()=>console.log(this.state));
   }
 
 
@@ -264,12 +264,12 @@ class SearchView extends Component {
       } else if (this.state.isPeople)//  && this.state.users.nextOffset!=-1) //&& !this.state.isLoading) 
       {
         console.log("2",this.state);
-        this.getUsers(this.props.text,this.state.users.nextOffset);
+        //this.getUsers(this.props.text,this.state.users.nextOffset);
 
       } else if (this.state.isLists) //&&  this.state.lists.nextOffset!=-1) 
       {
         console.log("3",this.state);
-        this.getLists(this.props.text,this.state.lists.nextOffset);
+        //this.getLists(this.props.text,this.state.lists.nextOffset);
       }
     });
 
