@@ -46,10 +46,8 @@ class ListTweetView extends Component {
       buttonText: this.props.listDetailedProps.subscribed ? "Unsubscribed" : "Subscribed",
       class: this.props.listDetailedProps.subscribed ? "btn btn-outline-primary" : "btn btn-primary"
     };
-    console.log("id sent from parent", this.state.listId);
-    console.log("list", this.state.list);
-    console.log("props.list", this.props.ownedlists);
-    console.log(this.state);
+
+    console.log("--------", this.props.listDetailedProps.subscribed);
     this.handleClick = this.handleClick.bind(this);
   }
   componentDidMount = () => {
@@ -76,7 +74,7 @@ class ListTweetView extends Component {
               memCount: response.data.data.list.membersCount,
               subCount: response.data.data.list.subscribersCount,
               list: response.data.data.list
-            }, () => console.log('message response', response)
+            }
           );
         })
         .catch(err => {
@@ -138,15 +136,15 @@ class ListTweetView extends Component {
       "Content-Type": "application/json",
       Authorization: localStorage.getItem("token")
     };
-    if (this.state.subscribed) {
+    if (this.state.buttonText == "Subscribed") {
       console.log("not subscribed");
 
       axios.put(`http://${HOSTNAME}:8080/api/v1/list/${this.state.listId}/unsubscribe`, payload, { headers: headers })
         .then(response => {
           console.log(response)
           this.setState({
-            buttonText: "Subscribed",
-            class: "btn btn-primary"
+            buttonText: "UnSbscribed",
+            class: "btn btn-danger"
           })
         })
         .catch(err => {
@@ -159,7 +157,7 @@ class ListTweetView extends Component {
         .then(response => {
           console.log(response)
           this.setState({
-            buttonText: "Unsubscribed",
+            buttonText: "Subscribed",
             class: "btn btn-outline-primary"
           })
         })

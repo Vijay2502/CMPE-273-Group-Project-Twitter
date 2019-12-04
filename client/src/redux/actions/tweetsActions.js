@@ -43,7 +43,7 @@ export function replyTweet(payload) {
 export function bookmarkTweet(payload) {
 
     return (dispatch) => {
-        axios.put(`http://${HOSTNAME}:8080/api/v1/user/${payload.userId}/bookmark-tweet/${payload.tweetId}`, { headers: headers })
+        axios.put(`http://${HOSTNAME}:8080/api/v1/user/${payload.userId}/bookmark-tweet/${payload.tweetId}`)
             .then((response) => dispatch(bookmarkTweetDispatch(response.data)));
     }
 }
@@ -75,7 +75,7 @@ export function getBookmarkedTweets(payload) {
 
 
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/user/${payload.ownerId}/bookmarks`, { headers: headers })
+        axios.get(`http://${HOSTNAME}:8080/api/v1/user/${payload.ownerId}/bookmarks`)
             .then((response) => dispatch(getBookmarkedTweetsDispatch(response.data)));
     }
 }
