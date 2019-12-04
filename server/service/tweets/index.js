@@ -396,6 +396,7 @@ module.exports.getByLikedTweets = function (userId, pagination, cb) {
                 replies: tweet.replies,
                 owner: tweet.owner,
                 retweetCount: tweet.retweetCount,
+                replyCount: tweet.replyCount,
                 data: tweet.data ? tweet.data : null,
                 retweet: tweet.retweet,
                 hashTags: tweet.hashTags
