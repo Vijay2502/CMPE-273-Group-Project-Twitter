@@ -168,7 +168,7 @@ module.exports.deleteTweet = function (request, response) {
         }
         return response.send({
             status: "ok",
-            data: res
+            data: data
         });
 
     });
