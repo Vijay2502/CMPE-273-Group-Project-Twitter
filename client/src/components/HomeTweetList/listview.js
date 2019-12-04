@@ -139,11 +139,8 @@ class TweetBody extends Component {
 
                     <div className="body">
                         <div className="inner-body-inner">
-                            {/*<IsRetweeted isRetweeted={this.props.isRetweeted}/>*/}
-                            {this.props.isRetweeted === true && <IsRetweeted isRetweeted={"Retweed"}/>}
                             <Name name={this.props.name} />
                             <Handle handle={this.props.handle} />
-                            {console.log("this.props.createdAt", this.props.createdAt)}
                             {this.props.createdAt !== undefined && <CreatedAt createdAt={this.props.createdAt} />}
                         </div>
                         <Tweet tweet={this.props.tweet} />

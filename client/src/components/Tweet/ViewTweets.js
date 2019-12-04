@@ -73,7 +73,7 @@ class ViewTweets extends Component {
         if (!tweet.createdAt) {
             return undefined;
         }
-        
+
         let dateObj = new Date(tweet.createdAt);
         let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         let date1 = dateObj.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
