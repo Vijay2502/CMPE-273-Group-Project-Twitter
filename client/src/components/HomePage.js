@@ -44,7 +44,7 @@ class HomePage extends Component {
         this.setState({ currentScreen: screenName, viewDetailedTweetScreenPropId: tweetId })
         let listProps = document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(10)").getAttribute("data-list-props");
         this.setState({  viewDetailedListProps: JSON.parse(listProps) })
-        let userProfileProps = document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(10)").getAttribute("data-user-profile-props");
+        let userProfileProps = document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(11)").getAttribute("data-user-profile-props");
         this.setState({  viewUserProfileProps: JSON.parse(userProfileProps) })
         
     };
