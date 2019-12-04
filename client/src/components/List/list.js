@@ -142,7 +142,7 @@ class List extends Component {
                                 onClick={this
                                     .showSubscriberBox
                                     .bind(this)}>
-                                Subsribed
+                                Subscribed
                             </div>
                             <div
                                 className={"controller " + (this.state.isMember

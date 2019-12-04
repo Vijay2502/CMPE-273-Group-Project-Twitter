@@ -191,17 +191,16 @@ class ListTweetView extends Component {
           <div class="col-sm-9">
             <div class="profile-name-header ">{this.state.listName}</div>
             <div class="followers-following row">
-              <div class="profile-detail-font">{this.state.name}</div>
-              <div class="profile-detail-font">{this.state.userName}</div>
+              <div class="col-sm-1 profile-detail-font">{this.state.name}</div>
+              <div class="offset-sm-2 col-sm-3 profile-detail-font">{this.state.userName}</div>
             </div>
             <div class="followers-following row">
-              <div class="col-sm-2 profile-detail-font">{this.state.memCount} Members</div>
-              <div class="col-sm-2 profile-detail-font">{this.state.subCount} Subscribers</div>
+              <div class="col-sm-4 profile-detail-font">{this.state.memCount} Members</div>
+              <div class="col-sm-4 profile-detail-font">{this.state.subCount} Subscribers</div>
             </div>
           </div>
         </div>
         {this.state.showSubscribe && <button type="button" class={this.state.class} onClick={() => this.handleClick()}>{this.state.buttonText}</button>}
-        {this.state.showEdit && <button type="button" class="btn btn-outline-primary" >Edit List</button>}
         <div class="heading row"><div class="tweets-heading col-sm-2">Tweets</div></div>
         <div class="tweets-list" row>
           <ViewTweets dataFromParent={this.state.users} />
