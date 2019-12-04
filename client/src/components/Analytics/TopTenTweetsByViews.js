@@ -82,7 +82,11 @@ class TopTenTweetsByViews extends Component {
                 <CanvasJSChart options={options}
                     /* onRef={ref => this.chart = ref} */
                 />
-                <ViewTweets dataFromParent={this.props.topTenTweetsByViews.tweets} isDisableButtons={true}/>
+                <div className="container twitter-container">
+                    <div className="col-lg-7">
+                        <ViewTweets dataFromParent={this.props.topTenTweetsByViews.tweets} isDisableButtons={true}/>
+                    </div>
+                </div>
             </div>
         );
     }
