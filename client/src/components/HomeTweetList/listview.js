@@ -126,7 +126,7 @@ class TweetBody extends Component {
             <div class="list-group">
                 <button type="button" className="inner-body list-group-item list-group-item-action" onClick={(e) => this.displayTweet(this.props.id)}>
                     {
-                        this.props.image ? (<Image image={this.props.image} />) : (<Image image="https://thefader-res.cloudinary.com/private_images/w_760,c_limit,f_auto,q_auto:best/TwitterLogo__55acee_jntmic/twitter-applications-verified.jpg" />)
+                        this.props.image ? this.props.image === "undefined" ? (<Image image="https://thefader-res.cloudinary.com/private_images/w_760,c_limit,f_auto,q_auto:best/TwitterLogo__55acee_jntmic/twitter-applications-verified.jpg" />) : (<Image image={this.props.image} />) : (<Image image="https://thefader-res.cloudinary.com/private_images/w_760,c_limit,f_auto,q_auto:best/TwitterLogo__55acee_jntmic/twitter-applications-verified.jpg" />)
                     }
 
                     <div className="body">
