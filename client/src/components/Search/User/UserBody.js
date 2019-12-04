@@ -53,8 +53,9 @@ class UserBody extends Component {
     return (
         <div class="list-group">
             <UserBox>
-                <button type="button" className="inner-body list-group-item list-group-item-action" onClick={(e) => this.displayUserProfile(this.props)}>
-                     {this.props.user.data && this.props.user.data.image ? (<Image image={this.props.user.data.image} />) : (<Image image="https://thefader-res.cloudinary.com/private_images/w_760,c_limit,f_auto,q_auto:best/TwitterLogo__55acee_jntmic/twitter-applications-verified.jpg" />)}
+                <button type="button" className="inner-body list-group-item list-group-item-action">
+                     {this.props.user.data && this.props.user.data.profileImage ? (<Image image={this.props.user.data.profileImage} />) : (<Image image="https://thefader-res.cloudinary.com/private_images/w_760,c_limit,f_auto,q_auto:best/TwitterLogo__55acee_jntmic/twitter-applications-verified.jpg" />)}
+
                     <div className="body">
                         <div className="inner-body-inner">
                             <Name name={this.props.user.firstName + " " + this.props.user.lastName} />

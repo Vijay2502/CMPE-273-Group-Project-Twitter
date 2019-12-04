@@ -12,6 +12,7 @@ class UserList extends Component {
   }
 
   render() {
+    {console.log("UserList user", this.state.users)}
     var userRows = this.state.users.map(user => {
       return (<UserComponent
         key={user.id}
