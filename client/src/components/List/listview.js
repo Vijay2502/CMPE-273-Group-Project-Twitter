@@ -35,7 +35,7 @@ const List = (props) => {
             <div class="tweet-list">
                 <Title title={props.tweet} />
                 {/* <Link to={{ pathname: '/cart', state: {res:res}}}>{res.name}</Link> */}
-                <p>{props.tweet.description}</p>
+                <div class="list-description">{props.tweet.description}</div>
                 <div style={{ display: 'inline-block' }}>
                     <Members members={props.tweet} />
                     <Subscribers subscribers={props.tweet} />
@@ -59,7 +59,7 @@ const List = (props) => {
 const Title = (props) => {
     if (props !== undefined) {
         return (
-            <div> <Link style={{ color: "black" }} to={{
+            <div> <Link class="list-title" to={{
                 pathname: '/listtweet',
                 state: { listId: props.title.id, list: props.title }
             }}>
@@ -72,14 +72,14 @@ const Title = (props) => {
 const Members = (props) => {
     console.log(props);
     return (
-        <p style={{ display: 'inline-block' }}> {members.length} members</p>
+        <div class="list-members"> {members.length} members</div>
     )
 };
 
 const Subscribers = (props) => {
     console.log(props);
     return (
-        <p style={{ display: 'inline-block' }}> {subscribers.length} subscribers</p>
+        <div class="list-subscribers"> {subscribers.length} subscribers</div>
     )
 };
 
