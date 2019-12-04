@@ -19,3 +19,17 @@
 .reply-tweet-submit-container button {
     border-radius: 20px;
 }
+.image-icon{
+    padding: 0px 12px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+}
+.list-group-item.list-group-item-action.borderless:hover{
+    color: rgba(29, 161, 242, 1);
+
+}
+
+.list-group-item.list-group-item-action.borderless svg{
+    margin-right: 5px;
+}

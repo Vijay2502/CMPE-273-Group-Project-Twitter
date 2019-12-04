@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { createTweet } from "../../redux/actions/tweetsActions";
 import "./tweets.css"
 import axios from "axios";
-import {HOSTNAME} from "../../constants/appConstants";
+import { HOSTNAME } from "../../constants/appConstants";
 
 function mapStateToProps(store) {
     return {}
@@ -63,7 +63,7 @@ class CreateTweet extends Component {
         console.log(tweet);
 
         const formData = new FormData();
-        console.log("testing image state:",this.state.selectedTweetImage);
+        console.log("testing image state:", this.state.selectedTweetImage);
         if (this.state.selectedTweetImage) {
             console.log("inside if condition");
             formData.append('image', this.state.selectedTweetImage, this.state.selectedTweetImage.name);
@@ -73,15 +73,16 @@ class CreateTweet extends Component {
                     'Accept-Language': 'en-US,en;q=0.8',
                     'Content-Type': `multipart/form-data; boundary=${formData._boundary}`
                     // 'Authorization': localStorage.getItem('token')
-                }}).then((response) => {
-                    tweet["data"] = {...tweet["data"], image: response.data.location};
+                }
+            }).then((response) => {
+                tweet["data"] = { ...tweet["data"], image: response.data.location };
 
-                    console.log("testing data with image:", tweet);
-                    this.props.createTweet(tweet);
-                })
+                console.log("testing data with image:", tweet);
+                this.props.createTweet(tweet);
+            })
         } else {
             console.log("XXX Insisde else")
-            tweet["data"] = {...tweet["data"], image: null};
+            tweet["data"] = { ...tweet["data"], image: null };
             this.props.createTweet(tweet);
         }
     };
@@ -129,7 +130,7 @@ class CreateTweet extends Component {
                                 ></input>
 
                                 <label htmlFor="img-upload">
-                                    <FontAwesomeIcon icon={faImage}/>
+                                    <FontAwesomeIcon icon={faImage} />
                                 </label>
                             </div>
 
