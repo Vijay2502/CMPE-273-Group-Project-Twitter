@@ -94,7 +94,7 @@ class ViewTweetDetails extends Component {
                 };
                 axios.get(`http://${HOSTNAME}:8080/api/v1/tweet/byId/${tweetId}`, { headers: headers })
                     .then(response => {
-                        console.log(response);
+                        console.log("tweet/byId response", response);
                         this.setState(
                             {
                                 "data": response.data.data  // What??

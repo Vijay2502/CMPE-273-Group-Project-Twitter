@@ -43,7 +43,7 @@ export default function getTopTenTweetsByViews(state = initialState, action) {
             const yxValues = {};
 
             yxValues["y"] = tweet.numOfViews;
-            yxValues["label"] = "Tweet " + index;
+            yxValues["label"] = "Tweet " + (index + 1);
             return yxValues;
         });
 
@@ -74,7 +74,7 @@ export default function getTopTenTweetsByViews(state = initialState, action) {
             const yxValues = {};
 
             yxValues["y"] = tweet.numOfLikes;
-            yxValues["label"] = "Tweet " + index;
+            yxValues["label"] = "Tweet " + (index + 1);
             return yxValues;
         });
 

@@ -70,8 +70,11 @@ class TopFiveTweetsByRetweets extends Component {
                 <CanvasJSChart options={options}
                 /* onRef={ref => this.chart = ref} */
                 />
-                <ViewTweets dataFromParent={this.props.topTenTweetsByRetweets.tweets} isDisableButtons={true}/>
-
+                <div className="container twitter-container">
+                    <div className="col-lg-7">
+                        <ViewTweets dataFromParent={this.props.topTenTweetsByRetweets.tweets} isDisableButtons={true}/>
+                    </div>
+                </div>
                 {/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
             </div>
         );

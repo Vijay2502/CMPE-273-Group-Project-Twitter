@@ -23,7 +23,7 @@ router.post('/img-upload', utils.uploadImage);
 //USER APIS
 router.post('/user/register', User.register);          ///tested
 router.post('/user/login', User.login);                ///tested
-router.get('/user/:id', auth.userAuth, User_producer.get);                     ///tested
+router.get('/user/:id', auth.userAuth, User.get);                     ///tested
 router.put('/user/update', auth.userAuth, User.update);
 router.put('/user/:id/follow', auth.userAuth, User.follow);           ///tested
 router.put('/user/:id/unfollow', auth.userAuth, User.unfollow);       ///tested
@@ -59,8 +59,8 @@ router.get('/tweet/getByHashtag/:hashtag', auth.userAuth, Tweet.getByHashtag);  
 router.get('/tweet/getByLikedTweets/:id', auth.userAuth, Tweet.getByLikedTweets);     ///
 
 
-router.put('/user/:userId/bookmark-tweet/:tweetId', auth.userAuth, BookMarkedTweet.bookmarkTweet);
-router.get('/user/:userId/bookmarks', auth.userAuth, BookMarkedTweet.getBookmarks);
+router.put('/user/:userId/bookmark-tweet/:tweetId', BookMarkedTweet.bookmarkTweet);
+router.get('/user/:userId/bookmarks', BookMarkedTweet.getBookmarks);
 router.get('/feed/user/:userId', auth.userAuth, Tweet.getTweetsBySubscriber);
 router.get('/feed/list/:listId', auth.userAuth, Tweet.getTweetsByList);
 
@@ -72,13 +72,13 @@ router.get('/search/topics', auth.userAuth, Search.topicSearch);
 
 
 // ANALYTICS APIS
-router.get('/analytics/user/:id/tweets/by-views', auth.userAuth, Analytics.topTweetsByViews);
+router.get('/analytics/user/:id/tweets/by-views', Analytics.topTweetsByViews);
 router.get('/analytics/user/:id/tweets/by-likes', auth.userAuth, Analytics.topTweetsByLikes);
 router.get('/analytics/user/:id/tweets/by-retweets', auth.userAuth, Analytics.topTweetsByRetweets);
 router.get('/analytics/user/:id/tweets/count/hourly', auth.userAuth, Analytics.hourlyTweetCountPerDay);
 router.get('/analytics/user/:id/tweets/count/daily', auth.userAuth, Analytics.dailyTweetCountPerWeek);
 router.get('/analytics/user/:id/tweets/count/monthy', auth.userAuth, Analytics.monthlyTweetCountPerYear);
-router.get('/analytics/user/:id/profile-views/daily', auth.userAuth, Analytics.dailyProfileViewsCountPerMonth);
+router.get('/analytics/user/:id/profile-views/daily', Analytics.dailyProfileViewsCountPerMonth);
 
 //CONVERSATION APIS
 router.get('/conversation/getByUser/:userId', Chat.getByUser);

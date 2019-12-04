@@ -19,7 +19,7 @@ class Chat extends Component {
 
     componentDidMount() {
         const socket = io('http://localhost:3005');
-        console.log("---->>>>>>>>>>>>>>>>>", this.props.channel);
+
 
         this.setState({
             socket: socket,
@@ -71,7 +71,7 @@ class Chat extends Component {
         let userId = localStorage.getItem('id');
         axios.get(`http://localhost:8080/api/v1/conversation/getMessages/${channel}`)
             .then(response => {
-                console.log(response);
+
                 if (response.data.data) {
                     this.setState(
                         {

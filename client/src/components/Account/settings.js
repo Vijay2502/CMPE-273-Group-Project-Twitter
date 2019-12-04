@@ -35,7 +35,6 @@ class settings extends Component {
         let user_id = localStorage.getItem('id');
         axios.put(`http://${HOSTNAME}:8080/api/v1/user/${user_id}/deactivate`, { headers: headers })
             .then(res => {
-                console.log("test result :", res);
                 if (res.data.status === "ok") {
                     alert("You have been de-activated, you will be logged out. ");
                     //// logout to go here 
@@ -62,7 +61,6 @@ class settings extends Component {
                 }
             }
             if (Updatedata.formNewPassword === Updatedata.formConfirmPassword) {
-                console.log(Updatedata);
                 let data = {
                     id: localStorage.getItem('id'),
                     password: Updatedata.formNewPassword,
@@ -74,7 +72,6 @@ class settings extends Component {
                 };
                 axios.put(`http://${HOSTNAME}:8080/api/v1/user/update`, data, { headers: headers })
                     .then(res => {
-                        console.log("test result :", res);
                         if (res.data.status === "ok") {
                             alert("password updated successfully");
                             for (let i = 0; i < e.target.length; i++) {

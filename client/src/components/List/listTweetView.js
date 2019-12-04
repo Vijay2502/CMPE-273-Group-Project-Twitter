@@ -46,10 +46,8 @@ class ListTweetView extends Component {
       buttonText: this.props.listDetailedProps.subscribed ? "Unsubscribed" : "Subscribed",
       class: this.props.listDetailedProps.subscribed ? "btn btn-outline-primary" : "btn btn-primary"
     };
-    console.log("id sent from parent", this.state.listId);
-    console.log("list", this.state.list);
-    console.log("props.list", this.props.ownedlists);
-    console.log(this.state);
+
+    console.log("--------", this.props.listDetailedProps.subscribed);
     this.handleClick = this.handleClick.bind(this);
   }
   componentDidMount = () => {
@@ -71,12 +69,12 @@ class ListTweetView extends Component {
             {
               listName: response.data.data.list.name,
               userName: "@" + response.data.data.list.data.username,
-              name: response.data.data.list.data.firstName + response.data.data.list.data.lastName,
+              name: response.data.data.list.data.firstName + " " + response.data.data.list.data.lastName,
               isSubscribed: response.data.data.list.subscribed,
               memCount: response.data.data.list.membersCount,
               subCount: response.data.data.list.subscribersCount,
               list: response.data.data.list
-            }, () => console.log('message response', response)
+            }
           );
         })
         .catch(err => {
@@ -138,15 +136,15 @@ class ListTweetView extends Component {
       "Content-Type": "application/json",
       Authorization: localStorage.getItem("token")
     };
-    if (this.state.subscribed) {
+    if (this.state.buttonText == "Subscribed") {
       console.log("not subscribed");
 
       axios.put(`http://${HOSTNAME}:8080/api/v1/list/${this.state.listId}/unsubscribe`, payload, { headers: headers })
         .then(response => {
           console.log(response)
           this.setState({
-            buttonText: "Subscribed",
-            class: "btn btn-primary"
+            buttonText: "UnSbscribed",
+            class: "btn btn-danger"
           })
         })
         .catch(err => {
@@ -159,7 +157,7 @@ class ListTweetView extends Component {
         .then(response => {
           console.log(response)
           this.setState({
-            buttonText: "Unsubscribed",
+            buttonText: "Subscribed",
             class: "btn btn-outline-primary"
           })
         })
@@ -191,17 +189,16 @@ class ListTweetView extends Component {
           <div class="col-sm-9">
             <div class="profile-name-header ">{this.state.listName}</div>
             <div class="followers-following row">
-              <div class="profile-detail-font">{this.state.name}</div>
-              <div class="profile-detail-font">{this.state.userName}</div>
+              <div class="col-sm-1 profile-detail-font">{this.state.name}</div>
+              <div class="offset-sm-2 col-sm-3 profile-detail-font">{this.state.userName}</div>
             </div>
             <div class="followers-following row">
-              <div class="col-sm-2 profile-detail-font">{this.state.memCount} Members</div>
-              <div class="col-sm-2 profile-detail-font">{this.state.subCount} Subscribers</div>
+              <div class="col-sm-4 profile-detail-font">{this.state.memCount} Members</div>
+              <div class="col-sm-4 profile-detail-font">{this.state.subCount} Subscribers</div>
             </div>
           </div>
         </div>
         {this.state.showSubscribe && <button type="button" class={this.state.class} onClick={() => this.handleClick()}>{this.state.buttonText}</button>}
-        {this.state.showEdit && <button type="button" class="btn btn-outline-primary" >Edit List</button>}
         <div class="heading row"><div class="tweets-heading col-sm-2">Tweets</div></div>
         <div class="tweets-list" row>
           <ViewTweets dataFromParent={this.state.users} />

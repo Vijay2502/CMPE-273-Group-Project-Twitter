@@ -35,7 +35,7 @@ const List = (props) => {
             <div class="tweet-list">
                 <Title title={props.tweet} />
                 {/* <Link to={{ pathname: '/cart', state: {res:res}}}>{res.name}</Link> */}
-                <p>{props.tweet.description}</p>
+                <div class="list-description">{props.tweet.description}</div>
                 <div style={{ display: 'inline-block' }}>
                     <Members members={props.tweet} />
                     <Subscribers subscribers={props.tweet} />
@@ -59,7 +59,7 @@ const List = (props) => {
 const Title = (props) => {
     if (props !== undefined) {
         return (
-            <div> <Link style={{ color: "black" }} to={{
+            <div> <Link class="list-title" to={{
                 pathname: '/listtweet',
                 state: { listId: props.title.id, list: props.title }
             }}>
@@ -70,16 +70,14 @@ const Title = (props) => {
 };
 
 const Members = (props) => {
-    console.log(props);
     return (
-        <p style={{ display: 'inline-block' }}> {members.length} members</p>
+        <div class="list-members"> {members.length} members</div>
     )
 };
 
 const Subscribers = (props) => {
-    console.log(props);
     return (
-        <p style={{ display: 'inline-block' }}> {subscribers.length} subscribers</p>
+        <div class="list-subscribers"> {subscribers.length} subscribers</div>
     )
 };
 
@@ -89,7 +87,6 @@ class ListBody extends Component {
         this.displayTweet = this.displayTweet.bind(this);
     }
     displayTweet(id) {
-        console.log("ID >>>>>> ", id);
         try {
             document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(11)").setAttribute("data-list-props", JSON.stringify(this.props.tweet));
             document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(11)").click();
@@ -106,7 +103,6 @@ class ListBody extends Component {
         };
         axios.get(`http://${HOSTNAME}:8080/api/v1/list/${this.props.tweet.id}/members`, { headers: headers })
             .then(response => {
-                console.log("members count", response.data.data.members);
                 members = response.data.data.members
             })
             .catch(err => {
@@ -115,15 +111,12 @@ class ListBody extends Component {
 
         axios.get(`http://${HOSTNAME}:8080/api/v1/list/${this.props.tweet.id}/subscribers`, { headers: headers })
             .then(response => {
-                console.log(" subscribers  count", response.data.data.subscribers);
                 subscribers = response.data.data.subscribers
             })
             .catch(err => {
                 console.error(err);
             });
 
-        // this.props.tweet.members=members;
-        // this.props.tweeet.subscribers=subscribers;
 
     }
     render() {
