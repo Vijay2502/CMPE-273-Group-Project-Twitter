@@ -1,5 +1,5 @@
 const repository = require('../../repository/mongo');
-const { User, List }= require('../../repository/mysql');
+const { User, List } = require('../../repository/mysql');
 const cache = require('../../cache');
 const uuidv1 = require('uuid/v1');
 const _ = require('lodash');
@@ -11,8 +11,8 @@ function extractHashTags(data) {
     return ['#general'];
 }
 
-function tweetMapper(tweets){
-    if(tweets && _.isArray(tweets)){
+function tweetMapper(tweets) {
+    if (tweets && _.isArray(tweets)) {
         return tweets.map(tweet => ({
             id: tweet.tweetId,
             ownerId: tweet.ownerId,
@@ -26,7 +26,7 @@ function tweetMapper(tweets){
             hashTags: tweet.hashTags,
             createdAt: tweet.createdAt
         }));
-    }else if(tweets && _.isObject(tweets)){
+    } else if (tweets && _.isObject(tweets)) {
         var tweet = tweets;
         return {
             id: tweet.tweetId,
@@ -40,7 +40,7 @@ function tweetMapper(tweets){
             hashTags: tweet.hashTags,
             createdAt: tweet.createdAt
         }
-    }else{
+    } else {
         return null;
     }
 }
@@ -71,13 +71,15 @@ module.exports.create = function (newTweet, cb) {
 
 
 module.exports.getByOwnerId = function (ownerId, pagination, cb) {
-    repository.Tweet.find({ ownerId: ownerId,
-        'active':true }, null, 
-        {...pagination, sort: {'createdAt':-1}})
+    repository.Tweet.find({
+        ownerId: ownerId,
+        'active': true
+    }, null,
+        { ...pagination, sort: { 'createdAt': -1 } })
         .then(function (tweets) {
             return cb(null, {
                 tweets: tweetMapper(tweets),
-                nextOffset: (tweets.length <= pagination.limit)? 0 : (pagination.limit) + (pagination.skip)
+                nextOffset: (tweets.length <= pagination.limit) ? 0 : (pagination.limit) + (pagination.skip)
             });
 
         }, function (err) {
@@ -92,8 +94,10 @@ module.exports.getByTweetId = function (tweetId, cb) {
         if (tweet) {
             return cb(null, JSON.parse(tweet));
         } else {
-            repository.Tweet.findOne({ tweetId: tweetId,
-                'active':true })
+            repository.Tweet.findOne({
+                tweetId: tweetId,
+                'active': true
+            })
                 .then(function (tweet) {
                     if (tweet) {
                         var tweetDTO = tweetMapper(tweet);
@@ -194,14 +198,14 @@ module.exports.bookmarkTweet = function (userId, tweetId, cb) {
 
 module.exports.getBookmarks = function (userId, cb) {
 
-            return repository.BookmarkedTweets.findOne(
-                { "ownerId": userId },
-            ).then(function (bookmark) {
-                return cb(null, {
-                    tweets: tweetMapper(bookmark.bookMarkedTweets)
-                });
-            })
-        
+    return repository.BookmarkedTweets.findOne(
+        { "ownerId": userId },
+    ).then(function (bookmark) {
+        return cb(null, {
+            tweets: tweetMapper(bookmark.bookMarkedTweets)
+        });
+    })
+
 }
 
 
@@ -237,10 +241,10 @@ module.exports.retweet = function (tweetId, reTweet, cb) {
 module.exports.reply = function (hostTweetId, replyTweet, cb) {
     repository.Tweet.findOneAndUpdate(
         { tweetId: hostTweetId },
-        { $inc: { "replyCount": 1 }}
+        { $inc: { "replyCount": 1 } }
     ).then(function (tweet) {
         console.log('reply count incremented');
-    }, function(err){
+    }, function (err) {
         console.log(err);
     });
 
@@ -259,13 +263,13 @@ module.exports.getReplies = function (tweetId, limit, offset, cb) {
     },
         null,
         {
-            sort: {'createdAt':-1},
+            sort: { 'createdAt': -1 },
             skip: offset,
             limit: limit
         }).then(function (tweets) {
             return cb(null, {
                 tweets: tweetMapper(tweets),
-                nextOffset: (tweets.length <= limit)? 0 : (limit) + (offset)
+                nextOffset: (tweets.length <= limit) ? 0 : (limit) + (offset)
             });
         }, function (err) {
             return cb(err);
@@ -286,12 +290,14 @@ module.exports.getTweetsBySubscriber = function (userId, pagination, cb) {
             var arr = followees.map(f => f.id);
             arr.push(userId);
             return repository.Tweet.find(
-                { "ownerId": { "$in": arr },
-                'active':true }, null, {...pagination, sort: {'createdAt':-1}})
+                {
+                    "ownerId": { "$in": arr },
+                    'active': true
+                }, null, { ...pagination, sort: { 'createdAt': -1 } })
                 .then(function (tweets) {
-                    return cb(null,{
+                    return cb(null, {
                         tweets: tweetMapper(tweets),
-                        nextOffset: (tweets.length <= pagination.limit)? 0 : (pagination.limit) + (pagination.skip)
+                        nextOffset: (tweets.length <= pagination.limit) ? 0 : (pagination.limit) + (pagination.skip)
                     });
                 }, function (err) {
                     return cb(err);
@@ -329,12 +335,14 @@ module.exports.getByList = function (listId, pagination, cb) {
         }).then(members => {
             var arr = members.map(f => f.id);
             return repository.Tweet.find(
-                { "ownerId": { "$in": arr },
-                'active':true }, null, {...pagination, sort: {'createdAt':-1}})
+                {
+                    "ownerId": { "$in": arr },
+                    'active': true
+                }, null, { ...pagination, sort: { 'createdAt': -1 } })
                 .then(function (tweets) {
-                    return cb(null,{
+                    return cb(null, {
                         tweets: tweetMapper(tweets),
-                        nextOffset: (tweets.length <= pagination.limit)? 0 : (pagination.limit) + (pagination.skip)
+                        nextOffset: (tweets.length <= pagination.limit) ? 0 : (pagination.limit) + (pagination.skip)
                     });
                 }, function (err) {
                     return cb(err);
@@ -351,6 +359,26 @@ module.exports.getByList = function (listId, pagination, cb) {
 
 module.exports.getByHashtag = function (hashtag, pagination, cb) {
     repository.TweetsByHashtag.find({ "hashTags": { $regex: ".*" + searchKey + ".*", $options: 'i' } }, null, pagination)
+        .then(function (tweets) {
+            return cb(null, tweets.map(tweet => ({
+                id: tweet.tweetId,
+                likes: tweet.likes.count,
+                views: tweet.views.count,
+                replies: tweet.replies,
+                retweetCount: tweet.retweetCount,
+                data: tweet.data ? tweet.data : null,
+                retweet: tweet.retweet,
+                hashTags: tweet.hashTags
+            })));
+
+        }, function (err) {
+            return cb(err);
+        });
+}
+
+
+module.exports.getByLikedTweets = function (userId, pagination, cb) {
+    repository.Tweet.find({ "likes.userId": userId }, null, pagination)
         .then(function (tweets) {
             return cb(null, tweets.map(tweet => ({
                 id: tweet.tweetId,
