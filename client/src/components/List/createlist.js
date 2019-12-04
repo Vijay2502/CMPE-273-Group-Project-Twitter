@@ -11,6 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import TagFacesIcon from '@material-ui/icons/TagFaces';
 import axios from 'axios';
 import image from '../../images/profile.png';
+import {HOSTNAME} from "../../constants/appConstants";
 function mapStateToProps(store) {
     return {
         currentList : store.list.currentList
@@ -135,7 +136,7 @@ class CreateList extends React.Component {
 
     getUser(test) {
         console.log("getuser",test);
-        axios.get(`http://localhost:8080/api/v1/search/users?text=${test}`)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/search/users?text=${test}`)
         .then(response => {
             this.setState(
                 {

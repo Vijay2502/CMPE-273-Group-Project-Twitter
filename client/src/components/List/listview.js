@@ -2,6 +2,7 @@ import '../../css/list.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import React, { Component } from "react";
+import {HOSTNAME} from "../../constants/appConstants";
 
 let members = []
 let subscribers = []
@@ -99,7 +100,7 @@ class ListBody extends Component {
     }
 
     componentDidMount(){
-        axios.get(`http://localhost:8080/api/v1/list/${this.props.tweet.id}/members`)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/list/${this.props.tweet.id}/members`)
         .then(response => {
             console.log("members count", response.data.data.members);
             members = response.data.data.members
@@ -108,7 +109,7 @@ class ListBody extends Component {
             console.error(err);
         });
 
-        axios.get(`http://localhost:8080/api/v1/list/${this.props.tweet.id}/subscribers`)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/list/${this.props.tweet.id}/subscribers`)
         .then(response => {
             console.log(" subscribers  count", response.data.data.subscribers);
             subscribers = response.data.data.subscribers

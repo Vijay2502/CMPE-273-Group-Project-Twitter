@@ -12,6 +12,8 @@ import { Link } from "react-router-dom";
 import UserList from '../Search/User/UserList';
 import InfiniteScroll from 'react-infinite-scroller';
 import FollowList from "./userlist";
+import {HOSTNAME} from "../../constants/appConstants";
+
 function mapStateToProps(store) {
     return {
         userDetails: store.users.userDetails,
@@ -100,7 +102,7 @@ class userprofile extends Component {
         }
     }
     unFollowUser = () => {
-        axios.put('http://localhost:8080/api/v1/user/' + this.props.user_id + '/unfollow')
+        axios.put(`http://${HOSTNAME}:8080/api/v1/user/` + this.props.user_id + '/unfollow')
             .then(res => {
                 console.log("test result :", res);
                 if (res.data.status === "ok") {
@@ -112,7 +114,7 @@ class userprofile extends Component {
             });
     }
     followUser = () => {
-        axios.put('http://localhost:8080/api/v1/user/' + this.props.user_id + '/follow')
+        axios.put(`http://${HOSTNAME}:8080/api/v1/user/` + this.props.user_id + '/follow')
             .then(res => {
                 console.log("test result :", res);
                 if (res.data.status === "ok") {
