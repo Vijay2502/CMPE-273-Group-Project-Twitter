@@ -55,6 +55,16 @@ export function bookmarkTweet(payload) {
     }
 }
 
+export function getLikedTweets(payload) {
+    console.log("replyTweet payload");
+    console.log(payload);
+
+    return (dispatch) => {
+        axios.put(`http://${HOSTNAME}:8080/api/v1/user/${payload.userId}/bookmark-tweet/${payload.tweetId}`)
+            .then((response) => dispatch(getLikedTweetsDispatch(response.data)));
+    }
+}
+
 export function getTweetsById(data) {
     return function (dispatch) {
         // var headers = {
@@ -137,6 +147,13 @@ export const getBookmarkedTweetsDispatch = (returnData) => {
 };
 
 export const deleteTweetDispatch = (returnData) => {
+    console.log("Inside getBookmarkedTweetsDispatch");
+    console.log(returnData);
+
+    return { type: DELETE_TWEET, payload: returnData }
+};
+
+export const getLikedTweetsDispatch = (returnData) => {
     console.log("Inside getBookmarkedTweetsDispatch");
     console.log(returnData);
 
