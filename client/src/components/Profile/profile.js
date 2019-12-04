@@ -230,6 +230,7 @@ class profile extends Component {
         let userData = usrDetails.data ? usrDetails.data : [];
         // console.log("usrFollowee length :", Object.keys(usrFollowee).length);
         if (this.state.openFollower) {
+
             return (<FollowList openFollower={this.state.openFollower} title={"Follower List"} closeList={this.closefollowerList}
                 users={usrFollower.followers}
                 profile={usrDetails}
@@ -289,8 +290,8 @@ class profile extends Component {
                             </div>
                         </div>
                         <div class="followers-following row">
-                            <div class="col-sm-3 profile-detail-font"><Link class="link-color" onClick={this.followerList}>{usrFollower.count ? usrFollower.count : 0} Followers</Link></div>
-                            <div class="offset-sm-1 col-sm-3 profile-detail-font"><Link class="link-color" onClick={this.followeeList}>{usrFollowee.count ? usrFollowee.count : 0} Following</Link></div>
+                            <div class="col-sm-3 profile-detail-font"><Link class="link-color" onClick={usrFollower.count ? this.followerList : ""}>{usrFollower.count ? usrFollower.count : 0} Followers</Link></div>
+                            <div class="offset-sm-1 col-sm-3 profile-detail-font"><Link class="link-color" onClick={usrFollowee.count ? this.followeeList : ""}>{usrFollowee.count ? usrFollowee.count : 0} Following</Link></div>
                         </div>
                         <div class="followers-following row">
                             <div class="col-sm-10 profile-detail-font">{userData.state ? userData.state : ""} {userData.city ? userData.city : ""} {userData.zipcode ? userData.zipcode : ""}</div>
