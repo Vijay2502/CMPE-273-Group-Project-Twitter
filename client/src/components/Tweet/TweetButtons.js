@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment, faHeart } from "@fortawesome/free-regular-svg-icons";
+import { faComment, faHeart, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { faRetweet, faBookmark } from "@fortawesome/free-solid-svg-icons";
 import { Modal } from "react-bootstrap";
 import ReplyTweet from "./ReplyTweet";
@@ -82,6 +82,16 @@ class TweetButtons extends Component {
                     >
                         <FontAwesomeIcon icon={faBookmark} />
                     </button>
+                    <button
+                        type="button"
+                        className="list-group-item list-group-item-action borderless"
+                        style={styles.share}
+                        onClick={() => {
+                            this.props.bookmarkCallback(this.props.data.tweetId, this.props.data.retweetingUserId)
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faTrashAlt} />
+                    </button>
                 </div>
 
                 <Modal
@@ -93,6 +103,8 @@ class TweetButtons extends Component {
                         triggerReplyCountIncrement={this.triggerReplyCountIncrement}
                         closeCommentModal={this.closeCommentModal} />
                 </Modal>
+
+
             </div>
         )
     }

@@ -49,6 +49,10 @@ class HomePage extends Component {
         console.log(this.state);
         return (
             <div className="container twitter-container">
+                {localStorage.getItem("token") === null &&
+                <Redirect to={{
+                    pathname: "/login"
+                }} />}
                 {localStorage.getItem("token") === null || localStorage.getItem('userActive') === 'false' &&
                     <Redirect to={{
                         pathname: "/login"

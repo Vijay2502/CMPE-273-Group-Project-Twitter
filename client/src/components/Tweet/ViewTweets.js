@@ -60,13 +60,14 @@ class ViewTweets extends Component {
 
         this.props.bookmarkTweet(payload);
     }
-    openCommentModal = e => {
-        this.setState({ isOpenCommentModal: true });
-    };
 
-    closeCommentModal = e => {
-        this.setState({ isOpenCommentModal: false });
-    };
+    delete(tweetId, userId) {
+        const payload = {};
+        payload.tweetId = tweetId;
+        payload.userId = userId;
+
+        this.props.bookmarkTweet(payload);
+    }
 
     render() {
         console.log("render HomeTweetList");
@@ -98,7 +99,7 @@ class ViewTweets extends Component {
                             {
                                 date2
                             }</div>;
-                        
+
                         let id = tweet.id;
                         const buttonData = {};
                         buttonData.tweetId = tweet.id;
