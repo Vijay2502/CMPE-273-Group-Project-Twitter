@@ -107,7 +107,11 @@ class userprofile extends Component {
         let followData = {
             "followeeId": this.props.userProps.id
         }
-        axios.put(`http://${HOSTNAME}:8080/api/v1/user/` + localStorage.getItem('id') + '/unfollow', followData)
+        var headers = {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token")
+        };
+        axios.put(`http://${HOSTNAME}:8080/api/v1/user/` + localStorage.getItem('id') + '/unfollow', followData, { headers: headers })
             .then(res => {
                 console.log("test result :", res);
                 if (res.data.status === "ok") {
@@ -123,7 +127,11 @@ class userprofile extends Component {
         let followData = {
             "followeeId": this.props.userProps.id
         }
-        axios.put(`http://${HOSTNAME}:8080/api/v1/user/` + localStorage.getItem('id') + '/follow', followData)
+        var headers = {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token")
+        };
+        axios.put(`http://${HOSTNAME}:8080/api/v1/user/` + localStorage.getItem('id') + '/follow', followData, { headers: headers })
             .then(res => {
                 console.log("test result :", res);
                 if (res.data.status === "ok") {

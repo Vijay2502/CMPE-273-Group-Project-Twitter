@@ -117,8 +117,11 @@ class profile extends Component {
                 };
                 localStorage.setItem('image', dataFinal.data.profileImage);
                 console.log("testing data with image:", dataFinal);
-
-                axios.put(`http://${HOSTNAME}:8080/api/v1/user/update`, dataFinal)
+                var headers = {
+                    "Content-Type": "application/json",
+                    Authorization: localStorage.getItem("token")
+                };
+                axios.put(`http://${HOSTNAME}:8080/api/v1/user/update`, dataFinal, { headers: headers })
                     .then(res => {
                         console.log("test result :", res);
                         if (res.data.status === "ok") {
@@ -147,7 +150,11 @@ class profile extends Component {
                 bio: Updatedata.formGridBio ? Updatedata.formGridBio : undefined
             };
             console.log("testing data wo image:", dataFinal);
-            axios.put(`http://${HOSTNAME}:8080/api/v1/user/update`, dataFinal)
+            var headers = {
+                "Content-Type": "application/json",
+                Authorization: localStorage.getItem("token")
+            };
+            axios.put(`http://${HOSTNAME}:8080/api/v1/user/update`, dataFinal, { headers: headers })
                 .then(res => {
                     console.log(res);
                     if (res.data.status === "ok") {

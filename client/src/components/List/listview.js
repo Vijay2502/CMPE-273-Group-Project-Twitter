@@ -100,7 +100,11 @@ class ListBody extends Component {
     }
 
     componentDidMount() {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/list/${this.props.tweet.id}/members`)
+        var headers = {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token")
+        };
+        axios.get(`http://${HOSTNAME}:8080/api/v1/list/${this.props.tweet.id}/members`, { headers: headers })
             .then(response => {
                 console.log("members count", response.data.data.members);
                 members = response.data.data.members
@@ -109,7 +113,7 @@ class ListBody extends Component {
                 console.error(err);
             });
 
-        axios.get(`http://${HOSTNAME}:8080/api/v1/list/${this.props.tweet.id}/subscribers`)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/list/${this.props.tweet.id}/subscribers`, { headers: headers })
             .then(response => {
                 console.log(" subscribers  count", response.data.data.subscribers);
                 subscribers = response.data.data.subscribers

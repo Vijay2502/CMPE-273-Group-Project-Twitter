@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import './Account.css';
 import logo from '../../static/images/login_twitter_logo.png';
-import {HOSTNAME} from "../../constants/appConstants";
+import { HOSTNAME } from "../../constants/appConstants";
 class Reactivate extends Component {
     constructor(props) {
         super(props);
@@ -20,7 +20,11 @@ class Reactivate extends Component {
     activateAccount = () => {
         // call activate account 
         let user_id = localStorage.getItem('id');
-        axios.put(`http://${HOSTNAME}:8080/api/v1/user/${user_id}/reactivate`)
+        var headers = {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token")
+        };
+        axios.put(`http://${HOSTNAME}:8080/api/v1/user/${user_id}/reactivate`, { headers: headers })
             .then(res => {
                 console.log("test result :", res);
                 if (res.data.status === "ok") {
