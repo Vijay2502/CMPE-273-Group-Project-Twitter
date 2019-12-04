@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import UserList from '../Search/User/UserList';
 import InfiniteScroll from 'react-infinite-scroller';
 import FollowList from "./userlist";
-import {HOSTNAME} from "../../constants/appConstants";
+import { HOSTNAME } from "../../constants/appConstants";
 
 function mapStateToProps(store) {
     return {
@@ -32,22 +32,22 @@ function mapDispatchToProps(dispatch) {
 }
 
 class userprofile extends Component {
-    
+
     constructor(props) {
         super(props);
-        console.log("agayagayagaya",this.props.userProps);
         this.state = {
             editProfile: false, //for modal
             selectedCoverPic: null,
             selectedProfilePic: null,
             openFollower: false,
             users: [],
-            openFollowee: false
+            openFollowee: false,
+            followUnfollowDate: null
         };
     }
     componentWillMount = () => {
         const data = {
-            user_id: this.props.user_id
+            user_id: this.props.userProps.id
         };
 
         this.props.getProfileDetails(data);
@@ -104,11 +104,15 @@ class userprofile extends Component {
         }
     }
     unFollowUser = () => {
-        axios.put(`http://${HOSTNAME}:8080/api/v1/user/` + this.props.user_id + '/unfollow')
+        let followData = {
+            "followeeId": this.props.userProps.id
+        }
+        axios.put(`http://${HOSTNAME}:8080/api/v1/user/` + localStorage.getItem('id') + '/unfollow', followData)
             .then(res => {
                 console.log("test result :", res);
                 if (res.data.status === "ok") {
                     alert("Profile unfollowed successfully");
+                    this.setState({ date: new Date().getTime() })
                 }
             })
             .catch(err => {
@@ -116,11 +120,15 @@ class userprofile extends Component {
             });
     }
     followUser = () => {
-        axios.put(`http://${HOSTNAME}:8080/api/v1/user/` + this.props.user_id + '/follow')
+        let followData = {
+            "followeeId": this.props.userProps.id
+        }
+        axios.put(`http://${HOSTNAME}:8080/api/v1/user/` + localStorage.getItem('id') + '/follow', followData)
             .then(res => {
                 console.log("test result :", res);
                 if (res.data.status === "ok") {
                     alert("Profile followed successfully");
+                    this.setState({ date: new Date().getTime() })
                 }
             })
             .catch(err => {
@@ -129,7 +137,7 @@ class userprofile extends Component {
     }
     followUnfollowBtn = () => {
         if (this.props.userDetails) {
-            if (this.props.userDetails.followed) {
+            if (this.props.userProps.followed) {
                 return (<button
                     type="button"
                     // style="display: none"
@@ -150,11 +158,18 @@ class userprofile extends Component {
                 </button>)
             }
         } else {
-            return "";
+            return (<button
+                type="button"
+                // style="display: none"
+                onClick={this.followUser}
+                class="btn btn-primary edit-profile-btn"
+            >
+                Follow
+            </button>);
         }
     }
     render() {
-        console.log("checking props", JSON.stringify(this.props));
+        console.log("checking props for user profile: ", JSON.stringify(this.props));
         let usrDetails = this.props.userDetails ? this.props.userDetails : [];
         let usrTweets = this.props.userTweets ? this.props.userTweets : [];
         let tweetCount = usrTweets.length ? usrTweets.length : 0;
@@ -199,7 +214,7 @@ class userprofile extends Component {
                         <img src={userData.profileImage ? userData.profileImage : require("../../static/images/profile_pic.png")} height="120" width="120px" />
                     </div>
                     <div class="col-sm-6 edit-btn">
-                        {this.followUnfollowBtn}
+                        {this.followUnfollowBtn()}
                     </div>
                 </div>
                 <div class="profile-details row">

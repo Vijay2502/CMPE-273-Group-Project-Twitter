@@ -3,8 +3,6 @@ import { HOSTNAME } from "../../constants/appConstants";
 import axios from 'axios';
 
 export function createTweet(payload) {
-    console.log("createTweet payload");
-    console.log(payload);
 
     return (dispatch) => {
         axios.post(`http://${HOSTNAME}:8080/api/v1/tweet/create`, payload)
@@ -13,21 +11,17 @@ export function createTweet(payload) {
 }
 
 export function retweetTweet(payload) {
-    console.log("retweetTweet payload");
-    console.log(payload);
 
     return (dispatch) => {
         axios.post(`http://${HOSTNAME}:8080/api/v1/tweet/${payload.tweetId}/retweet`, payload)
             .then((response) => dispatch(likeTweetDispatch(response.data)))
             .catch(err => {
-                console.log("retweetTweet err")
-                console.log(err) });;
+                console.log(err)
+            });;
     }
 }
 
 export function likeTweet(payload) {
-    console.log("likeTweet payload");
-    console.log(payload);
 
     return (dispatch) => {
         axios.put(`http://${HOSTNAME}:8080/api/v1/tweet/${payload.userId}/like`, payload)
@@ -36,8 +30,6 @@ export function likeTweet(payload) {
 }
 
 export function replyTweet(payload) {
-    console.log("replyTweet payload");
-    console.log(payload);
 
     return (dispatch) => {
         axios.post(`http://${HOSTNAME}:8080/api/v1/tweet/${payload.tweetId}/reply`, payload)
@@ -46,8 +38,6 @@ export function replyTweet(payload) {
 }
 
 export function bookmarkTweet(payload) {
-    console.log("bookmarkTweet payload");
-    console.log(payload);
 
     return (dispatch) => {
         axios.put(`http://${HOSTNAME}:8080/api/v1/user/${payload.userId}/bookmark-tweet/${payload.tweetId}`)
@@ -56,8 +46,7 @@ export function bookmarkTweet(payload) {
 }
 
 export function getLikedTweets(payload) {
-    console.log("getLikedTweets payload");
-    console.log(payload);
+
 
     return (dispatch) => {
         axios.put(`http://${HOSTNAME}:8080/api/v1/tweet/getByLikedTweets/${payload.userId}`)
@@ -80,18 +69,16 @@ export function getTweetsById(data) {
 }
 
 export function getBookmarkedTweets(payload) {
-    console.log("getBookmarkedTweets payload");
-    console.log(payload);
+
 
     return (dispatch) => {
-        axios .get(`http://${HOSTNAME}:8080/api/v1/user/${payload.ownerId}/bookmarks`)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/user/${payload.ownerId}/bookmarks`)
             .then((response) => dispatch(getBookmarkedTweetsDispatch(response.data)));
     }
 }
 
 export function deleteTweet(payload) {
-    console.log("deleteTweet payload");
-    console.log(payload);
+
 
     return (dispatch) => {
         axios.delete(`http://${HOSTNAME}:8080/api/v1/tweet/${payload.tweetId}/delete`)
@@ -100,62 +87,49 @@ export function deleteTweet(payload) {
 }
 
 function getUserTweets(returndata) {
-    console.log("Inside getUserTweets - returndata: ", JSON.stringify(returndata));
+
     return { type: GET_USER_TWEETS, payload: returndata };
 }
 
 export const createTweetDispatch = (returnData) => {
-    console.log("Inside createTweetDispatch");
-    console.log(returnData);
+
 
     return { type: CREATE_TWEET, payload: returnData }
 };
 
 export const retweetTweetDispatch = (returnData) => {
-    console.log("Inside retweetTweetDispatch");
-    console.log(returnData);
+
 
     return { type: RETWEET_TWEET, payload: returnData }
 };
 
 export const likeTweetDispatch = (returnData) => {
-    console.log("Inside likeTweetDispatch");
-    console.log(returnData);
 
     return { type: LIKE_TWEET, payload: returnData }
 };
 
 export const replyTweetDispatch = (returnData) => {
-    console.log("Inside likeTweetDispatch");
-    console.log(returnData);
+
 
     return { type: REPLY_TWEET, payload: returnData }
 };
 
 export const bookmarkTweetDispatch = (returnData) => {
-    console.log("Inside bookmarkTweetDispatch");
-    console.log(returnData);
 
     return { type: BOOKMARK_TWEET, payload: returnData }
 };
 
 export const getBookmarkedTweetsDispatch = (returnData) => {
-    console.log("Inside getBookmarkedTweetsDispatch");
-    console.log(returnData);
 
     return { type: GET_BOOKMARKED_TWEETS, payload: returnData }
 };
 
 export const deleteTweetDispatch = (returnData) => {
-    console.log("Inside getBookmarkedTweetsDispatch");
-    console.log(returnData);
 
     return { type: DELETE_TWEET, payload: returnData }
 };
 
 export const getLikedTweetsDispatch = (returnData) => {
-    console.log("Inside getBookmarkedTweetsDispatch");
-    console.log(returnData);
 
     return { type: GET_LIKED_TWEETS, payload: returnData }
 };

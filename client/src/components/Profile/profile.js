@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import UserList from '../Search/User/UserList';
 import InfiniteScroll from 'react-infinite-scroller';
 import FollowList from "./userlist";
-import {HOSTNAME} from "../../constants/appConstants";
+import { HOSTNAME } from "../../constants/appConstants";
 
 function mapStateToProps(store) {
     return {
@@ -238,7 +238,6 @@ class profile extends Component {
                 hasMore={false}
             ></FollowList>)
         }
-        // console.log("checking tweetCount", tweetCount);
         return (
             <div class="profile-container col-sm-12">
                 <div class="top-details row">
@@ -397,5 +396,3 @@ class profile extends Component {
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(profile);
-    // export default profile;
-    /////////////////////// CALL FOR REDUX ACTION ///////////////////
