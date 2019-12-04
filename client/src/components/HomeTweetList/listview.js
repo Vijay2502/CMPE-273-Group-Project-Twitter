@@ -109,8 +109,8 @@ class TweetBody extends Component {
             this.props.setTweet(id);
         } else {
             try {
-                document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(7)").setAttribute("data-tweet-id", this.props.id);
-                document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(7)").click();
+                document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(8)").setAttribute("data-tweet-id", this.props.id);
+                document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(8)").click();
             }
             catch (e) {
                 console.log(e);

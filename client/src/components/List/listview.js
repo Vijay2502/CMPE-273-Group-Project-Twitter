@@ -2,7 +2,7 @@ import '../../css/list.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import React, { Component } from "react";
-import {HOSTNAME} from "../../constants/appConstants";
+import { HOSTNAME } from "../../constants/appConstants";
 
 let members = []
 let subscribers = []
@@ -90,37 +90,37 @@ class ListBody extends Component {
     }
     displayTweet(id) {
         console.log("ID >>>>>> ", id);
-            try {
-                document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(10)").setAttribute("data-list-props", JSON.stringify(this.props.tweet));
-                document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(10)").click();
-            }
-            catch (e) {
-                console.log(e);
-            }
+        try {
+            document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(11)").setAttribute("data-list-props", JSON.stringify(this.props.tweet));
+            document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(11)").click();
+        }
+        catch (e) {
+            console.log(e);
+        }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         axios.get(`http://${HOSTNAME}:8080/api/v1/list/${this.props.tweet.id}/members`)
-        .then(response => {
-            console.log("members count", response.data.data.members);
-            members = response.data.data.members
-        })
-        .catch(err => {
-            console.error(err);
-        });
+            .then(response => {
+                console.log("members count", response.data.data.members);
+                members = response.data.data.members
+            })
+            .catch(err => {
+                console.error(err);
+            });
 
         axios.get(`http://${HOSTNAME}:8080/api/v1/list/${this.props.tweet.id}/subscribers`)
-        .then(response => {
-            console.log(" subscribers  count", response.data.data.subscribers);
-            subscribers = response.data.data.subscribers
-        })
-        .catch(err => {
-            console.error(err);
-        });
-       
+            .then(response => {
+                console.log(" subscribers  count", response.data.data.subscribers);
+                subscribers = response.data.data.subscribers
+            })
+            .catch(err => {
+                console.error(err);
+            });
+
         // this.props.tweet.members=members;
         // this.props.tweeet.subscribers=subscribers;
-       
+
     }
     render() {
         console.log("check list ----------------", this.props);
@@ -132,13 +132,13 @@ class ListBody extends Component {
                     }
                     {/* <div className="inner-body-list list-group-item list-group-item-action">
                         <Image image={props.image} /> */}
-                        <div className="body">
-                            <div className="inner-body-inner-list">
-                                <Name name={this.props.name} />
-                                <Handle handle={this.props.handle} />
-                            </div>
-                            <List tweet={this.props.tweet} />
+                    <div className="body">
+                        <div className="inner-body-inner-list">
+                            <Name name={this.props.name} />
+                            <Handle handle={this.props.handle} />
                         </div>
+                        <List tweet={this.props.tweet} />
+                    </div>
                     {/* </div > */}
                 </button>
             </div>
