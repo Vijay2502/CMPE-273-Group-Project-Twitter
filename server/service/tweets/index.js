@@ -183,7 +183,7 @@ module.exports.bookmarkTweet = function (userId, tweetId, cb) {
     repository.Tweet.findOne({ tweetId: tweetId })
         .then(function (tweet) {
             repository.BookmarkedTweets.update(
-                { "ownerId": Number(userId )},
+                { "ownerId": Number(userId) },
                 {
                     "$addToSet": { "bookMarkedTweets": tweet }
                 },
@@ -205,13 +205,13 @@ module.exports.getBookmarks = function (userId, cb) {
     return repository.BookmarkedTweets.findOne(
         { "ownerId": Number(userId) },
     ).then(function (bookmark) {
-        if(bookmark){
+        if (bookmark) {
             return cb(null, {
                 tweets: tweetMapper(bookmark.bookMarkedTweets)
             });
         }
         return cb(null, {
-            tweets:[]
+            tweets: []
         })
     })
 

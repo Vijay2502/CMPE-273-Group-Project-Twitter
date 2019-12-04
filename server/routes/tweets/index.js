@@ -217,7 +217,14 @@ module.exports.getByLikedTweets = function (request, response) {
     if (!(request.params && request.params.id)) {
         return response.status(400).send("INVALID REQUEST");
     }
-    return tweetService.getByLikedTweets(request.params.id, function (err, res) {
+    var pagination = {
+        skip: 0,
+        limit: Number(process.env.DEFAULT_PAGE_LIMIT)
+    };
+    if (request.query.offset) pagination.skip = Number(request.query.offset);
+    if (request.query.limit) pagination.limit = Number(request.query.limit);
+
+    return tweetService.getByLikedTweets(request.params.id, pagination, function (err, res) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
         }
