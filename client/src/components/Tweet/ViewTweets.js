@@ -69,6 +69,24 @@ class ViewTweets extends Component {
         this.props.deleteTweet(payload);
     }
 
+    getCreatedAt = (tweet) => {
+        if (!tweet.createdAt) {
+            return undefined;
+        }
+        
+        let dateObj = new Date(tweet.createdAt);
+        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        let date1 = dateObj.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+        let date2 = months[dateObj.getMonth()] + " " + dateObj.getDate() + ", " + dateObj.getFullYear();
+
+        return <div>{
+            date1
+        } &#8226;&nbsp;
+            {
+                date2
+            }</div>;
+    }
+
     render() {
         console.log("render HomeTweetList");
         return (
@@ -89,17 +107,18 @@ class ViewTweets extends Component {
                         let tweetText = tweet.data.text;
                         let isRetweeted = tweet.retweet ? tweet.retweet.isRetweet : false;
 
-                        let dateObj = new Date(tweet.createdAt);
-                        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-                        let date1 = dateObj.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-                        let date2 = months[dateObj.getMonth()] + " " + dateObj.getDate() + ", " + dateObj.getFullYear();
-
-                        let createdAt = <div>{
-                            date1
-                        } &#8226;&nbsp;
-                            {
-                                date2
-                            }</div>;
+                        // let dateObj = new Date(tweet.createdAt);
+                        // let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                        // let date1 = dateObj.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+                        // let date2 = months[dateObj.getMonth()] + " " + dateObj.getDate() + ", " + dateObj.getFullYear();
+                        //
+                        // let createdAt = <div>{
+                        //     date1
+                        // } &#8226;&nbsp;
+                        //     {
+                        //         date2
+                        //     }</div>;
+                        const createdAt = this.getCreatedAt(tweet);
 
                         let id = tweet.id;
                         const buttonData = {};

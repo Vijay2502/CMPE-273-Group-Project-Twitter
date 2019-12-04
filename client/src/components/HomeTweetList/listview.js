@@ -143,7 +143,8 @@ class TweetBody extends Component {
                             {this.props.isRetweeted === true && <IsRetweeted isRetweeted={"Retweed"}/>}
                             <Name name={this.props.name} />
                             <Handle handle={this.props.handle} />
-                            <CreatedAt createdAt={this.props.createdAt} />
+                            {console.log("this.props.createdAt", this.props.createdAt)}
+                            {this.props.createdAt !== undefined && <CreatedAt createdAt={this.props.createdAt} />}
                         </div>
                         <Tweet tweet={this.props.tweet} />
                     </div>
