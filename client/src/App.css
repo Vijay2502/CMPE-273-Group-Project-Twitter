@@ -37,3 +37,7 @@
 .list-group-item-action:focus, .list-group-item-action:hover{
     background: transparent !important;
 }
+
+.sc-chat-window{
+    z-index: 9999 !important;
+}
