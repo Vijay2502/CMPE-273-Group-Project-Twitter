@@ -37,7 +37,7 @@ class ReplyTweet extends Component {
         owner["firstName"] = localStorage.getItem("firstName");
         owner["lastName"] = localStorage.getItem("lastName");
         owner["username"] = localStorage.getItem("username");
-        owner["image"] = "";
+        owner["image"] = localStorage.getItem("image");
 
         const payload = {}
         payload.data = data;
