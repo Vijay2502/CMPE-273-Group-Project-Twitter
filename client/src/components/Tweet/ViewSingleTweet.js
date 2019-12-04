@@ -94,7 +94,7 @@ class ViewSingleTweet extends Component {
         buttonData.userId = tweet.ownerId;
         buttonData.retweetCount = tweet.retweetCount;
         buttonData.likes = tweet.likes;
-        buttonData.replyCount = tweet.replyCount;
+        buttonData.replyCount = tweet.replyCount ? tweet.replyCount : 0;
         buttonData.tweetData = tweet.data;
 
         const owner = {};
