@@ -35,18 +35,18 @@ class HomePage extends Component {
             currentScreen: "SearchView",
             searchText: text
         })
-        
+
     }
 
 
     callbackFunction = (screenName) => {
-        let tweetId = document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(7)").getAttribute("data-tweet-id");
+        let tweetId = document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(8)").getAttribute("data-tweet-id");
         this.setState({ currentScreen: screenName, viewDetailedTweetScreenPropId: tweetId })
-        let listProps = document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(10)").getAttribute("data-list-props");
-        this.setState({  viewDetailedListProps: JSON.parse(listProps) })
-        let userProfileProps = document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(11)").getAttribute("data-user-profile-props");
-        this.setState({  viewUserProfileProps: JSON.parse(userProfileProps) })
-        
+        let listProps = document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(11)").getAttribute("data-list-props");
+        this.setState({ viewDetailedListProps: JSON.parse(listProps) })
+        let userProfileProps = document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(12)").getAttribute("data-user-profile-props");
+        this.setState({ viewUserProfileProps: JSON.parse(userProfileProps) })
+
     };
 
     render() {
@@ -54,9 +54,9 @@ class HomePage extends Component {
         return (
             <div className="container twitter-container">
                 {localStorage.getItem("token") === null &&
-                <Redirect to={{
-                    pathname: "/login"
-                }} />}
+                    <Redirect to={{
+                        pathname: "/login"
+                    }} />}
                 {localStorage.getItem("token") === null || localStorage.getItem('userActive') === 'false' &&
                     <Redirect to={{
                         pathname: "/login"
@@ -93,20 +93,20 @@ class HomePage extends Component {
                         }
 
                         {this.state.currentScreen === "LikedTweets" &&
-                        <LikedTweets />
+                            <LikedTweets />
                         }
 
                         {this.state.currentScreen === "SearchView" &&
-                        <div class="parent-container col-sm-12">
-                        <div class="top-label">Home</div>
-                        <div class="top-label-border"></div>
-                        <div className="col-lg-12 p-3">
-                        <Search search = {this.search}/>
-                    </div>
-                        <div class="tweet-container-border"></div>
-                        <SearchView text={this.state.searchText} />
-                    </div>
-                            
+                            <div class="parent-container col-sm-12">
+                                <div class="top-label">Home</div>
+                                <div class="top-label-border"></div>
+                                <div className="col-lg-12 p-3">
+                                    <Search search={this.search} />
+                                </div>
+                                <div class="tweet-container-border"></div>
+                                <SearchView text={this.state.searchText} />
+                            </div>
+
                         }
 
 
@@ -120,24 +120,24 @@ class HomePage extends Component {
                                 <List />
                             </div>
                         }
-                       {this.state.currentScreen === "ViewDetailedTweet" && this.state.viewDetailedTweetScreenPropId &&
+                        {this.state.currentScreen === "ViewDetailedTweet" && this.state.viewDetailedTweetScreenPropId &&
                             (<div class="parent-container-bookmark col-sm-12" ><ViewDetailedTweet tweetId={this.state.viewDetailedTweetScreenPropId} /></div>)
                         }
 
                         {this.state.currentScreen === "ViewDetailedList" && this.state.viewDetailedListProps &&
-                            (<div class="parent-container-bookmark col-sm-12" ><ListTweetView listDetailedProps={this.state.viewDetailedListProps}/></div>)
+                            (<div class="parent-container-bookmark col-sm-12" ><ListTweetView listDetailedProps={this.state.viewDetailedListProps} /></div>)
                         }
 
-                        
+
                         {this.state.currentScreen === "ViewUserProfile" && this.state.viewUserProfileProps &&
-                            (<div class="parent-container-bookmark col-sm-12" ><UserProfile userProps={this.state.viewUserProfileProps}/></div>)
+                            (<div class="parent-container-bookmark col-sm-12" ><UserProfile userProps={this.state.viewUserProfileProps} /></div>)
                         }
 
                     </div>
 
                     {/* <div key="c" data-grid={{ x: 8, y: 0, w: 4, h: 11, static: true }}> */}
-                    {this.state.currentScreen === "SearchView"?(<div className="col-md-2"></div> ):(<div className="col-md-2">
-                        <Search search = {this.search}/>
+                    {this.state.currentScreen === "SearchView" ? (<div className="col-md-2"></div>) : (<div className="col-md-2">
+                        <Search search={this.search} />
                     </div>)}
 
                 </div>

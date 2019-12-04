@@ -35,6 +35,14 @@ const Handle = (props) => {
     )
 };
 
+const IsRetweeted = (props) => {
+    return (
+        <div className="handle">
+            {props.isRetweeted}
+        </div>
+    )
+};
+
 const Name = (props) => {
     return (
         <div className="name">
@@ -109,8 +117,8 @@ class TweetBody extends Component {
             this.props.setTweet(id);
         } else {
             try {
-                document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(7)").setAttribute("data-tweet-id", this.props.id);
-                document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(7)").click();
+                document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(8)").setAttribute("data-tweet-id", this.props.id);
+                document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(8)").click();
             }
             catch (e) {
                 console.log(e);
@@ -131,6 +139,8 @@ class TweetBody extends Component {
 
                     <div className="body">
                         <div className="inner-body-inner">
+                            {/*<IsRetweeted isRetweeted={this.props.isRetweeted}/>*/}
+                            {this.props.isRetweeted === true && <IsRetweeted isRetweeted={"Retweed"}/>}
                             <Name name={this.props.name} />
                             <Handle handle={this.props.handle} />
                             <CreatedAt createdAt={this.props.createdAt} />
