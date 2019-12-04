@@ -46,7 +46,8 @@ class Sidebar extends Component {
             anchorEl: null,
             setAnchorEl: null,
             selectedTweetImage: null,
-            redirectToAnalytics: false
+            redirectToAnalytics: false,
+            toLogout: false
         };
 
         this.newTweet = this.newTweet.bind(this);
@@ -100,6 +101,14 @@ class Sidebar extends Component {
     handleClose = () => {
         this.setState({ anchorEl: null });
     };
+
+    logout = () => {
+        //logout here
+        console.log("logout state::::::");
+        this.setState({ toLogout: true });
+        localStorage.clear();
+        //localStorage.setItem('userActive', 'truee');
+    }
 
     onSelectingImage = (e) => {
         this.setState({
@@ -167,6 +176,9 @@ class Sidebar extends Component {
             <div class="sidebar-container row">
                 {this.state.redirectToAnalytics && <Redirect to={{
                     pathname: "/analytics"
+                }} />}
+                {this.state.toLogout && <Redirect to={{
+                    pathname: "/login"
                 }} />}
                 <div class="col-sm-3 sidebar">
                     <div class="list-group sidebar-list col-sm-12">
@@ -280,7 +292,7 @@ class Sidebar extends Component {
                                 this.sendData("Settings");
                                 this.handleClose();
                             }}>Settings and privacy</MenuItem>
-                            <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+                            <MenuItem onClick={() => this.logout()}>Logout</MenuItem>
                         </Menu>
                         {/* <button
                             type="button"
