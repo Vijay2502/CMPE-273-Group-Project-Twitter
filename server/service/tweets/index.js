@@ -13,6 +13,12 @@ function extractHashTags(data) {
 
 function tweetMapper(tweets) {
     if (tweets && _.isArray(tweets)) {
+        repository.Tweet.findOneAndUpdate(
+            { tweetId: { $in: tweets.map(t => t.tweetId) } },
+            { $inc: { "views.count": 1 } }
+        ).then(function (tweet) {
+            console.log('viewed');
+        });
         return tweets.map(tweet => ({
             id: tweet.tweetId,
             ownerId: tweet.ownerId,
@@ -28,6 +34,12 @@ function tweetMapper(tweets) {
         }));
     } else if (tweets && _.isObject(tweets)) {
         var tweet = tweets;
+        repository.Tweet.findOneAndUpdate(
+            { tweetId: tweet.tweetId },
+            { $inc: { "views.count": 1 } }
+        ).then(function (tweet) {
+            console.log('viewed');
+        });
         return {
             id: tweet.tweetId,
             ownerId: tweet.ownerId,
@@ -111,6 +123,13 @@ module.exports.getByTweetId = function (tweetId, cb) {
 
                         })
 
+                        repository.Tweet.findOneAndUpdate(
+                            { tweetId: tweetId },
+                            { $inc: { "views.count": 1 } }
+                        ).then(function (tweet) {
+                            console.log('viewed');
+                        });
+
                         return cb(null, tweetDTO);
                     }
                     return cb({
@@ -137,6 +156,12 @@ module.exports.likeTweet = function (userId, tweetId, cb) {
                         { tweetId: tweetId },
                         { $inc: { "likes.count": 1 }, $push: { "likes.userId": userId } }
                     ).then(function (tweet) {
+                        repository.Tweet.findOneAndUpdate(
+                            { tweetId: tweetId },
+                            { $inc: { "views.count": 1 } }
+                        ).then(function (tweet) {
+                            console.log('viewed');
+                        });
                         return cb(null, "like incremented");
                     });
                 }
@@ -162,7 +187,7 @@ module.exports.viewTweet = function (userId, tweetId, cb) {
                 if (userId_arr.indexOf(userId) == -1 && result.ownerId != userId) {
                     repository.Tweet.findOneAndUpdate(
                         { tweetId: tweetId },
-                        { $inc: { "views.count": 1 }, $push: { "views.userId": userId } }
+                        { $inc: { "views.count": 1 } }
                     ).then(function (tweet) {
                         return cb(null, tweet);
                     });
@@ -191,6 +216,12 @@ module.exports.bookmarkTweet = function (userId, tweetId, cb) {
                     upsert: true
                 }
             ).then(function (result) {
+                repository.Tweet.findOneAndUpdate(
+                    { tweetId: tweetId },
+                    { $inc: { "views.count": 1 } }
+                ).then(function (tweet) {
+                    console.log('viewed');
+                });
                 return cb(null, "success");
             }, function (err) {
                 return cb(err);
@@ -239,6 +270,13 @@ module.exports.retweet = function (tweetId, reTweet, cb) {
         }
         repository.Tweet.create(obj)
             .then(function (result) {
+
+                repository.Tweet.findOneAndUpdate(
+                    { tweetId: tweetId },
+                    { $inc: { "views.count": 1 } }
+                ).then(function (tweet) {
+                    console.log('viewed');
+                });
                 return cb(null, result);
             }
             )
@@ -252,6 +290,12 @@ module.exports.reply = function (hostTweetId, replyTweet, cb) {
         { tweetId: hostTweetId },
         { $inc: { "replyCount": 1 } }
     ).then(function (tweet) {
+        repository.Tweet.findOneAndUpdate(
+            { tweetId: hostTweetId },
+            { $inc: { "views.count": 1 } }
+        ).then(function (tweet) {
+            console.log('viewed');
+        });
         console.log('reply count incremented');
     }, function (err) {
         console.log(err);

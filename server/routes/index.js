@@ -72,13 +72,13 @@ router.get('/search/topics', auth.userAuth, Search.topicSearch);
 
 
 // ANALYTICS APIS
-router.get('/analytics/user/:id/tweets/by-views', auth.userAuth, Analytics.topTweetsByViews);
+router.get('/analytics/user/:id/tweets/by-views', Analytics.topTweetsByViews);
 router.get('/analytics/user/:id/tweets/by-likes', auth.userAuth, Analytics.topTweetsByLikes);
 router.get('/analytics/user/:id/tweets/by-retweets', auth.userAuth, Analytics.topTweetsByRetweets);
 router.get('/analytics/user/:id/tweets/count/hourly', auth.userAuth, Analytics.hourlyTweetCountPerDay);
 router.get('/analytics/user/:id/tweets/count/daily', auth.userAuth, Analytics.dailyTweetCountPerWeek);
 router.get('/analytics/user/:id/tweets/count/monthy', auth.userAuth, Analytics.monthlyTweetCountPerYear);
-router.get('/analytics/user/:id/profile-views/daily', auth.userAuth, Analytics.dailyProfileViewsCountPerMonth);
+router.get('/analytics/user/:id/profile-views/daily', Analytics.dailyProfileViewsCountPerMonth);
 
 //CONVERSATION APIS
 router.get('/conversation/getByUser/:userId', Chat.getByUser);
