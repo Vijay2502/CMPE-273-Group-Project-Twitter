@@ -17,7 +17,7 @@ import Settings from './Account/settings'
 //import SearchView from './Search/SearchView'
 import SearchView from './Search/searchView'
 import { Redirect } from "react-router";
-
+import UserProfile from './Profile/userprofile';
 
 class HomePage extends Component {
     constructor(props) {
@@ -44,6 +44,9 @@ class HomePage extends Component {
         this.setState({ currentScreen: screenName, viewDetailedTweetScreenPropId: tweetId })
         let listProps = document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(10)").getAttribute("data-list-props");
         this.setState({  viewDetailedListProps: JSON.parse(listProps) })
+        let userProfileProps = document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(11)").getAttribute("data-user-profile-props");
+        this.setState({  viewUserProfileProps: JSON.parse(userProfileProps) })
+        
     };
 
     render() {
@@ -123,6 +126,11 @@ class HomePage extends Component {
 
                         {this.state.currentScreen === "ViewDetailedList" && this.state.viewDetailedListProps &&
                             (<div class="parent-container-bookmark col-sm-12" ><ListTweetView listDetailedProps={this.state.viewDetailedListProps}/></div>)
+                        }
+
+                        
+                        {this.state.currentScreen === "ViewUserProfile" && this.state.viewUserProfileProps &&
+                            (<div class="parent-container-bookmark col-sm-12" ><UserProfile userProps={this.state.viewUserProfileProps}/></div>)
                         }
 
                     </div>

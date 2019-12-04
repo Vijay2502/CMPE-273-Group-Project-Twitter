@@ -106,8 +106,10 @@ module.exports.update = function (newUser, cb) {
                     username: newUser.username ? newUser.username : user.username,
                     email: newUser.email ? newUser.email : user.email,
                     password: newUser.password,
-                    data: newUser.data ? {...user.data,
-                        ...newUser.data} : user.data
+                    data: newUser.data ? {
+                        ...user.data,
+                        ...newUser.data
+                    } : user.data
                 };
 
                 return repository.User.update(userDTO,
@@ -153,12 +155,12 @@ module.exports.getById = function (userId, followerId, cb) {
     cache.get('user-getById-' + userId, function (err, user) {
         if (user) {
             user = JSON.parse(user);
-            if(userId != followerId){
+            if (userId != followerId) {
                 UserAnalytics.create({
                     ownerId: user.id
                 }).then(user => {
-                    
-                }, function(err){
+
+                }, function (err) {
                     console.log(err);
                 })
             }
@@ -180,7 +182,8 @@ module.exports.getById = function (userId, followerId, cb) {
                             email: user.email,
                             followed: has,
                             createdAt: user.createdAt,
-                            data: user.data ? {...user.data, views: user.data.views? user.data.views + 1: 1} : { views:1 }
+                            // active: user.active,
+                            data: user.data ? { ...user.data, views: user.data.views ? user.data.views + 1 : 1 } : { views: 1 }
                         };
 
                         cache.set('user-getById-' + userId, JSON.stringify(userDTO), function (err) {
@@ -192,12 +195,12 @@ module.exports.getById = function (userId, followerId, cb) {
 
                         });
 
-                        if(userId != followerId){
+                        if (userId != followerId) {
                             UserAnalytics.create({
                                 ownerId: user.id
                             }).then(user => {
-                                
-                            }, function(err){
+
+                            }, function (err) {
                                 console.log(err);
                             })
                         }
@@ -216,7 +219,7 @@ module.exports.getById = function (userId, followerId, cb) {
             }, function (err) {
                 return cb(err);
             });
-       }
+        }
     })
 
 }
@@ -242,6 +245,7 @@ module.exports.getByEmailOrUsername = function (email, username, cb) {
                 username: user.username,
                 email: user.email,
                 password: user.password,
+                active: user.active,
                 data: user.data ? user.data : null
             });
         }
