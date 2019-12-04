@@ -65,7 +65,7 @@ router.get('/feed/user/:userId', auth.userAuth, Tweet.getTweetsBySubscriber);
 router.get('/feed/list/:listId', auth.userAuth, Tweet.getTweetsByList);
 
 // SEARCH APIS
-router.get('/search/users', auth.userAuth, Search.userSearch);
+router.get('/search/users', Search.userSearch);
 router.get('/search/lists', auth.userAuth, Search.listSearch);
 router.get('/search/topics', auth.userAuth, Search.topicSearch);
 
@@ -77,7 +77,7 @@ router.get('/analytics/user/:id/tweets/by-likes', auth.userAuth, Analytics.topTw
 router.get('/analytics/user/:id/tweets/by-retweets', auth.userAuth, Analytics.topTweetsByRetweets);
 router.get('/analytics/user/:id/tweets/count/hourly', auth.userAuth, Analytics.hourlyTweetCountPerDay);
 router.get('/analytics/user/:id/tweets/count/daily', auth.userAuth, Analytics.dailyTweetCountPerWeek);
-router.get('/analytics/user/:id/tweets/count/monthy',  auth.userAuth, Analytics.monthlyTweetCountPerYear);
+router.get('/analytics/user/:id/tweets/count/monthy', auth.userAuth, Analytics.monthlyTweetCountPerYear);
 router.get('/analytics/user/:id/profile-views/daily', auth.userAuth, Analytics.dailyProfileViewsCountPerMonth);
 
 //CONVERSATION APIS

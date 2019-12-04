@@ -97,3 +97,7 @@
     font-size: 18px;
     font-family: inherit;
 }
+
+.user-chat-container{
+    width: 100%;
+}
