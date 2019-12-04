@@ -12,6 +12,8 @@ import { Link } from "react-router-dom";
 import UserList from '../Search/User/UserList';
 import InfiniteScroll from 'react-infinite-scroller';
 import FollowList from "./userlist";
+import {HOSTNAME} from "../../constants/appConstants";
+
 function mapStateToProps(store) {
     return {
         userDetails: store.users.userDetails,
@@ -97,7 +99,7 @@ class profile extends Component {
         if (this.state.selectedProfilePic) {
             console.log("inside if condition");
             data.append('image', this.state.selectedProfilePic, this.state.selectedProfilePic.name);
-            axios.post('http://localhost:8080/api/v1/img-upload', data, {
+            axios.post(`http://${HOSTNAME}:8080/api/v1/img-upload`, data, {
                 headers: {
                     'accept': 'application/json',
                     'Accept-Language': 'en-US,en;q=0.8',
@@ -116,7 +118,7 @@ class profile extends Component {
                 localStorage.setItem('image', dataFinal.data.profileImage);
                 console.log("testing data with image:", dataFinal);
 
-                axios.put('http://localhost:8080/api/v1/user/update', dataFinal)
+                axios.put(`http://${HOSTNAME}:8080/api/v1/user/update`, dataFinal)
                     .then(res => {
                         console.log("test result :", res);
                         if (res.data.status === "ok") {
@@ -145,7 +147,7 @@ class profile extends Component {
                 bio: Updatedata.formGridBio ? Updatedata.formGridBio : undefined
             };
             console.log("testing data wo image:", dataFinal);
-            axios.put('http://localhost:8080/api/v1/user/update', dataFinal)
+            axios.put(`http://${HOSTNAME}:8080/api/v1/user/update`, dataFinal)
                 .then(res => {
                     console.log(res);
                     if (res.data.status === "ok") {

@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import io from 'socket.io-client';
-
 import axios from 'axios';
 import { Launcher } from 'react-chat-window';
-
+import {HOSTNAME} from "../../constants/appConstants";
 
 class Chat extends Component {
 
@@ -18,7 +17,7 @@ class Chat extends Component {
 
 
     componentDidMount() {
-        const socket = io('http://localhost:3002');
+        const socket = io(`http://${HOSTNAME}:3002`);
         console.log("---->>>>>>>>>>>>>>>>>", this.props);
 
         this.setState({
@@ -46,7 +45,7 @@ class Chat extends Component {
         let channel = this.props.channel;
         let firstName = localStorage.getItem('firstName');
         let userId = localStorage.getItem('id');
-        axios.get(`http://localhost:8080/api/v1/conversation/getMessages/${channel}`)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/conversation/getMessages/${channel}`)
             .then(response => {
 
                 if (response.data.data) {

@@ -9,7 +9,7 @@ import { Button, Form, Modal } from "react-bootstrap";
 import CreateTweet from "../Tweet/CreateTweet";
 import ViewTweets from '../Tweet/ViewTweets';
 import ViewSingleTweet from "../Tweet/ViewSingleTweet";
-
+import {HOSTNAME} from "../../constants/appConstants";
 
 const Image = (props) => {
     return (
@@ -58,7 +58,7 @@ class ViewTweetDetails extends Component {
 
     getReplies = (id) => {
         console.log("In get reply");
-        axios.get(`http://localhost:8080/api/v1/tweet/${id}/replies`)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/tweet/${id}/replies`)
             .then(response => {
                 console.log(response);
                 this.setState(
@@ -84,7 +84,7 @@ class ViewTweetDetails extends Component {
                 axios.defaults.withCredential = true;
                 let channel = '1|2';
                 let firstName = localStorage.getItem('firstName');
-                axios.get(`http://localhost:8080/api/v1/tweet/byId/${tweetId}`)
+                axios.get(`http://${HOSTNAME}:8080/api/v1/tweet/byId/${tweetId}`)
                     .then(response => {
                         console.log(response);
                         this.setState(

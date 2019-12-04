@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import {getListById,getTweetByList} from "../../redux/actions/listActions";
 import axios from 'axios';
 import listImg from '../../images/EEDaJw0U4AADASA.jpeg';
+import {HOSTNAME} from "../../constants/appConstants";
 
 function mapStateToProps(store) {
   return {
@@ -58,7 +59,7 @@ class ListTweetView extends Component {
   getUser = () => {
     // this.props.getListById(this.state.listId);
     if(this.state.listId!=undefined){
-        axios.get(`http://localhost:8080/api/v1/list/get/${this.state.listId}`)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/list/get/${this.state.listId}`)
         .then(response => {
           console.log("getlistbyid",response)
             this.setState(
@@ -78,7 +79,7 @@ class ListTweetView extends Component {
         });
 
         // this.props.getTweetByList(this.state.listId);
-        axios.get(`http://localhost:8080/api/v1/feed/list/${this.state.listId}`)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/feed/list/${this.state.listId}`)
         .then(response => {
           console.log("getTeetBYlist",response)
             this.setState(
@@ -91,7 +92,7 @@ class ListTweetView extends Component {
             console.error(err);
         });
 
-        axios.get(`http://localhost:8080/api/v1/list/${this.state.listId}/members`)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/list/${this.state.listId}/members`)
         .then(response => {
          
             console.log("members count",response.data.data.members);
@@ -105,7 +106,7 @@ class ListTweetView extends Component {
             console.error(err);
         });
 
-        axios.get(`http://localhost:8080/api/v1/list/${this.state.listId}/subscribers`)
+        axios.get(`http://${HOSTNAME}:8080/api/v1/list/${this.state.listId}/subscribers`)
         .then(response => {
             console.log(" subscribers  count",response.data.data.subscribers );
             this.setState(
@@ -130,7 +131,7 @@ class ListTweetView extends Component {
     }
     if(this.state.subscribed){
       console.log("not subscribed");
-    axios.put(`http://localhost:8080/api/v1/list/${this.state.listId}/unsubscribe`,payload)
+    axios.put(`http://${HOSTNAME}:8080/api/v1/list/${this.state.listId}/unsubscribe`,payload)
     .then(response => {
       console.log(response)
       this.setState({
@@ -144,7 +145,7 @@ class ListTweetView extends Component {
    
   }else{
     console.log("subscribed");
-    axios.put(`http://localhost:8080/api/v1/list/${this.state.listId}/subscribe`,payload)
+    axios.put(`http://${HOSTNAME}:8080/api/v1/list/${this.state.listId}/subscribe`,payload)
     .then(response => {
       console.log(response)
       this.setState({

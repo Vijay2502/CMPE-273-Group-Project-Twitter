@@ -4,7 +4,7 @@ import { Card, Form, InputGroup, Button } from 'react-bootstrap';
 import { getProfile } from "../../redux/actions/userActions";
 import { connect } from "react-redux";
 import axios from 'axios';
-
+import {HOSTNAME} from "../../constants/appConstants";
 function mapStateToProps(store) {
     return {
         userDetails: store.users.userDetails
@@ -30,7 +30,7 @@ class settings extends Component {
     deactivateAccount = () => {
 
         let user_id = localStorage.getItem('id');
-        axios.put('http://localhost:8080/api/v1/user/' + user_id + '/deactivate')
+        axios.put(`http://${HOSTNAME}:8080/api/v1/user/${user_id}/deactivate`)
             .then(res => {
                 console.log("test result :", res);
                 if (res.data.status === "ok") {
@@ -65,7 +65,7 @@ class settings extends Component {
                     password: Updatedata.formNewPassword,
                     currentPassword: Updatedata.formCurrPassword
                 }
-                axios.put('http://localhost:8080/api/v1/user/update', data)
+                axios.put(`http://${HOSTNAME}:8080/api/v1/user/update`, data)
                     .then(res => {
                         console.log("test result :", res);
                         if (res.data.status === "ok") {
