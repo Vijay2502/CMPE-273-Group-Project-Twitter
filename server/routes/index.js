@@ -56,10 +56,11 @@ router.post('/tweet/:id/reply', Tweet.reply);
 router.get('/tweet/:id/replies', Tweet.getReplies);
 router.delete('/tweet/:tweetId/delete', Tweet.deleteTweet);          ///tested       ///
 router.get('/tweet/getByHashtag/:hashtag', Tweet.getByHashtag);     ///
+router.get('/tweet/getByLikedTweets/:id', Tweet.getByLikedTweets);     ///
 
 
-router.put('/user/:userId/bookmark-tweet/:tweetId', BookMarkedTweet.bookmarkTweet); 
-router.get('/user/:userId/bookmarks', BookMarkedTweet.getBookmarks); 
+router.put('/user/:userId/bookmark-tweet/:tweetId', BookMarkedTweet.bookmarkTweet);
+router.get('/user/:userId/bookmarks', BookMarkedTweet.getBookmarks);
 router.get('/feed/user/:userId', Tweet.getTweetsBySubscriber);
 router.get('/feed/list/:listId', Tweet.getTweetsByList);
 

@@ -10,6 +10,7 @@ import GridLayout from 'react-grid-layout';
 import Search from '../components/List/search.js'
 import CreateList from '../components/List/createlist.js';
 import BookMarks from './Tweet/BookMarkedTweets';
+import LikedTweets from './Tweet/LikedTweets';
 import ListTweetView from './List/listTweetView';
 import ViewDetailedTweet from './ViewTweetDetails/ViewTweetDetails';
 import Settings from './Account/settings'
@@ -86,6 +87,10 @@ class HomePage extends Component {
 
                         {this.state.currentScreen === "Settings" &&
                             <Settings />
+                        }
+
+                        {this.state.currentScreen === "LikedTweets" &&
+                        <LikedTweets />
                         }
 
                         {this.state.currentScreen === "SearchView" &&

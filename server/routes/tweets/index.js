@@ -16,7 +16,7 @@ module.exports.createTweet = function (request, response) {
 }
 
 module.exports.reply = function (request, response) {
-    if (!(request.body && request.body.data && request.body.ownerId )) {
+    if (!(request.body && request.body.data && request.body.ownerId)) {
         return response.status(400).send("INVALID REQUEST");
     }
     return tweetService.reply(request.params.id, request.body, function (err, res) {
@@ -202,6 +202,22 @@ module.exports.getByHashtag = function (request, response) {
         return response.status(400).send("INVALID REQUEST");
     }
     return tweetService.getByHashtag(request.params.hashtag, function (err, data) {
+        if (err) {
+            return response.status(err.code ? err.code : 500).send(err);
+        }
+        return response.send({
+            status: "ok",
+            data: res
+        });
+
+    });
+}
+
+module.exports.getByLikedTweets = function (request, response) {
+    if (!(request.params && request.params.id)) {
+        return response.status(400).send("INVALID REQUEST");
+    }
+    return tweetService.getByLikedTweets(request.params.id, function (err, res) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
         }

@@ -1,4 +1,4 @@
-import { CREATE_TWEET, GET_USER_TWEETS, LIKE_TWEET, RETWEET_TWEET, REPLY_TWEET, BOOKMARK_TWEET, GET_BOOKMARKED_TWEETS, DELETE_TWEET } from "../../redux/constants/actionTypes";
+import { CREATE_TWEET, GET_USER_TWEETS, LIKE_TWEET, RETWEET_TWEET, REPLY_TWEET, BOOKMARK_TWEET, GET_BOOKMARKED_TWEETS, DELETE_TWEET, GET_LIKED_TWEETS } from "../../redux/constants/actionTypes";
 import { HOSTNAME } from "../../constants/appConstants";
 import axios from 'axios';
 
@@ -46,12 +46,22 @@ export function replyTweet(payload) {
 }
 
 export function bookmarkTweet(payload) {
-    console.log("replyTweet payload");
+    console.log("bookmarkTweet payload");
     console.log(payload);
 
     return (dispatch) => {
         axios.put(`http://${HOSTNAME}:8080/api/v1/user/${payload.userId}/bookmark-tweet/${payload.tweetId}`)
             .then((response) => dispatch(bookmarkTweetDispatch(response.data)));
+    }
+}
+
+export function getLikedTweets(payload) {
+    console.log("getLikedTweets payload");
+    console.log(payload);
+
+    return (dispatch) => {
+        axios.put(`http://${HOSTNAME}:8080/api/v1/tweet/getByLikedTweets/${payload.userId}`)
+            .then((response) => dispatch(getLikedTweetsDispatch(response.data)));
     }
 }
 
@@ -70,7 +80,7 @@ export function getTweetsById(data) {
 }
 
 export function getBookmarkedTweets(payload) {
-    console.log("replyTweet payload");
+    console.log("getBookmarkedTweets payload");
     console.log(payload);
 
     return (dispatch) => {
@@ -80,7 +90,7 @@ export function getBookmarkedTweets(payload) {
 }
 
 export function deleteTweet(payload) {
-    console.log("replyTweet payload");
+    console.log("deleteTweet payload");
     console.log(payload);
 
     return (dispatch) => {
@@ -141,4 +151,11 @@ export const deleteTweetDispatch = (returnData) => {
     console.log(returnData);
 
     return { type: DELETE_TWEET, payload: returnData }
+};
+
+export const getLikedTweetsDispatch = (returnData) => {
+    console.log("Inside getBookmarkedTweetsDispatch");
+    console.log(returnData);
+
+    return { type: GET_LIKED_TWEETS, payload: returnData }
 };

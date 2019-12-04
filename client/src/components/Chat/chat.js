@@ -10,22 +10,21 @@ class Chat extends Component {
     constructor(props) {
         super(props);
         this.state = Object.assign({}, {
-            message: null, socket: null, userId: null, other_userId: null, channel: null,
+            message: null, socket: null, userId: null, other_userId: null, channel: this.props.channel,
             messages: []
         })
     }
 
 
-
     componentDidMount() {
         const socket = io('http://localhost:3002');
-        console.log("---->>>>>>>>>>>>>>>>>", this.props);
+        console.log("this.props.channel---->>>>>>>>>>>>>>>>>", this.props.channel);
 
         this.setState({
             socket: socket,
             channel: this.props.channel
         }, () => {
-            socket.emit('channel id', this.state.channel);
+            socket.emit('channel id', this.state.channel);
             socket.on(this.state.channel, (message) => {
                 const messages = this.state.messages;
                 message = JSON.parse(message);
@@ -41,19 +40,17 @@ class Chat extends Component {
 
         });
 
-        // get messages
+        // get messages
         axios.defaults.withCredential = true;
-        let channel = this.props.channel;
+        let channel = this.state.channel;
         let firstName = localStorage.getItem('firstName');
         let userId = localStorage.getItem('id');
         axios.get(`http://localhost:8080/api/v1/conversation/getMessages/${channel}`)
             .then(response => {
-
                 if (response.data.data) {
-                    console.log("getByChannel", response.data.data);
                     this.setState(
                         {
-                            messages: response.data.message.map(m => ({
+                            messages: response.data.data.messages.map(m => ({
                                 author: firstName == m.sender ? "me" : "them", type: 'text', data: { text: m.message }
                             }))
                         }
@@ -84,7 +81,7 @@ class Chat extends Component {
         return (<div>
             <Launcher
                 agentProfile={{
-                    teamName: 'Twitter chat windowd',
+                    teamName: 'Twitter chat windowd',
                     imageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png'
                 }}
                 onMessageWasSent={this._sendMessage.bind(this)}
