@@ -38,10 +38,10 @@ class AnalyticsMain extends Component {
 
 
                         <Nav>
-                            <Nav.Link as={NavLink} to='/analytics/TopTenTweetsByLikes'>Top Ten Tweets By
-                                Likes</Nav.Link>
                             <Nav.Link as={NavLink} to='/analytics/TopFiveTweetsByRetweets'>Top Five Tweets By
                                 Retweets</Nav.Link>
+                            <Nav.Link as={NavLink} to='/analytics/TopFiveTweetsByViews'>Top Ten Tweets By
+                                Views</Nav.Link>
                             <Nav.Link as={NavLink} to='/analytics/NumberOfTweetsGraph'>Number Of Tweets Graph</Nav.Link>
                             <Nav.Link as={NavLink} to='/analytics/ProfileViews'>Profile View Graph</Nav.Link>
                         </Nav>
@@ -53,7 +53,7 @@ class AnalyticsMain extends Component {
 
                 <div>
                     <Switch>
-                        <Route exact path='/analytics/TopTenTweetsByLikes' component={TopTenTweetsByLikes}/>
+                        <Route exact path='/analytics/TopFiveTweetsByViews' component={TopTenTweetsByViews}/>
                         <Route exact path='/analytics/TopFiveTweetsByRetweets' component={TopFiveTweetsByRetweets}/>
                         <Route exact path='/analytics/NumberOfTweetsGraph/' component={NumberOfTweetsGraph}/>
                         <Route exact path='/analytics/ProfileViews/' component={ProfileViews}/>
@@ -62,43 +62,12 @@ class AnalyticsMain extends Component {
                 </div>
 
                 {((this.props.location.pathname === "/analytics") || (this.props.location.pathname === "/analytics/")) &&
-                <TopTenTweetsByViews/>
+                <TopTenTweetsByLikes/>
                 }
 
             </div>
         );
     }
-
-
 }
-
-const styles = {
-    container: {
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "column",
-    },
-    message: {
-        fontWeight: "bold",
-        paddingTop: "2rem"
-    },
-    logo: {
-        paddingTop: "10px",
-        width: "50px",
-    },
-    email: {
-        width: "30rem",
-    },
-    loginButton: {
-        width: "30rem",
-        backgroundColor: "#2F99EA"
-    },
-    signUpBox: {
-        marginTop: 40
-    },
-    signUpButton: {
-        backgroundColor: "#2F99EA"
-    },
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AnalyticsMain);
