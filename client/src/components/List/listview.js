@@ -70,14 +70,12 @@ const Title = (props) => {
 };
 
 const Members = (props) => {
-    console.log(props);
     return (
         <p style={{ display: 'inline-block' }}> {members.length} members</p>
     )
 };
 
 const Subscribers = (props) => {
-    console.log(props);
     return (
         <p style={{ display: 'inline-block' }}> {subscribers.length} subscribers</p>
     )
@@ -89,7 +87,6 @@ class ListBody extends Component {
         this.displayTweet = this.displayTweet.bind(this);
     }
     displayTweet(id) {
-        console.log("ID >>>>>> ", id);
         try {
             document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(11)").setAttribute("data-list-props", JSON.stringify(this.props.tweet));
             document.querySelector("#root > div > div > div > div > div.col-lg-3 > div > div > div > button:nth-child(11)").click();
@@ -106,7 +103,6 @@ class ListBody extends Component {
         };
         axios.get(`http://${HOSTNAME}:8080/api/v1/list/${this.props.tweet.id}/members`, { headers: headers })
             .then(response => {
-                console.log("members count", response.data.data.members);
                 members = response.data.data.members
             })
             .catch(err => {
@@ -115,19 +111,15 @@ class ListBody extends Component {
 
         axios.get(`http://${HOSTNAME}:8080/api/v1/list/${this.props.tweet.id}/subscribers`, { headers: headers })
             .then(response => {
-                console.log(" subscribers  count", response.data.data.subscribers);
                 subscribers = response.data.data.subscribers
             })
             .catch(err => {
                 console.error(err);
             });
 
-        // this.props.tweet.members=members;
-        // this.props.tweeet.subscribers=subscribers;
 
     }
     render() {
-        console.log("check list ----------------", this.props);
         return (
             <div class="list-group">
                 <button type="button" className="inner-body list-group-item list-group-item-action" onClick={(e) => this.displayTweet(this.props)}>

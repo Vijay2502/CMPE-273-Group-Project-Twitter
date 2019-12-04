@@ -1,26 +1,26 @@
 import React, { Component } from 'react';
 import { PullDownContent, PullToRefresh, RefreshContent, ReleaseContent } from "react-js-pull-to-refresh";
 import '../../css/list.css'
-import ListBody  from './listview.js'
+import ListBody from './listview.js'
 import { connect } from "react-redux";
-import {getOwnedLists,getMemberLists,getSubscribedLists} from "../../redux/actions/listActions";
+import { getOwnedLists, getMemberLists, getSubscribedLists } from "../../redux/actions/listActions";
 
 function mapStateToProps(store) {
     return {
         status: store.list.status,
         data: store.list.data,
         ownedlists: store.list.ownedlists,
-        subscribedList:store.list.subscribedList,
-        membersList:store.list.membersList,
-        currentList:store.list.currentList
+        subscribedList: store.list.subscribedList,
+        membersList: store.list.membersList,
+        currentList: store.list.currentList
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         getOwnedLists: (id) => dispatch(getOwnedLists(id)),
-        getSubscribedLists:(id) => dispatch(getSubscribedLists(id)),
-        getMemberLists:(id) => dispatch(getMemberLists(id))
+        getSubscribedLists: (id) => dispatch(getSubscribedLists(id)),
+        getMemberLists: (id) => dispatch(getMemberLists(id))
     };
 }
 
@@ -28,7 +28,7 @@ class List extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            users:[],
+            users: [],
             isOwner: true,
             isSubscriber: false,
             isMember: false
@@ -86,27 +86,28 @@ class List extends Component {
 
     showContent() {
         let content
-        if(this.state.users!=undefined && this.state.users.length==0) {
-         content=<div>No lists</div>
+        if (this.state.users != undefined && this.state.users.length == 0) {
+            content = <div>No lists</div>
         }
-       else{content = this.state.users.map((user, index) => {
-            let name =localStorage.getItem("firstName")+localStorage.getItem("lastName");
-            // `${user.name.first} ${user.name.last}`;
-            let handle = "@"+localStorage.getItem("username")
-            //`@${user.name.first}${user.name.last}`;
-            let image = user.image;
-            console.log(image);
-            return (
-                <ListBody
-                    key={index}
-                    name={name}
-                    handle={handle}
-                    tweet={user}
-                    image={image} />
+        else {
+            content = this.state.users.map((user, index) => {
+                let name = localStorage.getItem("firstName") + localStorage.getItem("lastName");
+                // `${user.name.first} ${user.name.last}`;
+                let handle = "@" + localStorage.getItem("username")
+                //`@${user.name.first}${user.name.last}`;
+                let image = user.image;
+                console.log(image);
+                return (
+                    <ListBody
+                        key={index}
+                        name={name}
+                        handle={handle}
+                        tweet={user}
+                        image={image} />
 
-            )
-        });
-    }
+                )
+            });
+        }
         return content;
     }
 
@@ -141,7 +142,7 @@ class List extends Component {
                                 onClick={this
                                     .showSubscriberBox
                                     .bind(this)}>
-                                Subsribers
+                                Subsribed
                             </div>
                             <div
                                 className={"controller " + (this.state.isMember

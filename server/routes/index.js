@@ -23,7 +23,7 @@ router.post('/img-upload', utils.uploadImage);
 //USER APIS
 router.post('/user/register', User.register);          ///tested
 router.post('/user/login', User.login);                ///tested
-router.get('/user/:id', auth.userAuth, User_producer.get);                     ///tested
+router.get('/user/:id', auth.userAuth, User.get);                     ///tested
 router.put('/user/update', auth.userAuth, User.update);
 router.put('/user/:id/follow', auth.userAuth, User.follow);           ///tested
 router.put('/user/:id/unfollow', auth.userAuth, User.unfollow);       ///tested

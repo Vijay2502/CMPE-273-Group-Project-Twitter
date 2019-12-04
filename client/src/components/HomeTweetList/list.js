@@ -99,7 +99,7 @@ class HomeTweetList extends Component {
     }
 
     render() {
-        console.log("render HomeTweetList");
+
         return (
             <div>
                 <ViewTweets dataFromParent={this.props.tweets} />
