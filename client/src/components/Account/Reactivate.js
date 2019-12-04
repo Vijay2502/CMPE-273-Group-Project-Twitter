@@ -12,10 +12,10 @@ class Reactivate extends Component {
     }
     logout = () => {
         //logout here
-        console.log("setting state::::::");
+        console.log("logout state::::::");
         this.setState({ toLogout: true });
-        // localStorage.clear();
-        localStorage.setItem('userActive', 'truee');
+        localStorage.clear();
+        //localStorage.setItem('userActive', 'truee');
     }
     activateAccount = () => {
         // call activate account 

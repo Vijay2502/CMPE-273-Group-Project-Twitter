@@ -72,9 +72,24 @@ class SearchView extends Component {
       return true;
   }
 
+  tokenConfig = () => {
+    const token = localStorage.getItem('token');
+
+    const config = {
+        headers: {
+            'Content-type': 'application/json'
+        }
+    };
+    if (token) {
+        config.headers['Authorization'] = token;
+    }
+
+    return config;
+};
+
   getUsers(text, nextOffset) {
     console.log('getUsers',text, nextOffset)
-    axios.get(API_PATH + `/search/users?text=${text}&limit=10&offset=${nextOffset}`).then(res => {
+    axios.get(API_PATH + `/search/users?text=${text}&limit=10&offset=${nextOffset}`, this.tokenConfig()).then(res => {
       if (res.data && res.data.data && res.data.data.users && res.data.data.nextOffset >= 0) {
 
         console.log(res.data.data);
@@ -93,7 +108,7 @@ class SearchView extends Component {
 
   getTopics(text, nextOffset) {
     console.log('in getTopics')
-    axios.get(API_PATH + `/search/topics?text=${text}&limit=10&offset=${nextOffset}`).then(res => {
+    axios.get(API_PATH + `/search/topics?text=${text}&limit=10&offset=${nextOffset}`, this.tokenConfig()).then(res => {
       if (res.data && res.data.data && res.data.data.tweets && res.data.data.nextOffset >= 0) {
         console.log(res.data.data);
         this.setState({
@@ -111,7 +126,7 @@ class SearchView extends Component {
 
   getLists(text, nextOffset) {
     console.log('getLists')
-    axios.get(API_PATH + `/search/lists?text=${text}&limit=10&offset=${nextOffset}`).then(res => {
+    axios.get(API_PATH + `/search/lists?text=${text}&limit=10&offset=${nextOffset}`, this.tokenConfig()).then(res => {
       if (res.data && res.data.data && res.data.data.lists && res.data.data.nextOffset >= 0) {
         console.log(res.data.data);
         this.setState({

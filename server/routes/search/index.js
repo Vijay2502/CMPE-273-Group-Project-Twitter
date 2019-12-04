@@ -4,7 +4,7 @@ module.exports.listSearch = function (request, response) {
     if (!(request.query.text)) {
         return response.status(400).send("INVALID REQUEST");
     }
-    const userId = (request.user && request.user.id) || (request.query.userId) || -1;
+    const userId = (request.user && request.user.id)? (request.user.id) : -1;
     return searchService.listSearch(request.query.text, request.query.limit, request.query.offset, userId, function (err, res) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
@@ -20,7 +20,7 @@ module.exports.userSearch = function (request, response) {
     if (!(request.query.text)) {
         return response.status(400).send("INVALID REQUEST");
     }
-    const userId = (request.user && request.user.id) || (request.query.userId) || -1;
+    const userId = (request.user && request.user.id)? (request.user.id): -1;
     return searchService.userSearch(request.query.text, request.query.limit, request.query.offset, userId, function (err, res) {
         if (err) {
             return response.status(err.code ? err.code : 500).send(err);
