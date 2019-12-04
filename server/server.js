@@ -16,7 +16,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-const chatPort = 3002;
+const chatPort = 3005;
 io.listen(chatPort);
 app.use(express.json());
 app.use(`${process.env.TWITTER_API_PATH}`, require('./routes'));
@@ -32,32 +32,6 @@ io.on('connection', function (socket) {
             io.emit(channel, message);
         })
     });
-
-    // socket.on('message', function (data) {
-    //     io.in("myroom").emit('message', data);
-    // });
-
-    // socket.on('join', function (name, device, room) {
-    //     console.log("new client has joinning a room");
-    //     socket.join("myroom");
-    // });
-
-    // socket.on('subscribe', function (room) {
-    //     console.log('joining room', room);
-    //     socket.join(room);
-    // })
-
-    // socket.on('unsubscribe', function (room) {
-    //     console.log('leaving room', room);
-    //     socket.leave(room);
-    // })
-
-    // socket.on('send', function (data) {
-    //     console.log(socket.rooms);
-    //     console.log('sending message to room', data.room);
-    //     io.to(data.room).emit('message', data);
-    // });
-
 
 
 });

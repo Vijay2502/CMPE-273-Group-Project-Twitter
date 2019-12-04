@@ -7,7 +7,7 @@ const Chat = require('./conversation');
 const Analytics = require('./analytics');
 const Search = require('./search');
 const utils = require('../service/utils');
-//const User_producer = require('../kafka-producer').User;
+const User_producer = require('../kafka-producer').User;
 //const Tweet_producer = require('../kafka-producer').Tweet;
 const List = require('./lists');
 var passport = require('passport');
@@ -23,7 +23,7 @@ router.post('/img-upload', utils.uploadImage);
 //USER APIS
 router.post('/user/register', User.register);          ///tested
 router.post('/user/login', User.login);                ///tested
-router.get('/user/:id', auth.userAuth, User.get);                     ///tested
+router.get('/user/:id', auth.userAuth, User_producer.get);                     ///tested
 router.put('/user/update', auth.userAuth, User.update);
 router.put('/user/:id/follow', auth.userAuth, User.follow);           ///tested
 router.put('/user/:id/unfollow', auth.userAuth, User.unfollow);       ///tested
@@ -65,7 +65,7 @@ router.get('/feed/user/:userId', auth.userAuth, Tweet.getTweetsBySubscriber);
 router.get('/feed/list/:listId', auth.userAuth, Tweet.getTweetsByList);
 
 // SEARCH APIS
-router.get('/search/users', auth.userAuth, Search.userSearch);
+router.get('/search/users', Search.userSearch);
 router.get('/search/lists', auth.userAuth, Search.listSearch);
 router.get('/search/topics', auth.userAuth, Search.topicSearch);
 
@@ -77,7 +77,7 @@ router.get('/analytics/user/:id/tweets/by-likes', auth.userAuth, Analytics.topTw
 router.get('/analytics/user/:id/tweets/by-retweets', auth.userAuth, Analytics.topTweetsByRetweets);
 router.get('/analytics/user/:id/tweets/count/hourly', auth.userAuth, Analytics.hourlyTweetCountPerDay);
 router.get('/analytics/user/:id/tweets/count/daily', auth.userAuth, Analytics.dailyTweetCountPerWeek);
-router.get('/analytics/user/:id/tweets/count/monthy',  auth.userAuth, Analytics.monthlyTweetCountPerYear);
+router.get('/analytics/user/:id/tweets/count/monthy', auth.userAuth, Analytics.monthlyTweetCountPerYear);
 router.get('/analytics/user/:id/profile-views/daily', auth.userAuth, Analytics.dailyProfileViewsCountPerMonth);
 
 //CONVERSATION APIS
