@@ -32,8 +32,10 @@ function mapDispatchToProps(dispatch) {
 }
 
 class userprofile extends Component {
+    
     constructor(props) {
         super(props);
+        console.log("agayagayagaya",this.props.userProps);
         this.state = {
             editProfile: false, //for modal
             selectedCoverPic: null,
