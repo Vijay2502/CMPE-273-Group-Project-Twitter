@@ -35,6 +35,14 @@ const Handle = (props) => {
     )
 };
 
+const IsRetweeted = (props) => {
+    return (
+        <div className="handle">
+            {props.isRetweeted}
+        </div>
+    )
+};
+
 const Name = (props) => {
     return (
         <div className="name">
@@ -131,6 +139,8 @@ class TweetBody extends Component {
 
                     <div className="body">
                         <div className="inner-body-inner">
+                            {/*<IsRetweeted isRetweeted={this.props.isRetweeted}/>*/}
+                            {this.props.isRetweeted === true && <IsRetweeted isRetweeted={"Retweed"}/>}
                             <Name name={this.props.name} />
                             <Handle handle={this.props.handle} />
                             <CreatedAt createdAt={this.props.createdAt} />
