@@ -109,6 +109,8 @@ export default function getTopTenTweetsByViews(state = initialState, action) {
             return yxValues;
         });
 
+        console.log("GET_TOP_TEN_TWEETS_BY_RETWEETS dataPoints", dataPoints)
+
         const response = {};
         response.tweets = tweets.slice(0, 5);
         response.dataPoints = dataPoints.slice(0, 5);

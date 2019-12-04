@@ -15,7 +15,7 @@ export function getTopTenTweetsByViews(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/analytics/user/${payload.ownerId}/tweets/by-views`, payload, { headers: headers })
+        axios.get(`http://${HOSTNAME}:8080/api/v1/analytics/user/${payload.ownerId}/tweets/by-views`, { headers: headers })
             .then((response) => dispatch(getTopTenTweetsByViewsDispatch(response.data)));
     }
 }
@@ -25,7 +25,7 @@ export function getTopTenTweetsByLikes(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/analytics/user/${payload.ownerId}/tweets/by-likes`, payload, { headers: headers })
+        axios.get(`http://${HOSTNAME}:8080/api/v1/analytics/user/${payload.ownerId}/tweets/by-likes`, { headers: headers })
             .then((response) => dispatch(getTopTenTweetsByLikesDispatch(response.data)));
     }
 }
@@ -35,7 +35,7 @@ export function getTopTenTweetsByRetweets(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/analytics/user/${payload.ownerId}/tweets/by-retweets`, payload, { headers: headers })
+        axios.get(`http://${HOSTNAME}:8080/api/v1/analytics/user/${payload.ownerId}/tweets/by-retweets`, { headers: headers })
             .then((response) => dispatch(getTopTenTweetsByRetweetsDispatch(response.data)));
     }
 }
@@ -45,7 +45,7 @@ export function getNumberOfHourlyTweets(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/analytics/user/${payload.ownerId}/tweets/count/hourly`, payload, { headers: headers })
+        axios.get(`http://${HOSTNAME}:8080/api/v1/analytics/user/${payload.ownerId}/tweets/count/hourly`, { headers: headers })
             .then((response) => dispatch(getNumberOfHourlyTweetsDispatch(response.data)));
     }
 }
@@ -55,7 +55,7 @@ export function getNumberOfDailyTweets(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/analytics/user/${payload.ownerId}/tweets/count/daily`, payload, { headers: headers })
+        axios.get(`http://${HOSTNAME}:8080/api/v1/analytics/user/${payload.ownerId}/tweets/count/daily`, { headers: headers })
             .then((response) => dispatch(getNumberOfDailyTweetsDispatch(response.data)));
     }
 }
@@ -65,7 +65,7 @@ export function getNumberOfMonthlyTweets(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/analytics/user/${payload.ownerId}/tweets/count/monthy`, payload, { headers: headers })
+        axios.get(`http://${HOSTNAME}:8080/api/v1/analytics/user/${payload.ownerId}/tweets/count/monthy`, { headers: headers })
             .then((response) => dispatch(getNumberOfMonthlyTweetsDispatch(response.data)));
     }
 }
@@ -75,7 +75,7 @@ export function getProfileViewData(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.get(`http://${HOSTNAME}:8080/api/v1/analytics/user/${payload.ownerId}/profile-views/daily`, payload, { headers: headers })
+        axios.get(`http://${HOSTNAME}:8080/api/v1/analytics/user/${payload.ownerId}/profile-views/daily`, { headers: headers })
             .then((response) => dispatch(getProfileViewDataDispatch(response.data)));
     }
 }
