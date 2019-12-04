@@ -59,8 +59,8 @@ router.get('/tweet/getByHashtag/:hashtag', auth.userAuth, Tweet.getByHashtag);  
 router.get('/tweet/getByLikedTweets/:id', auth.userAuth, Tweet.getByLikedTweets);     ///
 
 
-router.put('/user/:userId/bookmark-tweet/:tweetId', auth.userAuth, BookMarkedTweet.bookmarkTweet);
-router.get('/user/:userId/bookmarks', auth.userAuth, BookMarkedTweet.getBookmarks);
+router.put('/user/:userId/bookmark-tweet/:tweetId', BookMarkedTweet.bookmarkTweet);
+router.get('/user/:userId/bookmarks', BookMarkedTweet.getBookmarks);
 router.get('/feed/user/:userId', auth.userAuth, Tweet.getTweetsBySubscriber);
 router.get('/feed/list/:listId', auth.userAuth, Tweet.getTweetsByList);
 
