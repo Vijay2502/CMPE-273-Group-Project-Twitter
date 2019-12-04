@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 
 function mapStateToProps(store) {
     return {
-        bookmarkedTweets: store.tweets.bookmarkedTweets,
+        likedTweets: store.tweets.likedTweets,
     }
 }
 
@@ -19,11 +19,6 @@ function mapDispatchToProps(dispatch) {
 class LikedTweets extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            users: [],
-            userName: "@sakshimahendru",
-            openCommentModal: false
-        };
     }
 
     componentDidMount() {
@@ -38,7 +33,7 @@ class LikedTweets extends Component {
             <div class="top-label-bookmark-header">
                 <div class="top-label-bookmark">Liked tweets</div>
                 <div class="bookmark-tweets-container">
-                    <ViewTweets dataFromParent={this.props.bookmarkedTweets} />
+                    <ViewTweets dataFromParent={this.props.likedTweets} />
                 </div>
             </div>
         );

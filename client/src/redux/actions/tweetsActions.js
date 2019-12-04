@@ -1,4 +1,4 @@
-import { CREATE_TWEET, GET_USER_TWEETS, LIKE_TWEET, RETWEET_TWEET, REPLY_TWEET, BOOKMARK_TWEET, GET_BOOKMARKED_TWEETS, DELETE_TWEET } from "../../redux/constants/actionTypes";
+import { CREATE_TWEET, GET_USER_TWEETS, LIKE_TWEET, RETWEET_TWEET, REPLY_TWEET, BOOKMARK_TWEET, GET_BOOKMARKED_TWEETS, DELETE_TWEET, GET_LIKED_TWEETS } from "../../redux/constants/actionTypes";
 import { HOSTNAME } from "../../constants/appConstants";
 import axios from 'axios';
 
@@ -157,5 +157,5 @@ export const getLikedTweetsDispatch = (returnData) => {
     console.log("Inside getBookmarkedTweetsDispatch");
     console.log(returnData);
 
-    return { type: DELETE_TWEET, payload: returnData }
+    return { type: GET_LIKED_TWEETS, payload: returnData }
 };

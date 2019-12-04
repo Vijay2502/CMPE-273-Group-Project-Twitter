@@ -5,8 +5,8 @@ export const RETWEET_TWEET = "RETWEET_TWEET";
 export const REPLY_TWEET = "REPLY_TWEET";
 export const BOOKMARK_TWEET = "BOOKMARK_TWEET";
 export const DELETE_TWEET = "DELETE_TWEET";
-
 export const GET_BOOKMARKED_TWEETS = "GET_BOOKMARKED_TWEET";
+export const GET_LIKED_TWEETS = "GET_LIKED_TWEETS";
 export const SIGN_UP = "SIGN_UP";
 export const SIGN_IN = "SIGN_IN";
 export const SIGN_IN_ERROR = "SIGN_IN_ERROR";
