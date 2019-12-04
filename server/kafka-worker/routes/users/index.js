@@ -56,7 +56,8 @@ module.exports.get = function (request, response) {
             message:"INVALID REQUEST"
         });
     }
-    return userService.getById(request.params.id, response);
+    const userId = request.user && request.user.id && request.params.id != request.user.id? request.user.id: -1;
+    return userService.getById(request.params.id, userId, response);
 }
 
 module.exports.follow = function (request, response) {
