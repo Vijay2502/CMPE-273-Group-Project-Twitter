@@ -40,7 +40,7 @@ class messagelist extends Component {
         //////////////////get the list of previous chat list of the users/////////////////
         axios.defaults.withCredential = true;
         let userId = localStorage.getItem('id');
-        axios.get(`http://localhost:8080/api/v1/conversation/getByUser/${userId}`)
+        axios.get(`http://13.52.36.139:8080/api/v1/conversation/getByUser/${userId}`)
             .then(response => {
                 this.setState(
                     {
@@ -63,7 +63,7 @@ class messagelist extends Component {
         axios.defaults.withCredential = true;
         //let userId = localStorage.getItem('userId');
         let userId = 1;
-        axios.get(`http://localhost:8080/api/v1/search/users`, request)
+        axios.get(`http://13.52.36.139:8080/api/v1/search/users`, request)
             .then(response => {
                 console.log("check here ->>>>>>>>>>>>", response.data.data.users);
                 this.setState(

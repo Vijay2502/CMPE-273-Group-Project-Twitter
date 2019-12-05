@@ -46,7 +46,7 @@ class Chat extends Component {
         let channel = this.props.channel;
         let firstName = localStorage.getItem('firstName');
         let userId = localStorage.getItem('id');
-        axios.get(`http://localhost:8080/api/v1/conversation/getMessages/${channel}`)
+        axios.get(`http://13.52.36.139:8080/api/v1/conversation/getMessages/${channel}`)
             .then(response => {
 
                 if (response.data.data) {
@@ -69,7 +69,7 @@ class Chat extends Component {
         let channel = nextProps.channel;
         let firstName = localStorage.getItem('firstName');
         let userId = localStorage.getItem('id');
-        axios.get(`http://localhost:8080/api/v1/conversation/getMessages/${channel}`)
+        axios.get(`http://13.52.36.139:8080/api/v1/conversation/getMessages/${channel}`)
             .then(response => {
 
                 if (response.data.data) {
