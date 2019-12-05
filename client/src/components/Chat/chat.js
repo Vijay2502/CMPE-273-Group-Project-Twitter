@@ -18,7 +18,7 @@ class Chat extends Component {
 
 
     componentDidMount() {
-        const socket = io('http://localhost:3005');
+        const socket = io('http://13.52.36.139:3005');
 
 
         this.setState({
